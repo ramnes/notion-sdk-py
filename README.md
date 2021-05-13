@@ -79,10 +79,8 @@ If the API returns an unsuccessful response, an `APIResponseError` will be raise
 The error contains properties from the response, and the most helpful is `code`. You can compare `code` to the values in the `APIErrorCode` object to avoid misspelling error codes.
 
 ```python
-import logging, os
-from notionhq_client import APIErrorCode, APIResponseError, Client
-
-notion = Client(auth=os.environ["NOTION_TOKEN"])
+import logging
+from notionhq_client import APIErrorCode, APIResponseError
 
 try:
     my_page = notion.databases.query(
@@ -111,10 +109,6 @@ The client emits useful information to a logger. By default, it only emits warni
 If you're debugging an application, and would like the client to log response bodies, set the `log_level` option to `logging.DEBUG`.
 
 ```python
-import logging
-import os
-from notionhq_client import Client
-
 notion = Client(
     auth=os.environ["NOTION_TOKEN"],
     log_level=logging.DEBUG,
