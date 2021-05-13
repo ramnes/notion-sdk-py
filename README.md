@@ -41,7 +41,7 @@ Make a request to any Notion API endpoint.
 from pprint import pprint
 
 list_users_response = notion.users.list()
-pprint(list_users_response)
+pprint(list_users_response.json())
 ```
 
 This would output something like:
