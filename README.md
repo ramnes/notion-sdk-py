@@ -31,7 +31,7 @@ Import and initialize a client using an **integration token** or an OAuth **acce
 
 ```python
 import os
-from notionhq_client import Client
+from notion_client import Client
 
 notion = Client(auth=os.environ["NOTION_TOKEN"])
 ```
@@ -83,7 +83,7 @@ The error contains properties from the response, and the most helpful is `code`.
 
 ```python
 import logging
-from notionhq_client import APIErrorCode, APIResponseError
+from notion_client import APIErrorCode, APIResponseError
 
 try:
     my_page = notion.databases.query(

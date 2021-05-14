@@ -1,6 +1,6 @@
 import pytest
 
-from notionhq_client import Client
+from notion_client import Client
 
 
 def test_initialize_client():
