@@ -16,7 +16,7 @@ setup(
     long_description=get_description(),
     long_description_content_type="text/markdown",
     packages=find_packages(),
-    python_requires=">=3.6, <4",
+    python_requires=">=3.7, <4",
     install_requires=[
         "httpx >= 0.15.0, < 0.18.0",
     ],

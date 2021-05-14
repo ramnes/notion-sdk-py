@@ -135,7 +135,7 @@ The `Client` supports the following options on initialization. These options are
 ## Requirements
 
 This package supports the following minimum versions:
-* Python >= 3.6
+* Python >= 3.7
 * httpx >= 0.15.0
 
 Earlier versions may still work, but we encourage people building new applications to upgrade to the current stable.
