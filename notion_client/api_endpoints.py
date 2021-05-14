@@ -11,6 +11,28 @@ class Endpoint:
         self.parent = parent
 
 
+class BlocksChildrenEndpoint(Endpoint):
+    def append(self, block_id, **kwargs):
+        return self.parent.request(
+            path=f"blocks/{block_id}/children",
+            method="PATCH",
+            body=pick(kwargs, "children"),
+        )
+
+    def list(self, block_id, **kwargs):
+        return self.parent.request(
+            path=f"blocks/{block_id}/children",
+            method="GET",
+            query=pick(kwargs, "start_cursor", "page_size"),
+        )
+
+
+class BlocksEndpoint(Endpoint):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.children = BlocksChildrenEndpoint(*args, **kwargs)
+
+
 class UsersEndpoint(Endpoint):
     def list(self, **kwargs):
         return self.parent.request(

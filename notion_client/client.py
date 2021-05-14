@@ -4,7 +4,12 @@ from typing import Dict, Union
 
 import httpx
 
-from .api_endpoints import DatabasesEndpoint, PagesEndpoint, UsersEndpoint
+from .api_endpoints import (
+    BlocksEndpoint,
+    DatabasesEndpoint,
+    PagesEndpoint,
+    UsersEndpoint,
+)
 from .helpers import pick
 from .logging import make_console_logger
 
@@ -46,6 +51,7 @@ class Client:
         if options.auth:
             self.client.headers["Authorization"] = f"Bearer {options.auth}"
 
+        self.blocks = BlocksEndpoint(self)
         self.databases = DatabasesEndpoint(self)
         self.users = UsersEndpoint(self)
         self.pages = PagesEndpoint(self)
