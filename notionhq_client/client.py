@@ -19,12 +19,11 @@ class ClientOptions:
 
 
 class Client:
-
     def __init__(
         self,
         options: Union[Dict, ClientOptions] = None,
         client: httpx.Client = None,
-        **kwargs
+        **kwargs,
     ):
         if options is None:
             options = ClientOptions(**kwargs)
@@ -49,11 +48,9 @@ class Client:
         self.databases = DatabasesEndpoint(self)
         self.users = UsersEndpoint(self)
 
-
     def request(self, path, method, query=None, body=None, auth=None):
         self.logger.info("request start", method, path)
 
         request = self.client.build_request(method, path)
 
         return self.client.send(request)
-
