@@ -1,16 +1,16 @@
 <div align="center">
-	<h1>Notion SDK for Python</h1>
-	<p>
-		<b>A simple and easy to use client for the <a href="https://developers.notion.com">Notion API</a></b>
-	</p>
+    <h1>Notion SDK for Python</h1>
+    <p>
+        <b>A simple and easy to use client for the <a href="https://developers.notion.com">Notion API</a></b>
+    </p>
     <p>
         <a href="https://pypi.org/project/notionhq-client"><img src="https://img.shields.io/pypi/v/notionhq-client.svg" alt="PyPI"></a>
         <a href="LICENSE"><img src="https://img.shields.io/github/license/ramnes/notion-sdk-py" alt="License"></a>
         <a href="https://github.com/ambv/black"><img src="https://img.shields.io/badge/code%20style-black-black" alt="Code style"></a>
     </p>
-	<br>
-	<br>
-	<br>
+    <br>
+    <br>
+    <br>
 </div>
 
 This client is meant to be a Python version of the reference [JavaScript SDK](https://github.com/makenotion/notion-sdk-js), so usage should be pretty similar between both. :blush:
