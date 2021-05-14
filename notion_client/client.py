@@ -61,7 +61,7 @@ class Client:
         return self.request(
             path="search",
             method="POST",
-            body=pick(kwargs, "query", "sort", "filter", "start_cursor", "page_size")
+            body=pick(kwargs, "query", "sort", "filter", "start_cursor", "page_size"),
         )
 
 
