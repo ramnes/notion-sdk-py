@@ -59,6 +59,12 @@ class DatabasesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
+    def retrieve(self, database_id, **kwargs):
+        return self.parent.request(
+            path=f"databases/{database_id}",
+            method="GET",
+        )
+
 
 class PagesEndpoint(Endpoint):
     def create(self, **kwargs):
