@@ -84,3 +84,9 @@ class UsersEndpoint(Endpoint):
             query=pick(kwargs, "start_cursor", "page_size"),
             auth=kwargs.get("auth"),
         )
+
+    def retrieve(self, user_id, **kwargs):
+        return self.parent.request(
+            path=f"users/{user_id}",
+            method="GET",
+        )
