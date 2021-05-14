@@ -39,6 +39,13 @@ class DatabasesEndpoint(Endpoint):
 
 
 class PagesEndpoint(Endpoint):
+    def create(self, **kwargs):
+        return self.parent.request(
+            path="pages",
+            method="POST",
+            body=pick(kwargs, "parent", "properties", "children"),
+        )
+
     def retrieve(self, page_id, **kwargs):
         return self.parent.request(
             path=f"pages/{page_id}",
