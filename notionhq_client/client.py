@@ -6,6 +6,7 @@ import httpx
 
 from .logging import make_console_logger
 from .api_endpoints import DatabasesEndpoint, UsersEndpoint
+from .helpers import pick
 
 
 @dataclass
@@ -54,3 +55,10 @@ class Client:
         request = self.client.build_request(method, path)
 
         return self.client.send(request)
+
+    def search(self, **kwargs):
+        return self.request(
+            path="search",
+            method="POST",
+            body=pick(kwargs, "query", "sort", "filter", "start_cursor", "page_size")
+        )
