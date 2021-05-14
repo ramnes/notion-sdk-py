@@ -22,6 +22,13 @@ class UsersEndpoint(Endpoint):
 
 
 class DatabasesEndpoint(Endpoint):
+    def list(self, **kwargs):
+        return self.parent.request(
+            path="databases",
+            method="GET",
+            query=pick(kwargs, "start_cursor", "page_size"),
+        )
+
     def query(self, database_id, **kwargs):
         return self.parent.request(
             path=f"databases/{database_id}/query",
