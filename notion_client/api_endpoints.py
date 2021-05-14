@@ -33,16 +33,6 @@ class BlocksEndpoint(Endpoint):
         self.children = BlocksChildrenEndpoint(*args, **kwargs)
 
 
-class UsersEndpoint(Endpoint):
-    def list(self, **kwargs):
-        return self.parent.request(
-            path="users",
-            method="GET",
-            query=pick(kwargs, "start_cursor", "page_size"),
-            auth=kwargs.get("auth"),
-        )
-
-
 class DatabasesEndpoint(Endpoint):
     def list(self, **kwargs):
         return self.parent.request(
@@ -83,4 +73,14 @@ class PagesEndpoint(Endpoint):
     def update(self, page_id, **kwargs):
         return self.parent.request(
             path=f"pages/{page_id}", method="PATCH", body=pick(kwargs, "properties")
+        )
+
+
+class UsersEndpoint(Endpoint):
+    def list(self, **kwargs):
+        return self.parent.request(
+            path="users",
+            method="GET",
+            query=pick(kwargs, "start_cursor", "page_size"),
+            auth=kwargs.get("auth"),
         )
