@@ -4,9 +4,9 @@ from typing import Dict, Union
 
 import httpx
 
-from .logging import make_console_logger
 from .api_endpoints import DatabasesEndpoint, UsersEndpoint
 from .helpers import pick
+from .logging import make_console_logger
 
 
 @dataclass
