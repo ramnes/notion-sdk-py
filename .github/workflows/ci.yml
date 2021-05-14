@@ -23,5 +23,5 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - run: pip install -r requirements-dev.txt
+    - run: pre-commit run --all-files
     - run: pytest
-    - run: black notion_client
