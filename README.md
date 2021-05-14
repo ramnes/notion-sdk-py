@@ -13,7 +13,7 @@
 
 This client is meant to be a Python version of the reference [JavaScript SDK](https://github.com/makenotion/notion-sdk-js), so usage should be pretty similar between both. :blush:
 
-> :loudspeaker: **Announcement** — All endpoints are now implemented! It still needs polishing but it's mostly functional. Pull requests always welcome!
+> :loudspeaker: **Announcement** — All endpoints are now implemented, and released in 0.3.0! It still needs polishing but it's mostly functional. Pull requests always welcome!
 
 ## Installation
 

@@ -46,7 +46,7 @@ class Client:
         self.client.timeout = options.timeout_ms / 1_000
         self.client.headers = {
             "Notion-Version": options.notion_version,
-            "User-Agent": "ramnes/notion-sdk-py@0.2.0",
+            "User-Agent": "ramnes/notion-sdk-py@0.3.0",
         }
         if options.auth:
             self.client.headers["Authorization"] = f"Bearer {options.auth}"
