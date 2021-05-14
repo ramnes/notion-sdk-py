@@ -49,11 +49,12 @@ class Client:
         self.databases = DatabasesEndpoint(self)
         self.users = UsersEndpoint(self)
 
-    def request(self, path, method, query=None, body=None, auth=None):
+    def _build_request(self, method, path):
         self.logger.info("request start", method, path)
+        return self.client.build_request(method, path)
 
-        request = self.client.build_request(method, path)
-
+    def request(self, path, method, query=None, body=None, auth=None):
+        request = self._build_request(method, path)
         return self.client.send(request)
 
     def search(self, **kwargs):
@@ -62,3 +63,21 @@ class Client:
             method="POST",
             body=pick(kwargs, "query", "sort", "filter", "start_cursor", "page_size")
         )
+
+
+class AsyncClient(Client):
+    def __init__(
+        self,
+        options: Union[Dict, ClientOptions] = None,
+        client: httpx.AsyncClient = None,
+        **kwargs,
+    ):
+        if client is None:
+            client = httpx.AsyncClient()
+        super().__init__(options, client, **kwargs)
+
+    async def request(self, path, method, query=None, body=None, auth=None):
+        request = self._build_request(method, path)
+        async with self.client as client:
+            response = await client.send(request)
+        return response

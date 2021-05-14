@@ -36,6 +36,14 @@ from notion_client import Client
 notion = Client(auth=os.environ["NOTION_TOKEN"])
 ```
 
+In an asyncio environment, use the asynchronous client instead:
+
+```python
+from notion_client import AsyncClient
+
+notion = AsyncClient(auth=os.environ["NOTION_TOKEN"])
+```
+
 Make a request to any Notion API endpoint.
 
 > See the complete list of endpoints in the [API reference](https://developers.notion.com/reference).
@@ -44,6 +52,13 @@ Make a request to any Notion API endpoint.
 from pprint import pprint
 
 list_users_response = notion.users.list()
+pprint(list_users_response.json())
+```
+
+or with the asynchronous client:
+
+```python
+list_users_response = await notion.users.list()
 pprint(list_users_response.json())
 ```
 
@@ -58,6 +73,8 @@ This would output something like:
               'type': 'person'},
              ...]}
 ```
+
+All API endpoints are available in both the synchronous and asynchronous clients.
 
 Endpoint parameters are grouped into a single object. You don't need to remember which parameters go in the path, query, or body.
 
@@ -122,7 +139,7 @@ You may also set a custom `logger` to emit logs to a destination other than `std
 
 ### Client options
 
-The `Client` supports the following options on initialization. These options are all keys in the single constructor parameter.
+`Client` and `AsyncClient` both support the following options on initialization. These options are all keys in the single constructor parameter.
 
 | Option | Default value | Type | Description |
 |--------|---------------|---------|-------------|
