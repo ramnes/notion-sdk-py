@@ -4,7 +4,7 @@ from typing import Dict, Union
 
 import httpx
 
-from .api_endpoints import DatabasesEndpoint, UsersEndpoint
+from .api_endpoints import DatabasesEndpoint, PagesEndpoint, UsersEndpoint
 from .helpers import pick
 from .logging import make_console_logger
 
@@ -48,6 +48,7 @@ class Client:
 
         self.databases = DatabasesEndpoint(self)
         self.users = UsersEndpoint(self)
+        self.pages = PagesEndpoint(self)
 
     def _build_request(self, method, path):
         self.logger.info("request start", method, path)

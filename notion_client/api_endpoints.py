@@ -36,3 +36,11 @@ class DatabasesEndpoint(Endpoint):
             body=pick(kwargs, "filter", "sorts", "start_cursor", "page_size"),
             auth=kwargs.get("auth"),
         )
+
+
+class PagesEndpoint(Endpoint):
+    def retrieve(self, page_id, **kwargs):
+        return self.parent.request(
+            path=f"pages/{page_id}",
+            method="GET",
+        )
