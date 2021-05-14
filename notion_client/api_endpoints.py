@@ -51,3 +51,8 @@ class PagesEndpoint(Endpoint):
             path=f"pages/{page_id}",
             method="GET",
         )
+
+    def update(self, page_id, **kwargs):
+        return self.parent.request(
+            path=f"pages/{page_id}", method="PATCH", body=pick(kwargs, "properties")
+        )
