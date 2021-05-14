@@ -4,7 +4,7 @@
         <b>A simple and easy to use client for the <a href="https://developers.notion.com">Notion API</a></b>
     </p>
     <p>
-        <a href="https://pypi.org/project/notionhq-client"><img src="https://img.shields.io/pypi/v/notionhq-client.svg" alt="PyPI"></a>
+        <a href="https://pypi.org/project/notion-client"><img src="https://img.shields.io/pypi/v/notion-client.svg" alt="PyPI"></a>
         <a href="LICENSE"><img src="https://img.shields.io/github/license/ramnes/notion-sdk-py" alt="License"></a>
         <a href="https://github.com/ambv/black"><img src="https://img.shields.io/badge/code%20style-black-black" alt="Code style"></a>
     </p>
@@ -18,7 +18,7 @@ This client is meant to be a Python version of the reference [JavaScript SDK](ht
 ## Installation
 
 ```
-pip install notionhq-client
+pip install notion-client
 ```
 
 ## Usage
