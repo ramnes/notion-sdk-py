@@ -31,8 +31,8 @@ class Client:
         elif isinstance(options, dict):
             options = ClientOptions(**options)
 
-        self.log_level = options.log_level
         self.logger = options.logger or make_console_logger()
+        self.logger.setLevel(options.log_level)
 
         if client is None:
             client = httpx.Client()
@@ -51,7 +51,7 @@ class Client:
         self.pages = PagesEndpoint(self)
 
     def _build_request(self, method, path, body):
-        self.logger.info("request start", method, path)
+        self.logger.info(f"{method} {self.client.base_url}{path}")
         return self.client.build_request(method, path, json=body)
 
     def request(self, path, method, query=None, body=None, auth=None):
