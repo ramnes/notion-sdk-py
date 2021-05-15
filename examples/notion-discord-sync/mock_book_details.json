@@ -1,0 +1,43 @@
+{
+    "parent": {
+      "database_id": "526652e3-0e53-4606-a263-a07702d4482c"
+    },
+    "properties": {
+        "Genres": {
+            "multi_select": {
+                "options": [
+                    {
+                        "name": "Futuristic"
+                    } 
+                ]
+            }
+        },
+        "Authors": {
+            "multi_select": {
+                "options": [
+                    {
+                        "name": "LMM"
+                    },
+                    {
+                        "name": "Hello123"
+                    } 
+                ]
+            }
+        },
+        "Length": {
+        "number": 327
+        },
+        "Rating": {
+            "number": 4
+        },
+        "Name": {
+            "title": [
+                {
+                "text": {
+                    "content": "Nineteen Eighty-Four: A Novel PT4"
+                }
+                }
+            ]
+        }
+    }
+  }

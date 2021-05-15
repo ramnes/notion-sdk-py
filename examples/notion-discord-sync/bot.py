@@ -5,9 +5,16 @@ import discord
 import random
 from dotenv import load_dotenv
 from pprint import pprint
+import notion
+
+load_dotenv()
+TOKEN = os.getenv('DISCORD_TOKEN')
+GUILD = os.getenv('DISCORD_GUILD')
+
+client = discord.Client()
 
 def parse_recommendation(message):
-    if not message.startsWith("!add "):
+    if not message.startswith("!add "):
         return False
     else:
         return message.split("!add ")[1]
@@ -24,24 +31,19 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if parse_recommendation(message.content):
-        book_name = 
-    brooklyn_99_quotes = [
-        'I\'m the human form of the 💯 emoji.',
-        'Bingpot!',
-        (
-            'Cool. Cool cool cool cool cool cool cool, '
-            'no doubt no doubt no doubt no doubt.'
-        ),
-    ]
+    rec = parse_recommendation(message.content)
+    if rec:
+        print(rec)
+        notion.add_recommendation(rec)
+        # rec = look up rec in Google Books API
+        encouraging_responses = [
+            "Very exciting recommendation, I've added this!",
+            "Woohoo, I've added this to the list :)",
+            "We value your contribution :D"
+        ]
+        response = random.choice(encouraging_responses)
+        await message.reply(response, mention_author=False)
 
-    if message.content == '99!':
-        response = random.choice(brooklyn_99_quotes)
-        await message.channel.send(response)
-
-load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = os.getenv('DISCORD_GUILD')
-
-client = discord.Client()
-client.run(TOKEN)
+# client.run(TOKEN)
+rec="hhhh"
+notion.add_recommendation(rec)
