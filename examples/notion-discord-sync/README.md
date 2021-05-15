@@ -1,40 +1,28 @@
 # Sample Integration: Discord to Notion
 
 ## About the Integration 
+This is a Discord bot that ports book recommendations from Discord to Notion. Here is a simple diagram to illustrate what the bot does!
 
-This Notion integration demonstrates some ways to sync a Notion page to a Discord text channel. This integration was built using this [database template](https://www.notion.so/367cd67cfe8f49bfaf0ac21305ebb9bf?v=bc79ca62b36e4c54b655ceed4ef06ebd). Changes made to issues in the Notion database will not be reflected in GitHub. For an example which allows you to take actions based on changes in a database [go here.](https://github.com/makenotion/notion-sdk-js/examples/database-update-send-email)
+## Try it Yourself
+To test this Discord bot, you will need to set up a few things
 
-## Running Locally
+### Notion Reading List Database Template
+You can duplicate [this](https://www.notion.so/e2b278fd05574df694833e6790e02340?v=34c458559056411d8cbd3bc3a7f406d6) template for running this example. You need to create a Notion integration as explained in the Notion API documentation [here](https://developers.notion.com/docs).
+After doing this, you will obtain a **Notion Internal Integration Token** and a **database ID**. Note these down somewhere secure to use later.
 
-### 1. Setup your local project
-```zsh
-# Clone this repository locally 
-git clone https://github.com/makenotion/notion-sdk-js.git 
+### Discord Bot
+Follow the instructions [here](https://realpython.com/how-to-make-a-discord-bot-python/) to create a Discord Bot and add it to your server. Make sure to give the bot permissions to view the channel(s) where book recommendations will be coming in! At the end of this, you will obtain a **Discord Bot Token**. Note this down too.
 
-# Switch into this project
-cd notion-sdk-js/examples/github-issue-sync
+### Google Books API
+Create a GCP project and get your **Google Books API credentials** by following [these](https://developers.google.com/books/docs/v1/using) instructions.
 
-# Install the dependencies 
-npm install
-```
+### Running the Bot
+1. Clone this repository locally: `git clone https://github.com/ramnes/notion-sdk-py.git`
+2. Switch into this project: `cd notion-sdk-py/examples/notion-discord-sync`
+3. Add the credentials from the previous sections to the `.env` file against the appropriate variables
+4. Install the requirements in `requirements.txt`
+5. Run `bot.py` - it contains the code that powers this Discord bot
 
-### 2. Set your enviornment variables in a `.env` file
-```zsh
-GITHUB_KEY=<your-github-personal-access-token>
-NOTION_KEY=<your-notion-api-key>
-NOTION_DATABASE_ID=<notion-database-id>
-GITHUB_REPO_OWNER=<github-owner-username>
-GITHUB_REPO_NAME=<github-repo-name>
-```
-
-You can create your Notion API key [here](www.notion.com/integrations).
-
-You can create your GitHub Personal Access token by following the guide [here](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token).
-
-To create a Notion database that will work with this example, duplicate [this empty database template](https://www.notion.so/367cd67cfe8f49bfaf0ac21305ebb9bf?v=bc79ca62b36e4c54b655ceed4ef06ebd).
-
-### 3. Run code 
-
-```zsh
-node index.js
-```
+## Resources
+If you want to use your own database instead of following the above-mentioned template, you might find [this](https://developers.notion.com/reference/page#page-property-value) description of the page object in Notion useful.
+For any feedback or suggestions, raise a discussion or issue!
