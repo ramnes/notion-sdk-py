@@ -71,7 +71,7 @@ class Client:
         request = self._build_request(method, path, query, body)
         response = self.client.send(request)
         self._check_response(response)
-        return response
+        return response.json()
 
     def search(self, **kwargs):
         return self.request(
@@ -97,4 +97,4 @@ class AsyncClient(Client):
         async with self.client as client:
             response = await client.send(request)
         self._check_response(response)
-        return response
+        return response.json()
