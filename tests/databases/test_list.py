@@ -1,18 +1,9 @@
-from notion_client import AsyncClient, Client
+from notion_client import Client
 from notion_client.errors import APIErrorCode
-
-from .conftest import PROPER_AUTH
-
-
-def test_initialize_client():
-    client = Client({"auth": "foo"})
-    assert client
-
-    client = AsyncClient({"auth": "foo"})
-    assert client
+from tests.conftest import PROPER_AUTH
 
 
-def test_list_databases():
+def test_list():
     wrong_client = Client({"auth": "foo"})
     try:
         data = wrong_client.databases.list()

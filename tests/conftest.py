@@ -62,6 +62,7 @@ def mock_httpx(monkeypatch):
         if request.headers.get("Authorization") != f"Bearer {PROPER_AUTH}":
             return MockResponse(request=request, code=APIErrorCode.Unauthorized)
         else:
+            # temporally return foo bar
             return MockResponse(request=request, json={"foo": "bar"})
         return original_send(self, request)
 
