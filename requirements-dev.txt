@@ -2,3 +2,5 @@
 pre-commit
 pytest
 tox
+coverage
+pytest-cov
