@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Union
+from typing import Any, Dict, Optional, Union
 
 import httpx
 
@@ -8,14 +8,14 @@ import httpx
 class RequestTimeoutError(Exception):
     code = "notionhq_client_request_timeout"
 
-    def __init__(self, message="Request to Notion API has timed out"):
+    def __init__(self, message: str = "Request to Notion API has timed out") -> None:
         super().__init__(message)
         self.name = "RequestTimeoutError"
 
     @staticmethod
     def is_request_timeout_error(e: Exception) -> bool:
         return (
-            isinstance(e, httpx.RequestTimeoutError)
+            isinstance(e, RequestTimeoutError)
             and hasattr(e, "code")
             and e.code == RequestTimeoutError.code
         )
@@ -27,7 +27,7 @@ class HTTPResponseError(Exception):
     headers: httpx.Headers
     body: str
 
-    def __init__(self, response: httpx.Response, message: str = None):
+    def __init__(self, response: httpx.Response, message: Optional[str] = None) -> None:
         super().__init__(
             message
             or f"Request to Notion API failed with status: {response.status_code}"
@@ -38,13 +38,13 @@ class HTTPResponseError(Exception):
 
     def is_http_response_error(e: Exception) -> bool:
         return (
-            isinstance(e, httpx.HTTPResponseError)
+            isinstance(e, HTTPResponseError)
             and hasattr(e, "code")
             and e.code == HTTPResponseError.code
         )
 
 
-class APIErrorCode(Enum):
+class APIErrorCode(str, Enum):
     Unauthorized = "unauthorized"
     RestrictedResource = "restricted_resource"
     ObjectNotFound = "object_not_found"
@@ -67,7 +67,7 @@ class APIErrorResponseBody:
 class APIResponseError(HTTPResponseError):
     code: APIErrorCode
 
-    def __init__(self, response: httpx.Response, body: APIErrorResponseBody):
+    def __init__(self, response: httpx.Response, body: APIErrorResponseBody) -> None:
         super().__init__(response, body.message)
         self.code = body.code
 
@@ -80,7 +80,9 @@ class APIResponseError(HTTPResponseError):
         )
 
 
-def build_request_error(e: Exception) -> Union[Exception, None]:
+def build_request_error(
+    e: Exception,
+) -> Union[RequestTimeoutError, APIResponseError, HTTPResponseError, None]:
     if is_timeout_error(e):
         return RequestTimeoutError()
     if is_http_error(e):
@@ -91,7 +93,9 @@ def build_request_error(e: Exception) -> Union[Exception, None]:
     return None
 
 
-def parse_api_error_response_body(body: dict) -> Union[APIErrorResponseBody, None]:
+def parse_api_error_response_body(
+    body: Dict[Any, Any]
+) -> Union[APIErrorResponseBody, None]:
     if not is_api_error_code(body["code"]):
         return None
 
