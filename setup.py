@@ -27,4 +27,5 @@ setup(
         "Development Status :: 4 - Beta",
         "License :: OSI Approved :: MIT License",
     ],
+    package_data={"notion_client": ["py.typed"]},
 )
