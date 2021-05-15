@@ -92,7 +92,13 @@ class BaseClient:
                 body = APIErrorResponseBody(code=code, message=body["message"])
                 raise APIResponseError(error.response, body)
             raise HTTPResponseError(error.response)
+    def _build_request(self, method, path, query, body):
+        self.logger.info(f"{method} {self.client.base_url}{path}")
+        return self.client.build_request(method, path, params=query, json=body)
 
+    def request(self, path, method, query=None, body=None, auth=None):
+        request = self._build_request(method, path, query, body)
+        return self.client.send(request)
         return response.json()
 
     @abstractclassmethod
