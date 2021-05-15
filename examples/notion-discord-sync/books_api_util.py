@@ -14,19 +14,22 @@ def make_request(query_param):
 def get_book_details(title):
     book_details = json.loads(make_request(title))
     pruned_details = dict()
-    volume_info = book_details['items'][0]['volumeInfo']
     try:
-        pruned_details = {key:volume_info[key] for key in [
-            'title',
-            'authors',
-            'pageCount',
-            'description',
-            'categories',
-            'averageRating',
-            'previewLink'
-        ]}
-        print(pruned_details)
-        return pruned_details
-    except Exception e:
-        print(e)
+        volume_info = book_details['items'][0]['volumeInfo']
+    except KeyError:
+        print('No results found!')
         return {}
+
+    keys = [
+        'title',
+        'authors',
+        'description',
+        'categories',
+        'previewLink',
+        'pageCount',
+        'averageRating',
+    ]
+
+    existing_keys = [key for key in keys if key in volume_info.keys()]
+    pruned_details.update({key:volume_info[key] for key in existing_keys})
+    return pruned_details

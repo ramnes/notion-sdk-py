@@ -5,7 +5,6 @@ import logging
 import discord
 import random
 from dotenv import load_dotenv
-from pprint import pprint
 import notion
 
 load_dotenv()
@@ -33,6 +32,7 @@ async def on_message(message):
 
     recommended_book = parse_recommendation(message.content)
     if recommended_book:
+        print('Looking up your book recommendation!', recommended_book)
         success = notion.add_recommendation(recommended_book)
         if success:
             encouraging_responses = [
