@@ -1,8 +1,7 @@
-import pytest
-
-from conftest import PROPER_AUTH
 from notion_client import AsyncClient, Client
 from notion_client.errors import APIErrorCode
+
+from .conftest import PROPER_AUTH
 
 
 def test_initialize_client():

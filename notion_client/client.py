@@ -4,12 +4,8 @@ from typing import Dict, Union
 
 import httpx
 
-from .api_endpoints import (
-    BlocksEndpoint,
-    DatabasesEndpoint,
-    PagesEndpoint,
-    UsersEndpoint,
-)
+from .api_endpoints import (BlocksEndpoint, DatabasesEndpoint, PagesEndpoint,
+                            UsersEndpoint)
 from .errors import build_request_error
 from .helpers import pick
 from .logging import make_console_logger
