@@ -1,7 +1,8 @@
-import httpx
 from dataclasses import dataclass
-from typing import Union
 from enum import Enum
+from typing import Union
+
+import httpx
 
 
 class RequestTimeoutError(Exception):
