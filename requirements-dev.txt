@@ -2,4 +2,3 @@
 pre-commit
 pytest
 tox
-requests
