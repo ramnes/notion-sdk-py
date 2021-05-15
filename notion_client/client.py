@@ -56,12 +56,12 @@ class Client:
         self.users = UsersEndpoint(self)
         self.pages = PagesEndpoint(self)
 
-    def _build_request(self, method, path, body):
+    def _build_request(self, method, path, query, body):
         self.logger.info(f"{method} {self.client.base_url}{path}")
-        return self.client.build_request(method, path, json=body)
+        return self.client.build_request(method, path, params=query, json=body)
 
     def request(self, path, method, query=None, body=None, auth=None):
-        request = self._build_request(method, path, body)
+        request = self._build_request(method, path, query, body)
         return self.client.send(request)
 
     def search(self, **kwargs):
@@ -84,7 +84,7 @@ class AsyncClient(Client):
         super().__init__(options, client, **kwargs)
 
     async def request(self, path, method, query=None, body=None, auth=None):
-        request = self._build_request(method, path, body)
+        request = self._build_request(method, path, query, body)
         async with self.client as client:
             response = await client.send(request)
         return response
