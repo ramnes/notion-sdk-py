@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 <div align="center">
     <h1>Notion SDK for Python</h1>
     <p>
@@ -5,29 +6,35 @@
     </p>
     <p>
         <a href="https://pypi.org/project/notion-client"><img src="https://img.shields.io/pypi/v/notion-client.svg" alt="PyPI"></a>
+        <a href="tox.ini"><img src="https://img.shields.io/pypi/pyversions/notion-client" alt="Supported Python Versions"></a>
         <a href="LICENSE"><img src="https://img.shields.io/github/license/ramnes/notion-sdk-py" alt="License"></a>
         <a href="https://github.com/ambv/black"><img src="https://img.shields.io/badge/code%20style-black-black" alt="Code style"></a>
     </p>
     <br/>
 </div>
+<!-- markdownlint-enable -->
 
-This client is meant to be a Python version of the reference [JavaScript SDK](https://github.com/makenotion/notion-sdk-js), so usage should be pretty similar between both. :blush:
+This client is meant to be a Python version of the reference [JavaScript SDK](https://github.com/makenotion/notion-sdk-js),
+so usage should be pretty similar between both. 😊
 
-> :loudspeaker: **Announcement** — All endpoints are now implemented, and released in 0.3.0! It still needs polishing but it's mostly functional. Pull requests always welcome!
+> 📢 **Announcement** — All endpoints are now implemented, and released since 0.3.0!
+> It still needs polishing but it's mostly functional. Pull requests always welcome!
 
+<!-- markdownlint-disable -->
 ## Installation
-
-```
+<!-- markdownlint-enable -->
+```shell
 pip install notion-client
 ```
 
 ## Usage
 
-> Before getting started, [create an integration](https://www.notion.com/my-integrations) and find the token.
->
+> Before getting started, [create an integration](https://www.notion.com/my-integrations)
+> and find the token.
 > [→ Learn more about authorization](https://developers.notion.com/docs/authorization).
 
-Import and initialize a client using an **integration token** or an OAuth **access token**.
+Import and initialize a client using an **integration token** or an
+OAuth **access token**.
 
 ```python
 import os
@@ -64,7 +71,7 @@ pprint(list_users_response.json())
 
 This would output something like:
 
-```
+```text
 {'results': [{'avatar_url': 'https://secure.notion-static.com/e6a352a8-8381-44d0-a1dc-9ed80e62b53d.jpg',
               'id': 'd40e767c-d7af-4b18-a86d-55c61f1e39a4',
               'name': 'Avocado Lovelace',
@@ -76,7 +83,8 @@ This would output something like:
 
 All API endpoints are available in both the synchronous and asynchronous clients.
 
-Endpoint parameters are grouped into a single object. You don't need to remember which parameters go in the path, query, or body.
+Endpoint parameters are grouped into a single object. You don't need to remember
+which parameters go in the path, query, or body.
 
 ```python
 my_page = notion.databases.query(
@@ -96,7 +104,9 @@ my_page = notion.databases.query(
 
 If the API returns an unsuccessful response, an `APIResponseError` will be raised.
 
-The error contains properties from the response, and the most helpful is `code`. You can compare `code` to the values in the `APIErrorCode` object to avoid misspelling error codes.
+The error contains properties from the response, and the most helpful is `code`.
+You can compare `code` to the values in the `APIErrorCode` object to avoid
+misspelling error codes.
 
 ```python
 import logging
@@ -124,9 +134,11 @@ except APIResponseError as error:
 
 ### Logging
 
-The client emits useful information to a logger. By default, it only emits warnings and errors.
+The client emits useful information to a logger. By default, it only emits warnings
+and errors.
 
-If you're debugging an application, and would like the client to log response bodies, set the `log_level` option to `logging.DEBUG`.
+If you're debugging an application, and would like the client to log response bodies,
+set the `log_level` option to `logging.DEBUG`.
 
 ```python
 notion = Client(
@@ -135,12 +147,16 @@ notion = Client(
 )
 ```
 
-You may also set a custom `logger` to emit logs to a destination other than `stdout`. Have a look at [Python's logging cookbook](https://docs.python.org/3/howto/logging-cookbook.html) if you want to create your own logger.
+You may also set a custom `logger` to emit logs to a destination other than `stdout`.
+Have a look at [Python's logging cookbook](https://docs.python.org/3/howto/logging-cookbook.html)
+if you want to create your own logger.
 
 ### Client options
 
-`Client` and `AsyncClient` both support the following options on initialization. These options are all keys in the single constructor parameter.
+`Client` and `AsyncClient` both support the following options on initialization.
+These options are all keys in the single constructor parameter.
 
+<!-- markdownlint-disable -->
 | Option | Default value | Type | Description |
 |--------|---------------|---------|-------------|
 | `auth` | `None` | `string` | Bearer token for authentication. If left undefined, the `auth` parameter should be set on each request. |
@@ -148,17 +164,22 @@ You may also set a custom `logger` to emit logs to a destination other than `std
 | `timeoutMs` | `60_000` | `int` | Number of milliseconds to wait before emitting a `RequestTimeoutError` |
 | `base_url` | `"https://api.notion.com"` | `string` | The root URL for sending API requests. This can be changed to test with a mock server. |
 | `logger` | Log to console | `logging.Logger` | A custom logger. |
+<!-- markdownlint-enable -->
 
 ## Requirements
 
 This package supports the following minimum versions:
+
 * Python >= 3.7
 * httpx >= 0.15.0
 
-Earlier versions may still work, but we encourage people building new applications to upgrade to the current stable.
+Earlier versions may still work, but we encourage people building new applications
+to upgrade to the current stable.
 
 ## Getting help
 
-If you have a question about the library, or are having difficulty using it, chat with the community in [GitHub Discussions](https://github.com/ramnes/notion-sdk-py/discussions).
+If you have a question about the library, or are having difficulty using it,
+chat with the community in [GitHub Discussions](https://github.com/ramnes/notion-sdk-py/discussions).
 
-If you're experiencing issues with the Notion API, such as a service interruption or a potential bug in the platform, reach out to [Notion help](https://www.notion.so/Help-Support-e040febf70a94950b8620e6f00005004?target=intercom).
+If you're experiencing issues with the Notion API, such as a service interruption
+or a potential bug in the platform, reach out to [Notion help](https://www.notion.so/Help-Support-e040febf70a94950b8620e6f00005004?target=intercom).

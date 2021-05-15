@@ -47,7 +47,7 @@ class Client:
         self.client.timeout = options.timeout_ms / 1_000
         self.client.headers = {
             "Notion-Version": options.notion_version,
-            "User-Agent": "ramnes/notion-sdk-py@0.3.0",
+            "User-Agent": "ramnes/notion-sdk-py@0.3.1",
         }
         if options.auth:
             self.client.headers["Authorization"] = f"Bearer {options.auth}"
@@ -57,9 +57,9 @@ class Client:
         self.users = UsersEndpoint(self)
         self.pages = PagesEndpoint(self)
 
-    def _build_request(self, method, path, body):
+    def _build_request(self, method, path, query, body):
         self.logger.info(f"{method} {self.client.base_url}{path}")
-        return self.client.build_request(method, path, json=body)
+        return self.client.build_request(method, path, params=query, json=body)
 
     def _check_response(self, response):
         try:
@@ -68,7 +68,7 @@ class Client:
             raise build_request_error(error) or error
 
     def request(self, path, method, query=None, body=None, auth=None):
-        request = self._build_request(method, path, body)
+        request = self._build_request(method, path, query, body)
         response = self.client.send(request)
         self._check_response(response)
         return response
@@ -93,7 +93,7 @@ class AsyncClient(Client):
         super().__init__(options, client, **kwargs)
 
     async def request(self, path, method, query=None, body=None, auth=None):
-        request = self._build_request(method, path, body)
+        request = self._build_request(method, path, query, body)
         async with self.client as client:
             response = await client.send(request)
         response.raise_for_status()
