@@ -94,7 +94,15 @@ class AsyncClient(Client):
         super().__init__(options, client, **kwargs)
 
     async def request(self, path, method, query=None, body=None, auth=None):
-        request = self._build_request(method, path, body)
-        async with self.client as client:
-            response = await client.send(request)
-        return response
+        try:
+            request = self._build_request(method, path, body)
+            async with self.client as client:
+                response = await client.send(request)
+            response.raise_for_status()
+            return response
+        except Exception as e:
+            request_error = build_request_error(e)
+            if request_error is None:
+                raise e
+
+            raise request_error
