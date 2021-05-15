@@ -1,4 +1,4 @@
-name: CI
+name: Tests
 
 on:
   push:
@@ -18,10 +18,13 @@ jobs:
     steps:
 
     - uses: actions/checkout@v2
-    - name: Use Python ${{ matrix.node-version }}
+    - name: Use Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
     - run: pip install -r requirements-dev.txt
-    - run: pre-commit run --all-files
     - run: pytest
+    - uses: codecov/codecov-action@v1
+      with:
+        env_vars: PYTHON
+        fail_ci_if_error: true

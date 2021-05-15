@@ -1,4 +1,6 @@
 -e .
+coverage
 pre-commit
 pytest
+pytest-cov
 tox
