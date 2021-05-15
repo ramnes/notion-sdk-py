@@ -10,6 +10,7 @@ from .api_endpoints import (
     PagesEndpoint,
     UsersEndpoint,
 )
+from .errors import build_request_error
 from .helpers import pick
 from .logging import make_console_logger
 
@@ -61,8 +62,17 @@ class Client:
         return self.client.build_request(method, path, json=body)
 
     def request(self, path, method, query=None, body=None, auth=None):
-        request = self._build_request(method, path, body)
-        return self.client.send(request)
+        try:
+            request = self._build_request(method, path, body)
+            response = self.client.send(request)
+            response.raise_for_status()
+            return response
+        except Exception as e:
+            request_error = build_request_error(e)
+            if request_error is None:
+                raise e
+
+            raise request_error
 
     def search(self, **kwargs):
         return self.request(
