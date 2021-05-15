@@ -4,8 +4,12 @@ from typing import Dict, Union
 
 import httpx
 
-from .api_endpoints import (BlocksEndpoint, DatabasesEndpoint, PagesEndpoint,
-                            UsersEndpoint)
+from .api_endpoints import (
+    BlocksEndpoint,
+    DatabasesEndpoint,
+    PagesEndpoint,
+    UsersEndpoint,
+)
 from .errors import build_request_error
 from .helpers import pick
 from .logging import make_console_logger
@@ -57,18 +61,17 @@ class Client:
         self.logger.info(f"{method} {self.client.base_url}{path}")
         return self.client.build_request(method, path, json=body)
 
-    def request(self, path, method, query=None, body=None, auth=None):
+    def _check_response(self, response):
         try:
-            request = self._build_request(method, path, body)
-            response = self.client.send(request)
             response.raise_for_status()
-            return response
-        except Exception as e:
-            request_error = build_request_error(e)
-            if request_error is None:
-                raise e
+        except Exception as error:
+            raise build_request_error(error) or error
 
-            raise request_error
+    def request(self, path, method, query=None, body=None, auth=None):
+        request = self._build_request(method, path, body)
+        response = self.client.send(request)
+        self._check_response(response)
+        return response
 
     def search(self, **kwargs):
         return self.request(
@@ -90,15 +93,9 @@ class AsyncClient(Client):
         super().__init__(options, client, **kwargs)
 
     async def request(self, path, method, query=None, body=None, auth=None):
-        try:
-            request = self._build_request(method, path, body)
-            async with self.client as client:
-                response = await client.send(request)
-            response.raise_for_status()
-            return response
-        except Exception as e:
-            request_error = build_request_error(e)
-            if request_error is None:
-                raise e
-
-            raise request_error
+        request = self._build_request(method, path, body)
+        async with self.client as client:
+            response = await client.send(request)
+        response.raise_for_status()
+        self._check_response(response)
+        return response
