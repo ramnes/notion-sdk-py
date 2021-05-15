@@ -23,7 +23,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - run: pip install -r requirements-dev.txt
-    - run: pytest --cov=./notion-client --cov-report=xml
+    - run: pytest --cov=./notion_client --cov-report=xml
     - uses: codecov/codecov-action@v1
       with:
         env_vars: PYTHON
