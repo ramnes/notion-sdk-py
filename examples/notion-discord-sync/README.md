@@ -2,6 +2,7 @@
 
 ## About the Integration 
 This is a Discord bot that ports book recommendations from Discord to Notion. Here is a simple diagram to illustrate what the bot does!
+![Could not Load Diagram](https://github.com/FruitVodka/notion-discord-sync/blob/main/examples/notion-discord-sync/flow-diagram.png)
 
 ## Try it Yourself
 To test this Discord bot, you will need to set up a few things
