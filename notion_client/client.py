@@ -10,6 +10,7 @@ from .api_endpoints import (
     PagesEndpoint,
     UsersEndpoint,
 )
+from .errors import build_request_error
 from .helpers import pick
 from .logging import make_console_logger
 
@@ -60,9 +61,17 @@ class Client:
         self.logger.info(f"{method} {self.client.base_url}{path}")
         return self.client.build_request(method, path, params=query, json=body)
 
+    def _check_response(self, response):
+        try:
+            response.raise_for_status()
+        except Exception as error:
+            raise build_request_error(error) or error
+
     def request(self, path, method, query=None, body=None, auth=None):
         request = self._build_request(method, path, query, body)
-        return self.client.send(request)
+        response = self.client.send(request)
+        self._check_response(response)
+        return response
 
     def search(self, **kwargs):
         return self.request(
@@ -87,4 +96,5 @@ class AsyncClient(Client):
         request = self._build_request(method, path, query, body)
         async with self.client as client:
             response = await client.send(request)
+        self._check_response(response)
         return response
