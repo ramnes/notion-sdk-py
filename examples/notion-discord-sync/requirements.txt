@@ -1,0 +1,4 @@
+discord.py==1.7.2
+-e git+https://github.com/FruitVodka/notion-discord-sync.git@40db476420ce4a1044db2ac6bbabb94656ceb1cc#egg=notion_client
+python-dotenv==0.17.1
+requests==2.25.1
