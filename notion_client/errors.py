@@ -15,9 +15,9 @@ class RequestTimeoutError(Exception):
     @staticmethod
     def is_request_timeout_error(e: Exception) -> bool:
         return (
-            isinstance(e, RequestTimeoutError)
-            and hasattr(e, "code")
-            and e.code == RequestTimeoutError.code
+                isinstance(e, RequestTimeoutError)
+                and hasattr(e, "code")
+                and e.code == RequestTimeoutError.code
         )
 
 
@@ -38,9 +38,9 @@ class HTTPResponseError(Exception):
 
     def is_http_response_error(e: Exception) -> bool:
         return (
-            isinstance(e, HTTPResponseError)
-            and hasattr(e, "code")
-            and e.code == HTTPResponseError.code
+                isinstance(e, HTTPResponseError)
+                and hasattr(e, "code")
+                and e.code == HTTPResponseError.code
         )
 
 
@@ -74,9 +74,9 @@ class APIResponseError(HTTPResponseError):
     @staticmethod
     def is_api_response_error(e: Exception) -> bool:
         return (
-            isinstance(e, APIResponseError)
-            and hasattr(e, "code")
-            and is_api_error_code(e.code)
+                isinstance(e, APIResponseError)
+                and hasattr(e, "code")
+                and is_api_error_code(e.code)
         )
 
 
@@ -90,17 +90,17 @@ def is_api_error_code(code: str) -> bool:
 
 def is_timeout_error(e: Exception) -> bool:
     return (
-        isinstance(e, httpx.TimeoutException)
-        and hasattr(e, "request")
-        and isinstance(e.request, httpx.Request)
+            isinstance(e, httpx.TimeoutException)
+            and hasattr(e, "request")
+            and isinstance(e.request, httpx.Request)
     )
 
 
 def is_http_error(e: Exception) -> bool:
     return (
-        isinstance(e, httpx.HTTPStatusError)
-        and hasattr(e, "request")
-        and hasattr(e, "response")
-        and isinstance(e.request, httpx.Request)
-        and isinstance(e.response, httpx.Response)
+            isinstance(e, httpx.HTTPStatusError)
+            and hasattr(e, "request")
+            and hasattr(e, "response")
+            and isinstance(e.request, httpx.Request)
+            and isinstance(e.response, httpx.Response)
     )

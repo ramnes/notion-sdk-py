@@ -37,10 +37,10 @@ class ClientOptions:
 
 class BaseClient:
     def __init__(
-        self,
-        client: Union[httpx.Client, httpx.AsyncClient],
-        options: Optional[Union[Dict[str, Any], ClientOptions]] = None,
-        **kwargs: Any,
+            self,
+            client: Union[httpx.Client, httpx.AsyncClient],
+            options: Optional[Union[Dict[str, Any], ClientOptions]] = None,
+            **kwargs: Any,
     ) -> None:
         if options is None:
             options = ClientOptions(**kwargs)
@@ -69,11 +69,11 @@ class BaseClient:
         self.search = SearchEndpoint(self)
 
     def _build_request(
-        self,
-        method: str,
-        path: str,
-        query: Optional[Dict[Any, Any]] = None,
-        body: Optional[Dict[Any, Any]] = None,
+            self,
+            method: str,
+            path: str,
+            query: Optional[Dict[Any, Any]] = None,
+            body: Optional[Dict[Any, Any]] = None,
     ) -> Request:
         self.logger.info(f"{method} {self.client.base_url}{path}")
         return self.client.build_request(method, path, params=query, json=body)
@@ -92,23 +92,17 @@ class BaseClient:
                 body = APIErrorResponseBody(code=code, message=body["message"])
                 raise APIResponseError(error.response, body)
             raise HTTPResponseError(error.response)
-    def _build_request(self, method, path, query, body):
-        self.logger.info(f"{method} {self.client.base_url}{path}")
-        return self.client.build_request(method, path, params=query, json=body)
 
-    def request(self, path, method, query=None, body=None, auth=None):
-        request = self._build_request(method, path, query, body)
-        return self.client.send(request)
         return response.json()
 
     @abstractclassmethod
     def request(
-        self,
-        path: str,
-        method: str,
-        query: Optional[Dict[Any, Any]] = None,
-        body: Optional[Dict[Any, Any]] = None,
-        auth: Optional[str] = None,
+            self,
+            path: str,
+            method: str,
+            query: Optional[Dict[Any, Any]] = None,
+            body: Optional[Dict[Any, Any]] = None,
+            auth: Optional[str] = None,
     ) -> SyncAsync[Any]:
         pass
 
@@ -117,22 +111,22 @@ class Client(BaseClient):
     client: httpx.Client
 
     def __init__(
-        self,
-        options: Optional[Union[Dict[Any, Any], ClientOptions]] = None,
-        client: Optional[httpx.Client] = None,
-        **kwargs: Any,
+            self,
+            options: Optional[Union[Dict[Any, Any], ClientOptions]] = None,
+            client: Optional[httpx.Client] = None,
+            **kwargs: Any,
     ) -> None:
         if client is None:
             client = httpx.Client()
         super().__init__(client, options, **kwargs)
 
     def request(
-        self,
-        path: str,
-        method: str,
-        query: Optional[Dict[Any, Any]] = None,
-        body: Optional[Dict[Any, Any]] = None,
-        auth: Optional[str] = None,
+            self,
+            path: str,
+            method: str,
+            query: Optional[Dict[Any, Any]] = None,
+            body: Optional[Dict[Any, Any]] = None,
+            auth: Optional[str] = None,
     ) -> Any:
         request = self._build_request(method, path, query, body)
         response = self.client.send(request)
@@ -143,22 +137,22 @@ class AsyncClient(BaseClient):
     client: httpx.AsyncClient
 
     def __init__(
-        self,
-        options: Optional[Union[Dict[str, Any], ClientOptions]] = None,
-        client: Optional[httpx.AsyncClient] = None,
-        **kwargs: Any,
+            self,
+            options: Optional[Union[Dict[str, Any], ClientOptions]] = None,
+            client: Optional[httpx.AsyncClient] = None,
+            **kwargs: Any,
     ) -> None:
         if client is None:
             client = httpx.AsyncClient()
         super().__init__(client, options, **kwargs)
 
     async def request(
-        self,
-        path: str,
-        method: str,
-        query: Optional[Dict[Any, Any]] = None,
-        body: Optional[Dict[Any, Any]] = None,
-        auth: Optional[str] = None,
+            self,
+            path: str,
+            method: str,
+            query: Optional[Dict[Any, Any]] = None,
+            body: Optional[Dict[Any, Any]] = None,
+            auth: Optional[str] = None,
     ) -> Any:
         request = self._build_request(method, path, query, body)
         async with self.client as client:
