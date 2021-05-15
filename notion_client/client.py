@@ -96,6 +96,5 @@ class AsyncClient(Client):
         request = self._build_request(method, path, body)
         async with self.client as client:
             response = await client.send(request)
-        response.raise_for_status()
         self._check_response(response)
         return response
