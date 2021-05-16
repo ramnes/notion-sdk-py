@@ -73,12 +73,12 @@ class PageObject(APIObject):
         return PageObject(
             id=d["id"],
             object="page",
-            archived=d.get("archived"),
+            archived=d["archived"],
             created_time=datetime.strptime(d["created_time"], "%Y-%m-%dT%H:%M:%S.%fZ"),
             last_edited_time=datetime.strptime(
                 d["last_edited_time"], "%Y-%m-%dT%H:%M:%S.%fZ"
             ),
-            parent=PageParent.from_json(d.get("parent")),
+            parent=PageParent.from_json(d["parent"]),
             properties=dict(
                 [(k, page_property_from_json(v)) for (k, v) in d["properties"].items()]
             ),
