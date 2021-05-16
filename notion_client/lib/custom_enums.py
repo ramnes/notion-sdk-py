@@ -45,6 +45,12 @@ class Color(Enum):
     red_background = "red_background"
 
 
+class RollupValueTypes(Enum):
+    number = "number"
+    date = "date"
+    array = "array"
+
+
 class RollupFunctionType(Enum):
     count_all = "count_all"
     count_values = "count_values"
@@ -61,7 +67,7 @@ class RollupFunctionType(Enum):
     range = "range"
 
 
-class DatabasePropertyType(Enum):
+class PropertyType(Enum):
     title = "title"
     rich_text = "rich_text"
     number = "number"

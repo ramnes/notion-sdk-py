@@ -4,7 +4,8 @@ from typing import Dict
 from custom_enums import (
     BasicColor,
     Color,
-    RichTextType
+    RichTextType,
+    ParentType
 )
 
 @dataclass
@@ -28,6 +29,26 @@ class Annotations:
             color=Color(d["color"])
         )
 
+@dataclass
+class PageReference:
+    id: str ##UUIDv4
+
+@dataclass
+class PageParent:
+    type: ParentType
+    id: str
+
+    @classmethod
+    def from_dict(cls, d: Dict[str, object]):
+        type = ParentType(d['type'])
+        return PageParent(
+            id=d.get("database_id" if type == ParentType.database else "page_id"),
+            type=type,
+        )
+
+@dataclass
+class FileReference:
+    name: str
 
 @dataclass
 class RichText:

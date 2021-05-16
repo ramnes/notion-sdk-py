@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Dict, List
 
 from custom_enums import (
-    DatabasePropertyType,
+    PropertyType,
     NumberPropertyFormat,
     RollupFunctionType
 )
@@ -11,34 +11,33 @@ from datatypes import (
     SelectOption
 )
 
-
 @dataclass
-class DatabaseProperty:
+class Property:
     id: str
-    type: DatabasePropertyType
+    type: PropertyType
 
     @classmethod
     def from_dict(cls, d: Dict[str, str]):
-        return DatabaseProperty(
+        return Property(
             id=d["id"],
-            type=DatabasePropertyType(d["type"])
+            type=PropertyType(d["type"])
         )
 
 
 @dataclass
-class FormulaDatabaseProperty(DatabaseProperty):
+class FormulaProperty(Property):
     expression: str
 
 
 @dataclass
-class RelationDatabaseProperty(DatabaseProperty):
+class RelationProperty(Property):
     database_id: str
     synced_property_name: str
     synced_property_id: str
 
 
 @dataclass
-class RollupDatabaseProperty(DatabaseProperty):
+class RollupProperty(Property):
     relation_property_name: str
     relation_property_id: str
     rollup_property_name: str
@@ -46,106 +45,106 @@ class RollupDatabaseProperty(DatabaseProperty):
 
 
 @dataclass
-class NumberDatabaseProperty(DatabaseProperty):
+class NumberProperty(Property):
     format: NumberPropertyFormat
 
 
 @dataclass
-class SelectDatabaseProperty(DatabaseProperty):
+class SelectProperty(Property):
     options: List[SelectOption]
 
 
 @dataclass
-class MultiselectDatabaseProperty(DatabaseProperty):
+class MultiselectProperty(Property):
     options: List[MultiselectOption]
 
 
 @dataclass
-class TitleDatabaseProperty(DatabaseProperty):
+class TitleProperty(Property):
     pass
 
 
 @dataclass
-class RichTextDatabaseProperty(DatabaseProperty):
+class RichTextProperty(Property):
     pass
 
 
 @dataclass
-class DateDatabaseProperty(DatabaseProperty):
+class DateProperty(Property):
     pass
 
 
 @dataclass
-class PeopleDatabaseProperty(DatabaseProperty):
+class PeopleProperty(Property):
     pass
 
 
 @dataclass
-class FileDatabaseProperty(DatabaseProperty):
+class FileProperty(Property):
     pass
 
 
 @dataclass
-class CheckboxDatabaseProperty(DatabaseProperty):
+class CheckboxProperty(Property):
     pass
 
 
 @dataclass
-class UrlDatabaseProperty(DatabaseProperty):
+class UrlProperty(Property):
     pass
 
 
 @dataclass
-class EmailDatabaseProperty(DatabaseProperty):
+class EmailProperty(Property):
     pass
 
 
 @dataclass
-class PhoneNumberDatabaseProperty(DatabaseProperty):
+class PhoneNumberProperty(Property):
     pass
 
 
 @dataclass
-class CreatedTimeDatabaseProperty(DatabaseProperty):
+class CreatedTimeProperty(Property):
     pass
 
 
 @dataclass
-class CreatedByDatabaseProperty(DatabaseProperty):
+class CreatedByProperty(Property):
     pass
 
 
 @dataclass
-class LastEditedTimeDatabaseProperty(DatabaseProperty):
+class LastEditedTimeProperty(Property):
     pass
 
 
 @dataclass
-class LastEditedByDatabaseProperty(DatabaseProperty):
+class LastEditedByProperty(Property):
     pass
 
 
-def database_property_from_dict(d: Dict[str, object]) -> DatabaseProperty:
+def database_property_from_dict(d: Dict[str, object]) -> Property:
     property_type = d['type']
     property_type_to_class = {
-        "title": TitleDatabaseProperty,
-        "rich_text": RichTextDatabaseProperty,
-        "number": NumberDatabaseProperty,
-        "select": SelectDatabaseProperty,
-        "multi_select": MultiselectDatabaseProperty,
-        "date": DateDatabaseProperty,
-        "people": PeopleDatabaseProperty,
-        "file": FileDatabaseProperty,
-        "checkbox": CheckboxDatabaseProperty,
-        "url": UrlDatabaseProperty,
-        "email": EmailDatabaseProperty,
-        "phone_number": PhoneNumberDatabaseProperty,
-        "formula": FormulaDatabaseProperty,
-        "relation": RelationDatabaseProperty,
-        "rollup": RollupDatabaseProperty,
-        "created_time": CreatedTimeDatabaseProperty,
-        "created_by": CreatedByDatabaseProperty,
-        "last_edited_time": LastEditedTimeDatabaseProperty,
-        "last_edited_by": LastEditedByDatabaseProperty
+        "title": TitleProperty,
+        "rich_text": RichTextProperty,
+        "number": NumberProperty,
+        "select": SelectProperty,
+        "multi_select": MultiselectProperty,
+        "date": DateProperty,
+        "people": PeopleProperty,
+        "file": FileProperty,
+        "checkbox": CheckboxProperty,
+        "url": UrlProperty,
+        "email": EmailProperty,
+        "phone_number": PhoneNumberProperty,
+        "formula": FormulaProperty,
+        "relation": RelationProperty,
+        "rollup": RollupProperty,
+        "created_time": CreatedTimeProperty,
+        "created_by": CreatedByProperty,
+        "last_edited_time": LastEditedTimeProperty,
+        "last_edited_by": LastEditedByProperty
     }
     return property_type_to_class[property_type].from_dict(d)
