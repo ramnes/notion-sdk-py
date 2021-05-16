@@ -11,8 +11,18 @@ class Property:
     type: PropertyType
 
     @classmethod
-    def from_json(cls, d: Dict[str, str]):
-        return Property(id=d["id"], type=PropertyType(d["type"]))
+    def from_json(cls, d):
+
+        required_fields = cls.__dataclass_fields__
+
+        # Try converting all json datatypes to their dataclass type (e.g Enum).
+        # Property subclasses with more complicated data types will have to override `from_json`
+        for k in required_fields.keys():
+            if d.get(k) is not None:
+                d[k] = required_fields[k].type(d.get(k))
+
+        required_data = dict([(k, d.get(k)) for k in required_fields.keys()])
+        return cls(**required_data)
 
 
 @dataclass
@@ -39,15 +49,35 @@ class RollupProperty(Property):
 class NumberProperty(Property):
     format: NumberPropertyFormat
 
+    @classmethod
+    def from_json(cls, d):
+        number_property = super(NumberProperty).from_json(NumberProperty, d)
+        number_property.options = [NumberPropertyFormat(x) for x in d["options"]]
+        return number_property
+
 
 @dataclass
 class SelectProperty(Property):
     options: List[SelectOption]
 
+    @classmethod
+    def from_json(cls, d):
+        select_property = super(SelectProperty).from_json(SelectProperty, d)
+        select_property.options = [SelectOption(x) for x in d["options"]]
+        return select_property
+
 
 @dataclass
 class MultiselectProperty(Property):
     options: List[MultiselectOption]
+
+    @classmethod
+    def from_json(cls, d):
+        multiselect_property = super(MultiselectProperty).from_json(
+            MultiselectProperty, d
+        )
+        multiselect_property.options = [MultiselectOption(x) for x in d["options"]]
+        return multiselect_property
 
 
 @dataclass
