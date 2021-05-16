@@ -1,14 +1,17 @@
 from enum import Enum
 
+
 class RichTextType(Enum):
     text = "text"
     mention = "mention"
     equation = "equation"
 
+
 class ParentType(Enum):
     page = "page_id"
     database = "database_id"
     workspace = "workspace"
+
 
 class BasicColor(Enum):
     default = "default"

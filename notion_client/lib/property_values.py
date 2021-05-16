@@ -3,15 +3,8 @@ from datetime import datetime
 from typing import Dict, List
 
 from api_objects import User
-from custom_enums import (
-    BasicColor,
-    RollupValueTypes
-)
-from datatypes import (
-    FileReference,
-    PageReference,
-    RichText,
-)
+from custom_enums import BasicColor, RollupValueTypes
+from datatypes import FileReference, PageReference, RichText
 from property import Property
 
 
@@ -19,9 +12,11 @@ from property import Property
 class PropertyValue(Property):
     pass
 
+
 @dataclass
 class RollupPropertyElement(PropertyValue):
     id = None
+
 
 @dataclass
 class FormulaPropertyValue(PropertyValue):
@@ -56,7 +51,7 @@ class NumberPropertyValue(PropertyValue):
 @dataclass
 class SelectPropertyValue(PropertyValue):
     name: str
-    id: str # explicit override of the id in Property. See https://developers.notion.com/reference/page#select-property-values
+    id: str  # explicit override of the id in Property. See https://developers.notion.com/reference/page#select-property-values
     color: BasicColor
 
 
@@ -132,7 +127,7 @@ class LastEditedByPropertyValue(PropertyValue):
 
 
 def page_property_from_dict(d: Dict[str, object]) -> PropertyValue:
-    property_type = d['type']
+    property_type = d["type"]
     property_type_to_class = {
         "title": TitlePropertyValue,
         "rich_text": RichTextPropertyValue,
@@ -152,6 +147,6 @@ def page_property_from_dict(d: Dict[str, object]) -> PropertyValue:
         "created_time": CreatedTimePropertyValue,
         "created_by": CreatedByPropertyValue,
         "last_edited_time": LastEditedTimePropertyValue,
-        "last_edited_by": LastEditedByPropertyValue
+        "last_edited_by": LastEditedByPropertyValue,
     }
     return property_type_to_class[property_type].from_dict(d)

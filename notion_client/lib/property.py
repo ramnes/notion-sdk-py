@@ -1,15 +1,9 @@
 from dataclasses import dataclass
 from typing import Dict, List
 
-from custom_enums import (
-    PropertyType,
-    NumberPropertyFormat,
-    RollupFunctionType
-)
-from datatypes import (
-    MultiselectOption,
-    SelectOption
-)
+from custom_enums import NumberPropertyFormat, PropertyType, RollupFunctionType
+from datatypes import MultiselectOption, SelectOption
+
 
 @dataclass
 class Property:
@@ -18,10 +12,7 @@ class Property:
 
     @classmethod
     def from_dict(cls, d: Dict[str, str]):
-        return Property(
-            id=d["id"],
-            type=PropertyType(d["type"])
-        )
+        return Property(id=d["id"], type=PropertyType(d["type"]))
 
 
 @dataclass
@@ -125,7 +116,7 @@ class LastEditedByProperty(Property):
 
 
 def database_property_from_dict(d: Dict[str, object]) -> Property:
-    property_type = d['type']
+    property_type = d["type"]
     property_type_to_class = {
         "title": TitleProperty,
         "rich_text": RichTextProperty,
@@ -145,6 +136,6 @@ def database_property_from_dict(d: Dict[str, object]) -> Property:
         "created_time": CreatedTimeProperty,
         "created_by": CreatedByProperty,
         "last_edited_time": LastEditedTimeProperty,
-        "last_edited_by": LastEditedByProperty
+        "last_edited_by": LastEditedByProperty,
     }
     return property_type_to_class[property_type].from_dict(d)

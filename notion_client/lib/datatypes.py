@@ -1,12 +1,8 @@
 from dataclasses import dataclass
 from typing import Dict
 
-from custom_enums import (
-    BasicColor,
-    Color,
-    RichTextType,
-    ParentType
-)
+from custom_enums import BasicColor, Color, ParentType, RichTextType
+
 
 @dataclass
 class Annotations:
@@ -26,12 +22,14 @@ class Annotations:
             strikethrough=d["strikethrough"],
             underline=d["underline"],
             code=d["code"],
-            color=Color(d["color"])
+            color=Color(d["color"]),
         )
+
 
 @dataclass
 class PageReference:
-    id: str ##UUIDv4
+    id: str  ##UUIDv4
+
 
 @dataclass
 class PageParent:
@@ -40,15 +38,17 @@ class PageParent:
 
     @classmethod
     def from_dict(cls, d: Dict[str, object]):
-        type = ParentType(d['type'])
+        type = ParentType(d["type"])
         return PageParent(
             id=d.get("database_id" if type == ParentType.database else "page_id"),
             type=type,
         )
 
+
 @dataclass
 class FileReference:
     name: str
+
 
 @dataclass
 class RichText:
@@ -60,10 +60,10 @@ class RichText:
     @classmethod
     def from_dict(cls, d: Dict[str, object]):
         return RichText(
-            plain_text=d.get('plain_text'),
-            href=d.get('href'),
+            plain_text=d.get("plain_text"),
+            href=d.get("href"),
             annotations=Annotations.from_dict(d.get("annotations")),
-            type=RichTextType(d["type"])
+            type=RichTextType(d["type"]),
         )
 
 
