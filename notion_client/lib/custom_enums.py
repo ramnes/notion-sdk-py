@@ -1,18 +1,6 @@
 from enum import Enum
 
 
-class RichTextType(Enum):
-    text = "text"
-    mention = "mention"
-    equation = "equation"
-
-
-class ParentType(Enum):
-    page = "page_id"
-    database = "database_id"
-    workspace = "workspace"
-
-
 class BasicColor(Enum):
     default = "default"
     gray = "gray"
@@ -48,26 +36,24 @@ class Color(Enum):
     red_background = "red_background"
 
 
-class RollupValueTypes(Enum):
+class NumberPropertyFormat(Enum):
     number = "number"
-    date = "date"
-    array = "array"
+    number_with_commas = "number_with_commas"
+    percent = "percent"
+    dollar = "dollar"
+    euro = "euro"
+    pound = "pound"
+    yen = "yen"
+    ruble = "ruble"
+    rupee = "rupee"
+    won = "won"
+    yuan = "yuan"
 
 
-class RollupFunctionType(Enum):
-    count_all = "count_all"
-    count_values = "count_values"
-    count_unique_values = "count_unique_values"
-    count_empty = "count_empty"
-    count_not_empty = "count_not_empty"
-    percent_empty = "percent_empty"
-    percent_not_empty = "percent_not_empty"
-    sum = "sum"
-    average = "average"
-    median = "median"
-    min = "min"
-    max = "max"
-    range = "range"
+class ParentType(Enum):
+    page = "page_id"
+    database = "database_id"
+    workspace = "workspace"
 
 
 class PropertyType(Enum):
@@ -92,15 +78,34 @@ class PropertyType(Enum):
     last_edited_by = "last_edited_by"
 
 
-class NumberPropertyFormat(Enum):
+class RichTextType(Enum):
+    text = "text"
+    mention = "mention"
+    equation = "equation"
+
+
+class RollupFunctionType(Enum):
+    count_all = "count_all"
+    count_values = "count_values"
+    count_unique_values = "count_unique_values"
+    count_empty = "count_empty"
+    count_not_empty = "count_not_empty"
+    percent_empty = "percent_empty"
+    percent_not_empty = "percent_not_empty"
+    sum = "sum"
+    average = "average"
+    median = "median"
+    min = "min"
+    max = "max"
+    range = "range"
+
+
+class RollupValueTypes(Enum):
     number = "number"
-    number_with_commas = "number_with_commas"
-    percent = "percent"
-    dollar = "dollar"
-    euro = "euro"
-    pound = "pound"
-    yen = "yen"
-    ruble = "ruble"
-    rupee = "rupee"
-    won = "won"
-    yuan = "yuan"
+    date = "date"
+    array = "array"
+
+
+class UserType(Enum):
+    person = "person"
+    bot = "bot"

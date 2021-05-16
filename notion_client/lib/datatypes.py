@@ -27,8 +27,18 @@ class Annotations:
 
 
 @dataclass
+class Bot:
+    pass
+
+
+@dataclass
+class Person:
+    email: str
+
+
+@dataclass
 class PageReference:
-    id: str  ##UUIDv4
+    id: str
 
 
 @dataclass
