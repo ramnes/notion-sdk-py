@@ -126,7 +126,7 @@ class LastEditedByPropertyValue(PropertyValue):
     last_edited_by: User
 
 
-def page_property_from_dict(d: Dict[str, object]) -> PropertyValue:
+def page_property_from_json(d: Dict[str, object]) -> PropertyValue:
     property_type = d["type"]
     property_type_to_class = {
         "title": TitlePropertyValue,
@@ -149,4 +149,4 @@ def page_property_from_dict(d: Dict[str, object]) -> PropertyValue:
         "last_edited_time": LastEditedTimePropertyValue,
         "last_edited_by": LastEditedByPropertyValue,
     }
-    return property_type_to_class[property_type].from_dict(d)
+    return property_type_to_class[property_type].from_json(d)

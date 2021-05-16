@@ -4,8 +4,8 @@ from typing import Dict, List
 
 from custom_enums import UserType
 from datatypes import Bot, PageParent, Person, RichText
-from property import Property, database_property_from_dict
-from property_values import PropertyValue, page_property_from_dict
+from property import Property, database_property_from_json
+from property_values import PropertyValue, page_property_from_json
 
 
 @dataclass
@@ -25,7 +25,7 @@ class User(APIObject):
     bot: Bot
 
     @classmethod
-    def from_dict(cls, d: Dict[str, str]):
+    def from_json(cls, d: Dict[str, str]):
         user_type = UserType(d.get("type"))
         return User(
             id=d["id"],
@@ -44,7 +44,7 @@ class Database(APIObject):
     properties: Dict[str, Property]
 
     @classmethod
-    def from_dict(cls, d: Dict[str, object]):
+    def from_json(cls, d: Dict[str, object]):
         return Database(
             id=d["id"],
             object="database",
@@ -52,10 +52,10 @@ class Database(APIObject):
             last_edited_time=datetime.strptime(
                 d["last_edited_time"], "%Y-%m-%dT%H:%M:%S.%fZ"
             ),
-            title=RichText.from_dict(d["title"][0]),
+            title=RichText.from_json(d["title"][0]),
             properties=dict(
                 [
-                    (k, database_property_from_dict(v))
+                    (k, database_property_from_json(v))
                     for (k, v) in d["properties"].items()
                 ]
             ),
@@ -69,7 +69,7 @@ class PageObject(APIObject):
     properties: Dict[str, PropertyValue]
 
     @classmethod
-    def from_dict(cls, d: Dict[str, object]):
+    def from_json(cls, d: Dict[str, object]):
         return PageObject(
             id=d["id"],
             object="page",
@@ -78,8 +78,8 @@ class PageObject(APIObject):
             last_edited_time=datetime.strptime(
                 d["last_edited_time"], "%Y-%m-%dT%H:%M:%S.%fZ"
             ),
-            parent=PageParent.from_dict(d.get("parent")),
+            parent=PageParent.from_json(d.get("parent")),
             properties=dict(
-                [(k, page_property_from_dict(v)) for (k, v) in d["properties"].items()]
+                [(k, page_property_from_json(v)) for (k, v) in d["properties"].items()]
             ),
         )

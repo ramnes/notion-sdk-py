@@ -14,7 +14,7 @@ class Annotations:
     color: Color
 
     @classmethod
-    def from_dict(cls, d: Dict[str, object]):
+    def from_json(cls, d: Dict[str, object]):
         print("annotation", d)
         return Annotations(
             bold=d["bold"],
@@ -47,7 +47,7 @@ class PageParent:
     id: str
 
     @classmethod
-    def from_dict(cls, d: Dict[str, object]):
+    def from_json(cls, d: Dict[str, object]):
         type = ParentType(d["type"])
         return PageParent(
             id=d.get("database_id" if type == ParentType.database else "page_id"),
@@ -68,11 +68,11 @@ class RichText:
     type: RichTextType
 
     @classmethod
-    def from_dict(cls, d: Dict[str, object]):
+    def from_json(cls, d: Dict[str, object]):
         return RichText(
             plain_text=d.get("plain_text"),
             href=d.get("href"),
-            annotations=Annotations.from_dict(d.get("annotations")),
+            annotations=Annotations.from_json(d.get("annotations")),
             type=RichTextType(d["type"]),
         )
 

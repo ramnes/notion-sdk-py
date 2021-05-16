@@ -11,7 +11,7 @@ class Property:
     type: PropertyType
 
     @classmethod
-    def from_dict(cls, d: Dict[str, str]):
+    def from_json(cls, d: Dict[str, str]):
         return Property(id=d["id"], type=PropertyType(d["type"]))
 
 
@@ -115,7 +115,7 @@ class LastEditedByProperty(Property):
     pass
 
 
-def database_property_from_dict(d: Dict[str, object]) -> Property:
+def database_property_from_json(d: Dict[str, object]) -> Property:
     property_type = d["type"]
     property_type_to_class = {
         "title": TitleProperty,
@@ -138,4 +138,4 @@ def database_property_from_dict(d: Dict[str, object]) -> Property:
         "last_edited_time": LastEditedTimeProperty,
         "last_edited_by": LastEditedByProperty,
     }
-    return property_type_to_class[property_type].from_dict(d)
+    return property_type_to_class[property_type].from_json(d)
