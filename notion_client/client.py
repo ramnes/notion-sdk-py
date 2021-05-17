@@ -1,4 +1,5 @@
 import logging
+from abc import abstractclassmethod
 from dataclasses import dataclass
 from typing import Any, Coroutine, Dict, Optional, Union
 
@@ -76,6 +77,17 @@ class BaseClient:
         except (httpx.TimeoutException, httpx.HTTPStatusError) as error:
             raise build_request_error(error)
 
+    @abstractclassmethod
+    def request(
+        self,
+        path: str,
+        method: str,
+        query: Optional[Dict[Any, Any]] = None,
+        body: Optional[Dict[Any, Any]] = None,
+        auth: Optional[str] = None,
+    ) -> Response:
+        pass
+
 
 class Client(BaseClient):
     def __init__(
@@ -95,7 +107,7 @@ class Client(BaseClient):
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
-    ) -> Union[Response, Coroutine[Any, Any, Response]]:
+    ) -> Response:
         request = self._build_request(method, path, query, body)
         response = self.client.send(request)
         self._check_response(response)
@@ -120,7 +132,7 @@ class AsyncClient(BaseClient):
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
-    ) -> Union[Response, Any]:
+    ) -> Response:
         request = self._build_request(method, path, query, body)
         if not isinstance(self.client, httpx.AsyncClient):
             raise Exception("httpx.AsyncClient was expected")

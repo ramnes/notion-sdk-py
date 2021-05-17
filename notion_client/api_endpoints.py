@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 
 class Endpoint:
-    def __init__(self, parent: Union["BaseClient", "Client", "AsyncClient"]) -> None:
+    def __init__(self, parent: "BaseClient") -> None:
         self.parent = parent
 
 
