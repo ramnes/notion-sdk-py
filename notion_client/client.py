@@ -1,7 +1,7 @@
 import logging
 from abc import abstractclassmethod
 from dataclasses import dataclass
-from typing import Any, Coroutine, Dict, Optional, Union
+from typing import Any, Awaitable, Dict, Optional, Union
 
 import httpx
 from httpx import Request, Response
@@ -85,7 +85,7 @@ class BaseClient:
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
-    ) -> Response:
+    ) -> Union[Response, Awaitable[Response]]:
         pass
 
 
