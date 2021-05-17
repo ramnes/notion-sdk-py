@@ -161,7 +161,7 @@ These options are all keys in the single constructor parameter.
 |--------|---------------|---------|-------------|
 | `auth` | `None` | `string` | Bearer token for authentication. If left undefined, the `auth` parameter should be set on each request. |
 | `log_level` | `logging.WARNING` | `int` | Verbosity of logs the instance will produce. By default, logs are written to `stdout`.
-| `timeoutMs` | `60_000` | `int` | Number of milliseconds to wait before emitting a `RequestTimeoutError` |
+| `timeout_ms` | `60_000` | `int` | Number of milliseconds to wait before emitting a `RequestTimeoutError` |
 | `base_url` | `"https://api.notion.com"` | `string` | The root URL for sending API requests. This can be changed to test with a mock server. |
 | `logger` | Log to console | `logging.Logger` | A custom logger. |
 <!-- markdownlint-enable -->
