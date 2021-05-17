@@ -70,6 +70,12 @@ class BaseClient:
         self.logger.info(f"{method} {self.client.base_url}{path}")
         return self.client.build_request(method, path, params=query, json=body)
 
+    def _check_response(self, response: Response) -> None:
+        try:
+            response.raise_for_status()
+        except (httpx.TimeoutException, httpx.HTTPStatusError) as error:
+            raise build_request_error(error)
+
 
 class Client(BaseClient):
     def __init__(
@@ -81,12 +87,6 @@ class Client(BaseClient):
         if client is None:
             client = httpx.Client()
         super().__init__(client, options, **kwargs)
-
-    def _check_response(self, response: Response) -> None:
-        try:
-            response.raise_for_status()
-        except Exception as error:
-            raise build_request_error(error) or error
 
     def request(
         self,
@@ -112,12 +112,6 @@ class AsyncClient(BaseClient):
         if client is None:
             client = httpx.AsyncClient()
         super().__init__(client, options, **kwargs)
-
-    async def _check_response(self, response: Coroutine[Any, Any, Response]) -> None:
-        try:
-            await response.raise_for_status()
-        except Exception as error:
-            raise build_request_error(error) or error
 
     async def request(
         self,
