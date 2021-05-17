@@ -153,8 +153,6 @@ class AsyncClient(BaseClient):
         auth: Optional[str] = None,
     ) -> Response:
         request = self._build_request(method, path, query, body)
-        if not isinstance(self.client, httpx.AsyncClient):
-            raise Exception("httpx.AsyncClient was expected")
         async with self.client as client:
             response = await client.send(request)
         self._check_response(response)
