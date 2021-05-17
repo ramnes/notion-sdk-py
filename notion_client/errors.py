@@ -80,28 +80,6 @@ class APIResponseError(HTTPResponseError):
         )
 
 
-def build_request_error(
-    e: Union[httpx.TimeoutException, httpx.HTTPStatusError],
-) -> Union[RequestTimeoutError, APIResponseError, HTTPResponseError, None]:
-    if is_timeout_error(e):
-        return RequestTimeoutError()
-    if is_http_error(e):
-        api_error_response_body = parse_api_error_response_body(e.response.json())
-        if api_error_response_body is not None:
-            return APIResponseError(e.response, api_error_response_body)
-        return HTTPResponseError(e.response)
-    return None
-
-
-def parse_api_error_response_body(
-    body: Dict[Any, Any]
-) -> Union[APIErrorResponseBody, None]:
-    if not is_api_error_code(body["code"]):
-        return None
-
-    return APIErrorResponseBody(code=body["code"], message=body["message"])
-
-
 # Type Guards
 
 

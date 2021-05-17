@@ -13,8 +13,14 @@ from notion_client.api_endpoints import (
     SearchEndpoint,
     UsersEndpoint,
 )
-from notion_client.errors import build_request_error
-from notion_client.helpers import pick
+from notion_client.errors import (
+    APIErrorResponseBody,
+    APIResponseError,
+    HTTPResponseError,
+    RequestTimeoutError,
+    is_api_error_code,
+    is_timeout_error,
+)
 from notion_client.logging import make_console_logger
 
 
@@ -74,8 +80,17 @@ class BaseClient:
     def _check_response(self, response: Response) -> None:
         try:
             response.raise_for_status()
-        except (httpx.TimeoutException, httpx.HTTPStatusError) as error:
-            raise build_request_error(error)
+        except httpx.TimeoutException as error:
+            if is_timeout_error(error):
+                raise RequestTimeoutError()
+            raise
+        except httpx.HTTPStatusError as error:
+            body = error.response.json()
+            code = body.get("code")
+            if is_api_error_code(code):
+                body = APIErrorResponseBody(code=code, message=body["message"])
+                raise APIResponseError(error.response, body)
+            raise HTTPResponseError(error.response)
 
     @abstractclassmethod
     def request(
