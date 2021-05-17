@@ -5,7 +5,7 @@ from httpx import Response
 from notion_client.helpers import pick
 
 if TYPE_CHECKING:
-    from notion_client.client import AsyncClient, BaseClient, Client
+    from notion_client.client import BaseClient
 
 
 class Endpoint:
