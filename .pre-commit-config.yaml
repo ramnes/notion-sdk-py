@@ -16,4 +16,4 @@ repos:
   rev: v0.812
   hooks:
   - id: mypy
-      
+    files: "^notion_client\/.*"
