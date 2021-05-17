@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Coroutine, Union
+from typing import TYPE_CHECKING, Any, Awaitable, Union
 
 from httpx import Response
 
@@ -16,7 +16,7 @@ class Endpoint:
 class BlocksChildrenEndpoint(Endpoint):
     def append(
         self, block_id: str, **kwargs: Any
-    ) -> Union[Response, Coroutine[Any, Any, Union[Response, Any]]]:
+    ) -> Union[Response, Awaitable[Response]]:
         return self.parent.request(
             path=f"blocks/{block_id}/children",
             method="PATCH",
@@ -25,7 +25,7 @@ class BlocksChildrenEndpoint(Endpoint):
 
     def list(
         self, block_id: str, **kwargs: Any
-    ) -> Union[Response, Coroutine[Any, Any, Union[Response, Any]]]:
+    ) -> Union[Response, Awaitable[Response]]:
         return self.parent.request(
             path=f"blocks/{block_id}/children",
             method="GET",
@@ -40,9 +40,7 @@ class BlocksEndpoint(Endpoint):
 
 
 class DatabasesEndpoint(Endpoint):
-    def list(
-        self, **kwargs: Any
-    ) -> Union[Response, Coroutine[Any, Any, Union[Response, Any]]]:
+    def list(self, **kwargs: Any) -> Union[Response, Awaitable[Response]]:
         return self.parent.request(
             path="databases",
             method="GET",
@@ -51,7 +49,7 @@ class DatabasesEndpoint(Endpoint):
 
     def query(
         self, database_id: str, **kwargs: Any
-    ) -> Union[Response, Coroutine[Any, Any, Union[Response, Any]]]:
+    ) -> Union[Response, Awaitable[Response]]:
         return self.parent.request(
             path=f"databases/{database_id}/query",
             method="POST",
@@ -61,7 +59,7 @@ class DatabasesEndpoint(Endpoint):
 
     def retrieve(
         self, database_id: str, **kwargs: Any
-    ) -> Union[Response, Coroutine[Any, Any, Union[Response, Any]]]:
+    ) -> Union[Response, Awaitable[Response]]:
         return self.parent.request(
             path=f"databases/{database_id}",
             method="GET",
@@ -69,9 +67,7 @@ class DatabasesEndpoint(Endpoint):
 
 
 class PagesEndpoint(Endpoint):
-    def create(
-        self, **kwargs: Any
-    ) -> Union[Response, Coroutine[Any, Any, Union[Response, Any]]]:
+    def create(self, **kwargs: Any) -> Union[Response, Awaitable[Response]]:
         return self.parent.request(
             path="pages",
             method="POST",
@@ -80,7 +76,7 @@ class PagesEndpoint(Endpoint):
 
     def retrieve(
         self, page_id: str, **kwargs: Any
-    ) -> Union[Response, Coroutine[Any, Any, Union[Response, Any]]]:
+    ) -> Union[Response, Awaitable[Response]]:
         return self.parent.request(
             path=f"pages/{page_id}",
             method="GET",
@@ -88,16 +84,14 @@ class PagesEndpoint(Endpoint):
 
     def update(
         self, page_id: str, **kwargs: Any
-    ) -> Union[Response, Coroutine[Any, Any, Union[Response, Any]]]:
+    ) -> Union[Response, Awaitable[Response]]:
         return self.parent.request(
             path=f"pages/{page_id}", method="PATCH", body=pick(kwargs, "properties")
         )
 
 
 class UsersEndpoint(Endpoint):
-    def list(
-        self, **kwargs: Any
-    ) -> Union[Response, Coroutine[Any, Any, Union[Response, Any]]]:
+    def list(self, **kwargs: Any) -> Union[Response, Awaitable[Response]]:
         return self.parent.request(
             path="users",
             method="GET",
@@ -107,7 +101,7 @@ class UsersEndpoint(Endpoint):
 
     def retrieve(
         self, user_id: str, **kwargs: Any
-    ) -> Union[Response, Coroutine[Any, Any, Union[Response, Any]]]:
+    ) -> Union[Response, Awaitable[Response]]:
         return self.parent.request(
             path=f"users/{user_id}",
             method="GET",
@@ -115,7 +109,7 @@ class UsersEndpoint(Endpoint):
 
 
 class SearchEndpoint(Endpoint):
-    def __call__(self, **kwargs: Any) -> Response:
+    def __call__(self, **kwargs: Any) -> Union[Response, Awaitable[Response]]:
         return self.parent.request(
             path="search",
             method="POST",
