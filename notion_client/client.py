@@ -105,6 +105,8 @@ class BaseClient:
 
 
 class Client(BaseClient):
+    client: httpx.Client
+
     def __init__(
         self,
         options: Optional[Union[Dict[Any, Any], ClientOptions]] = None,
@@ -130,6 +132,8 @@ class Client(BaseClient):
 
 
 class AsyncClient(BaseClient):
+    client: httpx.AsyncClient
+
     def __init__(
         self,
         options: Optional[Union[Dict[str, Any], ClientOptions]] = None,
