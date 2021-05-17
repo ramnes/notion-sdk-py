@@ -1,11 +1,48 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Optional
 
-from .custom_enums import BasicColor, RollupValueTypes, UserType
+from .custom_enums import BasicColor, BlockType, RollupValueTypes, UserType
 from .database import Property
-from .datatypes import (APIObject, Bot, FileReference, PageParent,
-                        PageReference, Person, RichText)
+from .datatypes import (
+    APIObject,
+    Bot,
+    FileReference,
+    PageParent,
+    PageReference,
+    Person,
+    RichText,
+)
+
+
+@dataclass
+class Block(APIObject):
+    type: BlockType
+    has_children: bool
+    text: List[RichText]
+    children: Optional[List["Block"]]
+    checked: Optional[bool]  # for BlockType.Todo
+    title: Optional[str]  # for BlockType.ChildPage
+
+    @classmethod
+    def from_json(cls, d: Dict[str, object]):
+        children = d.get("children")
+        if not children:
+            children = []
+        return Block(
+            id=d["id"],
+            object="block",
+            created_time=datetime.strptime(d["created_time"], "%Y-%m-%dT%H:%M:%S.%fZ"),
+            last_edited_time=datetime.strptime(
+                d["last_edited_time"], "%Y-%m-%dT%H:%M:%S.%fZ"
+            ),
+            type=BlockType(d["type"]),
+            has_children=d["has_children"],
+            text=[RichText.from_json(r) for r in d["text"]],
+            children=[Block.from_json(b) for b in children],
+            checked=d.get("checked"),
+            title=d.get("title"),
+        )
 
 
 @dataclass

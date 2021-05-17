@@ -3,8 +3,7 @@ from datetime import datetime
 from typing import Dict, List
 
 from .custom_enums import NumberPropertyFormat, RollupFunctionType
-from .datatypes import (APIObject, MultiselectOption, Property, RichText,
-                        SelectOption)
+from .datatypes import APIObject, MultiselectOption, Property, RichText, SelectOption
 
 
 @dataclass

@@ -2,8 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Dict
 
-from .custom_enums import (BasicColor, Color, ParentType, PropertyType,
-                           RichTextType)
+from .custom_enums import BasicColor, Color, ParentType, PropertyType, RichTextType
 
 
 @dataclass

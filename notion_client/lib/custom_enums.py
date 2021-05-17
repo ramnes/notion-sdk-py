@@ -14,6 +14,19 @@ class BasicColor(Enum):
     red = "red"
 
 
+class BlockType(Enum):
+    paragraph = "paragraph"
+    heading_one = "heading_1"
+    heading_two = "heading_2"
+    heading_three = "heading_3"
+    bulleted_list_item = "bulleted_list_item"
+    numbered_list_item = "numbered_list_item"
+    to_do = "to_do"
+    toggle = "toggle"
+    child_page = "child_page"
+    unsupported = "unsupported"
+
+
 class Color(Enum):
     default = "default"
     gray = "gray"

@@ -1,0 +1,2 @@
+class Notion(object):
+    pass
