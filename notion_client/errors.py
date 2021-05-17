@@ -81,7 +81,7 @@ class APIResponseError(HTTPResponseError):
 
 
 def build_request_error(
-    e: Exception,
+    e: Union[httpx.TimeoutException, httpx.HTTPStatusError],
 ) -> Union[RequestTimeoutError, APIResponseError, HTTPResponseError, None]:
     if is_timeout_error(e):
         return RequestTimeoutError()
