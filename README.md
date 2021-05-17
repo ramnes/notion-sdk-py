@@ -59,14 +59,14 @@ Make a request to any Notion API endpoint.
 from pprint import pprint
 
 list_users_response = notion.users.list()
-pprint(list_users_response.json())
+pprint(list_users_response)
 ```
 
 or with the asynchronous client:
 
 ```python
 list_users_response = await notion.users.list()
-pprint(list_users_response.json())
+pprint(list_users_response)
 ```
 
 This would output something like:

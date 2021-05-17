@@ -1,7 +1,7 @@
 import logging
 from abc import abstractclassmethod
 from dataclasses import dataclass
-from typing import Any, Awaitable, Dict, Optional, Union
+from typing import Any, Dict, Optional, Union
 
 import httpx
 from httpx import Request, Response
@@ -22,6 +22,7 @@ from notion_client.errors import (
     is_timeout_error,
 )
 from notion_client.logging import make_console_logger
+from notion_client.typing import SyncAsync
 
 
 @dataclass
@@ -77,7 +78,7 @@ class BaseClient:
         self.logger.info(f"{method} {self.client.base_url}{path}")
         return self.client.build_request(method, path, params=query, json=body)
 
-    def _check_response(self, response: Response) -> None:
+    def _parse_response(self, response: Response) -> Any:
         try:
             response.raise_for_status()
         except httpx.TimeoutException as error:
@@ -92,6 +93,8 @@ class BaseClient:
                 raise APIResponseError(error.response, body)
             raise HTTPResponseError(error.response)
 
+        return response.json()
+
     @abstractclassmethod
     def request(
         self,
@@ -100,7 +103,7 @@ class BaseClient:
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
-    ) -> Union[Response, Awaitable[Response]]:
+    ) -> SyncAsync[Any]:
         pass
 
 
@@ -124,11 +127,10 @@ class Client(BaseClient):
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
-    ) -> Response:
+    ) -> Any:
         request = self._build_request(method, path, query, body)
         response = self.client.send(request)
-        self._check_response(response)
-        return response
+        return self._parse_response(response)
 
 
 class AsyncClient(BaseClient):
@@ -151,9 +153,8 @@ class AsyncClient(BaseClient):
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
-    ) -> Response:
+    ) -> Any:
         request = self._build_request(method, path, query, body)
         async with self.client as client:
             response = await client.send(request)
-        self._check_response(response)
-        return response
+        return self._parse_response(response)
