@@ -1,7 +1,9 @@
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Dict
 
-from custom_enums import BasicColor, Color, ParentType, RichTextType
+from .custom_enums import (BasicColor, Color, ParentType, PropertyType,
+                           RichTextType)
 
 
 @dataclass
@@ -24,6 +26,34 @@ class Annotations:
             code=d["code"],
             color=Color(d["color"]),
         )
+
+
+@dataclass
+class Property:
+    id: str
+    type: PropertyType
+
+    @classmethod
+    def from_json(cls, d):
+
+        required_fields = cls.__dataclass_fields__
+
+        # Try converting all json datatypes to their dataclass type (e.g Enum).
+        # Property subclasses with more complicated data types will have to override `from_json`
+        for k in required_fields.keys():
+            if d.get(k) is not None:
+                d[k] = required_fields[k].type(d.get(k))
+
+        required_data = dict([(k, d.get(k)) for k in required_fields.keys()])
+        return cls(**required_data)
+
+
+@dataclass
+class APIObject:
+    id: str
+    object: str
+    created_time: datetime
+    last_edited_time: datetime
 
 
 @dataclass

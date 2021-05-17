@@ -1,28 +1,34 @@
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Dict, List
 
-from custom_enums import NumberPropertyFormat, PropertyType, RollupFunctionType
-from datatypes import MultiselectOption, SelectOption
+from .custom_enums import NumberPropertyFormat, RollupFunctionType
+from .datatypes import (APIObject, MultiselectOption, Property, RichText,
+                        SelectOption)
 
 
 @dataclass
-class Property:
-    id: str
-    type: PropertyType
+class Database(APIObject):
+    title: List[RichText]
+    properties: Dict[str, Property]
 
     @classmethod
-    def from_json(cls, d):
-
-        required_fields = cls.__dataclass_fields__
-
-        # Try converting all json datatypes to their dataclass type (e.g Enum).
-        # Property subclasses with more complicated data types will have to override `from_json`
-        for k in required_fields.keys():
-            if d.get(k) is not None:
-                d[k] = required_fields[k].type(d.get(k))
-
-        required_data = dict([(k, d.get(k)) for k in required_fields.keys()])
-        return cls(**required_data)
+    def from_json(cls, d: Dict[str, object]):
+        return Database(
+            id=d["id"],
+            object="database",
+            created_time=datetime.strptime(d["created_time"], "%Y-%m-%dT%H:%M:%S.%fZ"),
+            last_edited_time=datetime.strptime(
+                d["last_edited_time"], "%Y-%m-%dT%H:%M:%S.%fZ"
+            ),
+            title=RichText.from_json(d["title"][0]),
+            properties=dict(
+                [
+                    (k, database_property_from_json(v))
+                    for (k, v) in d["properties"].items()
+                ]
+            ),
+        )
 
 
 @dataclass

@@ -2,18 +2,33 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Dict, List
 
-from custom_enums import UserType
-from datatypes import Bot, PageParent, Person, RichText
-from property import Property, database_property_from_json
-from property_values import PropertyValue, page_property_from_json
+from .custom_enums import BasicColor, RollupValueTypes, UserType
+from .database import Property
+from .datatypes import (APIObject, Bot, FileReference, PageParent,
+                        PageReference, Person, RichText)
 
 
 @dataclass
-class APIObject:
-    id: str
-    object: str
-    created_time: datetime
-    last_edited_time: datetime
+class Page(APIObject):
+    parent: PageParent
+    archived: bool
+    properties: Dict[str, "PropertyValue"]
+
+    @classmethod
+    def from_json(cls, d: Dict[str, object]):
+        return Page(
+            id=d["id"],
+            object="page",
+            archived=d["archived"],
+            created_time=datetime.strptime(d["created_time"], "%Y-%m-%dT%H:%M:%S.%fZ"),
+            last_edited_time=datetime.strptime(
+                d["last_edited_time"], "%Y-%m-%dT%H:%M:%S.%fZ"
+            ),
+            parent=PageParent.from_json(d["parent"]),
+            properties=dict(
+                [(k, property_value_from_json(v)) for (k, v) in d["properties"].items()]
+            ),
+        )
 
 
 @dataclass
@@ -30,6 +45,10 @@ class User(APIObject):
         return User(
             id=d["id"],
             object="user",
+            created_time=datetime.strptime(d["created_time"], "%Y-%m-%dT%H:%M:%S.%fZ"),
+            last_edited_time=datetime.strptime(
+                d["last_edited_time"], "%Y-%m-%dT%H:%M:%S.%fZ"
+            ),
             type=user_type,
             name=d.get("name"),
             avatar_url=d.get("avatar_url"),
@@ -38,48 +57,272 @@ class User(APIObject):
         )
 
 
+def property_value_from_json(d: Dict[str, object]) -> "PropertyValue":
+    property_type = d["type"]
+    property_type_to_class = {
+        "title": TitlePropertyValue,
+        "rich_text": RichTextPropertyValue,
+        "number": NumberPropertyValue,
+        "select": SelectPropertyValue,
+        "multi_select": MultiselectPropertyValue,
+        "date": DatePropertyValue,
+        "people": PeoplePropertyValue,
+        "file": FilePropertyValue,
+        "checkbox": CheckboxPropertyValue,
+        "url": UrlPropertyValue,
+        "email": EmailPropertyValue,
+        "phone_number": PhoneNumberPropertyValue,
+        "formula": FormulaPropertyValue,
+        "relation": RelationPropertyValue,
+        "rollup": RollupPropertyValue,
+        "created_time": CreatedTimePropertyValue,
+        "created_by": CreatedByPropertyValue,
+        "last_edited_time": LastEditedTimePropertyValue,
+        "last_edited_by": LastEditedByPropertyValue,
+    }
+    return property_type_to_class[property_type].from_json(d)
+
+
 @dataclass
-class Database(APIObject):
+class PropertyValue(Property):
+    pass
+
+
+@dataclass
+class RollupPropertyElement(PropertyValue):
+    id = None
+
+
+@dataclass
+class FormulaPropertyValue(PropertyValue):
+    type: str
+    string: str
+    number: float
+    boolean: bool
+    date: datetime
+    relation: List[PageReference]
+
+    @classmethod
+    def from_json(cls, d):
+
+        date = None
+        relations = None
+        if d.get("date"):
+            date = d.pop("date")
+
+        if d.get("relation"):
+            relations = d.pop("relations")
+
+        formula = super(FormulaPropertyValue, cls).from_json(d)
+
+        if relations:
+            formula.relation = [PageReference.from_json(x) for x in relations]
+
+        if date:
+            formula.date = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%fZ")
+
+        return formula
+
+
+@dataclass
+class RelationPropertyValue(PropertyValue):
+    database_id: str
+    synced_property_name: str
+    synced_property_id: str
+
+
+@dataclass
+class RollupPropertyValue(PropertyValue):
+    type: RollupValueTypes
+    number: float
+    date: datetime
+    array: List[RollupPropertyElement]
+
+    @classmethod
+    def from_json(cls, d):
+
+        date = None
+        relations = None
+        if d.get("date"):
+            date = d.pop("date")
+        if d.get("relation"):
+            relations = d.pop("relations")
+
+        rollup = super(FormulaPropertyValue, cls).from_json(d)
+
+        if relations:
+            rollup.relation = [PageReference.from_json(x) for x in relations]
+        if date:
+            rollup.date = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%fZ")
+
+        return rollup
+
+
+@dataclass
+class NumberPropertyValue(PropertyValue):
+    number: float
+
+
+@dataclass
+class SelectPropertyValue(PropertyValue):
+    name: str
+    id: str  # explicit override of the id in Property. See https://developers.notion.com/reference/page#select-property-values
+    color: BasicColor
+
+
+@dataclass
+class MultiselectPropertyValue(SelectPropertyValue):
+    pass
+
+
+@dataclass
+class TitlePropertyValue(PropertyValue):
     title: List[RichText]
-    properties: Dict[str, Property]
 
     @classmethod
-    def from_json(cls, d: Dict[str, object]):
-        return Database(
-            id=d["id"],
-            object="database",
-            created_time=datetime.strptime(d["created_time"], "%Y-%m-%dT%H:%M:%S.%fZ"),
-            last_edited_time=datetime.strptime(
-                d["last_edited_time"], "%Y-%m-%dT%H:%M:%S.%fZ"
-            ),
-            title=RichText.from_json(d["title"][0]),
-            properties=dict(
-                [
-                    (k, database_property_from_json(v))
-                    for (k, v) in d["properties"].items()
-                ]
-            ),
-        )
+    def from_json(cls, d):
+        titles = None
+        if d.get("title"):
+            titles = d.pop("title")
+
+        title_property = super(TitlePropertyValue, cls).from_json(d)
+
+        if titles:
+            title_property.title = [RichText.from_json(x) for x in titles]
+        return title_property
 
 
 @dataclass
-class PageObject(APIObject):
-    parent: PageParent
-    archived: bool
-    properties: Dict[str, PropertyValue]
+class RichTextPropertyValue(PropertyValue):
+    rich_text: List[RichText]
 
     @classmethod
-    def from_json(cls, d: Dict[str, object]):
-        return PageObject(
-            id=d["id"],
-            object="page",
-            archived=d["archived"],
-            created_time=datetime.strptime(d["created_time"], "%Y-%m-%dT%H:%M:%S.%fZ"),
-            last_edited_time=datetime.strptime(
-                d["last_edited_time"], "%Y-%m-%dT%H:%M:%S.%fZ"
-            ),
-            parent=PageParent.from_json(d["parent"]),
-            properties=dict(
-                [(k, page_property_from_json(v)) for (k, v) in d["properties"].items()]
-            ),
+    def from_json(cls, d):
+        rich_text = None
+        if d.get("rich_text"):
+            rich_text = d.pop("rich_text")
+
+        rich_text_property = super(RichTextPropertyValue, cls).from_json(d)
+
+        if rich_text:
+            rich_text_property.rich_text = [RichText.from_json(x) for x in rich_text]
+        return rich_text_property
+
+
+@dataclass
+class DatePropertyValue(PropertyValue):
+    start: datetime
+    end: datetime
+
+    @classmethod
+    def from_json(cls, d):
+        start = d.pop("start")
+        end = None
+        if d.get("end"):
+            end = d.pop("end")
+
+        date = super(DatePropertyValue, cls).from_json(d)
+
+        if start:
+            date.start = datetime.strptime(start, "%Y-%m-%dT%H:%M:%S.%fZ")
+        if end:
+            date.end = datetime.strptime(end, "%Y-%m-%dT%H:%M:%S.%fZ")
+        return date
+
+
+@dataclass
+class PeoplePropertyValue(PropertyValue):
+    people: List[User]
+
+    @classmethod
+    def from_json(cls, d):
+        people = d.pop("people")
+        people_property = super(PeoplePropertyValue, cls).from_json(d)
+
+        people_property.people = [User.from_json(p) for p in people]
+        return people_property
+
+
+@dataclass
+class FilePropertyValue(PropertyValue):
+    files: List[FileReference]
+
+    @classmethod
+    def from_json(cls, d):
+        files = d.pop("files")
+        file_property = super(FilePropertyValue, cls).from_json(d)
+
+        file_property.files = [FileReference(name=f["name"]) for f in files]
+        return file_property
+
+
+@dataclass
+class CheckboxPropertyValue(PropertyValue):
+    checkbox: bool
+
+
+@dataclass
+class UrlPropertyValue(PropertyValue):
+    url: str
+
+
+@dataclass
+class EmailPropertyValue(PropertyValue):
+    email: str
+
+
+@dataclass
+class PhoneNumberPropertyValue(PropertyValue):
+    phone_number: str
+
+
+@dataclass
+class CreatedTimePropertyValue(PropertyValue):
+    created_time: datetime
+
+    @classmethod
+    def from_json(cls, d):
+        time = d.pop("created_time")
+        created_time_property = super(CreatedTimePropertyValue, cls).from_json(d)
+        created_time_property.created_time = datetime.strptime(
+            time, "%Y-%m-%dT%H:%M:%S.%fZ"
         )
+        return created_time_property
+
+
+@dataclass
+class CreatedByPropertyValue(PropertyValue):
+    created_by: User
+
+    @classmethod
+    def from_json(cls, d):
+        created_by = d.pop("created_by")
+        created_by_property = super(CreatedByPropertyValue, cls).from_json(d)
+        created_by_property.created_by = User.from_json(created_by)
+        return created_by_property
+
+
+@dataclass
+class LastEditedTimePropertyValue(PropertyValue):
+    last_edited_time: datetime
+
+    @classmethod
+    def from_json(cls, d):
+        time = d.pop("last_edited_time")
+        last_edited_time_property = super(LastEditedTimePropertyValue, cls).from_json(d)
+        last_edited_time_property.last_edited_time = datetime.strptime(
+            time, "%Y-%m-%dT%H:%M:%S.%fZ"
+        )
+        return last_edited_time_property
+
+
+@dataclass
+class LastEditedByPropertyValue(PropertyValue):
+    last_edited_by: User
+
+    @classmethod
+    def from_json(cls, d):
+        last_edited_by = d.pop("last_edited_by")
+        last_edited_by_property = super(LastEditedByPropertyValue, cls).from_json(d)
+        last_edited_by_property.created_by = User.from_json(last_edited_by)
+        return last_edited_by_property
