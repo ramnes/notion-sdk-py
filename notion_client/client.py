@@ -8,6 +8,7 @@ from .api_endpoints import (
     BlocksEndpoint,
     DatabasesEndpoint,
     PagesEndpoint,
+    SearchEndpoint,
     UsersEndpoint,
 )
 from .errors import build_request_error
@@ -56,6 +57,7 @@ class Client:
         self.databases = DatabasesEndpoint(self)
         self.users = UsersEndpoint(self)
         self.pages = PagesEndpoint(self)
+        self.search = SearchEndpoint(self)
 
     def _build_request(self, method, path, query, body):
         self.logger.info(f"{method} {self.client.base_url}{path}")
@@ -72,13 +74,6 @@ class Client:
         response = self.client.send(request)
         self._check_response(response)
         return response
-
-    def search(self, **kwargs):
-        return self.request(
-            path="search",
-            method="POST",
-            body=pick(kwargs, "query", "sort", "filter", "start_cursor", "page_size"),
-        )
 
 
 class AsyncClient(Client):

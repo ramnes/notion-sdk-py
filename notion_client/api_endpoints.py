@@ -90,3 +90,12 @@ class UsersEndpoint(Endpoint):
             path=f"users/{user_id}",
             method="GET",
         )
+
+
+class SearchEndpoint(Endpoint):
+    def __call__(self, **kwargs):
+        return self.parent.request(
+            path="search",
+            method="POST",
+            body=pick(kwargs, "query", "sort", "filter", "start_cursor", "page_size"),
+        )
