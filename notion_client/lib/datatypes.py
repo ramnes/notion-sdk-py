@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict
+from typing import Dict, Union
 
 from .custom_enums import BasicColor, Color, ParentType, PropertyType, RichTextType
 
@@ -15,8 +15,7 @@ class Annotations:
     color: Color
 
     @classmethod
-    def from_json(cls, d: Dict[str, object]):
-        print("annotation", d)
+    def from_json(cls, d: Dict[str, Union[bool, Color]]) -> "Annotations":
         return Annotations(
             bold=d["bold"],
             italic=d["italic"],
@@ -33,12 +32,13 @@ class Property:
     type: PropertyType
 
     @classmethod
-    def from_json(cls, d):
+    def from_json(cls, d: Dict[str, object]) -> "Property":
 
         required_fields = cls.__dataclass_fields__
 
         # Try converting all json datatypes to their dataclass type (e.g Enum).
-        # Property subclasses with more complicated data types will have to override `from_json`
+        # Property subclasses with more complicated data types will
+        # have to override `from_json`
         for k in required_fields.keys():
             if d.get(k) is not None:
                 d[k] = required_fields[k].type(d.get(k))
@@ -76,7 +76,7 @@ class PageParent:
     id: str
 
     @classmethod
-    def from_json(cls, d: Dict[str, object]):
+    def from_json(cls, d: Dict[str, object]) -> "PageParent":
         type = ParentType(d["type"])
         return PageParent(
             id=d.get("database_id" if type == ParentType.database else "page_id"),
@@ -97,7 +97,7 @@ class RichText:
     type: RichTextType
 
     @classmethod
-    def from_json(cls, d: Dict[str, object]):
+    def from_json(cls, d: Dict[str, object]) -> "RichText":
         return RichText(
             plain_text=d.get("plain_text"),
             href=d.get("href"),

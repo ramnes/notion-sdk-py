@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Union
 
 from .custom_enums import NumberPropertyFormat, RollupFunctionType
 from .datatypes import APIObject, MultiselectOption, Property, RichText, SelectOption
@@ -12,7 +12,7 @@ class Database(APIObject):
     properties: Dict[str, Property]
 
     @classmethod
-    def from_json(cls, d: Dict[str, object]):
+    def from_json(cls, d: Dict[str, object]) -> "Database":
         return Database(
             id=d["id"],
             object="database",
@@ -55,8 +55,10 @@ class NumberProperty(Property):
     format: NumberPropertyFormat
 
     @classmethod
-    def from_json(cls, d):
-        number_property = super(NumberProperty).from_json(NumberProperty, d)
+    def from_json(cls, d: Dict[str, Union[str, List[str]]]) -> "NumberProperty":
+        number_property: NumberProperty = super(NumberProperty).from_json(
+            NumberProperty, d
+        )
         number_property.options = [NumberPropertyFormat(x) for x in d["options"]]
         return number_property
 
@@ -66,8 +68,10 @@ class SelectProperty(Property):
     options: List[SelectOption]
 
     @classmethod
-    def from_json(cls, d):
-        select_property = super(SelectProperty).from_json(SelectProperty, d)
+    def from_json(cls, d: Dict[str, Union[str, List[str]]]) -> "SelectProperty":
+        select_property: SelectProperty = super(SelectProperty).from_json(
+            SelectProperty, d
+        )
         select_property.options = [SelectOption(x) for x in d["options"]]
         return select_property
 
@@ -77,10 +81,10 @@ class MultiselectProperty(Property):
     options: List[MultiselectOption]
 
     @classmethod
-    def from_json(cls, d):
-        multiselect_property = super(MultiselectProperty).from_json(
-            MultiselectProperty, d
-        )
+    def from_json(cls, d: Dict[str, Union[str, List[str]]]) -> "MultiselectProperty":
+        multiselect_property: MultiselectProperty = super(
+            MultiselectProperty
+        ).from_json(MultiselectProperty, d)
         multiselect_property.options = [MultiselectOption(x) for x in d["options"]]
         return multiselect_property
 
