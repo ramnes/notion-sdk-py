@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 from .custom_enums import (
     BasicColor,
@@ -136,8 +136,8 @@ class PropertyValue:
     property_type: PropertyType
 
     @classmethod
-    def _from_json(cls, d: Dict[str, Union[Any, Dict[str, Any]]]) -> "PropertyValue":
-        required_fields = cls.__dataclass_fields__
+    def _from_json(cls, d: Dict[str, Any]) -> "PropertyValue":
+        required_fields = cls.__dataclass_fields__  # type: ignore
 
         # Try converting all json datatypes to their dataclass type (e.g Enum).
         # Property subclasses with more complicated data types will
@@ -146,7 +146,8 @@ class PropertyValue:
             if d.get(k) is not None:
                 d[k] = required_fields[k].type(d.get(k))
 
-        return cls(**dict([(k, d.get(k)) for k in required_fields.keys()]))
+        result: Dict[str, Any] = dict([(k, d.get(k)) for k in required_fields.keys()])
+        return cls(**result)
 
     @classmethod
     def from_json(cls, d: Dict[str, Any]) -> "PropertyValue":
@@ -184,7 +185,7 @@ class FormulaPropertyValue(PropertyValue):
         if d.get("relation"):
             relations = d.pop("relations")
 
-        formula: FormulaPropertyValue = super(FormulaPropertyValue, cls)._from_json(d)
+        formula: FormulaPropertyValue = super(cls, FormulaPropertyValue)._from_json(d)
 
         if relations:
             formula.relation = [PageReference(x["id"]) for x in relations]
@@ -213,16 +214,19 @@ class RollupPropertyValue(PropertyValue):
     def _from_json(cls, d: Dict[str, Any]) -> "RollupPropertyValue":
         d = {**d, **d[PropertyType.rollup.value]}
         date = None
-        relations = None
+        array = None
         if d.get("date"):
             date = d.pop("date")
-        if d.get("relation"):
-            relations = d.pop("relations")
+        if d.get("array"):
+            array = d.pop("array")
 
-        rollup: RollupPropertyValue = super(RollupPropertyValue, cls)._from_json(d)
+        rollup: RollupPropertyValue = super(cls, RollupPropertyValue)._from_json(d)
 
-        if relations:
-            rollup.relation = [PageReference(x["id"]) for x in relations]
+        if array:
+            arrays: List[RollupPropertyElement] = [
+                RollupPropertyElement.from_json(r) for r in array  # type: ignore
+            ]
+            rollup.array = arrays
         if date:
             rollup.date = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%fZ")
 
@@ -247,7 +251,7 @@ class SelectPropertyValue(PropertyValue):
     def _from_json(cls, d: Dict[str, Any]) -> "SelectPropertyValue":
         d = {**d, **d[PropertyType.select.value]}
         select_property: SelectPropertyValue = super(
-            SelectPropertyValue, cls
+            cls, SelectPropertyValue
         )._from_json(d)
         return select_property
 
@@ -267,7 +271,7 @@ class TitlePropertyValue(PropertyValue):
         if d.get("title"):
             titles = d.pop("title")
 
-        title_property: TitlePropertyValue = super(TitlePropertyValue, cls)._from_json(
+        title_property: TitlePropertyValue = super(cls, TitlePropertyValue)._from_json(
             d
         )
 
@@ -287,7 +291,7 @@ class RichTextPropertyValue(PropertyValue):
             rich_text = d.pop("rich_text")
 
         rich_text_property: RichTextPropertyValue = super(
-            RichTextPropertyValue, cls
+            cls, RichTextPropertyValue
         )._from_json(d)
 
         if rich_text:
@@ -309,7 +313,7 @@ class DatePropertyValue(PropertyValue):
         if d.get("end"):
             end = d.pop("end")
 
-        date: DatePropertyValue = super(DatePropertyValue, cls)._from_json(d)
+        date: DatePropertyValue = super(cls, DatePropertyValue)._from_json(d)
 
         if start:
             date.start = datetime.strptime(start, "%Y-%m-%dT%H:%M:%S.%fZ")
@@ -326,8 +330,8 @@ class PeoplePropertyValue(PropertyValue):
     def _from_json(cls, d: Dict[str, Any]) -> "PeoplePropertyValue":
         people = d.pop("people")
         people_property: PeoplePropertyValue = super(
-            PeoplePropertyValue, cls
-        ).from_json(d)
+            cls, PeoplePropertyValue
+        )._from_json(d)
 
         people_property.people = [User.from_json(p) for p in people]
         return people_property
@@ -340,7 +344,7 @@ class FilePropertyValue(PropertyValue):
     @classmethod
     def _from_json(cls, d: Dict[str, Any]) -> "FilePropertyValue":
         files = d.pop("files")
-        file_property: FilePropertyValue = super(FilePropertyValue, cls)._from_json(d)
+        file_property: FilePropertyValue = super(cls, FilePropertyValue)._from_json(d)
 
         file_property.files = [FileReference(name=f["name"]) for f in files]
         return file_property
@@ -374,8 +378,8 @@ class CreatedTimePropertyValue(PropertyValue):
     def _from_json(cls, d: Dict[str, Any]) -> "CreatedTimePropertyValue":
         time = d.pop("created_time")
         created_time_property: CreatedTimePropertyValue = super(
-            CreatedTimePropertyValue, cls
-        ).from_json(d)
+            cls, CreatedTimePropertyValue
+        )._from_json(d)
         created_time_property.created_time = datetime.strptime(
             time, "%Y-%m-%dT%H:%M:%S.%fZ"
         )
@@ -389,9 +393,9 @@ class CreatedByPropertyValue(PropertyValue):
     @classmethod
     def _from_json(cls, d: Dict[str, Any]) -> "CreatedByPropertyValue":
         created_by = d.pop("created_by")
-        created_by_property: CreatedTimePropertyValue = super(
-            CreatedByPropertyValue, cls
-        ).from_json(d)
+        created_by_property: CreatedByPropertyValue = super(
+            cls, CreatedByPropertyValue
+        )._from_json(d)
         created_by_property.created_by = User.from_json(created_by)
         return created_by_property
 
@@ -401,11 +405,11 @@ class LastEditedTimePropertyValue(PropertyValue):
     last_edited_time: datetime
 
     @classmethod
-    def _from_json(cls, d: Dict[str, Any]) -> "LastEditedByPropertyValue":
+    def _from_json(cls, d: Dict[str, Any]) -> "LastEditedTimePropertyValue":
         time = d.pop("last_edited_time")
         last_edited_time_property: LastEditedTimePropertyValue = super(
-            LastEditedTimePropertyValue, cls
-        ).from_json(d)
+            cls, LastEditedTimePropertyValue
+        )._from_json(d)
         last_edited_time_property.last_edited_time = datetime.strptime(
             time, "%Y-%m-%dT%H:%M:%S.%fZ"
         )
@@ -420,7 +424,7 @@ class LastEditedByPropertyValue(PropertyValue):
     def _from_json(cls, d: Dict[str, Any]) -> "LastEditedByPropertyValue":
         last_edited_by = d.pop("last_edited_by")
         last_edited_by_property: LastEditedByPropertyValue = super(
-            LastEditedByPropertyValue, cls
-        ).from_json(d)
-        last_edited_by_property.created_by = User.from_json(last_edited_by)
+            cls, LastEditedByPropertyValue
+        )._from_json(d)
+        last_edited_by_property.last_edited_by = User.from_json(last_edited_by)
         return last_edited_by_property

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Dict, Union
+from typing import Any, Dict, Optional
 
 from .custom_enums import BasicColor, Color, ParentType, PropertyType, RichTextType
 
@@ -15,7 +15,7 @@ class Annotations:
     color: Color
 
     @classmethod
-    def from_json(cls, d: Dict[str, Union[bool, Color]]) -> "Annotations":
+    def from_json(cls, d: Dict[str, Any]) -> "Annotations":
         return Annotations(
             bold=d["bold"],
             italic=d["italic"],
@@ -34,7 +34,7 @@ class Property:
     @classmethod
     def from_json(cls, d: Dict[str, Any]) -> "Property":
 
-        required_fields = cls.__dataclass_fields__
+        required_fields = cls.__dataclass_fields__  # type: ignore
 
         # Try converting all json datatypes to their dataclass type (e.g Enum).
         # Property subclasses with more complicated data types will
@@ -43,7 +43,9 @@ class Property:
             if d.get(k) is not None:
                 d[k] = required_fields[k].type(d.get(k))
 
-        required_data = dict([(k, d.get(k)) for k in required_fields.keys()])
+        required_data: Dict[str, Any] = dict(
+            [(k, d.get(k)) for k in required_fields.keys()]
+        )
         return cls(**required_data)
 
 
@@ -79,7 +81,7 @@ class PageParent:
     def from_json(cls, d: Dict[str, Any]) -> "PageParent":
         type = ParentType(d["type"])
         return PageParent(
-            id=d.get("database_id" if type == ParentType.database else "page_id"),
+            id=d["database_id" if type == ParentType.database else "page_id"],
             type=type,
         )
 
@@ -91,17 +93,18 @@ class FileReference:
 
 @dataclass
 class RichText:
-    plain_text: str
-    href: str
+    plain_text: Optional[str]
+    href: Optional[str]
     annotations: Annotations
     type: RichTextType
 
     @classmethod
     def from_json(cls, d: Dict[str, Any]) -> "RichText":
+        annotations: Optional[Dict[str, Any]] = d.get("annotations")
         return RichText(
             plain_text=d.get("plain_text"),
             href=d.get("href"),
-            annotations=Annotations.from_json(d.get("annotations")),
+            annotations=Annotations.from_json(annotations if annotations else {}),
             type=RichTextType(d["type"]),
         )
 

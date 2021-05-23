@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Dict, List, Type, Union
+from typing import Any, Dict, List, Type
 
 from .custom_enums import NumberPropertyFormat, RollupFunctionType
 from .datatypes import APIObject, MultiselectOption, Property, RichText, SelectOption
@@ -55,10 +55,8 @@ class NumberProperty(Property):
     format: NumberPropertyFormat
 
     @classmethod
-    def from_json(cls, d: Dict[str, Union[str, List[str]]]) -> "NumberProperty":
-        number_property: NumberProperty = super(NumberProperty).from_json(
-            NumberProperty, d
-        )
+    def from_json(cls, d: Dict[str, Any]) -> "NumberProperty":
+        number_property: NumberProperty = super(cls, NumberProperty).from_json(d)
         number_property.format = NumberPropertyFormat(d["format"])
         return number_property
 
@@ -69,9 +67,7 @@ class SelectProperty(Property):
 
     @classmethod
     def from_json(cls, d: Dict[str, Any]) -> "SelectProperty":
-        select_property: SelectProperty = super(SelectProperty).from_json(
-            SelectProperty, d
-        )
+        select_property: SelectProperty = super(cls, SelectProperty).from_json(d)
         select_property.options = [SelectOption(**x) for x in d["options"]]
         return select_property
 
@@ -81,12 +77,10 @@ class MultiselectProperty(Property):
     options: List[MultiselectOption]
 
     @classmethod
-    def from_json(
-        cls, d: Dict[str, Union[str, Dict[str, Any]]]
-    ) -> "MultiselectProperty":
+    def from_json(cls, d: Dict[str, Any]) -> "MultiselectProperty":
         multiselect_property: MultiselectProperty = super(
-            MultiselectProperty
-        ).from_json(MultiselectProperty, d)
+            cls, MultiselectProperty
+        ).from_json(d)
         multiselect_property.options = [MultiselectOption(**x) for x in d["options"]]
         return multiselect_property
 
