@@ -1,9 +1,14 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
-from .custom_enums import BasicColor, BlockType, RollupValueTypes, UserType
-from .database import Property
+from .custom_enums import (
+    BasicColor,
+    BlockType,
+    PropertyType,
+    RollupValueTypes,
+    UserType,
+)
 from .datatypes import (
     APIObject,
     Bot,
@@ -25,7 +30,7 @@ class Block(APIObject):
     title: Optional[str]  # for BlockType.ChildPage
 
     @classmethod
-    def from_json(cls, d: Dict[str, object]) -> "Block":
+    def from_json(cls, d: Dict[str, Any]) -> "Block":
         children = d.get("children")
         if not children:
             children = []
@@ -52,7 +57,7 @@ class Page(APIObject):
     properties: Dict[str, "PropertyValue"]
 
     @classmethod
-    def from_json(cls, d: Dict[str, object]) -> "Page":
+    def from_json(cls, d: Dict[str, Any]) -> "Page":
         return Page(
             id=d["id"],
             object="page",
@@ -70,11 +75,11 @@ class Page(APIObject):
 
 @dataclass
 class User(APIObject):
-    type: UserType
-    name: str
-    avatar_url: str
-    person: Person
-    bot: Bot
+    type: Optional[UserType]
+    name: Optional[str]
+    avatar_url: Optional[str]
+    person: Optional[Person]
+    bot: Optional[Bot]
 
     @classmethod
     def from_json(cls, d: Dict[str, str]) -> "User":
@@ -94,9 +99,9 @@ class User(APIObject):
         )
 
 
-def property_value_from_json(d: Dict[str, object]) -> "PropertyValue":
+def property_value_from_json(d: Dict[str, Any]) -> "PropertyValue":
     property_type = d["type"]
-    property_type_to_class = {
+    property_type_to_class: Dict[str, Any] = {
         "title": TitlePropertyValue,
         "rich_text": RichTextPropertyValue,
         "number": NumberPropertyValue,
@@ -117,17 +122,46 @@ def property_value_from_json(d: Dict[str, object]) -> "PropertyValue":
         "last_edited_time": LastEditedTimePropertyValue,
         "last_edited_by": LastEditedByPropertyValue,
     }
-    return property_type_to_class[property_type].from_json(d)
+    print(d)
+    property_value: PropertyValue = property_type_to_class[property_type].from_json(d)
+
+    print(property_value)
+    print()
+    return property_value
 
 
 @dataclass
-class PropertyValue(Property):
-    pass
+class PropertyValue:
+    property_id: str
+    property_type: PropertyType
+
+    @classmethod
+    def _from_json(cls, d: Dict[str, Union[Any, Dict[str, Any]]]) -> "PropertyValue":
+        required_fields = cls.__dataclass_fields__
+
+        # Try converting all json datatypes to their dataclass type (e.g Enum).
+        # Property subclasses with more complicated data types will
+        # have to override `from_json`
+        for k in required_fields.keys():
+            if d.get(k) is not None:
+                d[k] = required_fields[k].type(d.get(k))
+
+        return cls(**dict([(k, d.get(k)) for k in required_fields.keys()]))
+
+    @classmethod
+    def from_json(cls, d: Dict[str, Any]) -> "PropertyValue":
+        property_id = d.pop("id")
+        property_type = d.pop("type")
+
+        property_value = cls._from_json(d)
+        property_value.property_id = property_id
+        property_value.property_type = property_type
+        return property_value
 
 
 @dataclass
 class RollupPropertyElement(PropertyValue):
-    id = None
+    pass
 
 
 @dataclass
@@ -140,8 +174,8 @@ class FormulaPropertyValue(PropertyValue):
     relation: List[PageReference]
 
     @classmethod
-    def from_json(cls, d) -> "FormulaPropertyValue":
-
+    def _from_json(cls, d: Dict[str, Any]) -> "FormulaPropertyValue":
+        d = {**d, **d[PropertyType.formula.value]}
         date = None
         relations = None
         if d.get("date"):
@@ -150,10 +184,10 @@ class FormulaPropertyValue(PropertyValue):
         if d.get("relation"):
             relations = d.pop("relations")
 
-        formula: FormulaPropertyValue = super(FormulaPropertyValue, cls).from_json(d)
+        formula: FormulaPropertyValue = super(FormulaPropertyValue, cls)._from_json(d)
 
         if relations:
-            formula.relation = [PageReference.from_json(x) for x in relations]
+            formula.relation = [PageReference(x["id"]) for x in relations]
 
         if date:
             formula.date = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%fZ")
@@ -176,8 +210,8 @@ class RollupPropertyValue(PropertyValue):
     array: List[RollupPropertyElement]
 
     @classmethod
-    def from_json(cls, d) -> "RollupPropertyValue":
-
+    def _from_json(cls, d: Dict[str, Any]) -> "RollupPropertyValue":
+        d = {**d, **d[PropertyType.rollup.value]}
         date = None
         relations = None
         if d.get("date"):
@@ -185,10 +219,10 @@ class RollupPropertyValue(PropertyValue):
         if d.get("relation"):
             relations = d.pop("relations")
 
-        rollup: RollupPropertyValue = super(FormulaPropertyValue, cls).from_json(d)
+        rollup: RollupPropertyValue = super(RollupPropertyValue, cls)._from_json(d)
 
         if relations:
-            rollup.relation = [PageReference.from_json(x) for x in relations]
+            rollup.relation = [PageReference(x["id"]) for x in relations]
         if date:
             rollup.date = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%fZ")
 
@@ -209,6 +243,14 @@ class SelectPropertyValue(PropertyValue):
     id: str
     color: BasicColor
 
+    @classmethod
+    def _from_json(cls, d: Dict[str, Any]) -> "SelectPropertyValue":
+        d = {**d, **d[PropertyType.select.value]}
+        select_property: SelectPropertyValue = super(
+            SelectPropertyValue, cls
+        )._from_json(d)
+        return select_property
+
 
 @dataclass
 class MultiselectPropertyValue(SelectPropertyValue):
@@ -220,12 +262,14 @@ class TitlePropertyValue(PropertyValue):
     title: List[RichText]
 
     @classmethod
-    def from_json(cls, d) -> "TitlePropertyValue":
+    def _from_json(cls, d: Dict[str, Any]) -> "TitlePropertyValue":
         titles = None
         if d.get("title"):
             titles = d.pop("title")
 
-        title_property: TitlePropertyValue = super(TitlePropertyValue, cls).from_json(d)
+        title_property: TitlePropertyValue = super(TitlePropertyValue, cls)._from_json(
+            d
+        )
 
         if titles:
             title_property.title = [RichText.from_json(x) for x in titles]
@@ -237,14 +281,14 @@ class RichTextPropertyValue(PropertyValue):
     rich_text: List[RichText]
 
     @classmethod
-    def from_json(cls, d) -> "RichTextPropertyValue":
+    def _from_json(cls, d: Dict[str, Any]) -> "RichTextPropertyValue":
         rich_text = None
         if d.get("rich_text"):
             rich_text = d.pop("rich_text")
 
         rich_text_property: RichTextPropertyValue = super(
             RichTextPropertyValue, cls
-        ).from_json(d)
+        )._from_json(d)
 
         if rich_text:
             rich_text_property.rich_text = [RichText.from_json(x) for x in rich_text]
@@ -257,13 +301,15 @@ class DatePropertyValue(PropertyValue):
     end: datetime
 
     @classmethod
-    def from_json(cls, d) -> "DatePropertyValue":
+    def _from_json(cls, d: Dict[str, Any]) -> "DatePropertyValue":
+        d = {**d, **d[PropertyType.date.value]}
+
         start = d.pop("start")
         end = None
         if d.get("end"):
             end = d.pop("end")
 
-        date: DatePropertyValue = super(DatePropertyValue, cls).from_json(d)
+        date: DatePropertyValue = super(DatePropertyValue, cls)._from_json(d)
 
         if start:
             date.start = datetime.strptime(start, "%Y-%m-%dT%H:%M:%S.%fZ")
@@ -277,7 +323,7 @@ class PeoplePropertyValue(PropertyValue):
     people: List[User]
 
     @classmethod
-    def from_json(cls, d) -> "PeoplePropertyValue":
+    def _from_json(cls, d: Dict[str, Any]) -> "PeoplePropertyValue":
         people = d.pop("people")
         people_property: PeoplePropertyValue = super(
             PeoplePropertyValue, cls
@@ -292,9 +338,9 @@ class FilePropertyValue(PropertyValue):
     files: List[FileReference]
 
     @classmethod
-    def from_json(cls, d) -> "FilePropertyValue":
+    def _from_json(cls, d: Dict[str, Any]) -> "FilePropertyValue":
         files = d.pop("files")
-        file_property: FilePropertyValue = super(FilePropertyValue, cls).from_json(d)
+        file_property: FilePropertyValue = super(FilePropertyValue, cls)._from_json(d)
 
         file_property.files = [FileReference(name=f["name"]) for f in files]
         return file_property
@@ -325,7 +371,7 @@ class CreatedTimePropertyValue(PropertyValue):
     created_time: datetime
 
     @classmethod
-    def from_json(cls, d) -> "CreatedTimePropertyValue":
+    def _from_json(cls, d: Dict[str, Any]) -> "CreatedTimePropertyValue":
         time = d.pop("created_time")
         created_time_property: CreatedTimePropertyValue = super(
             CreatedTimePropertyValue, cls
@@ -341,7 +387,7 @@ class CreatedByPropertyValue(PropertyValue):
     created_by: User
 
     @classmethod
-    def from_json(cls, d) -> "CreatedByPropertyValue":
+    def _from_json(cls, d: Dict[str, Any]) -> "CreatedByPropertyValue":
         created_by = d.pop("created_by")
         created_by_property: CreatedTimePropertyValue = super(
             CreatedByPropertyValue, cls
@@ -355,7 +401,7 @@ class LastEditedTimePropertyValue(PropertyValue):
     last_edited_time: datetime
 
     @classmethod
-    def from_json(cls, d) -> "LastEditedByPropertyValue":
+    def _from_json(cls, d: Dict[str, Any]) -> "LastEditedByPropertyValue":
         time = d.pop("last_edited_time")
         last_edited_time_property: LastEditedTimePropertyValue = super(
             LastEditedTimePropertyValue, cls
@@ -371,7 +417,7 @@ class LastEditedByPropertyValue(PropertyValue):
     last_edited_by: User
 
     @classmethod
-    def from_json(cls, d) -> "LastEditedByPropertyValue":
+    def _from_json(cls, d: Dict[str, Any]) -> "LastEditedByPropertyValue":
         last_edited_by = d.pop("last_edited_by")
         last_edited_by_property: LastEditedByPropertyValue = super(
             LastEditedByPropertyValue, cls

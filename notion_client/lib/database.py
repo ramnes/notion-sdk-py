@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict, List, Union
+from typing import Any, Dict, List, Type, Union
 
 from .custom_enums import NumberPropertyFormat, RollupFunctionType
 from .datatypes import APIObject, MultiselectOption, Property, RichText, SelectOption
@@ -12,7 +12,7 @@ class Database(APIObject):
     properties: Dict[str, Property]
 
     @classmethod
-    def from_json(cls, d: Dict[str, object]) -> "Database":
+    def from_json(cls, d: Dict[str, Any]) -> "Database":
         return Database(
             id=d["id"],
             object="database",
@@ -20,7 +20,7 @@ class Database(APIObject):
             last_edited_time=datetime.strptime(
                 d["last_edited_time"], "%Y-%m-%dT%H:%M:%S.%fZ"
             ),
-            title=RichText.from_json(d["title"][0]),
+            title=[RichText.from_json(title) for title in d["title"]],
             properties=dict(
                 [
                     (k, database_property_from_json(v))
@@ -59,7 +59,7 @@ class NumberProperty(Property):
         number_property: NumberProperty = super(NumberProperty).from_json(
             NumberProperty, d
         )
-        number_property.options = [NumberPropertyFormat(x) for x in d["options"]]
+        number_property.format = NumberPropertyFormat(d["format"])
         return number_property
 
 
@@ -68,11 +68,11 @@ class SelectProperty(Property):
     options: List[SelectOption]
 
     @classmethod
-    def from_json(cls, d: Dict[str, Union[str, List[str]]]) -> "SelectProperty":
+    def from_json(cls, d: Dict[str, Any]) -> "SelectProperty":
         select_property: SelectProperty = super(SelectProperty).from_json(
             SelectProperty, d
         )
-        select_property.options = [SelectOption(x) for x in d["options"]]
+        select_property.options = [SelectOption(**x) for x in d["options"]]
         return select_property
 
 
@@ -81,11 +81,13 @@ class MultiselectProperty(Property):
     options: List[MultiselectOption]
 
     @classmethod
-    def from_json(cls, d: Dict[str, Union[str, List[str]]]) -> "MultiselectProperty":
+    def from_json(
+        cls, d: Dict[str, Union[str, Dict[str, Any]]]
+    ) -> "MultiselectProperty":
         multiselect_property: MultiselectProperty = super(
             MultiselectProperty
         ).from_json(MultiselectProperty, d)
-        multiselect_property.options = [MultiselectOption(x) for x in d["options"]]
+        multiselect_property.options = [MultiselectOption(**x) for x in d["options"]]
         return multiselect_property
 
 
@@ -154,9 +156,9 @@ class LastEditedByProperty(Property):
     pass
 
 
-def database_property_from_json(d: Dict[str, object]) -> Property:
+def database_property_from_json(d: Dict[str, Any]) -> Property:
     property_type = d["type"]
-    property_type_to_class = {
+    property_type_to_class: Dict[str, Type[Property]] = {
         "title": TitleProperty,
         "rich_text": RichTextProperty,
         "number": NumberProperty,

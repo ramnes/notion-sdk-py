@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict, Union
+from typing import Any, Dict, Union
 
 from .custom_enums import BasicColor, Color, ParentType, PropertyType, RichTextType
 
@@ -32,7 +32,7 @@ class Property:
     type: PropertyType
 
     @classmethod
-    def from_json(cls, d: Dict[str, object]) -> "Property":
+    def from_json(cls, d: Dict[str, Any]) -> "Property":
 
         required_fields = cls.__dataclass_fields__
 
@@ -76,7 +76,7 @@ class PageParent:
     id: str
 
     @classmethod
-    def from_json(cls, d: Dict[str, object]) -> "PageParent":
+    def from_json(cls, d: Dict[str, Any]) -> "PageParent":
         type = ParentType(d["type"])
         return PageParent(
             id=d.get("database_id" if type == ParentType.database else "page_id"),
@@ -97,7 +97,7 @@ class RichText:
     type: RichTextType
 
     @classmethod
-    def from_json(cls, d: Dict[str, object]) -> "RichText":
+    def from_json(cls, d: Dict[str, Any]) -> "RichText":
         return RichText(
             plain_text=d.get("plain_text"),
             href=d.get("href"),
