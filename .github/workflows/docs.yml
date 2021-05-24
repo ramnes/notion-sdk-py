@@ -14,9 +14,9 @@ jobs:
         with:
           fetch-depth: 0
       - uses: actions/setup-python@v2
-      - run: pip install -r requirements-docs.txt pytest pytest-cov
+      - run: pip install -e . -r requirements-docs.txt pytest pytest-cov
       - run: pytest
       - run: git config user.name 'github-actions[bot]' && git config user.email 'github-actions[bot]@users.noreply.github.com'
       - name: Publish docs
         run: mkdocs gh-deploy
-        
+
