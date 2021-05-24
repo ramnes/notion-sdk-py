@@ -96,18 +96,12 @@ With the simplicity of python and flexibility of Notion,
 you can connect Notion pages and databases to the tools you use every day,
 creating powerful workflows.
 
-notion-sdk-py has a lot of documentation.
-A high-level overview of how it’s organized will help you know where to look for
-certain things.
+These resources should help you along the way:
 
 - **[Examples](https://github.com/ramnes/notion-sdk-py/tree/main/examples)**
 Curated examples that are designed to make you learn.
 - **[Reference](reference/client.md)**
 Full reference of all public classes and methods.
-- **[Articles](https://www.google.com/search?q=articles+related+to+notion-sdk-py)**
-All articles discussing this library.
-- **[Videos](https://www.youtube.com/results?search_query=notion+sdk+py)**
-A list of videos that showcases related projects and tutorials.
 - **[Projects](https://github.com/ramnes/notion-sdk-py/network/dependents)**
 Compilation of open source projects that are using this library.
 - **[Discussions](https://github.com/ramnes/notion-sdk-py/discussions)**
