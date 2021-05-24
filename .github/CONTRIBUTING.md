@@ -21,7 +21,7 @@ will be really helpful if you are a newbie.
 
     ```shell
     python -m venv .venv && source .venv/bin/activate
-    pip install -r requirements-dev.txt
+    pip install -r requirements/dev.txt
     ```
 
 5. Install [pre-commit](https://pre-commit.com/) hooks.

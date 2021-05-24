@@ -1,3 +1,4 @@
+-r tests.txt
 mkdocs
 mkdocstrings
 mkdocs-coverage
