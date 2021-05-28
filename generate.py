@@ -14,6 +14,7 @@ virtual_files = {
     "reference/api_endpoints.md": docs_stub("api_endpoints"),
     "reference/client.md": docs_stub("client"),
     "reference/errors.md": docs_stub("errors"),
+    "reference/helpers.md": docs_stub("helpers"),
     "contributing/contributing.md": "--8<-- '.github/CONTRIBUTING.md'",
 }
 
