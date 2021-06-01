@@ -36,7 +36,19 @@ class ContentIterator(object):
     def next_page(self): raise ValueError
 
 ################################################################################
-# handle database queries
+# handle database queries - e.g.
+#
+#    issues = DatabaseIterator(client, {
+#        'database_id': issue_db,
+#        'sorts' : [{
+#            'direction': 'ascending',
+#            'property': 'Last Update'
+#        }]
+#    })
+#
+#    for issue in issues:
+#        ...
+#
 class DatabaseIterator(ContentIterator):
 
     def __init__(self, client, query):
