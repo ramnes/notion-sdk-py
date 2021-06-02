@@ -1,11 +1,14 @@
 """Utility functions for notion-sdk-py."""
 
 
-from typing import Any, Dict
+from typing import Any, Dict, Iterator
 from urllib.parse import urlparse
 from uuid import UUID
 
+from .client import Client
+
 CONTENT_PAGE_SIZE = 100
+
 
 def pick(base: Dict[Any, Any], *keys: str) -> Dict[Any, Any]:
     """Return a Dict composed of key value pairs for keys passed as args."""
@@ -29,26 +32,34 @@ def get_id(url: str) -> str:
     raw_id = path[-32:]
     return str(UUID(raw_id))
 
-""" base class to handle pagination support """
-class ContentIterator(object):
 
-    def __init__(self, client):
+class ContentIterator(object):
+    """Base class to handle pagination over content from the Notion API."""
+
+    page: Any
+    client: Client
+    index: int
+
+    def __init__(self, client: Client) -> None:
+        """Initialize the interator using the specified client for requests."""
         self.client = client
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Any]:
+        """Initialize the iterator."""
         self.page = None
-        self.index = 0
+        self.index = -1
 
         return self
 
-    def __next__(self):
+    def __next__(self) -> Any:
+        """Return the next item from the result set or StopIteration."""
         # load a new page if needed
         if self.page is None or self.index >= len(self.page):
             self.index = 0
-            self.page = self.next_page()
+            self.page = self.load_next_page()
 
         # if we have run out of results...
-        if self.page is None:
+        if self.page is None or len(self.page) == 0:
             raise StopIteration
 
         # pull the next item from the current page
@@ -59,11 +70,79 @@ class ContentIterator(object):
 
         return item
 
-    def next_page(self): raise ValueError
+    def load_next_page(self) -> Any:
+        """Must be implemented in subclasses.
 
-""" paginate database queries - e.g.
+        Returns the next page of content or None.
+        """
+        raise ValueError
 
-    issues = DatabaseIterator(client, {
+
+class ResultSetIterator(ContentIterator):
+    """Base class for iterating over result sets (using a cursor)."""
+
+    cursor: Any
+
+    def __init__(self, client: Client) -> None:
+        super().__init__(client)
+        self.cursor = None
+
+    def load_next_page(self) -> Any:
+        """Return the next page of content."""
+        if self.cursor is False:
+            return None
+
+        params = {"page_size": CONTENT_PAGE_SIZE}
+
+        if self.cursor:
+            params["start_cursor"] = self.cursor
+
+        # TODO error checking on result
+        result = self.get_page(params)
+
+        if result["has_more"]:
+            self.cursor = result["next_cursor"]
+        else:
+            self.cursor = False
+
+        return result["results"]
+
+    def get_page(self, params: Dict[Any, Any]) -> Any:
+        """Must be implemented in subclasses.
+
+        Returns the page starting at cursor or None.
+        """
+        raise ValueError
+
+
+class UserIterator(ResultSetIterator):
+    """Iterate over all users in the current workspace.
+
+    for db in UserIterator(client):
+        ...
+    """
+
+    def get_page(self, params: Dict[Any, Any]) -> Any:
+        """Return the next page with given parameters."""
+        return self.client.users.list(**params)
+
+
+class DatabaseIterator(ResultSetIterator):
+    """Iterate over all available databases.
+
+    for db in DatabaseIterator(client):
+        ...
+    """
+
+    def get_page(self, params: Dict[Any, Any]) -> Any:
+        """Return the next page with given parameters."""
+        return self.client.databases.list(**params)
+
+
+class QueryIterator(ResultSetIterator):
+    """Iterate results from database queries - e.g.
+
+    issues = QueryIterator(client, {
         'database_id': issue_db,
         'sorts' : [{
             'direction': 'ascending',
@@ -73,31 +152,72 @@ class ContentIterator(object):
 
     for issue in issues:
         ...
-"""
-class DatabaseIterator(ContentIterator):
+    """
 
-    def __init__(self, client, query):
-        ContentIterator.__init__(self, client)
+    def __init__(self, client: Client, query: Dict[Any, Any]) -> None:
+        """
+        Initialize the QueryIterator with a given query.
+
+        This is a standard query with a database ID, filters, sorts, etc.
+        """
+        super().__init__(client)
         self.query = query
-        self.cursor = None
 
-    def next_page(self):
-        if self.cursor is False:
-            return None
+    def get_page(self, params: Dict[Any, Any]) -> Any:
+        """Return the next page with given parameters."""
+        # add our query to the params and execute...
+        params.update(self.query)
 
-        params = self.query
-        params['page_size'] = CONTENT_PAGE_SIZE
+        return self.client.databases.query(**params)
 
-        if self.cursor:
-            params['start_cursor'] = self.cursor
 
-        # TODO error checking on result
-        result = self.client.databases.query(**params)
+class SearchIterator(ResultSetIterator):
+    """Iterate results from a search request - e.g.
 
-        if result['has_more']:
-            self.cursor = result['next_cursor']
-        else:
-            self.cursor = False
+    search = SearchIterator(client, {
+        'query' : 'tasks',
+        'sort' : {
+            'direction': 'ascending',
+            'timestamp': 'last_edited_time'
+        }
+    })
 
-        return result['results']
+    for item in search:
+        ...
+    """
 
+    def __init__(self, client: Client, query: Dict[Any, Any]) -> None:
+        """
+        Initialize the SearchIterator with a given query.
+
+        This is a standard search query dict.
+        """
+        super().__init__(client)
+        self.query = query
+
+    def get_page(self, params: Dict[Any, Any]) -> Any:
+        """Return the next page with given parameters."""
+        # add our query to the params and execute...
+        params.update(self.query)
+
+        return self.client.search(**params)
+
+
+class BlockChildrenIterator(ResultSetIterator):
+    """Iterate over all children in a page - e.g.
+
+    for child in BlockChildrenIterator(client, page_id):
+        ...
+    """
+
+    def __init__(self, client: Client, parent_id: str) -> None:
+        """Initialize the BlockChildrenIterator for a given page ID."""
+        super().__init__(client)
+        self.parent_id = parent_id
+
+    def get_page(self, params: Dict[Any, Any]) -> Any:
+        """Return the next page with given parameters."""
+        # add our parent ID to the params and execute...
+        params["block_id"] = self.parent_id
+
+        return self.client.blocks.children.list(**params)
