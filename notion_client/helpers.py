@@ -1,11 +1,11 @@
 """Utility functions for notion-sdk-py."""
 
-
-from typing import Any, Dict, Iterator
+from typing import TYPE_CHECKING, Any, Dict, Iterator
 from urllib.parse import urlparse
 from uuid import UUID
 
-from .client import Client
+if TYPE_CHECKING:
+    from notion_client.client import Client
 
 CONTENT_PAGE_SIZE = 100
 
@@ -37,10 +37,10 @@ class ContentIterator(object):
     """Base class to handle pagination over content from the Notion API."""
 
     page: Any
-    client: Client
+    client: "Client"
     index: int
 
-    def __init__(self, client: Client) -> None:
+    def __init__(self, client: "Client") -> None:
         """Initialize the interator using the specified client for requests."""
         self.client = client
 
@@ -83,7 +83,7 @@ class ResultSetIterator(ContentIterator):
 
     cursor: Any
 
-    def __init__(self, client: Client) -> None:
+    def __init__(self, client: "Client") -> None:
         super().__init__(client)
         self.cursor = None
 
@@ -154,7 +154,7 @@ class QueryIterator(ResultSetIterator):
         ...
     """
 
-    def __init__(self, client: Client, query: Dict[Any, Any]) -> None:
+    def __init__(self, client: "Client", query: Dict[Any, Any]) -> None:
         """
         Initialize the QueryIterator with a given query.
 
@@ -186,7 +186,7 @@ class SearchIterator(ResultSetIterator):
         ...
     """
 
-    def __init__(self, client: Client, query: Dict[Any, Any]) -> None:
+    def __init__(self, client: "Client", query: Dict[Any, Any]) -> None:
         """
         Initialize the SearchIterator with a given query.
 
@@ -210,7 +210,7 @@ class BlockChildrenIterator(ResultSetIterator):
         ...
     """
 
-    def __init__(self, client: Client, parent_id: str) -> None:
+    def __init__(self, client: "Client", parent_id: str) -> None:
         """Initialize the BlockChildrenIterator for a given page ID."""
         super().__init__(client)
         self.parent_id = parent_id
