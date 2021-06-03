@@ -1,12 +1,9 @@
 """Utility functions for notion-sdk-py."""
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Any, Dict, Iterator
+from typing import Any, Dict, Iterator
 from urllib.parse import urlparse
 from uuid import UUID
-
-if TYPE_CHECKING:
-    from notion_client.client import Client
 
 CONTENT_PAGE_SIZE = 100
 
@@ -122,49 +119,3 @@ class EndpointIterator(ResultSetIterator):
         """Return the next page with given parameters."""
         params.update(self.params)
         return self.endpoint(**params)
-
-
-class UserIterator(EndpointIterator):
-    """Iterate over all users in the current workspace."""
-
-    def __init__(self, client: "Client") -> None:
-        super().__init__(client.users.list)
-
-
-class DatabaseIterator(EndpointIterator):
-    """Iterate over all available databases."""
-
-    def __init__(self, client: "Client") -> None:
-        super().__init__(client.databases.list)
-
-
-class QueryIterator(EndpointIterator):
-    """Iterate results from database queries - e.g."""
-
-    def __init__(self, client: "Client", **query: Any) -> None:
-        """
-        Initialize the QueryIterator with a given query.
-
-        This is a standard query with a database ID, filters, sorts, etc.
-        """
-        super().__init__(client.databases.query, **query)
-
-
-class SearchIterator(EndpointIterator):
-    """Iterate results from a search request - e.g."""
-
-    def __init__(self, client: "Client", **query: Any) -> None:
-        """
-        Initialize the SearchIterator with a given query.
-
-        This is a standard search query dict.
-        """
-        super().__init__(client.search, **query)
-
-
-class ChildrenIterator(EndpointIterator):
-    """Iterate over all children in a page - e.g."""
-
-    def __init__(self, client: "Client", parent_id: str) -> None:
-        """Initialize the ChildrenIterator for a given page ID."""
-        super().__init__(client.blocks.children.list, block_id=parent_id)

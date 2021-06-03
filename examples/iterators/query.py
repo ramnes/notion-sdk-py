@@ -2,7 +2,7 @@ import os
 import sys
 
 from notion_client.client import Client
-from notion_client.helpers import QueryIterator
+from notion_client.helpers import EndpointIterator
 
 api_key = (
     os.getenv("NOTION_API_KEY") or "secret_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
@@ -11,8 +11,8 @@ client = Client(auth=api_key)
 
 dbid = sys.argv[1]
 
-iter = QueryIterator(
-    client=client,
+iter = EndpointIterator(
+    endpoint=client.databases.query,
     database_id=dbid,
     sorts=[{"direction": "ascending", "timestamp": "last_edited_time"}],
 )

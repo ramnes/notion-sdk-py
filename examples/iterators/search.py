@@ -2,7 +2,7 @@ import os
 import sys
 
 from notion_client.client import Client
-from notion_client.helpers import SearchIterator
+from notion_client.helpers import EndpointIterator
 
 api_key = (
     os.getenv("NOTION_API_KEY") or "secret_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
@@ -11,8 +11,8 @@ client = Client(auth=api_key)
 
 findme = sys.argv[1]
 
-iter = SearchIterator(
-    client,
+iter = EndpointIterator(
+    endpoint=client.search,
     query=findme,
     sort={"direction": "ascending", "timestamp": "last_edited_time"},
 )
