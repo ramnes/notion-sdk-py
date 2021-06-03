@@ -1,5 +1,6 @@
 """Utility functions for notion-sdk-py."""
 
+from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, Dict, Iterator
 from urllib.parse import urlparse
 from uuid import UUID
@@ -33,7 +34,7 @@ def get_id(url: str) -> str:
     return str(UUID(raw_id))
 
 
-class ContentIterator(object):
+class ContentIterator(ABC):
     """Base class to handle pagination over content from the Notion API."""
 
     page: Any
@@ -70,15 +71,13 @@ class ContentIterator(object):
 
         return item
 
+    @abstractmethod
     def load_next_page(self) -> Any:
-        """Must be implemented in subclasses.
-
-        Returns the next page of content or None.
-        """
-        raise ValueError
+        # noqa
+        pass
 
 
-class ResultSetIterator(ContentIterator):
+class ResultSetIterator(ContentIterator, ABC):
     """Base class for iterating over result sets (using a cursor)."""
 
     cursor: Any
@@ -107,12 +106,10 @@ class ResultSetIterator(ContentIterator):
 
         return result["results"]
 
+    @abstractmethod
     def get_page(self, params: Dict[Any, Any]) -> Any:
-        """Must be implemented in subclasses.
-
-        Returns the page starting at cursor or None.
-        """
-        raise ValueError
+        # noqa
+        pass
 
 
 class UserIterator(ResultSetIterator):
