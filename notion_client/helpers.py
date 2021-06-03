@@ -112,31 +112,54 @@ class ResultSetIterator(ContentIterator, ABC):
         pass
 
 
-class UserIterator(ResultSetIterator):
+class EndpointIterator(ResultSetIterator):
+    """Base class for iterating over results from an API endpoint.
+
+    iter = EndpointIterator(client, client.users.list)
+
+    for user in iter:
+        ...
+    """
+
+    endpoint: Any
+    param: Dict[Any, Any]
+
+    def __init__(self, client: "Client", endpoint: Any, **params: Any) -> None:
+        super().__init__(client)
+        self.endpoint = endpoint
+        self.params = params
+
+    def get_page(self, params: Dict[Any, Any]) -> Any:
+        """Return the next page with given parameters."""
+        # add our query to the params and execute...
+        params.update(self.params)
+
+        return self.endpoint(**params)
+
+
+class UserIterator(EndpointIterator):
     """Iterate over all users in the current workspace.
 
     for db in UserIterator(client):
         ...
     """
 
-    def get_page(self, params: Dict[Any, Any]) -> Any:
-        """Return the next page with given parameters."""
-        return self.client.users.list(**params)
+    def __init__(self, client: "Client") -> None:
+        super().__init__(client, client.users.list)
 
 
-class DatabaseIterator(ResultSetIterator):
+class DatabaseIterator(EndpointIterator):
     """Iterate over all available databases.
 
     for db in DatabaseIterator(client):
         ...
     """
 
-    def get_page(self, params: Dict[Any, Any]) -> Any:
-        """Return the next page with given parameters."""
-        return self.client.databases.list(**params)
+    def __init__(self, client: "Client") -> None:
+        super().__init__(client, client.databases.list)
 
 
-class QueryIterator(ResultSetIterator):
+class QueryIterator(EndpointIterator):
     """Iterate results from database queries - e.g.
 
     issues = QueryIterator(client, {
@@ -151,24 +174,16 @@ class QueryIterator(ResultSetIterator):
         ...
     """
 
-    def __init__(self, client: "Client", query: Dict[Any, Any]) -> None:
+    def __init__(self, client: "Client", **query: Any) -> None:
         """
         Initialize the QueryIterator with a given query.
 
         This is a standard query with a database ID, filters, sorts, etc.
         """
-        super().__init__(client)
-        self.query = query
-
-    def get_page(self, params: Dict[Any, Any]) -> Any:
-        """Return the next page with given parameters."""
-        # add our query to the params and execute...
-        params.update(self.query)
-
-        return self.client.databases.query(**params)
+        super().__init__(client, client.databases.query, **query)
 
 
-class SearchIterator(ResultSetIterator):
+class SearchIterator(EndpointIterator):
     """Iterate results from a search request - e.g.
 
     search = SearchIterator(client, {
@@ -183,38 +198,22 @@ class SearchIterator(ResultSetIterator):
         ...
     """
 
-    def __init__(self, client: "Client", query: Dict[Any, Any]) -> None:
+    def __init__(self, client: "Client", **query: Any) -> None:
         """
         Initialize the SearchIterator with a given query.
 
         This is a standard search query dict.
         """
-        super().__init__(client)
-        self.query = query
-
-    def get_page(self, params: Dict[Any, Any]) -> Any:
-        """Return the next page with given parameters."""
-        # add our query to the params and execute...
-        params.update(self.query)
-
-        return self.client.search(**params)
+        super().__init__(client, client.search, **query)
 
 
-class BlockChildrenIterator(ResultSetIterator):
+class ChildrenIterator(EndpointIterator):
     """Iterate over all children in a page - e.g.
 
-    for child in BlockChildrenIterator(client, page_id):
+    for child in ChildrenIterator(client, page_id):
         ...
     """
 
     def __init__(self, client: "Client", parent_id: str) -> None:
-        """Initialize the BlockChildrenIterator for a given page ID."""
-        super().__init__(client)
-        self.parent_id = parent_id
-
-    def get_page(self, params: Dict[Any, Any]) -> Any:
-        """Return the next page with given parameters."""
-        # add our parent ID to the params and execute...
-        params["block_id"] = self.parent_id
-
-        return self.client.blocks.children.list(**params)
+        """Initialize the ChildrenIterator for a given page ID."""
+        super().__init__(client, client.blocks.children.list, block_id=parent_id)
