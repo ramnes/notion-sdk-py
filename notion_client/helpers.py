@@ -38,12 +38,7 @@ class ContentIterator(ABC):
     """Base class to handle pagination over content from the Notion API."""
 
     page: Any
-    client: "Client"
     index: int
-
-    def __init__(self, client: "Client") -> None:
-        """Initialize the interator using the specified client for requests."""
-        self.client = client
 
     def __iter__(self) -> Iterator[Any]:
         """Initialize the iterator."""
@@ -82,8 +77,8 @@ class ResultSetIterator(ContentIterator, ABC):
 
     cursor: Any
 
-    def __init__(self, client: "Client") -> None:
-        super().__init__(client)
+    def __init__(self) -> None:
+        """Initialize the iterator."""
         self.cursor = None
 
     def load_next_page(self) -> Any:
@@ -113,66 +108,38 @@ class ResultSetIterator(ContentIterator, ABC):
 
 
 class EndpointIterator(ResultSetIterator):
-    """Base class for iterating over results from an API endpoint.
-
-    iter = EndpointIterator(client, client.users.list)
-
-    for user in iter:
-        ...
-    """
+    """Base class for iterating over results from an API endpoint."""
 
     endpoint: Any
     param: Dict[Any, Any]
 
-    def __init__(self, client: "Client", endpoint: Any, **params: Any) -> None:
-        super().__init__(client)
+    def __init__(self, endpoint: Any, **params: Any) -> None:
+        super().__init__()
         self.endpoint = endpoint
         self.params = params
 
     def get_page(self, params: Dict[Any, Any]) -> Any:
         """Return the next page with given parameters."""
-        # add our query to the params and execute...
         params.update(self.params)
-
         return self.endpoint(**params)
 
 
 class UserIterator(EndpointIterator):
-    """Iterate over all users in the current workspace.
-
-    for db in UserIterator(client):
-        ...
-    """
+    """Iterate over all users in the current workspace."""
 
     def __init__(self, client: "Client") -> None:
-        super().__init__(client, client.users.list)
+        super().__init__(client.users.list)
 
 
 class DatabaseIterator(EndpointIterator):
-    """Iterate over all available databases.
-
-    for db in DatabaseIterator(client):
-        ...
-    """
+    """Iterate over all available databases."""
 
     def __init__(self, client: "Client") -> None:
-        super().__init__(client, client.databases.list)
+        super().__init__(client.databases.list)
 
 
 class QueryIterator(EndpointIterator):
-    """Iterate results from database queries - e.g.
-
-    issues = QueryIterator(client, {
-        'database_id': issue_db,
-        'sorts' : [{
-            'direction': 'ascending',
-            'property': 'Last Update'
-        }]
-    })
-
-    for issue in issues:
-        ...
-    """
+    """Iterate results from database queries - e.g."""
 
     def __init__(self, client: "Client", **query: Any) -> None:
         """
@@ -180,23 +147,11 @@ class QueryIterator(EndpointIterator):
 
         This is a standard query with a database ID, filters, sorts, etc.
         """
-        super().__init__(client, client.databases.query, **query)
+        super().__init__(client.databases.query, **query)
 
 
 class SearchIterator(EndpointIterator):
-    """Iterate results from a search request - e.g.
-
-    search = SearchIterator(client, {
-        'query' : 'tasks',
-        'sort' : {
-            'direction': 'ascending',
-            'timestamp': 'last_edited_time'
-        }
-    })
-
-    for item in search:
-        ...
-    """
+    """Iterate results from a search request - e.g."""
 
     def __init__(self, client: "Client", **query: Any) -> None:
         """
@@ -204,16 +159,12 @@ class SearchIterator(EndpointIterator):
 
         This is a standard search query dict.
         """
-        super().__init__(client, client.search, **query)
+        super().__init__(client.search, **query)
 
 
 class ChildrenIterator(EndpointIterator):
-    """Iterate over all children in a page - e.g.
-
-    for child in ChildrenIterator(client, page_id):
-        ...
-    """
+    """Iterate over all children in a page - e.g."""
 
     def __init__(self, client: "Client", parent_id: str) -> None:
         """Initialize the ChildrenIterator for a given page ID."""
-        super().__init__(client, client.blocks.children.list, block_id=parent_id)
+        super().__init__(client.blocks.children.list, block_id=parent_id)

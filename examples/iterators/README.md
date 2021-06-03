@@ -14,7 +14,6 @@ endpoint as well as any additional parameters required by the endpoint.
 
 ```python
 iter = EndpointIterator(
-    client=client,
     endpoint=client.search,
     query='task',
     sort={

@@ -12,7 +12,6 @@ client = Client(auth=api_key)
 findme = sys.argv[1]
 
 iter = EndpointIterator(
-    client=client,
     endpoint=client.search,
     query=findme,
     sort={"direction": "ascending", "timestamp": "last_edited_time"},
