@@ -1,4 +1,5 @@
 import math
+from random import random
 
 from notion_client.helpers import EndpointIterator
 
@@ -18,6 +19,7 @@ def mock_endpoint(item_count, page_size, **params):
                         "index": x,
                         "pagenum": math.ceil(x / page_size),
                         "content": user_data,
+                        "data": random(),
                     }
                 )
 
