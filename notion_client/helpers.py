@@ -36,20 +36,23 @@ class ContentIterator(ABC):
 
     page: Any
     index: int
+    pagenum: int
 
     def __iter__(self) -> Iterator[Any]:
         """Initialize the iterator."""
         self.page = None
         self.index = -1
+        self.pagenum = 0
 
         return self
 
     def __next__(self) -> Any:
-        """Return the next item from the result set or StopIteration."""
+        """Return the next item from the result set or raise StopIteration."""
         # load a new page if needed
         if self.page is None or self.index >= len(self.page):
             self.index = 0
             self.page = self.load_next_page()
+            self.pagenum += 1
 
         # if we have run out of results...
         if self.page is None or len(self.page) == 0:
@@ -62,6 +65,11 @@ class ContentIterator(ABC):
         self.index += 1
 
         return item
+
+    @property
+    def page_number(self) -> int:
+        """Return the current page number of results in this iterator."""
+        return self.pagenum
 
     @abstractmethod
     def load_next_page(self) -> Any:
@@ -98,8 +106,16 @@ class ResultSetIterator(ContentIterator, ABC):
 
         return result["results"]
 
+    @property
+    def last_page(self) -> bool:
+        """Return true if this is the last page of results."""
+        if self.cursor is None:
+            raise ValueError("iterator has not been initialized")
+
+        return self.cursor is False
+
     @abstractmethod
-    def get_page(self, params: Dict[Any, Any]) -> Any:
+    def get_page(self, params: Dict[str, Any]) -> Any:
         # noqa
         pass
 
@@ -107,15 +123,16 @@ class ResultSetIterator(ContentIterator, ABC):
 class EndpointIterator(ResultSetIterator):
     """Base class for iterating over results from an API endpoint."""
 
-    endpoint: Any
-    param: Dict[Any, Any]
+    endpoint: Any  # should be Callable - https://github.com/python/mypy/issues/708
+    params: Dict[Any, Any]
 
     def __init__(self, endpoint: Any, **params: Any) -> None:
         super().__init__()
         self.endpoint = endpoint
         self.params = params
 
-    def get_page(self, params: Dict[Any, Any]) -> Any:
+    # XXX should return Dict[str, Any] from Callable[[Any], Dict[str, Any]]
+    def get_page(self, params: Dict[str, Any]) -> Any:
         """Return the next page with given parameters."""
         params.update(self.params)
         return self.endpoint(**params)
