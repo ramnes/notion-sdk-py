@@ -41,7 +41,7 @@ plugins:
   - section-index
   - mkdocstrings
   - coverage
-     
+
 markdown_extensions:
   - admonition
   - pymdownx.highlight
