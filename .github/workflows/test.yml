@@ -24,6 +24,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - run: pip install -r requirements/tests.txt
     - run: pytest
+      env:
+        NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
     - uses: codecov/codecov-action@v1
       with:
         env_vars: PYTHON
