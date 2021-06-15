@@ -17,7 +17,7 @@ def vcr_config():
         return response
 
     return {
-        "filter_headers": [("authorization", "secret_...")],
+        "filter_headers": [("authorization", "secret_..."), ("user-agent", None)],
         "before_record_response": remove_headers,
     }
 
