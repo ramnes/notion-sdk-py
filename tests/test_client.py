@@ -27,3 +27,25 @@ async def test_async_client_request(async_client):
 
     response = await async_client.request("/users", "GET")
     assert response["results"]
+
+
+@pytest.mark.vcr()
+def test_client_request_auth(token):
+    client = Client()
+
+    with pytest.raises(APIResponseError):
+        client.request("/users", "GET")
+
+    response = client.request("/users", "GET", auth=token)
+    assert response["results"]
+
+
+@pytest.mark.vcr()
+async def test_async_client_request_auth(token):
+    client = AsyncClient()
+
+    with pytest.raises(APIResponseError):
+        await client.request("/users", "GET")
+
+    response = await client.request("/users", "GET", auth=token)
+    assert response["results"]
