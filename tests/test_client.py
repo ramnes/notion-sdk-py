@@ -11,6 +11,7 @@ def test_async_client_init(async_client):
     assert isinstance(async_client, AsyncClient)
 
 
+@pytest.mark.vcr()
 def test_client_request(client):
     with pytest.raises(APIResponseError):
         client.request("/invalid", "GET")
@@ -19,6 +20,7 @@ def test_client_request(client):
     assert response["results"]
 
 
+@pytest.mark.vcr()
 async def test_async_client_request(async_client):
     with pytest.raises(APIResponseError):
         await async_client.request("/invalid", "GET")
