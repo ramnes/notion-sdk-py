@@ -24,6 +24,7 @@ class BlocksChildrenEndpoint(Endpoint):
             path=f"blocks/{block_id}/children",
             method="PATCH",
             body=pick(kwargs, "children"),
+            auth=kwargs.get("auth"),
         )
 
     def list(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
@@ -37,6 +38,7 @@ class BlocksChildrenEndpoint(Endpoint):
             path=f"blocks/{block_id}/children",
             method="GET",
             query=pick(kwargs, "start_cursor", "page_size"),
+            auth=kwargs.get("auth"),
         )
 
 
@@ -56,6 +58,7 @@ class DatabasesEndpoint(Endpoint):
             path="databases",
             method="GET",
             query=pick(kwargs, "start_cursor", "page_size"),
+            auth=kwargs.get("auth"),
         )
 
     def query(self, database_id: str, **kwargs: Any) -> SyncAsync[Any]:
@@ -74,8 +77,7 @@ class DatabasesEndpoint(Endpoint):
     def retrieve(self, database_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """Retrieve a Database object using the ID specified."""
         return self.parent.request(
-            path=f"databases/{database_id}",
-            method="GET",
+            path=f"databases/{database_id}", method="GET", auth=kwargs.get("auth")
         )
 
 
@@ -94,13 +96,13 @@ class PagesEndpoint(Endpoint):
             path="pages",
             method="POST",
             body=pick(kwargs, "parent", "properties", "children"),
+            auth=kwargs.get("auth"),
         )
 
     def retrieve(self, page_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """Retrieve a Page object using the ID specified."""
         return self.parent.request(
-            path=f"pages/{page_id}",
-            method="GET",
+            path=f"pages/{page_id}", method="GET", auth=kwargs.get("auth")
         )
 
     def update(self, page_id: str, **kwargs: Any) -> SyncAsync[Any]:
@@ -111,7 +113,10 @@ class PagesEndpoint(Endpoint):
         must conform to the parent database's property schema.
         """
         return self.parent.request(
-            path=f"pages/{page_id}", method="PATCH", body=pick(kwargs, "properties")
+            path=f"pages/{page_id}",
+            method="PATCH",
+            body=pick(kwargs, "properties"),
+            auth=kwargs.get("auth"),
         )
 
 
@@ -131,8 +136,7 @@ class UsersEndpoint(Endpoint):
     def retrieve(self, user_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """Retrieve a User using the ID specified."""
         return self.parent.request(
-            path=f"users/{user_id}",
-            method="GET",
+            path=f"users/{user_id}", method="GET", auth=kwargs.get("auth")
         )
 
 
@@ -151,4 +155,5 @@ class SearchEndpoint(Endpoint):
             path="search",
             method="POST",
             body=pick(kwargs, "query", "sort", "filter", "start_cursor", "page_size"),
+            auth=kwargs.get("auth"),
         )
