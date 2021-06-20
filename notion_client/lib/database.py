@@ -1,3 +1,4 @@
+"""Database object and property classes."""
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Dict, List, Type
@@ -13,6 +14,7 @@ class Database(APIObject):
 
     @classmethod
     def from_json(cls, d: Dict[str, Any]) -> "Database":
+        """Create a Database from its JSON equaivalent, retrieved from Notion API."""
         return Database(
             id=d["id"],
             object="database",
@@ -56,6 +58,7 @@ class NumberProperty(Property):
 
     @classmethod
     def from_json(cls, d: Dict[str, Any]) -> "NumberProperty":
+        """Create a NumberProperty from its JSON equaivalent."""
         number_property: NumberProperty = super(cls, NumberProperty).from_json(d)
         number_property.format = NumberPropertyFormat(d["format"])
         return number_property
@@ -67,8 +70,9 @@ class SelectProperty(Property):
 
     @classmethod
     def from_json(cls, d: Dict[str, Any]) -> "SelectProperty":
+        """Create a SelectProperty from its JSON equaivalent."""
         select_property: SelectProperty = super(cls, SelectProperty).from_json(d)
-        select_property.options = [SelectOption(**x) for x in d["options"]]
+        select_property.options = [SelectOption(**x) for x in d["select"]["options"]]
         return select_property
 
 
@@ -78,10 +82,13 @@ class MultiselectProperty(Property):
 
     @classmethod
     def from_json(cls, d: Dict[str, Any]) -> "MultiselectProperty":
+        """Create a MultiSelectProperty from its JSON equaivalent."""
         multiselect_property: MultiselectProperty = super(
             cls, MultiselectProperty
         ).from_json(d)
-        multiselect_property.options = [MultiselectOption(**x) for x in d["options"]]
+        multiselect_property.options = [
+            MultiselectOption(**x) for x in d["multi_select"]["options"]
+        ]
         return multiselect_property
 
 
@@ -151,6 +158,7 @@ class LastEditedByProperty(Property):
 
 
 def database_property_from_json(d: Dict[str, Any]) -> Property:
+    """Make database property JSON Pythonic."""
     property_type = d["type"]
     property_type_to_class: Dict[str, Type[Property]] = {
         "title": TitleProperty,

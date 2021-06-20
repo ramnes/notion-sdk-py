@@ -1,3 +1,5 @@
+"""Python Objects for all types of Notion API objects."""
+
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -31,6 +33,7 @@ class Block(APIObject):
 
     @classmethod
     def from_json(cls, d: Dict[str, Any]) -> "Block":
+        """Create a Block from its JSON equaivalent, retrieved from Notion API."""
         children = d.get("children")
         if not children:
             children = []
@@ -58,6 +61,7 @@ class Page(APIObject):
 
     @classmethod
     def from_json(cls, d: Dict[str, Any]) -> "Page":
+        """Create a Page from its JSON equaivalent, retrieved from Notion API."""
         return Page(
             id=d["id"],
             object="page",
@@ -83,6 +87,7 @@ class User(APIObject):
 
     @classmethod
     def from_json(cls, d: Dict[str, str]) -> "User":
+        """Create a User from its JSON equaivalent, retrieved from Notion API."""
         user_type = UserType(d.get("type"))
         return User(
             id=d["id"],
@@ -100,6 +105,7 @@ class User(APIObject):
 
 
 def property_value_from_json(d: Dict[str, Any]) -> "PropertyValue":
+    """Make property value JSON Pythonic."""
     property_type = d["type"]
     property_type_to_class: Dict[str, Any] = {
         "title": TitlePropertyValue,
@@ -122,11 +128,8 @@ def property_value_from_json(d: Dict[str, Any]) -> "PropertyValue":
         "last_edited_time": LastEditedTimePropertyValue,
         "last_edited_by": LastEditedByPropertyValue,
     }
-    print(d)
-    property_value: PropertyValue = property_type_to_class[property_type].from_json(d)
 
-    print(property_value)
-    print()
+    property_value: PropertyValue = property_type_to_class[property_type].from_json(d)
     return property_value
 
 
@@ -137,6 +140,7 @@ class PropertyValue:
 
     @classmethod
     def _from_json(cls, d: Dict[str, Any]) -> "PropertyValue":
+        """Convert data types of values and filter out unnecessary keys."""
         required_fields = cls.__dataclass_fields__  # type: ignore
 
         # Try converting all json datatypes to their dataclass type (e.g Enum).
@@ -151,6 +155,7 @@ class PropertyValue:
 
     @classmethod
     def from_json(cls, d: Dict[str, Any]) -> "PropertyValue":
+        """Create a Property Value from its JSON equaivalent."""
         property_id = d.pop("id")
         property_type = d.pop("type")
 
@@ -241,9 +246,6 @@ class NumberPropertyValue(PropertyValue):
 @dataclass
 class SelectPropertyValue(PropertyValue):
     name: str
-
-    # explicit override of the id in Property. See
-    # https://developers.notion.com/reference/page#select-property-values
     id: str
     color: BasicColor
 
