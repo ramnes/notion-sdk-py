@@ -1,7 +1,10 @@
+"""Enums for Notion API fields that have a finite set of possible values."""
+
+
 from enum import Enum
 
 
-class BasicColor(Enum):
+class BasicColor(str, Enum):
     default = "default"
     gray = "gray"
     brown = "brown"
@@ -14,7 +17,7 @@ class BasicColor(Enum):
     red = "red"
 
 
-class BlockType(Enum):
+class BlockType(str, Enum):
     paragraph = "paragraph"
     heading_one = "heading_1"
     heading_two = "heading_2"
@@ -27,7 +30,7 @@ class BlockType(Enum):
     unsupported = "unsupported"
 
 
-class Color(Enum):
+class Color(str, Enum):
     default = "default"
     gray = "gray"
     brown = "brown"
@@ -49,7 +52,7 @@ class Color(Enum):
     red_background = "red_background"
 
 
-class NumberPropertyFormat(Enum):
+class NumberPropertyFormat(str, Enum):
     number = "number"
     number_with_commas = "number_with_commas"
     percent = "percent"
@@ -63,14 +66,14 @@ class NumberPropertyFormat(Enum):
     yuan = "yuan"
 
 
-class ParentType(Enum):
+class ParentType(str, Enum):
     page = "page_id"
     database = "database_id"
     workspace = "workspace"
 
 
-class PropertyType(Enum):
-    title = "title"
+class PropertyType(str, Enum):
+    _title = "title"
     rich_text = "rich_text"
     number = "number"
     select = "select"
@@ -91,13 +94,13 @@ class PropertyType(Enum):
     last_edited_by = "last_edited_by"
 
 
-class RichTextType(Enum):
+class RichTextType(str, Enum):
     text = "text"
     mention = "mention"
     equation = "equation"
 
 
-class RollupFunctionType(Enum):
+class RollupFunctionType(str, Enum):
     count_all = "count_all"
     count_values = "count_values"
     count_unique_values = "count_unique_values"
@@ -113,12 +116,12 @@ class RollupFunctionType(Enum):
     range = "range"
 
 
-class RollupValueTypes(Enum):
+class RollupValueTypes(str, Enum):
     number = "number"
     date = "date"
     array = "array"
 
 
-class UserType(Enum):
+class UserType(str, Enum):
     person = "person"
     bot = "bot"
