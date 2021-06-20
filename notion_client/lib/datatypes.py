@@ -36,6 +36,12 @@ class Property:
 
         required_fields = cls.__dataclass_fields__  # type: ignore
 
+        if d.get("type") and d.get(d.get("type")):
+            print(d.get("type"))
+            print(d)
+            print()
+            d = {**d, **d[d["type"]]}
+
         # Try converting all json datatypes to their dataclass type (e.g Enum).
         # Property subclasses with more complicated data types will
         # have to override `from_json`

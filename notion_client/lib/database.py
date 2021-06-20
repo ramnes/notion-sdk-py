@@ -51,6 +51,14 @@ class RollupProperty(Property):
     rollup_property_name: str
     rollup_property_id: RollupFunctionType
 
+    @classmethod
+    def from_json(cls, d: Dict[str, Any]) -> "RollupProperty":
+        """Create a RollupProperty from its JSON equaivalent."""
+        rollup_type = d.pop("rollup_property_id")
+        rollup_property: RollupProperty = super(cls, RollupProperty).from_json(d)
+        rollup_property.format = RollupFunctionType(rollup_type)
+        return rollup_property
+
 
 @dataclass
 class NumberProperty(Property):
@@ -59,8 +67,9 @@ class NumberProperty(Property):
     @classmethod
     def from_json(cls, d: Dict[str, Any]) -> "NumberProperty":
         """Create a NumberProperty from its JSON equaivalent."""
+        number_format = d.pop("format")
         number_property: NumberProperty = super(cls, NumberProperty).from_json(d)
-        number_property.format = NumberPropertyFormat(d["format"])
+        number_property.format = NumberPropertyFormat(number_format)
         return number_property
 
 
@@ -71,8 +80,11 @@ class SelectProperty(Property):
     @classmethod
     def from_json(cls, d: Dict[str, Any]) -> "SelectProperty":
         """Create a SelectProperty from its JSON equaivalent."""
+        select_configuration = d.pop("select")
         select_property: SelectProperty = super(cls, SelectProperty).from_json(d)
-        select_property.options = [SelectOption(**x) for x in d["select"]["options"]]
+        select_property.options = [
+            SelectOption(**x) for x in select_configuration["options"]
+        ]
         return select_property
 
 
@@ -83,11 +95,12 @@ class MultiselectProperty(Property):
     @classmethod
     def from_json(cls, d: Dict[str, Any]) -> "MultiselectProperty":
         """Create a MultiSelectProperty from its JSON equaivalent."""
+        select_configuration = d.pop("multi_select")
         multiselect_property: MultiselectProperty = super(
             cls, MultiselectProperty
         ).from_json(d)
         multiselect_property.options = [
-            MultiselectOption(**x) for x in d["multi_select"]["options"]
+            MultiselectOption(**x) for x in select_configuration["options"]
         ]
         return multiselect_property
 

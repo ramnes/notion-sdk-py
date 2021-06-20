@@ -4,13 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from .custom_enums import (
-    BasicColor,
-    BlockType,
-    PropertyType,
-    RollupValueTypes,
-    UserType,
-)
+from .custom_enums import BasicColor, BlockType, PropertyType, RollupValueTypes, UserType
 from .datatypes import (
     APIObject,
     Bot,
