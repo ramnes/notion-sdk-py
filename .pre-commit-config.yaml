@@ -23,3 +23,12 @@ repos:
     additional_dependencies: ["httpx"]
     args: []
     files: "^notion_client\/.*"
+- repo: https://github.com/pycqa/pydocstyle
+  rev: 6.0.0
+  hooks:
+  - id: pydocstyle
+    files: "^notion_client\/.*"
+- repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+  rev: 2.3.5
+  hooks:
+  - id: editorconfig-checker

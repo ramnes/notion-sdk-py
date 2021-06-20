@@ -1,0 +1,21 @@
+name: Docs
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v2
+      - run: pip install -r requirements/docs.txt
+      - run: pytest
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+      - run: git config user.name 'github-actions[bot]' && git config user.email 'github-actions[bot]@users.noreply.github.com'
+      - name: Publish docs
+        run: mkdocs gh-deploy
