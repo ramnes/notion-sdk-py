@@ -88,9 +88,8 @@ class PagesEndpoint(Endpoint):
         If the parent is a database, the property values of the new page,
         the properties parameter must conform to the parent database's property schema.
 
-        If the parent is a page, the only valid property is title.
-        The new page may include page content,
-        described as blocks in the children parameter.
+        If the parent is a page, the only valid property is title. The new page may
+        include page content, described as blocks in the children parameter.
         """
         return self.parent.request(
             path="pages",
