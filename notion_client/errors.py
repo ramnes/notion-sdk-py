@@ -3,8 +3,6 @@
 This module defines python Exceptions that are raised when their
 corresponding HTTP response codes are returned by Notion API.
 """
-
-from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
@@ -93,47 +91,20 @@ class APIErrorCode(str, Enum):
     the maximum request timeout."""
 
 
-@dataclass
-class APIErrorResponseBody:
-    code: APIErrorCode
-    message: str
-
-
 class APIResponseError(HTTPResponseError):
     """An error raised by Notion API."""
 
     code: APIErrorCode
 
-    def __init__(self, response: httpx.Response, body: APIErrorResponseBody) -> None:
+    def __init__(
+        self, response: httpx.Response, message: str, code: APIErrorCode
+    ) -> None:
         """Initialize api response error."""
-        super().__init__(response, body.message)
-        self.code = body.code
-
-
-# Type Guards
+        super().__init__(response, message)
+        self.code = code
 
 
 def is_api_error_code(code: str) -> bool:
     """Check if given code belongs to the list of valid API error codes."""
     codes = [error_code.value for error_code in APIErrorCode]
     return type(code) == str and code in codes
-
-
-def is_timeout_error(e: Exception) -> bool:
-    """Check if Exception is a timeout error."""
-    return (
-        isinstance(e, httpx.TimeoutException)
-        and hasattr(e, "request")
-        and isinstance(e.request, httpx.Request)
-    )
-
-
-def is_http_error(e: Exception) -> bool:
-    """Check if Exception is an HTTP error."""
-    return (
-        isinstance(e, httpx.HTTPStatusError)
-        and hasattr(e, "request")
-        and hasattr(e, "response")
-        and isinstance(e.request, httpx.Request)
-        and isinstance(e.response, httpx.Response)
-    )
