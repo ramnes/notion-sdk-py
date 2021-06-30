@@ -837,9 +837,8 @@
 
     <div class="doc doc-contents first">
 
-      <p>Custom Exceptions for notion-sdk-py.</p>
-<p>This module defines python Exceptions that are raised when their
-corresponding HTTP response codes are returned by Notion API.</p>
+      <p>Custom exceptions for notion-sdk-py.</p>
+<p>This module defines the exceptions that can be raised when an error occurs.</p>
 
 
 
@@ -864,7 +863,7 @@ corresponding HTTP response codes are returned by Notion API.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Enumerate API error codes.</p>
+      <p>An enumeration.</p>
 
 
 
@@ -1156,9 +1155,9 @@ the maximum request timeout.</p>
 
     <div class="doc doc-contents ">
 
-      <p>HTTP Response Errors.</p>
-<p>Responses from the API use HTTP response codes that are used to
-indicate general classes of success and error.</p>
+      <p>Exception for HTTP errors.</p>
+<p>Responses from the API use HTTP response codes that are used to indicate general
+classes of success and error.</p>
 
 
 
@@ -1198,11 +1197,10 @@ indicate general classes of success and error.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Request timed out.</p>
-<p>The request that we made waits for a specified period of time or maximum number
-of retries to get the response.
-But if no response comes within the limited time or retries,
-then this Exception is raised.</p>
+      <p>Exception for requests that timeout.</p>
+<p>The request that we made waits for a specified period of time or maximum number of
+retries to get the response. But if no response comes within the limited time or
+retries, then this Exception is raised.</p>
 
 
 
