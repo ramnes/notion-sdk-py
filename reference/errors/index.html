@@ -539,13 +539,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#notion_client.errors.APIErrorResponseBody" class="md-nav__link">
-    APIErrorResponseBody
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#notion_client.errors.APIResponseError" class="md-nav__link">
     APIResponseError
   </a>
@@ -595,20 +588,6 @@
           <li class="md-nav__item">
   <a href="#notion_client.errors.is_api_error_code" class="md-nav__link">
     is_api_error_code()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#notion_client.errors.is_http_error" class="md-nav__link">
-    is_http_error()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#notion_client.errors.is_timeout_error" class="md-nav__link">
-    is_timeout_error()
   </a>
   
 </li>
@@ -824,13 +803,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#notion_client.errors.APIErrorResponseBody" class="md-nav__link">
-    APIErrorResponseBody
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#notion_client.errors.APIResponseError" class="md-nav__link">
     APIResponseError
   </a>
@@ -880,20 +852,6 @@
           <li class="md-nav__item">
   <a href="#notion_client.errors.is_api_error_code" class="md-nav__link">
     is_api_error_code()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#notion_client.errors.is_http_error" class="md-nav__link">
-    is_http_error()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#notion_client.errors.is_timeout_error" class="md-nav__link">
-    is_timeout_error()
   </a>
   
 </li>
@@ -1202,52 +1160,6 @@ the maximum request timeout.</p>
 
 
 
-<h3 id="notion_client.errors.APIErrorResponseBody" class="doc doc-heading">
-        <code>APIErrorResponseBody</code>
-
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-dataclass"><code>dataclass</code></small>
-  </span>
-
-</h3>
-
-    <div class="doc doc-contents ">
-
-      <p>APIErrorResponseBody(code: notion_client.errors.APIErrorCode, message: str)</p>
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-class">
-
-
-
 <h3 id="notion_client.errors.APIResponseError" class="doc doc-heading">
         <code>APIResponseError</code>
 
@@ -1277,7 +1189,7 @@ the maximum request timeout.</p>
 
 
 <h4 id="notion_client.errors.APIResponseError.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">code</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -1427,46 +1339,6 @@ then this Exception is raised.</p>
     <div class="doc doc-contents ">
 
       <p>Check if given code belongs to the list of valid API error codes.</p>
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="notion_client.errors.is_http_error" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">is_http_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></code>
-
-
-</h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Check if Exception is an HTTP error.</p>
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="notion_client.errors.is_timeout_error" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">is_timeout_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></code>
-
-
-</h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Check if Exception is a timeout error.</p>
 
     </div>
 
