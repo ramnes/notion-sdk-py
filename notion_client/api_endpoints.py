@@ -30,9 +30,8 @@ class BlocksChildrenEndpoint(Endpoint):
     def list(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """Return a paginated array of child block objects contained in the block.
 
-        In order to receive a complete representation of a block,
-        you may need to recursively retrieve the block children of child blocks.
-        The response may contain fewer than page_size of results.
+        In order to receive a complete representation of a block, you may need to
+        recursively retrieve the block children of child blocks.
         """
         return self.parent.request(
             path=f"blocks/{block_id}/children",
@@ -50,10 +49,7 @@ class BlocksEndpoint(Endpoint):
 
 class DatabasesEndpoint(Endpoint):
     def list(self, **kwargs: Any) -> SyncAsync[Any]:
-        """List all Databases shared with the authenticated integration.
-
-        The response may contain fewer than page_size of results.
-        """
+        """List all Databases shared with the authenticated integration."""
         return self.parent.request(
             path="databases",
             method="GET",
@@ -64,8 +60,8 @@ class DatabasesEndpoint(Endpoint):
     def query(self, database_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """Get a list of Pages contained in the database.
 
-        The result is filtered and ordered according to the filter conditions
-        and sort criteria provided in the request.
+        The result is filtered and ordered according to the filter conditions and sort
+        criteria provided in the request.
         """
         return self.parent.request(
             path=f"databases/{database_id}/query",
@@ -85,11 +81,11 @@ class PagesEndpoint(Endpoint):
     def create(self, **kwargs: Any) -> SyncAsync[Any]:
         """Create a new page in the specified database or as a child of an existing page.
 
-        If the parent is a database, the property values of the new page,
-        the properties parameter must conform to the parent database's property schema.
+        If the parent is a database, the `properties` parameter must conform to the
+        parent database's property schema.
 
-        If the parent is a page, the only valid property is title. The new page may
-        include page content, described as blocks in the children parameter.
+        If the parent is a page, the only valid property is `title`. The new page may
+        include page content, described as blocks in the `children` parameter.
         """
         return self.parent.request(
             path="pages",
@@ -107,9 +103,9 @@ class PagesEndpoint(Endpoint):
     def update(self, page_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """Update page property values for the specified page.
 
-        Properties that are not set via the properties parameter will remain unchanged.
-        If the parent is a database, the new property values in the properties parameter
-        must conform to the parent database's property schema.
+        Properties that are not set via the `properties` parameter will remain
+        unchanged.  If the parent is a database, the new property values in the
+        `properties` parameter must conform to the parent database's property schema.
         """
         return self.parent.request(
             path=f"pages/{page_id}",
@@ -121,10 +117,7 @@ class PagesEndpoint(Endpoint):
 
 class UsersEndpoint(Endpoint):
     def list(self, **kwargs: Any) -> SyncAsync[Any]:
-        """Return a paginated list of Users for the workspace.
-
-        The response may contain fewer than page_size of results.
-        """
+        """Return a paginated list of Users for the workspace."""
         return self.parent.request(
             path="users",
             method="GET",
@@ -143,12 +136,12 @@ class SearchEndpoint(Endpoint):
     def __call__(self, **kwargs: Any) -> SyncAsync[Any]:
         """Search all pages and child pages that are shared with the integration.
 
-        The results may include databases.
-        The query parameter matches against the page titles.
-        If the query parameter is not provided,
-        the response will contain all pages (and child pages) in the results.
-        The filter parameter can be used to query specifically
-        for only pages or only databases.
+        The results may include databases. The `query` parameter matches against the page
+        titles. If the `query` parameter is not provided, the response will contain all
+        pages (and child pages) in the results.
+
+        The `filter` parameter can be used to query specifically for only pages or only
+        databases.
         """
         return self.parent.request(
             path="search",

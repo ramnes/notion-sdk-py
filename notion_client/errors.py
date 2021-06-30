@@ -1,7 +1,6 @@
-"""Custom Exceptions for notion-sdk-py.
+"""Custom exceptions for notion-sdk-py.
 
-This module defines python Exceptions that are raised when their
-corresponding HTTP response codes are returned by Notion API.
+This module defines the exceptions that can be raised when an error occurs.
 """
 from enum import Enum
 from typing import Optional
@@ -10,12 +9,11 @@ import httpx
 
 
 class RequestTimeoutError(Exception):
-    """Request timed out.
+    """Exception for requests that timeout.
 
-    The request that we made waits for a specified period of time or maximum number
-    of retries to get the response.
-    But if no response comes within the limited time or retries,
-    then this Exception is raised.
+    The request that we made waits for a specified period of time or maximum number of
+    retries to get the response. But if no response comes within the limited time or
+    retries, then this Exception is raised.
     """
 
     code = "notionhq_client_request_timeout"
@@ -25,10 +23,10 @@ class RequestTimeoutError(Exception):
 
 
 class HTTPResponseError(Exception):
-    """HTTP Response Errors.
+    """Exception for HTTP errors.
 
-    Responses from the API use HTTP response codes that are used to
-    indicate general classes of success and error.
+    Responses from the API use HTTP response codes that are used to indicate general
+    classes of success and error.
     """
 
     code: str = "notionhq_client_response_error"
@@ -37,18 +35,17 @@ class HTTPResponseError(Exception):
     body: str
 
     def __init__(self, response: httpx.Response, message: Optional[str] = None) -> None:
-        super().__init__(
-            message
-            or f"Request to Notion API failed with status: {response.status_code}"
-        )
+        if message is None:
+            message = (
+                f"Request to Notion API failed with status: {response.status_code}"
+            )
+        super().__init__(message)
         self.status = response.status_code
         self.headers = response.headers
         self.body = response.text
 
 
 class APIErrorCode(str, Enum):
-    """Enumerate API error codes."""
-
     Unauthorized = "unauthorized"
     """The bearer token is not valid."""
 
@@ -103,5 +100,6 @@ class APIResponseError(HTTPResponseError):
 
 def is_api_error_code(code: str) -> bool:
     """Check if given code belongs to the list of valid API error codes."""
-    codes = [error_code.value for error_code in APIErrorCode]
-    return type(code) == str and code in codes
+    if isinstance(code, str):
+        return code in (error_code.value for error_code in APIErrorCode)
+    return False

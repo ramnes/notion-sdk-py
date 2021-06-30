@@ -1,5 +1,4 @@
-"""Sync and async clients for notion-sdk-py."""
-
+"""Synchronous and asynchronous clients for Notion's API."""
 import logging
 from abc import abstractclassmethod
 from dataclasses import dataclass
@@ -127,7 +126,7 @@ class BaseClient:
 
 
 class Client(BaseClient):
-    """Sync client for Notion API."""
+    """Synchronous client for Notion's API."""
 
     client: httpx.Client
 
@@ -156,7 +155,7 @@ class Client(BaseClient):
 
 
 class AsyncClient(BaseClient):
-    """Async client for Notion API."""
+    """Asynchronous client for Notion's API."""
 
     client: httpx.AsyncClient
 
@@ -178,7 +177,7 @@ class AsyncClient(BaseClient):
         body: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
     ) -> Any:
-        """Send an HTTP request using async client."""
+        """Send an HTTP request asynchronously."""
         request = self._build_request(method, path, query, body, auth)
         async with self.client as client:
             response = await client.send(request)
