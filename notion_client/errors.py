@@ -21,7 +21,6 @@ class RequestTimeoutError(Exception):
     code = "notionhq_client_request_timeout"
 
     def __init__(self, message: str = "Request to Notion API has timed out") -> None:
-        """Initialize  RequestTimeoutError."""
         super().__init__(message)
         self.name = "RequestTimeoutError"
 
@@ -99,7 +98,6 @@ class APIResponseError(HTTPResponseError):
     def __init__(
         self, response: httpx.Response, message: str, code: APIErrorCode
     ) -> None:
-        """Initialize api response error."""
         super().__init__(response, message)
         self.code = code
 
