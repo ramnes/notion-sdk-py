@@ -27,15 +27,6 @@ class RequestTimeoutError(Exception):
         super().__init__(message)
         self.name = "RequestTimeoutError"
 
-    @staticmethod
-    def is_request_timeout_error(e: Exception) -> bool:
-        """Check if Exception is an request timeout error."""
-        return (
-            isinstance(e, RequestTimeoutError)
-            and hasattr(e, "code")
-            and e.code == RequestTimeoutError.code
-        )
-
 
 class HTTPResponseError(Exception):
     """HTTP Response Errors.
@@ -57,14 +48,6 @@ class HTTPResponseError(Exception):
         self.status = response.status_code
         self.headers = response.headers
         self.body = response.text
-
-    def is_http_response_error(e: Exception) -> bool:
-        """Check if Exception is an http response error."""
-        return (
-            isinstance(e, HTTPResponseError)
-            and hasattr(e, "code")
-            and e.code == HTTPResponseError.code
-        )
 
 
 class APIErrorCode(str, Enum):
@@ -125,15 +108,6 @@ class APIResponseError(HTTPResponseError):
         """Initialize api response error."""
         super().__init__(response, body.message)
         self.code = body.code
-
-    @staticmethod
-    def is_api_response_error(e: Exception) -> bool:
-        """Check if Exception is an API response error."""
-        return (
-            isinstance(e, APIResponseError)
-            and hasattr(e, "code")
-            and is_api_error_code(e.code)
-        )
 
 
 # Type Guards
