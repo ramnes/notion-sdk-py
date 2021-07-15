@@ -28,4 +28,7 @@ repos:
   hooks:
   - id: pydocstyle
     files: "^notion_client\/.*"
-  
+- repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+  rev: 2.3.5
+  hooks:
+  - id: editorconfig-checker
