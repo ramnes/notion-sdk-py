@@ -1,5 +1,4 @@
-"""Sync and async clients for notion-sdk-py."""
-
+"""Synchronous and asynchronous clients for Notion's API."""
 import logging
 from abc import abstractclassmethod
 from dataclasses import dataclass
@@ -16,12 +15,10 @@ from notion_client.api_endpoints import (
     UsersEndpoint,
 )
 from notion_client.errors import (
-    APIErrorResponseBody,
     APIResponseError,
     HTTPResponseError,
     RequestTimeoutError,
     is_api_error_code,
-    is_timeout_error,
 )
 from notion_client.logging import make_console_logger
 from notion_client.typing import SyncAsync
@@ -32,16 +29,16 @@ class ClientOptions:
     """Options to configure the client.
 
     Attributes:
-        auth: Bearer token for authentication. If left undefined,
-        the `auth` parameter should be set on each request.
-        timeout_ms: Number of milliseconds to wait
-        before emitting a `RequestTimeoutError`
-        base_url: The root URL for sending API requests.
-        This can be changed to test with a mock server.
-        log_level: Verbosity of logs the instance will produce.
-        By default, logs are written to `stdout`.
+        auth: Bearer token for authentication. If left undefined, the `auth` parameter
+            should be set on each request.
+        timeout_ms: Number of milliseconds to wait before emitting a
+            `RequestTimeoutError`.
+        base_url: The root URL for sending API requests. This can be changed to test with
+            a mock server.
+        log_level: Verbosity of logs the instance will produce. By default, logs are
+            written to `stdout`.
         logger: A custom logger.
-        notion_version: Version to Notion to use.
+        notion_version: Notion version to use.
     """
 
     auth: Optional[str] = None
@@ -91,23 +88,26 @@ class BaseClient:
         path: str,
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
+        auth: Optional[str] = None,
     ) -> Request:
+        headers = httpx.Headers()
+        if auth:
+            headers["Authorization"] = f"Bearer {auth}"
         self.logger.info(f"{method} {self.client.base_url}{path}")
-        return self.client.build_request(method, path, params=query, json=body)
+        return self.client.build_request(
+            method, path, params=query, json=body, headers=headers
+        )
 
     def _parse_response(self, response: Response) -> Any:
         try:
             response.raise_for_status()
-        except httpx.TimeoutException as error:
-            if is_timeout_error(error):
-                raise RequestTimeoutError()
-            raise
+        except httpx.TimeoutException:
+            raise RequestTimeoutError()
         except httpx.HTTPStatusError as error:
             body = error.response.json()
             code = body.get("code")
-            if is_api_error_code(code):
-                body = APIErrorResponseBody(code=code, message=body["message"])
-                raise APIResponseError(error.response, body)
+            if code and is_api_error_code(code):
+                raise APIResponseError(response, body["message"], code)
             raise HTTPResponseError(error.response)
 
         return response.json()
@@ -126,7 +126,7 @@ class BaseClient:
 
 
 class Client(BaseClient):
-    """Sync client for Notion API."""
+    """Synchronous client for Notion's API."""
 
     client: httpx.Client
 
@@ -149,13 +149,13 @@ class Client(BaseClient):
         auth: Optional[str] = None,
     ) -> Any:
         """Send an HTTP request."""
-        request = self._build_request(method, path, query, body)
+        request = self._build_request(method, path, query, body, auth)
         response = self.client.send(request)
         return self._parse_response(response)
 
 
 class AsyncClient(BaseClient):
-    """Async client for Notion API."""
+    """Asynchronous client for Notion's API."""
 
     client: httpx.AsyncClient
 
@@ -177,8 +177,8 @@ class AsyncClient(BaseClient):
         body: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
     ) -> Any:
-        """Send an HTTP request using async client."""
-        request = self._build_request(method, path, query, body)
+        """Send an HTTP request asynchronously."""
+        request = self._build_request(method, path, query, body, auth)
         async with self.client as client:
             response = await client.send(request)
         return self._parse_response(response)

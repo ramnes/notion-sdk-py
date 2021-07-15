@@ -18,7 +18,7 @@ setup(
     packages=find_packages(),
     python_requires=">=3.7, <4",
     install_requires=[
-        "httpx >= 0.15.0, < 0.18.0",
+        "httpx >= 0.15.0",
     ],
     classifiers=[
         "Programming Language :: Python :: 3.7",
