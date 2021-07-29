@@ -23,7 +23,7 @@ so usage should be pretty similar between both. 😊
 
 > 📢 **Announcement** (29-07-2021) — 0.5.0 is now released and mostly adds
 > support for the recent Notion API changes, and per-function
-> authentication. Upgrading from 0.5.0 should be seamless.
+> authentication. Upgrading from 0.4.0 should be seamless.
 
 <!-- markdownlint-disable -->
 ## Installation
