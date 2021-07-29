@@ -76,6 +76,15 @@ class DatabasesEndpoint(Endpoint):
             path=f"databases/{database_id}", method="GET", auth=kwargs.get("auth")
         )
 
+    def create(self, **kwargs: Any) -> SyncAsync[Any]:
+        """Create a database as a subpage in the specified parent page."""
+        return self.parent.request(
+            path="databases",
+            method="POST",
+            body=pick(kwargs, "parent", "title", "properties"),
+            auth=kwargs.get("auth"),
+        )
+
 
 class PagesEndpoint(Endpoint):
     def create(self, **kwargs: Any) -> SyncAsync[Any]:
@@ -110,7 +119,7 @@ class PagesEndpoint(Endpoint):
         return self.parent.request(
             path=f"pages/{page_id}",
             method="PATCH",
-            body=pick(kwargs, "properties"),
+            body=pick(kwargs, "archived", "properties"),
             auth=kwargs.get("auth"),
         )
 
