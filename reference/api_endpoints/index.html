@@ -482,6 +482,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#notion_client.api_endpoints.BlocksEndpoint.update" class="md-nav__link">
+    update()
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -783,6 +790,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#notion_client.api_endpoints.BlocksEndpoint.update" class="md-nav__link">
+    update()
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1076,6 +1090,33 @@ recursively retrieve the block children of child blocks.</p>
     <div class="doc doc-contents ">
 
       <p>Retrieve a Block object using the ID specified.</p>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="notion_client.api_endpoints.BlocksEndpoint.update" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Update the content for the specified <code>block_id</code> based on the block type.</p>
+<p>Supported fields are based on the block object type.</p>
+<p><strong>Note</strong>: The update replaces the <em>entire</em> value for a given field. If a field is
+omitted (ex: omitting <code>checked</code> when updating a <code>to_do</code> block), the value will
+not be changed.</p>
+<p>Currently this endpoint supports updating <code>paragraph</code>, <code>heading_1</code>, <code>heading_2</code>,
+<code>heading_3</code>, <code>bulleted_list_item</code>, <code>numbered_list_item</code>, <code>toggle</code> and <code>to_do</code>
+blocks.</p>
 
     </div>
 
