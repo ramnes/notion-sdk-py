@@ -46,6 +46,12 @@ class BlocksEndpoint(Endpoint):
         super().__init__(*args, **kwargs)
         self.children = BlocksChildrenEndpoint(*args, **kwargs)
 
+    def retrieve(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Retrieve a Block object using the ID specified."""
+        return self.parent.request(
+            path=f"blocks/{block_id}", method="GET", auth=kwargs.get("auth")
+        )
+
 
 class DatabasesEndpoint(Endpoint):
     def list(self, **kwargs: Any) -> SyncAsync[Any]:
