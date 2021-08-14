@@ -121,6 +121,15 @@ class DatabasesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
+    def update(self, database_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Update an existing database as specified by the parameters."""
+        return self.parent.request(
+            path=f"databases/{database_id}",
+            method="PATCH",
+            body=pick(kwargs, "properties", "title"),
+            auth=kwargs.get("auth"),
+        )
+
 
 class PagesEndpoint(Endpoint):
     def create(self, **kwargs: Any) -> SyncAsync[Any]:
