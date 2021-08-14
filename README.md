@@ -21,9 +21,9 @@
 This client is meant to be a Python version of the reference [JavaScript SDK](https://github.com/makenotion/notion-sdk-js),
 so usage should be pretty similar between both. 😊
 
-> 📢 **Announcement** (29-07-2021) — 0.5.0 is now released and mostly adds
-> support for the recent Notion API changes, and per-function
-> authentication. Upgrading from 0.4.0 should be seamless.
+> 📢 **Announcement** (14-08-2021) — 0.6.0 is now released and adds support for
+> the [recent Notion API changes](https://developers.notion.com/changelog).
+> Upgrading should be seamless from 0.4.0 onwards.
 
 <!-- markdownlint-disable -->
 ## Installation

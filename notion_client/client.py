@@ -70,7 +70,7 @@ class BaseClient:
         self.client.headers = httpx.Headers(
             {
                 "Notion-Version": options.notion_version,
-                "User-Agent": "ramnes/notion-sdk-py@0.5.0",
+                "User-Agent": "ramnes/notion-sdk-py@0.6.0",
             }
         )
         if options.auth:
