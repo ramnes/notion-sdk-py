@@ -52,6 +52,36 @@ class BlocksEndpoint(Endpoint):
             path=f"blocks/{block_id}", method="GET", auth=kwargs.get("auth")
         )
 
+    def update(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Update the content for the specified `block_id` based on the block type.
+
+        Supported fields are based on the block object type.
+
+        **Note**: The update replaces the *entire* value for a given field. If a field is
+        omitted (ex: omitting `checked` when updating a `to_do` block), the value will
+        not be changed.
+
+        Currently this endpoint supports updating `paragraph`, `heading_1`, `heading_2`,
+        `heading_3`, `bulleted_list_item`, `numbered_list_item`, `toggle` and `to_do`
+        blocks.
+        """
+        return self.parent.request(
+            path=f"blocks/{block_id}",
+            method="PATCH",
+            body=pick(
+                kwargs,
+                "paragraph",
+                "heading_1",
+                "heading_2",
+                "heading_3",
+                "bulleted_list_item",
+                "numbered_list_item",
+                "toggle",
+                "to_do",
+            ),
+            auth=kwargs.get("auth"),
+        )
+
 
 class DatabasesEndpoint(Endpoint):
     def list(self, **kwargs: Any) -> SyncAsync[Any]:
