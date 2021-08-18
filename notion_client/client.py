@@ -2,7 +2,8 @@
 import logging
 from abc import abstractclassmethod
 from dataclasses import dataclass
-from typing import Any, Dict, Optional, Union
+from types import TracebackType
+from typing import Any, Dict, List, Optional, Type, Union
 
 import httpx
 from httpx import Request, Response
@@ -63,24 +64,34 @@ class BaseClient:
 
         self.logger = options.logger or make_console_logger()
         self.logger.setLevel(options.log_level)
+        self.options = options
 
+        self._clients: List[Union[httpx.Client, httpx.AsyncClient]] = []
         self.client = client
-        self.client.base_url = httpx.URL(options.base_url + "/v1/")
-        self.client.timeout = httpx.Timeout(timeout=options.timeout_ms / 1_000)
-        self.client.headers = httpx.Headers(
-            {
-                "Notion-Version": options.notion_version,
-                "User-Agent": "ramnes/notion-sdk-py@0.6.0",
-            }
-        )
-        if options.auth:
-            self.client.headers["Authorization"] = f"Bearer {options.auth}"
 
         self.blocks = BlocksEndpoint(self)
         self.databases = DatabasesEndpoint(self)
         self.users = UsersEndpoint(self)
         self.pages = PagesEndpoint(self)
         self.search = SearchEndpoint(self)
+
+    @property
+    def client(self) -> Union[httpx.Client, httpx.AsyncClient]:
+        return self._clients[-1]
+
+    @client.setter
+    def client(self, client: Union[httpx.Client, httpx.AsyncClient]) -> None:
+        client.base_url = httpx.URL(self.options.base_url + "/v1/")
+        client.timeout = httpx.Timeout(timeout=self.options.timeout_ms / 1_000)
+        client.headers = httpx.Headers(
+            {
+                "Notion-Version": self.options.notion_version,
+                "User-Agent": "ramnes/notion-sdk-py@0.6.0",
+            }
+        )
+        if self.options.auth:
+            client.headers["Authorization"] = f"Bearer {self.options.auth}"
+        self._clients.append(client)
 
     def _build_request(
         self,
@@ -140,6 +151,24 @@ class Client(BaseClient):
             client = httpx.Client()
         super().__init__(client, options, **kwargs)
 
+    def __enter__(self) -> "Client":
+        self.client = httpx.Client()
+        self.client.__enter__()
+        return self
+
+    def __exit__(
+        self,
+        exc_type: Type[BaseException],
+        exc_value: BaseException,
+        traceback: TracebackType,
+    ) -> None:
+        self.client.__exit__(exc_type, exc_value, traceback)
+        del self._clients[-1]
+
+    def close(self) -> None:
+        """Close the connection pool of the current inner client."""
+        self.client.close()
+
     def request(
         self,
         path: str,
@@ -169,6 +198,24 @@ class AsyncClient(BaseClient):
             client = httpx.AsyncClient()
         super().__init__(client, options, **kwargs)
 
+    async def __aenter__(self) -> "AsyncClient":
+        self.client = httpx.AsyncClient()
+        await self.client.__aenter__()
+        return self
+
+    async def __aexit__(
+        self,
+        exc_type: Type[BaseException],
+        exc_value: BaseException,
+        traceback: TracebackType,
+    ) -> None:
+        await self.client.__aexit__(exc_type, exc_value, traceback)
+        del self._clients[-1]
+
+    async def aclose(self) -> None:
+        """Close the connection pool of the current inner client."""
+        await self.client.aclose()
+
     async def request(
         self,
         path: str,
@@ -179,6 +226,5 @@ class AsyncClient(BaseClient):
     ) -> Any:
         """Send an HTTP request asynchronously."""
         request = self._build_request(method, path, query, body, auth)
-        async with self.client as client:
-            response = await client.send(request)
+        response = await self.client.send(request)
         return self._parse_response(response)

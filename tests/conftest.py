@@ -33,5 +33,7 @@ def client(token):
 
 
 @pytest.fixture
-def async_client(token):
-    return AsyncClient({"auth": token})
+async def async_client(token):
+    client = AsyncClient({"auth": token})
+    yield client
+    await client.aclose()
