@@ -11,7 +11,7 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2021-05-13'
+      - '2021-08-16'
     method: GET
     uri: https://api.notion.com/v1/users
   response:
@@ -34,7 +34,7 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2021-05-13'
+      - '2021-08-16'
     method: GET
     uri: https://api.notion.com/v1/users
   response:
