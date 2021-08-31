@@ -105,6 +105,7 @@ class BaseClient:
         if auth:
             headers["Authorization"] = f"Bearer {auth}"
         self.logger.info(f"{method} {self.client.base_url}{path}")
+        self.logger.debug(f"=> {query} -- {body}")
         return self.client.build_request(
             method, path, params=query, json=body, headers=headers
         )
@@ -121,7 +122,10 @@ class BaseClient:
                 raise APIResponseError(response, body["message"], code)
             raise HTTPResponseError(error.response)
 
-        return response.json()
+        body = response.json()
+        self.logger.debug(f"=> {body}")
+
+        return body
 
     @abstractclassmethod
     def request(
