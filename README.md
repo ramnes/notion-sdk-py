@@ -142,8 +142,8 @@ except APIResponseError as error:
 The client emits useful information to a logger. By default, it only emits warnings
 and errors.
 
-If you're debugging an application, and would like the client to log response bodies,
-set the `log_level` option to `logging.DEBUG`.
+If you're debugging an application, and would like the client to log request & response
+bodies, set the `log_level` option to `logging.DEBUG`.
 
 ```python
 notion = Client(
