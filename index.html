@@ -788,8 +788,8 @@ misspelling error codes.</p>
 <h3 id="logging">Logging</h3>
 <p>The client emits useful information to a logger. By default, it only emits warnings
 and errors.</p>
-<p>If you're debugging an application, and would like the client to log response bodies,
-set the <code>log_level</code> option to <code>logging.DEBUG</code>.</p>
+<p>If you're debugging an application, and would like the client to log request &amp; response
+bodies, set the <code>log_level</code> option to <code>logging.DEBUG</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span>
     <span class="n">auth</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;NOTION_TOKEN&quot;</span><span class="p">],</span>
     <span class="n">log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
