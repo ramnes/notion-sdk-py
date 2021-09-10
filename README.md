@@ -1,10 +1,7 @@
 <!-- markdownlint-disable -->
+![notion-sdk-py](https://socialify.git.ci/ramnes/notion-sdk-py/image?descriptionEditable=&font=Bitter&language=1&logo=https%3A%2F%2Fwww.notion.so%2Fimage%2Fhttps%253A%252F%252Fs3-us-west-2.amazonaws.com%252Fsecure.notion-static.com%252F6de57ff9-a9eb-41d6-914c-597fe52a7294%252Fnotion-logo-no-background.png%3Ftable%3Dblock%26id%3De040febf-70a9-4950-b862-0e6f00005004%26spaceId%3De12b42ac-4e54-476f-a4f5-7d6bdb1e61e2%26width%3D200&owner=1&pattern=Circuit%20Board&theme=Light)
+
 <div align="center">
-    <h1>Notion SDK for Python</h1>
-    <p>
-        <b>A simple and easy to use client for the <a href="https://developers.notion.com">Notion API</a></b>
-    </p>
-    <p>
         <a href="https://pypi.org/project/notion-client"><img src="https://img.shields.io/pypi/v/notion-client.svg" alt="PyPI"></a>
         <a href="tox.ini"><img src="https://img.shields.io/pypi/pyversions/notion-client" alt="Supported Python Versions"></a>
         <a href="LICENSE"><img src="https://img.shields.io/github/license/ramnes/notion-sdk-py" alt="License"></a>
@@ -14,7 +11,6 @@
         <a href="https://github.com/ramnes/notion-sdk-py/actions/workflows/test.yml"><img src="https://github.com/ramnes/notion-sdk-py/actions/workflows/test.yml/badge.svg" alt="Tests"></a>
         <a href="https://github.com/ramnes/notion-sdk-py/actions/workflows/docs.yml"><img src="https://github.com/ramnes/notion-sdk-py/actions/workflows/docs.yml/badge.svg" alt="Docs"></a>
     </p>
-    <br/>
 </div>
 <!-- markdownlint-enable -->
 
