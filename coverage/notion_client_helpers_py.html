@@ -71,7 +71,7 @@
     <p id="t17" class="run"><span class="n"><a href="#t17">17</a></span><span class="t"><span class="key">def</span> <span class="nam">get_id</span><span class="op">(</span><span class="nam">url</span><span class="op">:</span> <span class="nam">str</span><span class="op">)</span> <span class="op">-></span> <span class="nam">str</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p id="t18" class="pln"><span class="n"><a href="#t18">18</a></span><span class="t">    <span class="str">"""Return the id of the object behind the given URL."""</span>&nbsp;</span><span class="r"></span></p>
     <p id="t19" class="run"><span class="n"><a href="#t19">19</a></span><span class="t">    <span class="nam">parsed</span> <span class="op">=</span> <span class="nam">urlparse</span><span class="op">(</span><span class="nam">url</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t20" class="run"><span class="n"><a href="#t20">20</a></span><span class="t">    <span class="key">if</span> <span class="nam">parsed</span><span class="op">.</span><span class="nam">netloc</span> <span class="op">!=</span> <span class="str">"notion.so"</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t20" class="run"><span class="n"><a href="#t20">20</a></span><span class="t">    <span class="key">if</span> <span class="nam">parsed</span><span class="op">.</span><span class="nam">netloc</span> <span class="key">not</span> <span class="key">in</span> <span class="op">(</span><span class="str">"notion.so"</span><span class="op">,</span> <span class="str">"www.notion.so"</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p id="t21" class="run"><span class="n"><a href="#t21">21</a></span><span class="t">        <span class="key">raise</span> <span class="nam">ValueError</span><span class="op">(</span><span class="str">"Not a valid Notion URL."</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p id="t22" class="run"><span class="n"><a href="#t22">22</a></span><span class="t">    <span class="nam">path</span> <span class="op">=</span> <span class="nam">parsed</span><span class="op">.</span><span class="nam">path</span>&nbsp;</span><span class="r"></span></p>
     <p id="t23" class="run"><span class="n"><a href="#t23">23</a></span><span class="t">    <span class="key">if</span> <span class="nam">len</span><span class="op">(</span><span class="nam">path</span><span class="op">)</span> <span class="op">&lt;</span> <span class="num">32</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
@@ -83,7 +83,7 @@
     <div class="content">
         <p>
             <a class="nav" href="covindex.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v5.5</a>,
-            created at 2021-09-10 14:09 +0000
+            created at 2021-09-28 11:08 +0000
         </p>
     </div>
 </div>
