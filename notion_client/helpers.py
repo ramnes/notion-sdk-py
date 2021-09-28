@@ -17,7 +17,7 @@ def get_url(object_id: str) -> str:
 def get_id(url: str) -> str:
     """Return the id of the object behind the given URL."""
     parsed = urlparse(url)
-    if parsed.netloc != "www.notion.so":
+    if parsed.netloc not in ("notion.so", "www.notion.so"):
         raise ValueError("Not a valid Notion URL.")
     path = parsed.path
     if len(path) < 32:
