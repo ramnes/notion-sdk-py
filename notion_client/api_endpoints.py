@@ -193,6 +193,16 @@ class UsersEndpoint(Endpoint):
             path=f"users/{user_id}", method="GET", auth=kwargs.get("auth")
         )
 
+    def me(self, **kwargs: Any) -> SyncAsync[Any]:
+        """Retrieve the bot User associated with the API token.
+
+        The bot will have an owner field with information about the person who authorized
+        the integration.
+        """
+        return self.parent.request(
+            path="users/me", method="GET", auth=kwargs.get("auth")
+        )
+
 
 class SearchEndpoint(Endpoint):
     def __call__(self, **kwargs: Any) -> SyncAsync[Any]:
