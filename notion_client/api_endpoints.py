@@ -125,7 +125,7 @@ class DatabasesEndpoint(Endpoint):
         return self.parent.request(
             path="databases",
             method="POST",
-            body=pick(kwargs, "parent", "title", "properties"),
+            body=pick(kwargs, "parent", "title", "properties","icon","cover"),
             auth=kwargs.get("auth"),
         )
 
@@ -134,7 +134,7 @@ class DatabasesEndpoint(Endpoint):
         return self.parent.request(
             path=f"databases/{database_id}",
             method="PATCH",
-            body=pick(kwargs, "properties", "title"),
+            body=pick(kwargs, "properties", "title","icon","cover"),
             auth=kwargs.get("auth"),
         )
 
@@ -152,7 +152,7 @@ class PagesEndpoint(Endpoint):
         return self.parent.request(
             path="pages",
             method="POST",
-            body=pick(kwargs, "parent", "properties", "children"),
+            body=pick(kwargs, "parent", "properties", "children","icon","cover"),
             auth=kwargs.get("auth"),
         )
 
@@ -172,7 +172,7 @@ class PagesEndpoint(Endpoint):
         return self.parent.request(
             path=f"pages/{page_id}",
             method="PATCH",
-            body=pick(kwargs, "archived", "properties"),
+            body=pick(kwargs, "archived", "properties","icon","cover"),
             auth=kwargs.get("auth"),
         )
 
