@@ -1,0 +1,49 @@
+interactions:
+- request:
+    body: '{"parent": {"type": "page_id", "page_id": "08a6286e3aaf4adcbee89ba2537d1954"},
+      "title": [{"type": "text", "text": {"content": "test9"}}], "properties": {"Name":
+      {"title": {}}, "Description": {"rich_text": {}}, "In stock": {"checkbox": {}},
+      "Food group": {"select": {"options": [{"name": "\ud83e\udd66 Vegetable", "color":
+      "green"}, {"name": "\ud83c\udf4e Fruit", "color": "red"}, {"name": "\ud83d\udcaa
+      Protein", "color": "yellow"}]}}, "Price": {"number": {"format": "dollar"}},
+      "Last ordered": {"date": {}}, "Store availability": {"type": "multi_select",
+      "multi_select": {"options": [{"name": "Duc Loi Market", "color": "blue"}, {"name":
+      "Rainbow Grocery", "color": "gray"}, {"name": "Nijiya Market", "color": "purple"},
+      {"name": "Gus''s Community Market", "color": "yellow"}]}}, "+1": {"people":
+      {}}, "Photo": {"files": {}}}, "icon": {"type": "emoji", "emoji": "\ud83c\udf89"}}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - secret_...
+      connection:
+      - keep-alive
+      content-length:
+      - '878'
+      content-type:
+      - application/json
+      host:
+      - api.notion.com
+      notion-version:
+      - '2021-08-16'
+    method: POST
+    uri: https://api.notion.com/v1/databases
+  response:
+    content: "{\"object\":\"database\",\"id\":\"6bcede63-a533-4f7e-9a79-26850862ad7d\",\"cover\":null,\"icon\":{\"type\":\"emoji\",\"emoji\":\"\U0001F389\"},\"created_time\":\"2021-10-15T15:20:00.000Z\",\"last_edited_time\":\"2021-10-15T15:20:00.000Z\",\"title\":[{\"type\":\"text\",\"text\":{\"content\":\"test9\",\"link\":null},\"annotations\":{\"bold\":false,\"italic\":false,\"strikethrough\":false,\"underline\":false,\"code\":false,\"color\":\"default\"},\"plain_text\":\"test9\",\"href\":null}],\"properties\":{\"Description\":{\"id\":\"%3C%5CrU\",\"name\":\"Description\",\"type\":\"rich_text\",\"rich_text\":{}},\"Last
+      ordered\":{\"id\":\"JH%5E%3B\",\"name\":\"Last ordered\",\"type\":\"date\",\"date\":{}},\"Food
+      group\":{\"id\":\"JRPI\",\"name\":\"Food group\",\"type\":\"select\",\"select\":{\"options\":[{\"id\":\"d6c38f94-58ea-4cdc-a330-fb542ddb05a0\",\"name\":\"\U0001F966
+      Vegetable\",\"color\":\"green\"},{\"id\":\"c2a01337-489a-457f-a1d2-b7dc12f86079\",\"name\":\"\U0001F34E
+      Fruit\",\"color\":\"red\"},{\"id\":\"ee7fa80c-2a3e-4f81-b570-f8ac651d4e87\",\"name\":\"\U0001F4AA
+      Protein\",\"color\":\"yellow\"}]}},\"Store availability\":{\"id\":\"%5Beo~\",\"name\":\"Store
+      availability\",\"type\":\"multi_select\",\"multi_select\":{\"options\":[{\"id\":\"f8fc4626-e1cb-46cb-9847-50e8cf23acc4\",\"name\":\"Duc
+      Loi Market\",\"color\":\"blue\"},{\"id\":\"8120671d-07f6-4e03-b52b-645419532328\",\"name\":\"Rainbow
+      Grocery\",\"color\":\"gray\"},{\"id\":\"d01af66e-cd1f-4a3f-bcb9-13dfe409bf71\",\"name\":\"Nijiya
+      Market\",\"color\":\"purple\"},{\"id\":\"b034b9a7-03bc-464e-b848-6b5fe3ccfc4f\",\"name\":\"Gus's
+      Community Market\",\"color\":\"yellow\"}]}},\"+1\":{\"id\":\"bJ%7D%40\",\"name\":\"+1\",\"type\":\"people\",\"people\":{}},\"In
+      stock\":{\"id\":\"h%3EQ%7D\",\"name\":\"In stock\",\"type\":\"checkbox\",\"checkbox\":{}},\"Price\":{\"id\":\"lqls\",\"name\":\"Price\",\"type\":\"number\",\"number\":{\"format\":\"dollar\"}},\"Photo\":{\"id\":\"pFx%3A\",\"name\":\"Photo\",\"type\":\"files\",\"files\":{}},\"Name\":{\"id\":\"title\",\"name\":\"Name\",\"type\":\"title\",\"title\":{}}},\"parent\":{\"type\":\"page_id\",\"page_id\":\"08a6286e-3aaf-4adc-bee8-9ba2537d1954\"},\"url\":\"https://www.notion.so/6bcede63a5334f7e9a7926850862ad7d\"}"
+    headers: {}
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1

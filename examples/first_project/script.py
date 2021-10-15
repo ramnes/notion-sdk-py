@@ -22,19 +22,14 @@ notion = Client(auth=NOTION_TOKEN)
 
 
 # Search for an item
-print(
-    "\nSearching for the word 'PeopleNotionSdkTest' "
-)  # Change the name of the example database to something very specific
-results = notion.search(query="PeopleNotionSdkTest").get("results")
+print("\nSearching for the word 'People' ")
+results = notion.search(query="People").get("results")
 print(len(results))
 result = results[0]
 print("The result is a", result["object"])
 pprint(result["properties"])
 
 database_id = result["id"]  # store the database id in a variable for future use
-parent_page_id = result["parent"]["page_id"]
-
-print(f"The database is in page {parent_page_id} ")
 
 # Create a new page
 your_name = input("\n\nEnter your name: ")
@@ -77,44 +72,3 @@ result = results[0]
 
 print(f"The first result is a {result['object']} with id {result['id']}.")
 print(f"This was created on {result['created_time']}")
-
-
-# Create a database
-
-properties = {
-    "Name": {"title": {}},
-    "Description": {"rich_text": {}},
-    "In stock": {"checkbox": {}},
-    "Food group": {
-        "select": {
-            "options": [
-                {"name": "🥦 Vegetable", "color": "green"},
-                {"name": "🍎 Fruit", "color": "red"},
-                {"name": "💪 Protein", "color": "yellow"},
-            ]
-        }
-    },
-    "Price": {"number": {"format": "dollar"}},
-    "Last ordered": {"date": {}},
-    "Store availability": {
-        "type": "multi_select",
-        "multi_select": {
-            "options": [
-                {"name": "Duc Loi Market", "color": "blue"},
-                {"name": "Rainbow Grocery", "color": "gray"},
-                {"name": "Nijiya Market", "color": "purple"},
-                {"name": "Gus's Community Market", "color": "yellow"},
-            ]
-        },
-    },
-    "+1": {"people": {}},
-    "Photo": {"files": {}},
-}
-title = [{"type": "text", "text": {"content": "Grocery List"}}]
-icon = {"type": "emoji", "emoji": "🎉"}
-parent = {"type": "page_id", "page_id": parent_page_id}
-newdb = notion.databases.create(
-    parent=parent, title=title, properties=properties, icon=icon
-)
-
-print(f"Database {newdb['id']} has been created.")
