@@ -83,7 +83,11 @@ class BlocksEndpoint(Endpoint):
         )
 
     def delete(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
-        """TBA."""
+        """Set a Block object, including page blocks, to `archived: true`.
+
+        **Note**: in the Notion UI application, this moves the block to the "Trash" where
+        it can still be accessed and restored.
+        """
         return self.parent.request(
             path=f"blocks/{block_id}",
             method="DELETE",
