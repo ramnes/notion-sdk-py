@@ -1,6 +1,6 @@
 -r tests.txt
 # TODO: remove pin when this is fixed: https://github.com/mkdocstrings/mkdocstrings/issues/295
-mkdocs==1.1.2
+mkdocs==1.2.3
 mkdocstrings
 mkdocs-coverage
 mkdocs-gen-files
