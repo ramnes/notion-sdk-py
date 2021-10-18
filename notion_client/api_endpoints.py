@@ -85,7 +85,7 @@ class BlocksEndpoint(Endpoint):
     def delete(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """TBA."""
         return self.parent.request(
-            path=f"blocks{block_id}",
+            path=f"blocks/{block_id}",
             method="DELETE",
             auth=kwargs.get("auth"),
         )
