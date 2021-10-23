@@ -1,6 +1,7 @@
 import os
 
 from notion_client import Client
+from notion_client.helpers import get_id
 
 NOTION_TOKEN = os.getenv("NOTION_TOKEN", "")
 
@@ -19,11 +20,14 @@ def manual_inputs(parent_id="", db_name="") -> tuple:
     if parent_id == "":
         is_page_ok = False
         while not is_page_ok:
-            parent_id = input(
-                "\nEnter the ID of the page in which you want to create the database: "
-            ).strip()
+            input_text = input("\nEnter the parent page ID or URL: ").strip()
             # Checking if the page exists
             try:
+                if input_text[0:4] == "http":
+                    parent_id = get_id(input_text)
+                    print(f"\nThe ID of the target page is: {parent_id}")
+                else:
+                    parent_id = input_text
                 notion.pages.retrieve(parent_id)
                 is_page_ok = True
                 print("Page found")
