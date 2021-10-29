@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
-    <title>Coverage for notion_client/errors.py: 93%</title>
+    <title>Coverage for notion_client/errors.py: 94%</title>
     <link rel="icon" sizes="32x32" href="favicon_32.png">
     <link rel="stylesheet" href="style.css" type="text/css">
     <script type="text/javascript" src="jquery.min.js"></script>
@@ -18,12 +18,12 @@
 <div id="header">
     <div class="content">
         <h1>Coverage for <b>notion_client/errors.py</b> :
-            <span class="pc_cov">93%</span>
+            <span class="pc_cov">94%</span>
         </h1>
         <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
         <h2 class="stats">
-            41 statements &nbsp;
-            <button type="button" class="run shortkey_r button_toggle_run" title="Toggle lines run">38 run</button>
+            51 statements &nbsp;
+            <button type="button" class="run shortkey_r button_toggle_run" title="Toggle lines run">48 run</button>
             <button type="button" class="mis show_mis shortkey_m button_toggle_mis" title="Toggle lines missing">3 missing</button>
             <button type="button" class="exc show_exc shortkey_x button_toggle_exc" title="Toggle lines excluded">0 excluded</button>
         </h2>
@@ -101,38 +101,38 @@
     <p id="t47" class="pln"><span class="n"><a href="#t47">47</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t48" class="run"><span class="n"><a href="#t48">48</a></span><span class="t"><span class="key">class</span> <span class="nam">APIErrorCode</span><span class="op">(</span><span class="nam">str</span><span class="op">,</span> <span class="nam">Enum</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p id="t49" class="run"><span class="n"><a href="#t49">49</a></span><span class="t">    <span class="nam">Unauthorized</span> <span class="op">=</span> <span class="str">"unauthorized"</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t50" class="pln"><span class="n"><a href="#t50">50</a></span><span class="t">    <span class="str">"""The bearer token is not valid."""</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t50" class="run"><span class="n"><a href="#t50">50</a></span><span class="t">    <span class="str">"""The bearer token is not valid."""</span>&nbsp;</span><span class="r"></span></p>
     <p id="t51" class="pln"><span class="n"><a href="#t51">51</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t52" class="run"><span class="n"><a href="#t52">52</a></span><span class="t">    <span class="nam">RestrictedResource</span> <span class="op">=</span> <span class="str">"restricted_resource"</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t53" class="pln"><span class="n"><a href="#t53">53</a></span><span class="t">    <span class="str">"""Given the bearer token used, the client doesn't have permission to</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t53" class="run"><span class="n"><a href="#t53">53</a></span><span class="t">    <span class="str">"""Given the bearer token used, the client doesn't have permission to</span>&nbsp;</span><span class="r"></span></p>
     <p id="t54" class="pln"><span class="n"><a href="#t54">54</a></span><span class="t"><span class="str">    perform this operation."""</span>&nbsp;</span><span class="r"></span></p>
     <p id="t55" class="pln"><span class="n"><a href="#t55">55</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t56" class="run"><span class="n"><a href="#t56">56</a></span><span class="t">    <span class="nam">ObjectNotFound</span> <span class="op">=</span> <span class="str">"object_not_found"</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t57" class="pln"><span class="n"><a href="#t57">57</a></span><span class="t">    <span class="str">"""Given the bearer token used, the resource does not exist.</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t57" class="run"><span class="n"><a href="#t57">57</a></span><span class="t">    <span class="str">"""Given the bearer token used, the resource does not exist.</span>&nbsp;</span><span class="r"></span></p>
     <p id="t58" class="pln"><span class="n"><a href="#t58">58</a></span><span class="t"><span class="str">    This error can also indicate that the resource has not been shared with owner</span>&nbsp;</span><span class="r"></span></p>
     <p id="t59" class="pln"><span class="n"><a href="#t59">59</a></span><span class="t"><span class="str">    of the bearer token."""</span>&nbsp;</span><span class="r"></span></p>
     <p id="t60" class="pln"><span class="n"><a href="#t60">60</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t61" class="run"><span class="n"><a href="#t61">61</a></span><span class="t">    <span class="nam">RateLimited</span> <span class="op">=</span> <span class="str">"rate_limited"</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t62" class="pln"><span class="n"><a href="#t62">62</a></span><span class="t">    <span class="str">"""This request exceeds the number of requests allowed. Slow down and try again."""</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t62" class="run"><span class="n"><a href="#t62">62</a></span><span class="t">    <span class="str">"""This request exceeds the number of requests allowed. Slow down and try again."""</span>&nbsp;</span><span class="r"></span></p>
     <p id="t63" class="pln"><span class="n"><a href="#t63">63</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t64" class="run"><span class="n"><a href="#t64">64</a></span><span class="t">    <span class="nam">InvalidJSON</span> <span class="op">=</span> <span class="str">"invalid_json"</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t65" class="pln"><span class="n"><a href="#t65">65</a></span><span class="t">    <span class="str">"""The request body could not be decoded as JSON."""</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t65" class="run"><span class="n"><a href="#t65">65</a></span><span class="t">    <span class="str">"""The request body could not be decoded as JSON."""</span>&nbsp;</span><span class="r"></span></p>
     <p id="t66" class="pln"><span class="n"><a href="#t66">66</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t67" class="run"><span class="n"><a href="#t67">67</a></span><span class="t">    <span class="nam">InvalidRequestURL</span> <span class="op">=</span> <span class="str">"invalid_request_url"</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t68" class="pln"><span class="n"><a href="#t68">68</a></span><span class="t">    <span class="str">"""The request URL is not valid."""</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t68" class="run"><span class="n"><a href="#t68">68</a></span><span class="t">    <span class="str">"""The request URL is not valid."""</span>&nbsp;</span><span class="r"></span></p>
     <p id="t69" class="pln"><span class="n"><a href="#t69">69</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t70" class="run"><span class="n"><a href="#t70">70</a></span><span class="t">    <span class="nam">InvalidRequest</span> <span class="op">=</span> <span class="str">"invalid_request"</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t71" class="pln"><span class="n"><a href="#t71">71</a></span><span class="t">    <span class="str">"""This request is not supported."""</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t71" class="run"><span class="n"><a href="#t71">71</a></span><span class="t">    <span class="str">"""This request is not supported."""</span>&nbsp;</span><span class="r"></span></p>
     <p id="t72" class="pln"><span class="n"><a href="#t72">72</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t73" class="run"><span class="n"><a href="#t73">73</a></span><span class="t">    <span class="nam">ValidationError</span> <span class="op">=</span> <span class="str">"validation_error"</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t74" class="pln"><span class="n"><a href="#t74">74</a></span><span class="t">    <span class="str">"""The request body does not match the schema for the expected parameters."""</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t74" class="run"><span class="n"><a href="#t74">74</a></span><span class="t">    <span class="str">"""The request body does not match the schema for the expected parameters."""</span>&nbsp;</span><span class="r"></span></p>
     <p id="t75" class="pln"><span class="n"><a href="#t75">75</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t76" class="run"><span class="n"><a href="#t76">76</a></span><span class="t">    <span class="nam">ConflictError</span> <span class="op">=</span> <span class="str">"conflict_error"</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t77" class="pln"><span class="n"><a href="#t77">77</a></span><span class="t">    <span class="str">"""The transaction could not be completed, potentially due to a data collision.</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t77" class="run"><span class="n"><a href="#t77">77</a></span><span class="t">    <span class="str">"""The transaction could not be completed, potentially due to a data collision.</span>&nbsp;</span><span class="r"></span></p>
     <p id="t78" class="pln"><span class="n"><a href="#t78">78</a></span><span class="t"><span class="str">    Make sure the parameters are up to date and try again."""</span>&nbsp;</span><span class="r"></span></p>
     <p id="t79" class="pln"><span class="n"><a href="#t79">79</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t80" class="run"><span class="n"><a href="#t80">80</a></span><span class="t">    <span class="nam">InternalServerError</span> <span class="op">=</span> <span class="str">"internal_server_error"</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t81" class="pln"><span class="n"><a href="#t81">81</a></span><span class="t">    <span class="str">"""An unexpected error occurred. Reach out to Notion support."""</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t81" class="run"><span class="n"><a href="#t81">81</a></span><span class="t">    <span class="str">"""An unexpected error occurred. Reach out to Notion support."""</span>&nbsp;</span><span class="r"></span></p>
     <p id="t82" class="pln"><span class="n"><a href="#t82">82</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t83" class="run"><span class="n"><a href="#t83">83</a></span><span class="t">    <span class="nam">ServiceUnavailable</span> <span class="op">=</span> <span class="str">"service_unavailable"</span>&nbsp;</span><span class="r"></span></p>
     <p id="t84" class="run"><span class="n"><a href="#t84">84</a></span><span class="t">    <span class="str">"""Notion is unavailable. Try again later.</span>&nbsp;</span><span class="r"></span></p>
@@ -162,7 +162,7 @@
     <div class="content">
         <p>
             <a class="nav" href="covindex.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v6.0.2</a>,
-            created at 2021-10-18 09:17 +0000
+            created at 2021-10-29 16:09 +0000
         </p>
     </div>
 </div>
