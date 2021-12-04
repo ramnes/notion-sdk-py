@@ -589,6 +589,26 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#notion_client.api_endpoints.PagesPropertiesEndpoint" class="md-nav__link">
+    PagesPropertiesEndpoint
+  </a>
+  
+    <nav class="md-nav" aria-label="PagesPropertiesEndpoint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#notion_client.api_endpoints.PagesPropertiesEndpoint.retrieve" class="md-nav__link">
+    retrieve()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#notion_client.api_endpoints.SearchEndpoint" class="md-nav__link">
     SearchEndpoint
   </a>
@@ -918,6 +938,26 @@
           <li class="md-nav__item">
   <a href="#notion_client.api_endpoints.PagesEndpoint.update" class="md-nav__link">
     update()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notion_client.api_endpoints.PagesPropertiesEndpoint" class="md-nav__link">
+    PagesPropertiesEndpoint
+  </a>
+  
+    <nav class="md-nav" aria-label="PagesPropertiesEndpoint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#notion_client.api_endpoints.PagesPropertiesEndpoint.retrieve" class="md-nav__link">
+    retrieve()
   </a>
   
 </li>
@@ -1395,6 +1435,7 @@ PagesEndpoint            (<span title="notion_client.api_endpoints.Endpoint">End
 
 
 
+
   <div class="doc doc-object doc-method">
 
 
@@ -1455,6 +1496,67 @@ include page content, described as blocks in the <code>children</code> parameter
 <p>Properties that are not set via the <code>properties</code> parameter will remain
 unchanged.  If the parent is a database, the new property values in the
 <code>properties</code> parameter must conform to the parent database's property schema.</p>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="notion_client.api_endpoints.PagesPropertiesEndpoint" class="doc doc-heading">
+        <code>
+PagesPropertiesEndpoint            (<span title="notion_client.api_endpoints.Endpoint">Endpoint</span>)
+        </code>
+
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="notion_client.api_endpoints.PagesPropertiesEndpoint.retrieve" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">retrieve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_id</span><span class="p">,</span> <span class="n">property_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Retrieve a <code>property_item</code> object for a given <code>page_id</code> and <code>property_id</code>.</p>
+<p>Depending on the property type, the object returned will either be a value or a
+paginated list of property item values.</p>
 
     </div>
 
