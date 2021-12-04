@@ -170,7 +170,26 @@ class DatabasesEndpoint(Endpoint):
         )
 
 
+class PagesPropertiesEndpoint(Endpoint):
+    def retrieve(self, page_id: str, property_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Retrieve a `property_item` object for a given `page_id` and `property_id`.
+
+        Depending on the property type, the object returned will either be a value or a
+        paginated list of property item values.
+        """
+        return self.parent.request(
+            path=f"pages/{page_id}/properties/{property_id}",
+            method="GET",
+            auth=kwargs.get("auth"),
+            query=pick(kwargs, "start_cursor", "page_size"),
+        )
+
+
 class PagesEndpoint(Endpoint):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.properties = PagesPropertiesEndpoint(*args, **kwargs)
+
     def create(self, **kwargs: Any) -> SyncAsync[Any]:
         """Create a new page in the specified database or as a child of an existing page.
 
