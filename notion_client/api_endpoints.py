@@ -70,6 +70,7 @@ class BlocksEndpoint(Endpoint):
             method="PATCH",
             body=pick(
                 kwargs,
+                "archived",
                 "paragraph",
                 "heading_1",
                 "heading_2",
