@@ -116,7 +116,15 @@ class BlocksEndpoint(Endpoint):
 
 class DatabasesEndpoint(Endpoint):
     def list(self, **kwargs: Any) -> SyncAsync[Any]:
-        """List all Databases shared with the authenticated integration."""
+        """List all Databases shared with the authenticated integration.
+
+        > ⚠️  **Search pages for more details**
+        >
+        > This endpoint is no longer recommended, use search instead. This endpoint will
+        > only return explicitly shared pages, while search will also return child pages
+        > within explicitly shared pages. This endpoint's results cannot be filtered,
+        > while search can be used to match on page title.
+        """
         return self.parent.request(
             path="databases",
             method="GET",
