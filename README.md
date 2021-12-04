@@ -17,10 +17,8 @@
 This client is meant to be a Python version of the reference [JavaScript SDK](https://github.com/makenotion/notion-sdk-js),
 so usage should be pretty similar between both. 😊
 
-> 📢 **Announcement** (05-10-2021) — 0.7.0 is now released and adds support for
+> 📢 **Announcement** (04-12-2021) — 0.8.0 is now released and adds support for
 > the [recent Notion API changes](https://developers.notion.com/changelog).
-> Beware, `Notion-Version` has been upgraded to `2021-08-16` and it brings
-> [breaking changes](https://developers.notion.com/changelog/notion-version-2021-08-16).
 
 <!-- markdownlint-disable -->
 ## Installation
