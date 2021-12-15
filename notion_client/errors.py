@@ -103,3 +103,15 @@ def is_api_error_code(code: str) -> bool:
     if isinstance(code, str):
         return code in (error_code.value for error_code in APIErrorCode)
     return False
+
+
+def is_timeout_error_code(code: str) -> bool:
+    """Check if given code belongs to httpx timeout error codes."""
+    timeouts = [
+        httpx._status_codes.codes.GATEWAY_TIMEOUT,
+        httpx._status_codes.codes.REQUEST_TIMEOUT,
+    ]
+
+    if isinstance(code, str):
+        return code in (str(error_code.value) for error_code in timeouts)
+    return False

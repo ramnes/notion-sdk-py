@@ -20,6 +20,7 @@ from notion_client.errors import (
     HTTPResponseError,
     RequestTimeoutError,
     is_api_error_code,
+    is_timeout_error_code,
 )
 from notion_client.logging import make_console_logger
 from notion_client.typing import SyncAsync
@@ -113,13 +114,14 @@ class BaseClient:
     def _parse_response(self, response: Response) -> Any:
         try:
             response.raise_for_status()
-        except httpx.TimeoutException:
-            raise RequestTimeoutError()
         except httpx.HTTPStatusError as error:
             body = error.response.json()
             code = body.get("code")
-            if code and is_api_error_code(code):
-                raise APIResponseError(response, body["message"], code)
+            if code:
+                if is_timeout_error_code(code):
+                    raise RequestTimeoutError()
+                elif is_api_error_code(code):
+                    raise APIResponseError(response, body["message"], code)
             raise HTTPResponseError(error.response)
 
         body = response.json()
