@@ -231,5 +231,8 @@ class AsyncClient(BaseClient):
     ) -> Any:
         """Send an HTTP request asynchronously."""
         request = self._build_request(method, path, query, body, auth)
-        response = await self.client.send(request)
+        try:
+            response = await self.client.send(request)
+        except httpx.TimeoutException:
+            raise RequestTimeoutError()
         return self._parse_response(response)
