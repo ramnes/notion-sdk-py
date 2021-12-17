@@ -113,8 +113,6 @@ class BaseClient:
     def _parse_response(self, response: Response) -> Any:
         try:
             response.raise_for_status()
-        except httpx.TimeoutException:
-            raise RequestTimeoutError()
         except httpx.HTTPStatusError as error:
             body = error.response.json()
             code = body.get("code")
@@ -183,7 +181,10 @@ class Client(BaseClient):
     ) -> Any:
         """Send an HTTP request."""
         request = self._build_request(method, path, query, body, auth)
-        response = self.client.send(request)
+        try:
+            response = self.client.send(request)
+        except httpx.TimeoutException:
+            raise RequestTimeoutError()
         return self._parse_response(response)
 
 
@@ -230,5 +231,8 @@ class AsyncClient(BaseClient):
     ) -> Any:
         """Send an HTTP request asynchronously."""
         request = self._build_request(method, path, query, body, auth)
-        response = await self.client.send(request)
+        try:
+            response = await self.client.send(request)
+        except httpx.TimeoutException:
+            raise RequestTimeoutError()
         return self._parse_response(response)
