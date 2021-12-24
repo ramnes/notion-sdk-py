@@ -14,7 +14,10 @@
 </div>
 <!-- markdownlint-enable -->
 
-This client is meant to be a Python version of the reference [JavaScript SDK](https://github.com/makenotion/notion-sdk-js),
+**_notion-sdk-py_ is a simple and easy to use client library for the official
+[Notion API](https://developers.notion.com/).**
+
+It is meant to be a Python version of the reference [JavaScript SDK](https://github.com/makenotion/notion-sdk-js),
 so usage should be pretty similar between both. 😊
 
 > 📢 **Announcement** (04-12-2021) — 0.8.0 is now released and adds support for
