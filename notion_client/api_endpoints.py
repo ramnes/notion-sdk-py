@@ -141,7 +141,7 @@ class DatabasesEndpoint(Endpoint):
         return self.parent.request(
             path=f"databases/{database_id}/query",
             method="POST",
-            body=pick(kwargs, "filter", "sorts", "start_cursor", "page_size"),
+            body=pick(kwargs, "filter", "sorts", "start_cursor", "page_size", keys_to_pop_if_none=["start_cursor"]),
             auth=kwargs.get("auth"),
         )
 

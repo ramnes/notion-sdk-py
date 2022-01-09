@@ -1,12 +1,18 @@
 """Utility functions for notion-sdk-py."""
-from typing import Any, Dict
+from typing import Any, Dict, List
 from urllib.parse import urlparse
 from uuid import UUID
 
 
-def pick(base: Dict[Any, Any], *keys: str) -> Dict[Any, Any]:
+def pick(base: Dict[Any, Any], *keys: str, keys_to_pop_if_none: List[str]=[]) -> Dict[Any, Any]:
     """Return a dict composed of key value pairs for keys passed as args."""
-    return {key: base[key] for key in keys if key in base and base[key] is not None}
+    body = {key: base[key] for key in keys if key in base}
+
+    for key in keys_to_pop_if_none:
+        if key in body and body[key] is None:
+            body.pop(key)
+
+    return body
 
 
 def get_url(object_id: str) -> str:
