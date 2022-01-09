@@ -6,7 +6,7 @@ from uuid import UUID
 
 def pick(base: Dict[Any, Any], *keys: str) -> Dict[Any, Any]:
     """Return a dict composed of key value pairs for keys passed as args."""
-    return {key: base[key] for key in keys if key in base}
+    {key: base[key] for key in keys if key in base and base[key] is not None}
 
 
 def get_url(object_id: str) -> str:
