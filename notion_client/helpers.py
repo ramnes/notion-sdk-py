@@ -4,13 +4,14 @@ from urllib.parse import urlparse
 from uuid import UUID
 
 
-def pick(base: Dict[Any, Any], *keys: str, keys_to_pop_if_none: List[str]=[]) -> Dict[Any, Any]:
+def pick(base: Dict[Any, Any], *keys: str, keys_to_keep_if_none: List[str]=[]) -> Dict[Any, Any]:
     """Return a dict composed of key value pairs for keys passed as args."""
     body = {key: base[key] for key in keys if key in base}
 
-    for key in keys_to_pop_if_none:
-        if key in body and body[key] is None:
-            body.pop(key)
+    keys_none = [key for key in body if body[key] is None]
+    for key_none in keys_none:
+        if key_none not in keys_to_keep_if_none:
+            body.pop(key_none)
 
     return body
 
