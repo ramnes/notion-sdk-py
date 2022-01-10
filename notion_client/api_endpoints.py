@@ -1,4 +1,4 @@
-"""Notion API endpoints."""
+"""Notion API endpoints."""  # noqa: E501
 
 from typing import TYPE_CHECKING, Any
 
@@ -18,8 +18,8 @@ class BlocksChildrenEndpoint(Endpoint):
     def append(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """Create and append new children blocks to the block using the ID specified.
 
-        Returns the Block object which contains the new children.
-        """
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/patch-block-children)*
+        """  # noqa: E501
         return self.parent.request(
             path=f"blocks/{block_id}/children",
             method="PATCH",
@@ -28,11 +28,10 @@ class BlocksChildrenEndpoint(Endpoint):
         )
 
     def list(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
-        """Return a paginated array of child block objects contained in the block.
+        """Return a paginated array of child [block objects](https://developers.notion.com/reference/block) contained in the block.
 
-        In order to receive a complete representation of a block, you may need to
-        recursively retrieve the block children of child blocks.
-        """
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/get-block-children)*
+        """  # noqa: E501
         return self.parent.request(
             path=f"blocks/{block_id}/children",
             method="GET",
@@ -47,7 +46,10 @@ class BlocksEndpoint(Endpoint):
         self.children = BlocksChildrenEndpoint(*args, **kwargs)
 
     def retrieve(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
-        """Retrieve a Block object using the ID specified."""
+        """Retrieve a [Block object](https://developers.notion.com/reference/block) using the ID specified.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-block)*
+        """  # noqa: E501
         return self.parent.request(
             path=f"blocks/{block_id}", method="GET", auth=kwargs.get("auth")
         )
@@ -55,12 +57,8 @@ class BlocksEndpoint(Endpoint):
     def update(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """Update the content for the specified `block_id` based on the block type.
 
-        Supported fields are based on the block object type.
-
-        **Note**: The update replaces the *entire* value for a given field. If a field is
-        omitted (ex: omitting `checked` when updating a `to_do` block), the value will
-        not be changed.
-        """
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/update-a-block)*
+        """  # noqa: E501
         return self.parent.request(
             path=f"blocks/{block_id}",
             method="PATCH",
@@ -100,11 +98,10 @@ class BlocksEndpoint(Endpoint):
         )
 
     def delete(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
-        """Set a Block object, including page blocks, to `archived: true`.
+        """Set a [Block object](https://developers.notion.com/reference/block), including page blocks, to `archived: true`.
 
-        **Note**: in the Notion UI application, this moves the block to the "Trash" where
-        it can still be accessed and restored.
-        """
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/delete-a-block)*
+        """  # noqa: E501
         return self.parent.request(
             path=f"blocks/{block_id}",
             method="DELETE",
@@ -114,15 +111,12 @@ class BlocksEndpoint(Endpoint):
 
 class DatabasesEndpoint(Endpoint):
     def list(self, **kwargs: Any) -> SyncAsync[Any]:
-        """List all Databases shared with the authenticated integration.
+        """List all [Databases](https://developers.notion.com/reference/database) shared with the authenticated integration.
 
-        > ⚠️  **Search pages for more details**
-        >
-        > This endpoint is no longer recommended, use search instead. This endpoint will
-        > only return explicitly shared pages, while search will also return child pages
-        > within explicitly shared pages. This endpoint's results cannot be filtered,
-        > while search can be used to match on page title.
-        """
+        > ⚠️  **Deprecated endpoint**
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/get-databases)*
+        """  # noqa: E501
         return self.parent.request(
             path="databases",
             method="GET",
@@ -131,11 +125,10 @@ class DatabasesEndpoint(Endpoint):
         )
 
     def query(self, database_id: str, **kwargs: Any) -> SyncAsync[Any]:
-        """Get a list of Pages contained in the database.
+        """Get a list of [Pages](https://developers.notion.com/reference/page) contained in the database.
 
-        The result is filtered and ordered according to the filter conditions and sort
-        criteria provided in the request.
-        """
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/post-database-query)*
+        """  # noqa: E501
         return self.parent.request(
             path=f"databases/{database_id}/query",
             method="POST",
@@ -144,13 +137,19 @@ class DatabasesEndpoint(Endpoint):
         )
 
     def retrieve(self, database_id: str, **kwargs: Any) -> SyncAsync[Any]:
-        """Retrieve a Database object using the ID specified."""
+        """Retrieve a [Database object](https://developers.notion.com/reference/database) using the ID specified.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/post-database-query)*
+        """  # noqa: E501
         return self.parent.request(
             path=f"databases/{database_id}", method="GET", auth=kwargs.get("auth")
         )
 
     def create(self, **kwargs: Any) -> SyncAsync[Any]:
-        """Create a database as a subpage in the specified parent page."""
+        """Create a database as a subpage in the specified parent page.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-a-database)*
+        """  # noqa: E501
         return self.parent.request(
             path="databases",
             method="POST",
@@ -159,7 +158,10 @@ class DatabasesEndpoint(Endpoint):
         )
 
     def update(self, database_id: str, **kwargs: Any) -> SyncAsync[Any]:
-        """Update an existing database as specified by the parameters."""
+        """Update an existing database as specified by the parameters.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/update-a-database)*
+        """  # noqa: E501
         return self.parent.request(
             path=f"databases/{database_id}",
             method="PATCH",
@@ -172,9 +174,8 @@ class PagesPropertiesEndpoint(Endpoint):
     def retrieve(self, page_id: str, property_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """Retrieve a `property_item` object for a given `page_id` and `property_id`.
 
-        Depending on the property type, the object returned will either be a value or a
-        paginated list of property item values.
-        """
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-page-property)*
+        """  # noqa: E501
         return self.parent.request(
             path=f"pages/{page_id}/properties/{property_id}",
             method="GET",
@@ -191,12 +192,8 @@ class PagesEndpoint(Endpoint):
     def create(self, **kwargs: Any) -> SyncAsync[Any]:
         """Create a new page in the specified database or as a child of an existing page.
 
-        If the parent is a database, the `properties` parameter must conform to the
-        parent database's property schema.
-
-        If the parent is a page, the only valid property is `title`. The new page may
-        include page content, described as blocks in the `children` parameter.
-        """
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/post-page)*
+        """  # noqa: E501
         return self.parent.request(
             path="pages",
             method="POST",
@@ -205,18 +202,19 @@ class PagesEndpoint(Endpoint):
         )
 
     def retrieve(self, page_id: str, **kwargs: Any) -> SyncAsync[Any]:
-        """Retrieve a Page object using the ID specified."""
+        """Retrieve a [Page object](https://developers.notion.com/reference/page) using the ID specified.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-page)*
+        """  # noqa: E501
         return self.parent.request(
             path=f"pages/{page_id}", method="GET", auth=kwargs.get("auth")
         )
 
     def update(self, page_id: str, **kwargs: Any) -> SyncAsync[Any]:
-        """Update page property values for the specified page.
+        """Update [page property values](https://developers.notion.com/reference/page#property-value-object) for the specified page.
 
-        Properties that are not set via the `properties` parameter will remain
-        unchanged.  If the parent is a database, the new property values in the
-        `properties` parameter must conform to the parent database's property schema.
-        """
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/patch-page)*
+        """  # noqa: E501
         return self.parent.request(
             path=f"pages/{page_id}",
             method="PATCH",
@@ -227,7 +225,10 @@ class PagesEndpoint(Endpoint):
 
 class UsersEndpoint(Endpoint):
     def list(self, **kwargs: Any) -> SyncAsync[Any]:
-        """Return a paginated list of Users for the workspace."""
+        """Return a paginated list of [Users](https://developers.notion.com/reference/user) for the workspace.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/get-users)*
+        """  # noqa: E501
         return self.parent.request(
             path="users",
             method="GET",
@@ -236,17 +237,19 @@ class UsersEndpoint(Endpoint):
         )
 
     def retrieve(self, user_id: str, **kwargs: Any) -> SyncAsync[Any]:
-        """Retrieve a User using the ID specified."""
+        """Retrieve a [User](https://developers.notion.com/reference/user) using the ID specified.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/get-user)*
+        """  # noqa: E501
         return self.parent.request(
             path=f"users/{user_id}", method="GET", auth=kwargs.get("auth")
         )
 
     def me(self, **kwargs: Any) -> SyncAsync[Any]:
-        """Retrieve the bot User associated with the API token.
+        """Retrieve the bot [User](https://developers.notion.com/reference/user) associated with the API token.
 
-        The bot will have an owner field with information about the person who authorized
-        the integration.
-        """
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/get-self)*
+        """  # noqa: E501
         return self.parent.request(
             path="users/me", method="GET", auth=kwargs.get("auth")
         )
@@ -256,13 +259,8 @@ class SearchEndpoint(Endpoint):
     def __call__(self, **kwargs: Any) -> SyncAsync[Any]:
         """Search all pages and child pages that are shared with the integration.
 
-        The results may include databases. The `query` parameter matches against the page
-        titles. If the `query` parameter is not provided, the response will contain all
-        pages (and child pages) in the results.
-
-        The `filter` parameter can be used to query specifically for only pages or only
-        databases.
-        """
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/post-search)*
+        """  # noqa: E501
         return self.parent.request(
             path="search",
             method="POST",
