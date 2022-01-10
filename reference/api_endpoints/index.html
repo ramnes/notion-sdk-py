@@ -1108,7 +1108,9 @@ BlocksChildrenEndpoint            (<span title="notion_client.api_endpoints.Endp
     <div class="doc doc-contents ">
 
       <p>Create and append new children blocks to the block using the ID specified.</p>
-<p>Returns the Block object which contains the new children.</p>
+<blockquote>
+<p>🔗 <a href="https://developers.notion.com/reference/patch-block-children">Endpoint documentation</a></p>
+</blockquote>
 
     </div>
 
@@ -1128,9 +1130,10 @@ BlocksChildrenEndpoint            (<span title="notion_client.api_endpoints.Endp
 
     <div class="doc doc-contents ">
 
-      <p>Return a paginated array of child block objects contained in the block.</p>
-<p>In order to receive a complete representation of a block, you may need to
-recursively retrieve the block children of child blocks.</p>
+      <p>Return a paginated array of child <a href="https://developers.notion.com/reference/block">block objects</a> contained in the block.</p>
+<blockquote>
+<p>🔗 <a href="https://developers.notion.com/reference/get-block-children">Endpoint documentation</a></p>
+</blockquote>
 
     </div>
 
@@ -1190,9 +1193,10 @@ BlocksEndpoint            (<span title="notion_client.api_endpoints.Endpoint">En
 
     <div class="doc doc-contents ">
 
-      <p>Set a Block object, including page blocks, to <code>archived: true</code>.</p>
-<p><strong>Note</strong>: in the Notion UI application, this moves the block to the "Trash" where
-it can still be accessed and restored.</p>
+      <p>Set a <a href="https://developers.notion.com/reference/block">Block object</a>, including page blocks, to <code>archived: true</code>.</p>
+<blockquote>
+<p>🔗 <a href="https://developers.notion.com/reference/delete-a-block">Endpoint documentation</a></p>
+</blockquote>
 
     </div>
 
@@ -1212,7 +1216,10 @@ it can still be accessed and restored.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Retrieve a Block object using the ID specified.</p>
+      <p>Retrieve a <a href="https://developers.notion.com/reference/block">Block object</a> using the ID specified.</p>
+<blockquote>
+<p>🔗 <a href="https://developers.notion.com/reference/retrieve-a-block">Endpoint documentation</a></p>
+</blockquote>
 
     </div>
 
@@ -1233,10 +1240,9 @@ it can still be accessed and restored.</p>
     <div class="doc doc-contents ">
 
       <p>Update the content for the specified <code>block_id</code> based on the block type.</p>
-<p>Supported fields are based on the block object type.</p>
-<p><strong>Note</strong>: The update replaces the <em>entire</em> value for a given field. If a field is
-omitted (ex: omitting <code>checked</code> when updating a <code>to_do</code> block), the value will
-not be changed.</p>
+<blockquote>
+<p>🔗 <a href="https://developers.notion.com/reference/update-a-block">Endpoint documentation</a></p>
+</blockquote>
 
     </div>
 
@@ -1296,6 +1302,9 @@ DatabasesEndpoint            (<span title="notion_client.api_endpoints.Endpoint"
     <div class="doc doc-contents ">
 
       <p>Create a database as a subpage in the specified parent page.</p>
+<blockquote>
+<p>🔗 <a href="https://developers.notion.com/reference/create-a-database">Endpoint documentation</a></p>
+</blockquote>
 
     </div>
 
@@ -1317,11 +1326,8 @@ DatabasesEndpoint            (<span title="notion_client.api_endpoints.Endpoint"
 
       <p>List all Databases shared with the authenticated integration.</p>
 <blockquote>
-<p>⚠️  <strong>Search pages for more details</strong></p>
-<p>This endpoint is no longer recommended, use search instead. This endpoint will
-only return explicitly shared pages, while search will also return child pages
-within explicitly shared pages. This endpoint's results cannot be filtered,
-while search can be used to match on page title.</p>
+<p>⚠️  <strong>Deprecated endpoint</strong></p>
+<p>🔗 <a href="https://developers.notion.com/reference/get-databases">Endpoint documentation</a></p>
 </blockquote>
 
     </div>
@@ -1342,9 +1348,10 @@ while search can be used to match on page title.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Get a list of Pages contained in the database.</p>
-<p>The result is filtered and ordered according to the filter conditions and sort
-criteria provided in the request.</p>
+      <p>Get a list of <a href="https://developers.notion.com/reference/page">Pages</a> contained in the database.</p>
+<blockquote>
+<p>🔗 <a href="https://developers.notion.com/reference/post-database-query">Endpoint documentation</a></p>
+</blockquote>
 
     </div>
 
@@ -1364,7 +1371,10 @@ criteria provided in the request.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Retrieve a Database object using the ID specified.</p>
+      <p>Retrieve a <a href="https://developers.notion.com/reference/database">Database object</a> using the ID specified.</p>
+<blockquote>
+<p>🔗 <a href="https://developers.notion.com/reference/post-database-query">Endpoint documentation</a></p>
+</blockquote>
 
     </div>
 
@@ -1385,6 +1395,9 @@ criteria provided in the request.</p>
     <div class="doc doc-contents ">
 
       <p>Update an existing database as specified by the parameters.</p>
+<blockquote>
+<p>🔗 <a href="https://developers.notion.com/reference/update-a-database">Endpoint documentation</a></p>
+</blockquote>
 
     </div>
 
@@ -1446,10 +1459,9 @@ PagesEndpoint            (<span title="notion_client.api_endpoints.Endpoint">End
     <div class="doc doc-contents ">
 
       <p>Create a new page in the specified database or as a child of an existing page.</p>
-<p>If the parent is a database, the <code>properties</code> parameter must conform to the
-parent database's property schema.</p>
-<p>If the parent is a page, the only valid property is <code>title</code>. The new page may
-include page content, described as blocks in the <code>children</code> parameter.</p>
+<blockquote>
+<p>🔗 <a href="https://developers.notion.com/reference/post-page">Endpoint documentation</a></p>
+</blockquote>
 
     </div>
 
@@ -1469,7 +1481,10 @@ include page content, described as blocks in the <code>children</code> parameter
 
     <div class="doc doc-contents ">
 
-      <p>Retrieve a Page object using the ID specified.</p>
+      <p>Retrieve a <a href="https://developers.notion.com/reference/page">Page object</a> using the ID specified.</p>
+<blockquote>
+<p>🔗 <a href="https://developers.notion.com/reference/retrieve-a-page">Endpoint documentation</a></p>
+</blockquote>
 
     </div>
 
@@ -1489,10 +1504,10 @@ include page content, described as blocks in the <code>children</code> parameter
 
     <div class="doc doc-contents ">
 
-      <p>Update page property values for the specified page.</p>
-<p>Properties that are not set via the <code>properties</code> parameter will remain
-unchanged.  If the parent is a database, the new property values in the
-<code>properties</code> parameter must conform to the parent database's property schema.</p>
+      <p>Update <a href="https://developers.notion.com/reference/page#property-value-object">page property values</a> for the specified page.</p>
+<blockquote>
+<p>🔗 <a href="https://developers.notion.com/reference/patch-page">Endpoint documentation</a></p>
+</blockquote>
 
     </div>
 
@@ -1552,8 +1567,9 @@ PagesPropertiesEndpoint            (<span title="notion_client.api_endpoints.End
     <div class="doc doc-contents ">
 
       <p>Retrieve a <code>property_item</code> object for a given <code>page_id</code> and <code>property_id</code>.</p>
-<p>Depending on the property type, the object returned will either be a value or a
-paginated list of property item values.</p>
+<blockquote>
+<p>🔗 <a href="https://developers.notion.com/reference/retrieve-a-page-property">Endpoint documentation</a></p>
+</blockquote>
 
     </div>
 
@@ -1616,11 +1632,9 @@ SearchEndpoint            (<span title="notion_client.api_endpoints.Endpoint">En
     <div class="doc doc-contents ">
 
       <p>Search all pages and child pages that are shared with the integration.</p>
-<p>The results may include databases. The <code>query</code> parameter matches against the page
-titles. If the <code>query</code> parameter is not provided, the response will contain all
-pages (and child pages) in the results.</p>
-<p>The <code>filter</code> parameter can be used to query specifically for only pages or only
-databases.</p>
+<blockquote>
+<p>🔗 <a href="https://developers.notion.com/reference/post-search">Endpoint documentation</a></p>
+</blockquote>
 
     </div>
 
@@ -1679,7 +1693,10 @@ UsersEndpoint            (<span title="notion_client.api_endpoints.Endpoint">End
 
     <div class="doc doc-contents ">
 
-      <p>Return a paginated list of Users for the workspace.</p>
+      <p>Return a paginated list of <a href="https://developers.notion.com/reference/user">Users</a> for the workspace.</p>
+<blockquote>
+<p>🔗 <a href="https://developers.notion.com/reference/get-users">Endpoint documentation</a></p>
+</blockquote>
 
     </div>
 
@@ -1699,9 +1716,10 @@ UsersEndpoint            (<span title="notion_client.api_endpoints.Endpoint">End
 
     <div class="doc doc-contents ">
 
-      <p>Retrieve the bot User associated with the API token.</p>
-<p>The bot will have an owner field with information about the person who authorized
-the integration.</p>
+      <p>Retrieve the bot <a href="https://developers.notion.com/reference/user">User</a> associated with the API token.</p>
+<blockquote>
+<p>🔗 <a href="https://developers.notion.com/reference/get-self">Endpoint documentation</a></p>
+</blockquote>
 
     </div>
 
@@ -1721,7 +1739,10 @@ the integration.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Retrieve a User using the ID specified.</p>
+      <p>Retrieve a <a href="https://developers.notion.com/reference/user">User</a> using the ID specified.</p>
+<blockquote>
+<p>🔗 <a href="https://developers.notion.com/reference/get-user">Endpoint documentation</a></p>
+</blockquote>
 
     </div>
 
