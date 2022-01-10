@@ -60,22 +60,15 @@ class BlocksEndpoint(Endpoint):
         **Note**: The update replaces the *entire* value for a given field. If a field is
         omitted (ex: omitting `checked` when updating a `to_do` block), the value will
         not be changed.
-
-        Currently this endpoint supports updating `paragraph`, `heading_1`, `heading_2`,
-        `heading_3`, `bulleted_list_item`, `numbered_list_item`, `toggle` and `to_do`
-        blocks.
         """
         return self.parent.request(
             path=f"blocks/{block_id}",
             method="PATCH",
             body=pick(
                 kwargs,
-                "heading_1",
+                "embed",
                 "type",
                 "archived",
-                "heading_2",
-                "heading_3",
-                "embed",
                 "bookmark",
                 "image",
                 "video",
@@ -88,6 +81,10 @@ class BlocksEndpoint(Endpoint):
                 "breadcrumb",
                 "table_of_contents",
                 "link_to_page",
+                "table_row",
+                "heading_1",
+                "heading_2",
+                "heading_3",
                 "paragraph",
                 "bulleted_list_item",
                 "numbered_list_item",
@@ -97,6 +94,7 @@ class BlocksEndpoint(Endpoint):
                 "template",
                 "callout",
                 "synced_block",
+                "table",
             ),
             auth=kwargs.get("auth"),
         )
