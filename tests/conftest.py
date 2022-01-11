@@ -24,7 +24,7 @@ def vcr_config():
 
 @pytest.fixture(scope="session")
 def token():
-    return os.environ["NOTION_TOKEN"]
+    return os.getenv("NOTION_TOKEN")
 
 
 @pytest.fixture
