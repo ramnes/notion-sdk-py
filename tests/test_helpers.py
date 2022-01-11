@@ -4,12 +4,18 @@ from notion_client.helpers import get_id, get_url, pick
 
 
 def test_pick():
-    my_dict = {"Product": "Notion", "API": 2021, "python-sdk": "ramnes"}
+    my_dict = {
+        "Product": "Notion",
+        "API": 2021,
+        "python-sdk": "ramnes",
+        "optional-variable": None,
+    }
     assert pick(my_dict, "Product") == {"Product": "Notion"}
     assert pick(my_dict, "API", "python-sdk") == {
         "API": 2021,
         "python-sdk": "ramnes",
     }
+    assert pick(my_dict, "optional-variable") == {}
 
 
 def test_get_id():
