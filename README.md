@@ -20,8 +20,9 @@
 It is meant to be a Python version of the reference [JavaScript SDK](https://github.com/makenotion/notion-sdk-js),
 so usage should be pretty similar between both. 😊
 
-> 📢 **Announcement** (04-12-2021) — 0.8.0 is now released and adds support for
-> the [recent Notion API changes](https://developers.notion.com/changelog).
+> 📢 **Announcement** (05-02-2022) — 0.9.0 is now released! It adds support for
+> the [recent Notion API changes](https://developers.notion.com/changelog) and
+> timeout errors. It also doesn't send null values anymore (see issue #94).
 
 <!-- markdownlint-disable -->
 ## Installation
