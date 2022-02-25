@@ -13,3 +13,20 @@ def test_endpoint_blocks_retrieve(client: "Client"):
     response: Any = client.blocks.retrieve(block_id=block_id)
     assert response["id"] == block_id
     assert response["object"] == "block"
+
+
+@pytest.mark.vcr()
+def test_endpoint_blocks_update(client: "Client"):
+    block_id = "0f06f246-1250-4da8-9100-f8fe0a537433"
+
+    response: Any = client.blocks.update(
+        block_id=block_id,
+        to_do={
+            "text": [{"type": "text", "text": {"content": "Lacinato kale"}}],
+            "checked": False,
+        },
+    )
+
+    assert response["id"] == block_id
+    assert response["type"] == "to_do"
+    assert not response["to_do"]["checked"]
