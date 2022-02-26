@@ -11,6 +11,7 @@ def test_endpoint_blocks_retrieve(client: "Client"):
     block_id = "b8624a96-0a9e-4b14-8ef8-464aae13f9b9"
 
     response: Any = client.blocks.retrieve(block_id=block_id)
+
     assert response["id"] == block_id
     assert response["object"] == "block"
 
@@ -30,3 +31,16 @@ def test_endpoint_blocks_update(client: "Client"):
     assert response["id"] == block_id
     assert response["type"] == "to_do"
     assert not response["to_do"]["checked"]
+
+
+@pytest.mark.vcr()
+def test_endpoint_blocks_delete(client: "Client"):
+    block_id = "3940db22-35c6-4b39-9db4-615f7485aa34"
+
+    response: Any = client.blocks.delete(
+        block_id=block_id,
+    )
+
+    assert response["id"] == block_id
+    assert response["object"] == "block"
+    assert response["archived"]
