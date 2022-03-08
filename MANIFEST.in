@@ -1,0 +1,3 @@
+include docs/*
+recursive-include examples *
+recursive-include tests *
