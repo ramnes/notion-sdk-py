@@ -1,4 +1,5 @@
 """Synchronous and asynchronous clients for Notion's API."""
+import json
 import logging
 from abc import abstractclassmethod
 from dataclasses import dataclass
@@ -114,8 +115,11 @@ class BaseClient:
         try:
             response.raise_for_status()
         except httpx.HTTPStatusError as error:
-            body = error.response.json()
-            code = body.get("code")
+            try:
+                body = error.response.json()
+                code = body.get("code")
+            except json.JSONDecodeError:
+                code = None
             if code and is_api_error_code(code):
                 raise APIResponseError(response, body["message"], code)
             raise HTTPResponseError(error.response)
