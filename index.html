@@ -771,7 +771,7 @@ which parameters go in the path, query, or body.</p>
         <span class="s2">&quot;database_id&quot;</span><span class="p">:</span> <span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span><span class="p">,</span>
         <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;property&quot;</span><span class="p">:</span> <span class="s2">&quot;Landmark&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;rich_text&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;contains&quot;</span><span class="p">:</span> <span class="s2">&quot;Bridge&quot;</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">},</span>
@@ -792,7 +792,7 @@ misspelling error codes.</p>
             <span class="s2">&quot;database_id&quot;</span><span class="p">:</span> <span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span><span class="p">,</span>
             <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;property&quot;</span><span class="p">:</span> <span class="s2">&quot;Landmark&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;rich_text&quot;</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s2">&quot;contains&quot;</span><span class="p">:</span> <span class="s2">&quot;Bridge&quot;</span><span class="p">,</span>
                 <span class="p">},</span>
             <span class="p">},</span>
@@ -803,7 +803,7 @@ misspelling error codes.</p>
         <span class="o">...</span>  <span class="c1"># For example: handle by asking the user to select a different database</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Other error handling code</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">()</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="logging">Logging</h3>
 <p>The client emits useful information to a logger. By default, it only emits warnings
