@@ -48,7 +48,7 @@ class ClientOptions:
     base_url: str = "https://api.notion.com"
     log_level: int = logging.WARNING
     logger: Optional[logging.Logger] = None
-    notion_version: str = "2022-02-22"
+    notion_version: str = "2022-06-28"
 
 
 class BaseClient:
