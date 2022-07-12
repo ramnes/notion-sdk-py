@@ -1,14 +1,9 @@
 import os
-from typing import List, Optional
+from typing import Optional
 
 import pytest
 
 from notion_client import AsyncClient, Client
-
-
-def pytest_collection_modifyitems(items: List[pytest.Item]):
-    for item in items:
-        item.add_marker("asyncio")
 
 
 @pytest.fixture(scope="session")
