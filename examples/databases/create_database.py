@@ -23,7 +23,7 @@ def manual_inputs(parent_id="", db_name="") -> tuple:
             input_text = input("\nEnter the parent page ID or URL: ").strip()
             # Checking if the page exists
             try:
-                if input_text[0:4] == "http":
+                if input_text[:4] == "http":
                     parent_id = get_id(input_text)
                     print(f"\nThe ID of the target page is: {parent_id}")
                 else:
@@ -78,10 +78,9 @@ def create_database(parent_id: str, db_name: str) -> dict:
     title = [{"type": "text", "text": {"content": db_name}}]
     icon = {"type": "emoji", "emoji": "🎉"}
     parent = {"type": "page_id", "page_id": parent_id}
-    newdb = notion.databases.create(
+    return notion.databases.create(
         parent=parent, title=title, properties=properties, icon=icon
     )
-    return newdb
 
 
 if __name__ == "__main__":

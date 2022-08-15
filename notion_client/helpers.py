@@ -11,7 +11,7 @@ def pick(base: Dict[Any, Any], *keys: str) -> Dict[Any, Any]:
 
 def get_url(object_id: str) -> str:
     """Return the URL for the object with the given id."""
-    return "https://notion.so/" + UUID(object_id).hex
+    return f"https://notion.so/{UUID(object_id).hex}"
 
 
 def get_id(url: str) -> str:

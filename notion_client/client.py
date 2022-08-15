@@ -82,7 +82,7 @@ class BaseClient:
 
     @client.setter
     def client(self, client: Union[httpx.Client, httpx.AsyncClient]) -> None:
-        client.base_url = httpx.URL(self.options.base_url + "/v1/")
+        client.base_url = httpx.URL(f"{self.options.base_url}/v1/")
         client.timeout = httpx.Timeout(timeout=self.options.timeout_ms / 1_000)
         client.headers = httpx.Headers(
             {
