@@ -267,3 +267,29 @@ class SearchEndpoint(Endpoint):
             body=pick(kwargs, "query", "sort", "filter", "start_cursor", "page_size"),
             auth=kwargs.get("auth"),
         )
+
+
+class CommentsEndpoint(Endpoint):
+    def create(self, **kwargs: Any) -> SyncAsync[Any]:
+        """Create a new comment in the specified page or existing discussion thread.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-a-comment)*
+        """  # noqa: E501
+        return self.parent.request(
+            path="comments",
+            method="POST",
+            query=pick(kwargs, "parent", "discussion_id", "rich_text"),
+            auth=kwargs.get("auth"),
+        )
+
+    def list(self, **kwargs: Any) -> SyncAsync[Any]:
+        """Retrieve a list of un-resolved [Comment objects](https://developers.notion.com/reference/comment-object) from the specified block.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-comment)*
+        """  # noqa: E501
+        return self.parent.request(
+            path="comments",
+            method="GET",
+            query=pick(kwargs, "block_id", "start_cursor", "page_size"),
+            auth=kwargs.get("auth"),
+        )
