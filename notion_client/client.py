@@ -11,6 +11,7 @@ from httpx import Request, Response
 
 from notion_client.api_endpoints import (
     BlocksEndpoint,
+    CommentsEndpoint,
     DatabasesEndpoint,
     PagesEndpoint,
     SearchEndpoint,
@@ -75,6 +76,7 @@ class BaseClient:
         self.users = UsersEndpoint(self)
         self.pages = PagesEndpoint(self)
         self.search = SearchEndpoint(self)
+        self.comments = CommentsEndpoint(self)
 
     @property
     def client(self) -> Union[httpx.Client, httpx.AsyncClient]:
