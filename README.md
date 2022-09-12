@@ -1,5 +1,5 @@
 <!-- markdownlint-disable -->
-![notion-sdk-py](https://socialify.git.ci/ramnes/notion-sdk-py/image?descriptionEditable=&font=Bitter&language=1&logo=https%3A%2F%2Fwww.notion.so%2Fimage%2Fhttps%253A%252F%252Fs3-us-west-2.amazonaws.com%252Fsecure.notion-static.com%252F6de57ff9-a9eb-41d6-914c-597fe52a7294%252Fnotion-logo-no-background.png%3Ftable%3Dblock%26id%3De040febf-70a9-4950-b862-0e6f00005004%26spaceId%3De12b42ac-4e54-476f-a4f5-7d6bdb1e61e2%26width%3D200&owner=1&pattern=Circuit%20Board&theme=Light)
+![notion-sdk-py](https://socialify.git.ci/ramnes/notion-sdk-py/image?font=Bitter&language=1&logo=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2F4%2F45%2FNotion_app_logo.png&owner=1&pattern=Circuit%20Board&theme=Light)
 
 <div align="center">
   <p>
