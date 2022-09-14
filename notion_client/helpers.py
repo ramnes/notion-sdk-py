@@ -1,5 +1,5 @@
 """Utility functions for notion-sdk-py."""
-from typing import Any, Dict
+from typing import Any, AsyncGenerator, Awaitable, Callable, Dict, Generator, List
 from urllib.parse import urlparse
 from uuid import UUID
 
@@ -24,3 +24,78 @@ def get_id(url: str) -> str:
         raise ValueError("The path in the URL seems to be incorrect.")
     raw_id = path[-32:]
     return str(UUID(raw_id))
+
+
+def iterate_paginated_API(
+    function: Callable[..., Any], first_page_args: Dict[Any, Any]
+) -> Generator[List[Any], None, None]:
+    """Return an iterator over the results of any paginated Notion API."""
+    next_cursor = None
+
+    while True:
+        response = function(**first_page_args, start_cursor=next_cursor)
+        yield response.get("results")
+
+        next_cursor = response.get("next_cursor")
+        if (not response["has_more"]) | (next_cursor is None):
+            return
+
+
+def collect_paginated_API(
+    function: Callable[..., Any], first_page_args: Dict[Any, Any]
+) -> List[Any]:
+    """Collect all the results of paginating an API into a list."""
+    results = []
+    for partial_res in iterate_paginated_API(function, first_page_args):
+        results += partial_res
+    return results
+
+
+async def async_iterate_paginated_API(
+    function: Callable[..., Awaitable[Any]], first_page_args: Dict[Any, Any]
+) -> AsyncGenerator[List[Any], None]:
+    """Return an async iterator over the results of any paginated Notion API."""
+    next_cursor = None
+
+    while True:
+        response = await function(**first_page_args, start_cursor=next_cursor)
+        yield response.get("results")
+
+        next_cursor = response.get("next_cursor")
+        if (not response["has_more"]) | (next_cursor is None):
+            return
+
+
+async def async_collect_paginated_API(
+    function: Callable[..., Awaitable[Any]], first_page_args: Dict[Any, Any]
+) -> List[Any]:
+    """Collect asynchronously all the results of paginating an API into a list."""
+    results = []
+    async for partial_res in async_iterate_paginated_API(function, first_page_args):
+        results += partial_res
+    return results
+
+
+def is_full_block(response: Dict[Any, Any]) -> bool:
+    """Return `true` if response is a full block."""
+    return "type" in response
+
+
+def is_full_page(response: Dict[Any, Any]) -> bool:
+    """Return `true` if response is a full page."""
+    return "url" in response
+
+
+def is_full_database(response: Dict[Any, Any]) -> bool:
+    """Return `true` if response is a full database."""
+    return "title" in response
+
+
+def is_full_user(response: Dict[Any, Any]) -> bool:
+    """Return `true` if response is a full user."""
+    return "type" in response
+
+
+def is_full_comment(response: Dict[Any, Any]) -> bool:
+    """Return `true` if response is a full comment."""
+    return "type" in response
