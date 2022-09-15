@@ -170,7 +170,65 @@ These options are all keys in the single constructor parameter.
 | `timeout_ms` | `60_000` | `int` | Number of milliseconds to wait before emitting a `RequestTimeoutError` |
 | `base_url` | `"https://api.notion.com"` | `string` | The root URL for sending API requests. This can be changed to test with a mock server. |
 | `logger` | Log to console | `logging.Logger` | A custom logger. |
+### Full API responses
+
+The following functions can distinguish between full and partial API responses.
+
+| Function | Purpose                                                        |
+| ------------------- | -------------------------------------------------------------- |
+| `is_full_page`        | Determine whether an object is a full [Page object](https://developers.notion.com/reference/page)   |
+| `is_full_block`       | Determine whether an object is a full [Block object](https://developers.notion.com/reference/block)  |
+| `is_full_database`    | Determine whether an object is a full [Database object](https://developers.notion.com/reference/database)  |
+| `is_full_user`        | Determine whether an object is a full [User object](https://developers.notion.com/reference/user)  |
+| `is_full_comment`     | Determine whether an object is a full [Comment object](https://developers.notion.com/reference/comment)  |
 <!-- markdownlint-enable -->
+
+```python
+from notion_client.helpers import is_full_page
+
+full_or_partial_page = await notion.databases.query(
+    **{
+        "database_id": "897e5a76-ae52-4b48-9fdf-e71f5945d1af"
+    }
+)
+
+for page of full_or_partial_page['results']:
+  if not is_full_page(page):
+    continue
+  print('Created at:' + page['created_time'])
+```
+
+### Utility functions
+
+These functions can be helpful for dealing with any of the paginated APIs.
+
+`iterate_paginated_api(function, **kwargs)` and its async version
+`async_iterate_paginated_api(function, **kwargs)` turn any paginated API into a generator.
+
+The `function` parameter must accept a `start_cursor` argument. Example: `notion.blocks.children.list`.
+
+```python
+from notion_client.helpers import iterate_paginated_api
+
+for block of iterate_paginated_api(notion.databases.query, **{
+        "database_id": "897e5a76-ae52-4b48-9fdf-e71f5945d1af"
+    }):
+    # do something with block
+```
+
+If you don't need a generator but simply a list of all the results,
+`collect_paginated_api(function, **kwargs)` and its async version
+`async_collect_paginated_api(function, **kwargs)` have the same
+behaviour of the previous functions, but returns a list
+of all the results from the paginated API.
+
+```python
+from notion_client.helpers import collect_paginated_api
+
+all_results = collect_paginated_api(notion.databases.query, **{
+        "database_id": "897e5a76-ae52-4b48-9fdf-e71f5945d1af"
+    })
+```
 
 ## Requirements
 

@@ -26,14 +26,14 @@ def get_id(url: str) -> str:
     return str(UUID(raw_id))
 
 
-def iterate_paginated_API(
+def iterate_paginated_api(
     function: Callable[..., Any], **kwargs: Any
 ) -> Generator[List[Any], None, None]:
     """Return an iterator over the results of any paginated Notion API."""
     next_cursor = None
 
     while True:
-        response = function(kwargs, start_cursor=next_cursor)
+        response = function(**kwargs, start_cursor=next_cursor)
         yield response.get("results")
 
         next_cursor = response.get("next_cursor")
@@ -41,22 +41,22 @@ def iterate_paginated_API(
             return
 
 
-def collect_paginated_API(function: Callable[..., Any], **kwargs: Any) -> List[Any]:
+def collect_paginated_api(function: Callable[..., Any], **kwargs: Any) -> List[Any]:
     """Collect all the results of paginating an API into a list."""
     results = []
-    for partial_res in iterate_paginated_API(function, **kwargs):
+    for partial_res in iterate_paginated_api(function, **kwargs):
         results += partial_res
     return results
 
 
-async def async_iterate_paginated_API(
+async def async_iterate_paginated_api(
     function: Callable[..., Awaitable[Any]], **kwargs: Any
 ) -> AsyncGenerator[List[Any], None]:
     """Return an async iterator over the results of any paginated Notion API."""
     next_cursor = None
 
     while True:
-        response = await function(kwargs, start_cursor=next_cursor)
+        response = await function(**kwargs, start_cursor=next_cursor)
         yield response.get("results")
 
         next_cursor = response.get("next_cursor")
@@ -64,12 +64,12 @@ async def async_iterate_paginated_API(
             return
 
 
-async def async_collect_paginated_API(
+async def async_collect_paginated_api(
     function: Callable[..., Awaitable[Any]], **kwargs: Any
 ) -> List[Any]:
     """Collect asynchronously all the results of paginating an API into a list."""
     results = []
-    async for partial_res in async_iterate_paginated_API(function, **kwargs):
+    async for partial_res in async_iterate_paginated_api(function, **kwargs):
         results += partial_res
     return results
 
