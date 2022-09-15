@@ -180,7 +180,7 @@ The following functions can distinguish between full and partial API responses.
 | `is_full_block`       | Determine whether an object is a full [Block object](https://developers.notion.com/reference/block)  |
 | `is_full_database`    | Determine whether an object is a full [Database object](https://developers.notion.com/reference/database)  |
 | `is_full_user`        | Determine whether an object is a full [User object](https://developers.notion.com/reference/user)  |
-| `is_full_comment`     | Determine whether an object is a full [Comment object](https://developers.notion.com/reference/comment)  |
+| `is_full_comment`     | Determine whether an object is a full [Comment object](https://developers.notion.com/reference/comment-object)  |
 <!-- markdownlint-enable -->
 
 ```python
