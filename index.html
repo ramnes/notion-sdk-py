@@ -388,6 +388,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#full-api-responses" class="md-nav__link">
+    Full API responses
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#utility-functions" class="md-nav__link">
     Utility functions
   </a>
@@ -669,6 +676,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#full-api-responses" class="md-nav__link">
+    Full API responses
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#utility-functions" class="md-nav__link">
     Utility functions
   </a>
@@ -881,14 +895,9 @@ These options are all keys in the single constructor parameter.</p>
 <td><code>logging.Logger</code></td>
 <td>A custom logger.</td>
 </tr>
-<tr>
-<td>### Full API responses</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
 </tbody>
 </table>
+<h3 id="full-api-responses">Full API responses</h3>
 <p>The following functions can distinguish between full and partial API responses.</p>
 <table>
 <thead>
@@ -925,15 +934,13 @@ These options are all keys in the single constructor parameter.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">notion_client.helpers</span> <span class="kn">import</span> <span class="n">is_full_page</span>
 
 <span class="n">full_or_partial_page</span> <span class="o">=</span> <span class="k">await</span> <span class="n">notion</span><span class="o">.</span><span class="n">databases</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
-    <span class="o">**</span><span class="p">{</span>
-        <span class="s2">&quot;database_id&quot;</span><span class="p">:</span> <span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span>
-    <span class="p">}</span>
+    <span class="n">database_id</span><span class="o">=</span><span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span>
 <span class="p">)</span>
 
-<span class="k">for</span> <span class="n">page</span> <span class="n">of</span> <span class="n">full_or_partial_page</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]:</span>
-  <span class="k">if</span> <span class="ow">not</span> <span class="n">is_full_page</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
-    <span class="k">continue</span>
-  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Created at:&#39;</span> <span class="o">+</span> <span class="n">page</span><span class="p">[</span><span class="s1">&#39;created_time&#39;</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">full_or_partial_page</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_full_page</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
+        <span class="k">continue</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created at: </span><span class="si">{</span><span class="n">page</span><span class="p">[</span><span class="s1">&#39;created_time&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="utility-functions">Utility functions</h3>
 <p>These functions can be helpful for dealing with any of the paginated APIs.</p>
@@ -942,10 +949,11 @@ These options are all keys in the single constructor parameter.</p>
 <p>The <code>function</code> parameter must accept a <code>start_cursor</code> argument. Example: <code>notion.blocks.children.list</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">notion_client.helpers</span> <span class="kn">import</span> <span class="n">iterate_paginated_api</span>
 
-<span class="k">for</span> <span class="n">block</span> <span class="n">of</span> <span class="n">iterate_paginated_api</span><span class="p">(</span><span class="n">notion</span><span class="o">.</span><span class="n">databases</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span>
-        <span class="s2">&quot;database_id&quot;</span><span class="p">:</span> <span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span>
-    <span class="p">}):</span>
-    <span class="c1"># do something with block</span>
+<span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">iterate_paginated_api</span><span class="p">(</span>
+    <span class="n">notion</span><span class="o">.</span><span class="n">databases</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">database_id</span><span class="o">=</span><span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span>
+<span class="p">):</span>
+    <span class="c1"># Do something with block.</span>
+    <span class="o">...</span>
 </code></pre></div>
 <p>If you don't need a generator but simply a list of all the results,
 <code>collect_paginated_api(function, **kwargs)</code> and its async version
