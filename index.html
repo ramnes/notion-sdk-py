@@ -962,9 +962,9 @@ behaviour of the previous functions, but returns a list
 of all the results from the paginated API.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">notion_client.helpers</span> <span class="kn">import</span> <span class="n">collect_paginated_api</span>
 
-<span class="n">all_results</span> <span class="o">=</span> <span class="n">collect_paginated_api</span><span class="p">(</span><span class="n">notion</span><span class="o">.</span><span class="n">databases</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span>
-        <span class="s2">&quot;database_id&quot;</span><span class="p">:</span> <span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span>
-    <span class="p">})</span>
+<span class="n">all_results</span> <span class="o">=</span> <span class="n">collect_paginated_api</span><span class="p">(</span>
+    <span class="n">notion</span><span class="o">.</span><span class="n">databases</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">database_id</span><span class="o">=</span><span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span>
+<span class="p">)</span>
 </code></pre></div>
 <h2 id="requirements">Requirements</h2>
 <p>This package supports the following minimum versions:</p>
