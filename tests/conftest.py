@@ -1,5 +1,4 @@
 import os
-from datetime import datetime
 from typing import Optional
 
 import pytest
@@ -34,7 +33,7 @@ def testing_page() -> Optional[str]:
     return os.getenv("NOTION_TESTING_URL")
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def client(token: Optional[str]):
     return Client({"auth": token})
 
@@ -44,42 +43,3 @@ async def async_client(token: Optional[str]):
     client = AsyncClient({"auth": token})
     yield client
     await client.aclose()
-
-
-@pytest.fixture
-def database(testing_page):
-    """I need to temporarily create a database for testing the endpoint
-    the name will be the current timestamp"""
-    db_name = f"Test - {datetime.now()}"
-    # properties taken from the examples folder
-    db_properties = {
-        "Name": {"title": {}},  # required property, leave it empty
-        "In stock": {"checkbox": {}},
-        "Food group": {
-            "select": {
-                "options": [
-                    {"name": "🥦 Vegetable", "color": "green"},
-                    {"name": "🍎 Fruit", "color": "red"},
-                    {"name": "💪 Protein", "color": "yellow"},
-                ]
-            }
-        },
-        "Price": {"number": {"format": "dollar"}},
-        "Last ordered": {"date": {}},
-        "Store availability": {
-            "type": "multi_select",
-            "multi_select": {
-                "options": [
-                    {"name": "Duc Loi Market", "color": "blue"},
-                    {"name": "Rainbow Grocery", "color": "gray"},
-                    {"name": "Nijiya Market", "color": "purple"},
-                    {"name": "Gus's Community Market", "color": "yellow"},
-                ]
-            },
-        },
-        "+1": {"people": {}},
-        "Photo": {"files": {}},
-    }
-    title = [{"type": "text", "text": {"content": db_name}}]
-    parent = {"type": "page_id", "page_id": testing_page}
-    return {"parent": parent, "title": title, "properties": db_properties}
