@@ -2,9 +2,116 @@ from datetime import datetime
 
 import pytest
 
+TEST_PAGE_NAME = f"Test Page - {datetime.now()}"
 
-def compare_cleaned_url(url1: str, url2: str) -> bool:
-    return url1.replace("-", "").strip() == url2.replace("-", "").strip()
+
+def compare_cleaned_ids(id1: str, id2: str) -> bool:
+    return id1.replace("-", "").strip() == id2.replace("-", "").strip()
+
+
+# PAGES
+# the first test generates a temporary page and uses its ID as input for the other tests
+
+
+@pytest.fixture(scope="session")
+def test_pages_create(client, testing_page) -> str:
+    response = client.pages.create(
+        parent={"page_id": testing_page},
+        properties={
+            "title": [{"text": {"content": TEST_PAGE_NAME}}],
+        },
+        # using children = [] for avoiding issue with the Notion API
+        # when creating a subpage without blocks
+        children=[],
+    )
+
+    yield response["id"]
+
+    # at the end of the session, delete the page
+    client.blocks.delete(block_id=response["id"])
+
+
+def test_pages_retrieve(client, test_pages_create, testing_page):
+    response = client.pages.retrieve(page_id=test_pages_create)
+    assert response["object"] == "page"
+    assert compare_cleaned_ids(response["parent"]["page_id"], testing_page)
+
+
+def test_pages_update(client, test_pages_create):
+    icon = {"type": "emoji", "emoji": "🛴"}
+
+    response = client.pages.update(page_id=test_pages_create, icon=icon)
+    assert response["icon"] == icon
+
+
+def test_pages_properties_retrieve(client, test_pages_create):
+    response = client.pages.properties.retrieve(
+        page_id=test_pages_create, property_id="title"
+    )
+    assert response["results"][0]["type"] == "title"
+
+
+# BLOCKS
+# pages are special kind of blocks. Here we are using paragraph blocks for the tests
+# the newly created paragraph will be used by the other tests
+
+
+@pytest.fixture(scope="session")
+def test_blocks_children_append(client, test_pages_create):
+    children = [
+        {"paragraph": {"rich_text": [{"text": {"content": "I'm a paragraph."}}]}}
+    ]
+
+    response = client.blocks.children.append(
+        block_id=test_pages_create, children=children
+    )
+    assert response["type"] == "block"
+    assert response["results"][0]["type"] == "paragraph"
+
+    return response["results"][0]["id"]
+
+
+def test_blocks_children_list(client, test_pages_create, test_blocks_children_append):
+    response = client.blocks.children.list(block_id=test_pages_create)
+    assert response["object"] == "list"
+    assert response["type"] == "block"
+    assert compare_cleaned_ids(
+        response["results"][0]["id"], test_blocks_children_append
+    )
+
+
+def test_blocks_retrieve(client, test_blocks_children_append):
+    response = client.blocks.retrieve(block_id=test_blocks_children_append)
+    assert response["object"] == "block"
+    assert response["type"] == "paragraph"
+    assert compare_cleaned_ids(response["id"], test_blocks_children_append)
+
+
+def test_blocks_update(client, test_blocks_children_append):
+    new_plain_text = "I'm an updated paragraph."
+    new_text = {
+        "rich_text": [
+            {
+                "text": {"content": new_plain_text},
+                "annotations": {"bold": True, "color": "red_background"},
+            }
+        ]
+    }
+    response = client.blocks.update(
+        block_id=test_blocks_children_append, paragraph=new_text
+    )
+
+    assert compare_cleaned_ids(response["id"], test_blocks_children_append)
+    assert response["paragraph"]["rich_text"][0]["plain_text"] == new_plain_text
+
+
+def test_blocks_delete(client, test_pages_create, test_blocks_children_append):
+    response = client.blocks.delete(block_id=test_blocks_children_append)
+
+    assert compare_cleaned_ids(response["id"], test_blocks_children_append)
+
+    new_retrieve = client.blocks.retrieve(block_id=test_blocks_children_append)
+    assert new_retrieve["archived"]
 
 
 # USERS
@@ -28,51 +135,20 @@ def test_users_retrieve(client):
     assert response == me
 
 
-# PAGES
-# the first test generates a temporary page and uses its ID as input for the other tests
-
-
-@pytest.fixture(scope="session")
-def test_pages_create(client, testing_page):
-    page_name = f"Test Page - {datetime.now()}"
-    response = client.pages.create(
-        parent={"page_id": testing_page},
-        properties={
-            "title": [{"text": {"content": page_name}}],
-        },
-        # using children = [] for avoiding issue with the Notion API
-        # when creating a subpage without blocks
-        children=[],
-    )
-
-    yield response["id"]
-
-    # at the end of the session, delete the page
-    client.blocks.delete(block_id=response["id"])
-
-
-def test_pages_retrieve(client, test_pages_create, testing_page):
-    response = client.pages.retrieve(page_id=test_pages_create)
-    assert response["object"] == "page"
-    assert compare_cleaned_url(response["parent"]["page_id"], testing_page)
-
-
-def test_pages_update(client, test_pages_create):
-    icon = {"type": "emoji", "emoji": "🛴"}
-
-    response = client.pages.update(page_id=test_pages_create, icon=icon)
-    assert response["icon"] == icon
-
-
-def test_pages_properties_retrieve(client, test_pages_create):
-    response = client.pages.properties.retrieve(
-        page_id=test_pages_create, property_id="title"
-    )
-    assert response["results"][0]["type"] == "title"
-
-
 # SEARCH
-# TODO: see test
+def test_search(client, test_pages_create):
+    payload = {
+        "query": TEST_PAGE_NAME,
+        "sort": {
+            "direction": "ascending",
+            "timestamp": "last_edited_time",
+        },
+    }
+
+    response = client.search(**payload)
+    assert response["results"]
+    assert response["results"][0]["id"] == test_pages_create
+
 
 # DATABASES
 # the first test generates a temporary database inside
@@ -81,7 +157,7 @@ def test_pages_properties_retrieve(client, test_pages_create):
 
 
 @pytest.fixture(scope="session")
-def test_databases_create(client, test_pages_create):
+def test_databases_create(client, test_pages_create) -> str:
     db_name = f"Test Database - {datetime.now()}"
     properties = {
         "Name": {"title": {}},  # required property
@@ -99,9 +175,9 @@ def test_databases_create(client, test_pages_create):
 def test_databases_retrieve(client, test_databases_create, test_pages_create):
 
     response = client.databases.retrieve(test_databases_create)
-    assert compare_cleaned_url(response["id"], test_databases_create)
+    assert compare_cleaned_ids(response["id"], test_databases_create)
     assert response["object"] == "database"
-    assert compare_cleaned_url(response["parent"]["page_id"], test_pages_create)
+    assert compare_cleaned_ids(response["parent"]["page_id"], test_pages_create)
 
 
 def test_databases_query(client, test_databases_create):
@@ -121,3 +197,37 @@ def test_databases_update(client, test_databases_create):
 
     response = client.databases.update(database_id=test_databases_create, icon=icon)
     assert response["icon"] == icon
+
+
+# COMMENTS
+
+
+@pytest.fixture(scope="session")
+def test_comments_create(client, test_pages_create) -> str:
+    parent = {"page_id": test_pages_create}
+    rich_text = [
+        {
+            "text": {
+                "content": "This is a test comment.",
+            },
+        },
+    ]
+
+    response = client.comments.create(parent=parent, rich_text=rich_text)
+
+    assert response["object"] == "comment"
+    assert compare_cleaned_ids(response["parent"]["page_id"], test_pages_create)
+    assert response["rich_text"][0]["plain_text"] == rich_text[0]["text"]["content"]
+
+    #  the test returns the ID of the newly created comment for the 'list' test
+    return response["id"]
+
+
+def test_comments_list(client, test_pages_create, test_comments_create):
+
+    response = client.comments.list(block_id=test_pages_create)
+
+    assert response["object"] == "list"
+    assert response["results"]
+    assert response["results"][0]["object"] == "comment"
+    assert response["results"][0]["id"] == test_comments_create
