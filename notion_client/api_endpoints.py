@@ -278,7 +278,7 @@ class CommentsEndpoint(Endpoint):
         return self.parent.request(
             path="comments",
             method="POST",
-            query=pick(kwargs, "parent", "discussion_id", "rich_text"),
+            body=pick(kwargs, "parent", "discussion_id", "rich_text"),
             auth=kwargs.get("auth"),
         )
 
