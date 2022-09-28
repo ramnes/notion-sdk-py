@@ -19,18 +19,21 @@ def vcr_config():
 
 
 @pytest.fixture(scope="session")
-def token() -> Optional[str]:
-    return os.getenv("NOTION_TOKEN")
+def token() -> str:
+    notion_token = os.environ.get("NOTION_TOKEN")
+    if not notion_token:
+        raise EnvironmentError("Env variable NOTION_TOKEN needed for testing")
+    return notion_token
 
 
 @pytest.fixture(scope="session")
-def testing_page() -> Optional[str]:
-    # TODO: clean the page at the beginning of the tests?
-    # wbut hat if multiple people are running tests on the page?
-    # create a subpage for every concurrent run?
-    # right now there will be a new sub-page on the testing URL for every run
-    # we can maybe delete subpages older than 1 day
-    return os.getenv("NOTION_TESTING_URL")
+def testing_page() -> str:
+    """this is the URL of the Notion page where the tests will be executed
+    the bot must have access to the page with all the capabilities enabled"""
+    page = os.environ.get("NOTION_TESTING_URL")
+    if not page:
+        raise EnvironmentError("Env variable NOTION_TESTING_URL needed for testing")
+    return page
 
 
 @pytest.fixture(scope="session")
