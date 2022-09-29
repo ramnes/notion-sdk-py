@@ -27,13 +27,13 @@ def token() -> str:
 
 
 @pytest.fixture(scope="session")
-def testing_page() -> str:
-    """this is the URL of the Notion page where the tests will be executed
+def page_id() -> str:
+    """this is the ID of the Notion page where the tests will be executed
     the bot must have access to the page with all the capabilities enabled"""
-    page = os.environ.get("NOTION_TESTING_URL")
-    if not page:
-        raise EnvironmentError("Env variable NOTION_TESTING_URL needed for testing")
-    return page
+    notion_page_id = os.environ.get("NOTION_TEST_PAGE_ID")
+    if not notion_page_id:
+        raise EnvironmentError("Env variable NOTION_TEST_PAGE_ID needed for testing")
+    return notion_page_id
 
 
 @pytest.fixture(scope="session")
