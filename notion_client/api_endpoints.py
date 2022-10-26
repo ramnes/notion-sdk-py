@@ -153,7 +153,7 @@ class DatabasesEndpoint(Endpoint):
         return self.parent.request(
             path="databases",
             method="POST",
-            body=pick(kwargs, "parent", "title", "properties", "icon", "cover"),
+            body=pick(kwargs, "parent", "title", "properties", "icon", "cover", "is_inline"),
             auth=kwargs.get("auth"),
         )
 
@@ -165,7 +165,7 @@ class DatabasesEndpoint(Endpoint):
         return self.parent.request(
             path=f"databases/{database_id}",
             method="PATCH",
-            body=pick(kwargs, "properties", "title", "icon", "cover"),
+            body=pick(kwargs, "properties", "title", "icon", "cover", "is_inline"),
             auth=kwargs.get("auth"),
         )
 
