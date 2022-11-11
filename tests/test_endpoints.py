@@ -2,10 +2,9 @@ from datetime import datetime
 
 import pytest
 
-TEST_PAGE_NAME = f"Test Page - {datetime.now()}"
+from tests.conftest import TEST_PAGE_NAME
 
 
-# SETUP
 @pytest.fixture(scope="session")
 def session_page_id(client, page_id) -> str:
     response = client.pages.create(
@@ -13,14 +12,10 @@ def session_page_id(client, page_id) -> str:
         properties={
             "title": [{"text": {"content": TEST_PAGE_NAME}}],
         },
-        # using children = [] for avoiding issue with the Notion API
-        # when creating a subpage without blocks
         children=[],
     )
 
     yield response["id"]
-
-    # at the end of the session, delete the page
     client.blocks.delete(block_id=response["id"])
 
 
@@ -33,8 +28,6 @@ def session_block_id(client, session_page_id) -> str:
     response = client.blocks.children.append(
         block_id=session_page_id, children=children
     )
-    assert response["type"] == "block"
-    assert response["results"][0]["type"] == "paragraph"
 
     return response["results"][0]["id"]
 
@@ -66,19 +59,11 @@ def session_comment_id(client, session_page_id) -> str:
     ]
 
     response = client.comments.create(parent=parent, rich_text=rich_text)
-
-    assert response["object"] == "comment"
-    assert compare_cleaned_ids(response["parent"]["page_id"], session_page_id)
-    assert response["rich_text"][0]["plain_text"] == rich_text[0]["text"]["content"]
-
     return response["id"]
 
 
 def compare_cleaned_ids(id1: str, id2: str) -> bool:
     return id1.replace("-", "").strip() == id2.replace("-", "").strip()
-
-
-# PAGES
 
 
 def test_pages_retrieve(client, session_page_id, page_id):
@@ -99,9 +84,6 @@ def test_pages_properties_retrieve(client, session_page_id):
         page_id=session_page_id, property_id="title"
     )
     assert response["results"][0]["type"] == "title"
-
-
-# BLOCKS
 
 
 def test_blocks_children_list(client, session_page_id, session_block_id):
@@ -143,9 +125,6 @@ def test_blocks_delete(client, session_block_id):
     assert new_retrieve["archived"]
 
 
-# USERS
-
-
 def test_users_list(client):
     response = client.users.list()
     assert response["type"] == "user"
@@ -164,12 +143,9 @@ def test_users_retrieve(client):
     assert response == me
 
 
-# SEARCH
-
-
-def test_search(client, session_page_id):
+def test_search(client, page_id):
     payload = {
-        "query": TEST_PAGE_NAME,
+        "query": "Test",
         "sort": {
             "direction": "ascending",
             "timestamp": "last_edited_time",
@@ -178,10 +154,7 @@ def test_search(client, session_page_id):
 
     response = client.search(**payload)
     assert response["results"]
-    assert response["results"][0]["id"] == session_page_id
-
-
-# DATABASES
+    assert compare_cleaned_ids(response["results"][0]["id"], page_id)
 
 
 def test_databases_query(client, session_database_id):
@@ -208,9 +181,6 @@ def test_databases_update(client, session_database_id):
 
     response = client.databases.update(database_id=session_database_id, icon=icon)
     assert response["icon"] == icon
-
-
-# COMMENTS
 
 
 def test_comments_list(client, session_page_id, session_comment_id):
