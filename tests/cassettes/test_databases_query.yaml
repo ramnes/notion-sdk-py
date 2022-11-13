@@ -1,0 +1,29 @@
+interactions:
+- request:
+    body: '{"filter": {"timestamp": "created_time", "created_time": {"past_week":
+      {}}}}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - secret_...
+      connection:
+      - keep-alive
+      content-length:
+      - '76'
+      content-type:
+      - application/json
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: POST
+    uri: https://api.notion.com/v1/databases/12144502-549d-478f-9950-ef2ab2c2909f/query
+  response:
+    content: '{"object":"list","results":[],"next_cursor":null,"has_more":false,"type":"page","page":{}}'
+    headers: {}
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1

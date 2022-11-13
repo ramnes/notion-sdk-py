@@ -1,0 +1,26 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - secret_...
+      connection:
+      - keep-alive
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: GET
+    uri: https://api.notion.com/v1/pages/84464ae1-bef7-4c71-992b-8eaaeefb13e3
+  response:
+    content: '{"object":"page","id":"84464ae1-bef7-4c71-992b-8eaaeefb13e3","created_time":"2022-11-13T13:08:00.000Z","last_edited_time":"2022-11-13T13:08:00.000Z","created_by":{"object":"user","id":"823cf07b-34df-4ae6-9fbc-dbc600a815c6"},"last_edited_by":{"object":"user","id":"823cf07b-34df-4ae6-9fbc-dbc600a815c6"},"cover":null,"icon":null,"parent":{"type":"page_id","page_id":"f691a0f9-da72-43bd-94ef-365793610746"},"archived":false,"properties":{"title":{"id":"title","type":"title","title":[{"type":"text","text":{"content":"Test
+      Page - 2022-11-13 14:07:57.999898","link":null},"annotations":{"bold":false,"italic":false,"strikethrough":false,"underline":false,"code":false,"color":"default"},"plain_text":"Test
+      Page - 2022-11-13 14:07:57.999898","href":null}]}},"url":"https://www.notion.so/Test-Page-2022-11-13-14-07-57-999898-84464ae1bef74c71992b8eaaeefb13e3"}'
+    headers: {}
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1
