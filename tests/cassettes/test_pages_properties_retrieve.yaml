@@ -1,0 +1,26 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - secret_...
+      connection:
+      - keep-alive
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: GET
+    uri: https://api.notion.com/v1/pages/84464ae1-bef7-4c71-992b-8eaaeefb13e3/properties/title
+  response:
+    content: '{"object":"list","results":[{"object":"property_item","type":"title","id":"title","title":{"type":"text","text":{"content":"Test
+      Page - 2022-11-13 14:07:57.999898","link":null},"annotations":{"bold":false,"italic":false,"strikethrough":false,"underline":false,"code":false,"color":"default"},"plain_text":"Test
+      Page - 2022-11-13 14:07:57.999898","href":null}}],"next_cursor":null,"has_more":false,"type":"property_item","property_item":{"id":"title","next_url":null,"type":"title","title":{}}}'
+    headers: {}
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1
