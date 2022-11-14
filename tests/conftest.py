@@ -61,6 +61,28 @@ def page_id(vcr) -> str:
     return notion_page_id
 
 
+@pytest.fixture(scope="module")
+def session_page_id(vcr) -> str:
+    """this is the id of the subpage inside page_id where the test session will run"""
+    with vcr.use_cassette("test_pages_create.yaml") as cass:
+        response = cass._serializer.deserialize(cass.data[0][1]["content"])
+        return response["id"]
+
+
+@pytest.fixture(scope="module")
+def session_block_id(vcr) -> str:
+    with vcr.use_cassette("test_blocks_children_create.yaml") as cass:
+        response = cass._serializer.deserialize(cass.data[0][1]["content"])
+        return response["results"][0]["id"]
+
+
+@pytest.fixture(scope="module")
+def session_database_id(vcr) -> str:
+    with vcr.use_cassette("test_databases_create.yaml") as cass:
+        response = cass._serializer.deserialize(cass.data[0][1]["content"])
+        return response["id"]
+
+
 @pytest.fixture(scope="session")
 def client(token: Optional[str]):
     return Client({"auth": token})
