@@ -6,9 +6,9 @@ from tests.conftest import TEST_PAGE_NAME
 
 
 @pytest.mark.vcr()
-def test_pages_create(client, page_id):
+def test_pages_create(client, parent_page_id):
     response = client.pages.create(
-        parent={"page_id": page_id},
+        parent={"page_id": parent_page_id},
         properties={
             "title": [{"text": {"content": TEST_PAGE_NAME}}],
         },
@@ -19,36 +19,32 @@ def test_pages_create(client, page_id):
 
 
 @pytest.mark.vcr()
-def test_pages_retrieve(client, session_page_id):
-    response = client.pages.retrieve(page_id=session_page_id)
+def test_pages_retrieve(client, page_id):
+    response = client.pages.retrieve(page_id=page_id)
     assert response["object"] == "page"
 
 
 @pytest.mark.vcr()
-def test_pages_update(client, session_page_id):
+def test_pages_update(client, page_id):
     icon = {"type": "emoji", "emoji": "🛴"}
 
-    response = client.pages.update(page_id=session_page_id, icon=icon)
+    response = client.pages.update(page_id=page_id, icon=icon)
     assert response["icon"]
 
 
 @pytest.mark.vcr()
-def test_pages_properties_retrieve(client, session_page_id):
-    response = client.pages.properties.retrieve(
-        page_id=session_page_id, property_id="title"
-    )
+def test_pages_properties_retrieve(client, page_id):
+    response = client.pages.properties.retrieve(page_id=page_id, property_id="title")
     assert response["results"][0]["type"] == "title"
 
 
 @pytest.mark.vcr()
-def test_blocks_children_create(client, session_page_id) -> str:
+def test_blocks_children_create(client, page_id) -> str:
     children = [
         {"paragraph": {"rich_text": [{"text": {"content": "I'm a paragraph."}}]}}
     ]
 
-    response = client.blocks.children.append(
-        block_id=session_page_id, children=children
-    )
+    response = client.blocks.children.append(block_id=page_id, children=children)
 
     assert response["object"] == "list"
     assert len(response["results"]) > 0
@@ -56,21 +52,21 @@ def test_blocks_children_create(client, session_page_id) -> str:
 
 
 @pytest.mark.vcr()
-def test_blocks_children_list(client, session_page_id):
-    response = client.blocks.children.list(block_id=session_page_id)
+def test_blocks_children_list(client, page_id):
+    response = client.blocks.children.list(block_id=page_id)
     assert response["object"] == "list"
     assert response["type"] == "block"
 
 
 @pytest.mark.vcr()
-def test_blocks_retrieve(client, session_block_id):
-    response = client.blocks.retrieve(block_id=session_block_id)
+def test_blocks_retrieve(client, block_id):
+    response = client.blocks.retrieve(block_id=block_id)
     assert response["object"] == "block"
     assert response["type"] == "paragraph"
 
 
 @pytest.mark.vcr()
-def test_blocks_update(client, session_block_id):
+def test_blocks_update(client, block_id):
     new_plain_text = "I'm an updated paragraph."
     new_text = {
         "rich_text": [
@@ -80,16 +76,16 @@ def test_blocks_update(client, session_block_id):
             }
         ]
     }
-    response = client.blocks.update(block_id=session_block_id, paragraph=new_text)
+    response = client.blocks.update(block_id=block_id, paragraph=new_text)
 
     assert response["paragraph"]["rich_text"][0]["plain_text"]
 
 
 @pytest.mark.vcr()
-def test_blocks_delete(client, session_block_id):
-    client.blocks.delete(block_id=session_block_id)
+def test_blocks_delete(client, block_id):
+    client.blocks.delete(block_id=block_id)
 
-    new_retrieve = client.blocks.retrieve(block_id=session_block_id)
+    new_retrieve = client.blocks.retrieve(block_id=block_id)
     assert new_retrieve["archived"]
 
 
@@ -124,17 +120,18 @@ def test_search(client, page_id):
     }
 
     response = client.search(**payload)
-    assert response["results"]
+    print(response)
+    assert response["object"] == "list"
 
 
 @pytest.mark.vcr()
-def test_databases_create(client, session_page_id):
+def test_databases_create(client, page_id):
     db_name = f"Test Database - {datetime.now()}"
     properties = {
         "Name": {"title": {}},  # required property
     }
     title = [{"type": "text", "text": {"content": db_name}}]
-    parent = {"type": "page_id", "page_id": session_page_id}
+    parent = {"type": "page_id", "page_id": page_id}
     response = client.databases.create(
         **{"parent": parent, "title": title, "properties": properties}
     )
@@ -143,9 +140,9 @@ def test_databases_create(client, session_page_id):
 
 
 @pytest.mark.vcr()
-def test_databases_query(client, session_database_id):
+def test_databases_query(client, database_id):
     query = {
-        "database_id": session_database_id,
+        "database_id": database_id,
         "filter": {"timestamp": "created_time", "created_time": {"past_week": {}}},
     }
 
@@ -155,23 +152,23 @@ def test_databases_query(client, session_database_id):
 
 
 @pytest.mark.vcr()
-def test_databases_retrieve(client, session_database_id):
+def test_databases_retrieve(client, database_id):
 
-    response = client.databases.retrieve(session_database_id)
+    response = client.databases.retrieve(database_id)
     assert response["object"] == "database"
 
 
 @pytest.mark.vcr()
-def test_databases_update(client, session_database_id):
+def test_databases_update(client, database_id):
     icon = {"type": "emoji", "emoji": "🔥"}
 
-    response = client.databases.update(database_id=session_database_id, icon=icon)
+    response = client.databases.update(database_id=database_id, icon=icon)
     assert response["icon"]
 
 
 @pytest.mark.vcr()
-def test_comments_create(client, session_page_id):
-    parent = {"page_id": session_page_id}
+def test_comments_create(client, page_id):
+    parent = {"page_id": page_id}
     rich_text = [
         {
             "text": {
@@ -185,16 +182,13 @@ def test_comments_create(client, session_page_id):
 
 
 @pytest.mark.vcr()
-def test_comments_list(client, session_page_id):
-
-    response = client.comments.list(block_id=session_page_id)
+def test_comments_list(client, page_id):
+    response = client.comments.list(block_id=page_id)
 
     assert response["object"] == "list"
-    assert response["results"]
-    assert response["results"][0]["object"] == "comment"
 
 
 @pytest.mark.vcr()
-def test_pages_delete(client, session_page_id) -> str:
-    response = client.blocks.delete(block_id=session_page_id)
+def test_pages_delete(client, page_id):
+    response = client.blocks.delete(block_id=page_id)
     assert response
