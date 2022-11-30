@@ -409,6 +409,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    Testing
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#requirements" class="md-nav__link">
     Requirements
   </a>
@@ -697,6 +704,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    Testing
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#requirements" class="md-nav__link">
     Requirements
   </a>
@@ -967,6 +981,15 @@ from the paginated API.</p>
     <span class="n">notion</span><span class="o">.</span><span class="n">databases</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">database_id</span><span class="o">=</span><span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span>
 <span class="p">)</span>
 </code></pre></div>
+<h2 id="testing">Testing</h2>
+<p>Run the tests with the <code>pytest</code> command: the tests are using pytest-vcr's cassettes
+for simulating requests to the Notion API.</p>
+<p>To create new tests or run them without cassettes, you need to set up the
+environment variables <code>NOTION_TOKEN</code> and <code>NOTION_TEST_PAGE_ID</code> (a page where
+your integration has all the capabilities enabled).</p>
+<p>The code will use the page at <code>NOTION_TEST_PAGE_ID</code> to generate a temporary
+environment with the Notion objects to be tested, which will be deleted
+at the end of the session.</p>
 <h2 id="requirements">Requirements</h2>
 <p>This package supports the following minimum versions:</p>
 <ul>
