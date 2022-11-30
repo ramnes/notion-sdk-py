@@ -229,6 +229,19 @@ all_results = collect_paginated_api(
 )
 ```
 
+## Testing
+
+Run the tests with the `pytest` command: the tests are using pytest-vcr's cassettes
+for simulating requests to the Notion API.
+
+To create new tests or run them without cassettes, you need to set up the
+environment variables `NOTION_TOKEN` and `NOTION_TEST_PAGE_ID` (a page where
+your integration has all the capabilities enabled).
+
+The code will use the page at `NOTION_TEST_PAGE_ID` to generate a temporary
+environment with the Notion objects to be tested, which will be deleted
+at the end of the session.
+
 ## Requirements
 
 This package supports the following minimum versions:
