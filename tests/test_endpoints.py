@@ -120,7 +120,6 @@ def test_search(client, page_id):
     }
 
     response = client.search(**payload)
-    print(response)
     assert response["object"] == "list"
 
 
@@ -153,7 +152,6 @@ def test_databases_query(client, database_id):
 
 @pytest.mark.vcr()
 def test_databases_retrieve(client, database_id):
-
     response = client.databases.retrieve(database_id)
     assert response["object"] == "database"
 
@@ -182,10 +180,10 @@ def test_comments_create(client, page_id):
 
 
 @pytest.mark.vcr()
-def test_comments_list(client, page_id):
+def test_comments_list(client, page_id, comment_id):
     response = client.comments.list(block_id=page_id)
-
     assert response["object"] == "list"
+    assert response["results"] != []
 
 
 @pytest.mark.vcr()

@@ -102,6 +102,23 @@ def database_id(client, page_id) -> str:
     client.blocks.delete(block_id=response["id"])
 
 
+@pytest.fixture(scope="function")
+def comment_id(client, page_id) -> str:
+    """create a comment inside page_id to run each comment test without leaks"""
+    parent = {"page_id": page_id}
+    rich_text = [
+        {
+            "text": {
+                "content": "This is a test comment.",
+            },
+        },
+    ]
+
+    response = client.comments.create(parent=parent, rich_text=rich_text)
+
+    yield response["id"]
+
+
 @pytest.fixture(scope="session")
 def client(token: Optional[str]):
     return Client({"auth": token})

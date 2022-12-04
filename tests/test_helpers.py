@@ -1,6 +1,21 @@
+from types import AsyncGeneratorType, GeneratorType
+
 import pytest
 
-from notion_client.helpers import get_id, get_url, pick
+from notion_client.helpers import (
+    async_collect_paginated_api,
+    async_iterate_paginated_api,
+    collect_paginated_api,
+    get_id,
+    get_url,
+    is_full_block,
+    is_full_comment,
+    is_full_database,
+    is_full_page,
+    is_full_user,
+    iterate_paginated_api,
+    pick,
+)
 
 
 def test_pick():
@@ -41,3 +56,87 @@ def test_get_url():
     with pytest.raises(ValueError):
         get_url("540f8e2b799-14654ba103c5d8a03-e10e")
         get_url("123abc")
+
+
+@pytest.mark.vcr()
+def test_iterate_paginated_api(client):
+    function = client.search
+    generator = iterate_paginated_api(function)
+
+    assert type(generator) == GeneratorType
+    assert next(generator) is not None
+
+    generator_empty = iterate_paginated_api(
+        function, query="This should have no results"
+    )
+    assert next(generator_empty) == []
+
+
+@pytest.mark.vcr()
+def test_collect_paginated_api(client):
+    function = client.search
+    results = collect_paginated_api(function)
+
+    assert type(results) == list
+    assert results != []
+
+    results_empty = collect_paginated_api(function, query="This should have no results")
+    assert results_empty == []
+
+
+@pytest.mark.vcr()
+async def test_async_iterate_paginated_api(async_client):
+    function = async_client.search
+    generator = async_iterate_paginated_api(function)
+
+    assert type(generator) == AsyncGeneratorType
+    assert await generator.__anext__() is not None
+
+    generator_empty = async_iterate_paginated_api(
+        function, query="This should have no results"
+    )
+    assert await generator_empty.__anext__() == []
+
+
+@pytest.mark.vcr()
+async def test_async_collect_paginated_api(async_client):
+    function = async_client.search
+    results = await async_collect_paginated_api(function)
+
+    assert type(results) == list
+    assert results != []
+
+    results_empty = await async_collect_paginated_api(
+        function, query="This should have no results"
+    )
+    assert results_empty == []
+
+
+@pytest.mark.vcr()
+def test_is_full_block(client, block_id):
+    response = client.blocks.retrieve(block_id=block_id)
+    assert is_full_block(response)
+
+
+@pytest.mark.vcr()
+def test_is_full_page(client, page_id):
+    response = client.pages.retrieve(page_id=page_id)
+    assert is_full_page(response)
+
+
+@pytest.mark.vcr()
+def test_is_full_database(client, database_id):
+    response = client.databases.retrieve(database_id=database_id)
+    assert is_full_database(response)
+
+
+@pytest.mark.vcr()
+def test_is_full_user(client):
+    response = client.users.me()
+    assert is_full_user(response)
+
+
+@pytest.mark.vcr()
+def test_is_full_comment(client, page_id, comment_id):
+    response = client.comments.list(block_id=page_id)
+    assert is_full_comment(response)
