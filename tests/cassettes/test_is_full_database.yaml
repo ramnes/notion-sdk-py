@@ -1,0 +1,132 @@
+interactions:
+- request:
+    body: '{"parent": {"page_id": "f691a0f9da7243bd94ef365793610746"}, "properties":
+      {"title": [{"text": {"content": "Test 2022-12-04 13:53:19.546582"}}]}, "children":
+      []}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - secret_...
+      connection:
+      - keep-alive
+      content-length:
+      - '160'
+      content-type:
+      - application/json
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: POST
+    uri: https://api.notion.com/v1/pages
+  response:
+    content: '{"object":"page","id":"0bb14c29-6ffd-4e74-a21a-e54b1c559ae8","created_time":"2022-12-04T12:54:00.000Z","last_edited_time":"2022-12-04T12:54:00.000Z","created_by":{"object":"user","id":"823cf07b-34df-4ae6-9fbc-dbc600a815c6"},"last_edited_by":{"object":"user","id":"823cf07b-34df-4ae6-9fbc-dbc600a815c6"},"cover":null,"icon":null,"parent":{"type":"page_id","page_id":"f691a0f9-da72-43bd-94ef-365793610746"},"archived":false,"properties":{"title":{"id":"title","type":"title","title":[{"type":"text","text":{"content":"Test
+      2022-12-04 13:53:19.546582","link":null},"annotations":{"bold":false,"italic":false,"strikethrough":false,"underline":false,"code":false,"color":"default"},"plain_text":"Test
+      2022-12-04 13:53:19.546582","href":null}]}},"url":"https://www.notion.so/Test-2022-12-04-13-53-19-546582-0bb14c296ffd4e74a21ae54b1c559ae8"}'
+    headers: {}
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"parent": {"type": "page_id", "page_id": "0bb14c29-6ffd-4e74-a21a-e54b1c559ae8"},
+      "title": [{"type": "text", "text": {"content": "Test Database - 2022-12-04 13:53:24.530085"}}],
+      "properties": {"Name": {"title": {}}}}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - secret_...
+      connection:
+      - keep-alive
+      content-length:
+      - '217'
+      content-type:
+      - application/json
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: POST
+    uri: https://api.notion.com/v1/databases
+  response:
+    content: '{"object":"database","id":"44fd3336-7bfd-467e-a3b1-0ba97dd55bf8","cover":null,"icon":null,"created_time":"2022-12-04T12:54:00.000Z","created_by":{"object":"user","id":"823cf07b-34df-4ae6-9fbc-dbc600a815c6"},"last_edited_by":{"object":"user","id":"823cf07b-34df-4ae6-9fbc-dbc600a815c6"},"last_edited_time":"2022-12-04T12:54:00.000Z","title":[{"type":"text","text":{"content":"Test
+      Database - 2022-12-04 13:53:24.530085","link":null},"annotations":{"bold":false,"italic":false,"strikethrough":false,"underline":false,"code":false,"color":"default"},"plain_text":"Test
+      Database - 2022-12-04 13:53:24.530085","href":null}],"description":[],"is_inline":false,"properties":{"Name":{"id":"title","name":"Name","type":"title","title":{}}},"parent":{"type":"page_id","page_id":"0bb14c29-6ffd-4e74-a21a-e54b1c559ae8"},"url":"https://www.notion.so/44fd33367bfd467ea3b10ba97dd55bf8","archived":false}'
+    headers: {}
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - secret_...
+      connection:
+      - keep-alive
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: GET
+    uri: https://api.notion.com/v1/databases/44fd3336-7bfd-467e-a3b1-0ba97dd55bf8
+  response:
+    content: '{"object":"database","id":"44fd3336-7bfd-467e-a3b1-0ba97dd55bf8","cover":null,"icon":null,"created_time":"2022-12-04T12:54:00.000Z","created_by":{"object":"user","id":"823cf07b-34df-4ae6-9fbc-dbc600a815c6"},"last_edited_by":{"object":"user","id":"823cf07b-34df-4ae6-9fbc-dbc600a815c6"},"last_edited_time":"2022-12-04T12:54:00.000Z","title":[{"type":"text","text":{"content":"Test
+      Database - 2022-12-04 13:53:24.530085","link":null},"annotations":{"bold":false,"italic":false,"strikethrough":false,"underline":false,"code":false,"color":"default"},"plain_text":"Test
+      Database - 2022-12-04 13:53:24.530085","href":null}],"description":[],"is_inline":false,"properties":{"Name":{"id":"title","name":"Name","type":"title","title":{}}},"parent":{"type":"page_id","page_id":"0bb14c29-6ffd-4e74-a21a-e54b1c559ae8"},"url":"https://www.notion.so/44fd33367bfd467ea3b10ba97dd55bf8","archived":false}'
+    headers: {}
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - secret_...
+      connection:
+      - keep-alive
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: DELETE
+    uri: https://api.notion.com/v1/blocks/44fd3336-7bfd-467e-a3b1-0ba97dd55bf8
+  response:
+    content: '{"object":"block","id":"44fd3336-7bfd-467e-a3b1-0ba97dd55bf8","parent":{"type":"page_id","page_id":"0bb14c29-6ffd-4e74-a21a-e54b1c559ae8"},"created_time":"2022-12-04T12:54:00.000Z","last_edited_time":"2022-12-04T12:54:00.000Z","created_by":{"object":"user","id":"823cf07b-34df-4ae6-9fbc-dbc600a815c6"},"last_edited_by":{"object":"user","id":"823cf07b-34df-4ae6-9fbc-dbc600a815c6"},"has_children":false,"archived":true,"type":"child_database","child_database":{"title":"Test
+      Database - 2022-12-04 13:53:24.530085"}}'
+    headers: {}
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - secret_...
+      connection:
+      - keep-alive
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: DELETE
+    uri: https://api.notion.com/v1/blocks/0bb14c29-6ffd-4e74-a21a-e54b1c559ae8
+  response:
+    content: '{"object":"block","id":"0bb14c29-6ffd-4e74-a21a-e54b1c559ae8","parent":{"type":"page_id","page_id":"f691a0f9-da72-43bd-94ef-365793610746"},"created_time":"2022-12-04T12:54:00.000Z","last_edited_time":"2022-12-04T12:54:00.000Z","created_by":{"object":"user","id":"823cf07b-34df-4ae6-9fbc-dbc600a815c6"},"last_edited_by":{"object":"user","id":"823cf07b-34df-4ae6-9fbc-dbc600a815c6"},"has_children":false,"archived":true,"type":"child_page","child_page":{"title":"Test
+      2022-12-04 13:53:19.546582"}}'
+    headers: {}
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1

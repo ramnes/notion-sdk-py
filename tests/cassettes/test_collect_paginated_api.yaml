@@ -1,0 +1,56 @@
+interactions:
+- request:
+    body: '{}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - secret_...
+      connection:
+      - keep-alive
+      content-length:
+      - '2'
+      content-type:
+      - application/json
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: POST
+    uri: https://api.notion.com/v1/search
+  response:
+    content: "{\"object\":\"list\",\"results\":[{\"object\":\"page\",\"id\":\"f691a0f9-da72-43bd-94ef-365793610746\",\"created_time\":\"2022-09-22T12:14:00.000Z\",\"last_edited_time\":\"2022-12-04T12:53:00.000Z\",\"created_by\":{\"object\":\"user\",\"id\":\"04db0808-966a-4668-9a27-8be05465b9c9\"},\"last_edited_by\":{\"object\":\"user\",\"id\":\"823cf07b-34df-4ae6-9fbc-dbc600a815c6\"},\"cover\":null,\"icon\":{\"type\":\"emoji\",\"emoji\":\"\U0001F9EA\"},\"parent\":{\"type\":\"workspace\",\"workspace\":true},\"archived\":false,\"properties\":{\"title\":{\"id\":\"title\",\"type\":\"title\",\"title\":[{\"type\":\"text\",\"text\":{\"content\":\"Testing
+      Environment\",\"link\":null},\"annotations\":{\"bold\":false,\"italic\":false,\"strikethrough\":false,\"underline\":false,\"code\":false,\"color\":\"default\"},\"plain_text\":\"Testing
+      Environment\",\"href\":null}]}},\"url\":\"https://www.notion.so/Testing-Environment-f691a0f9da7243bd94ef365793610746\"}],\"next_cursor\":null,\"has_more\":false,\"type\":\"page_or_database\",\"page_or_database\":{}}"
+    headers: {}
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"query": "This should have no results"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - secret_...
+      connection:
+      - keep-alive
+      content-length:
+      - '40'
+      content-type:
+      - application/json
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: POST
+    uri: https://api.notion.com/v1/search
+  response:
+    content: '{"object":"list","results":[],"next_cursor":null,"has_more":false,"type":"page_or_database","page_or_database":{}}'
+    headers: {}
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1
