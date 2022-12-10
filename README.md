@@ -21,10 +21,11 @@
 It is meant to be a Python version of the reference [JavaScript SDK](https://github.com/makenotion/notion-sdk-js),
 so usage should be pretty similar between both. 😊
 
-> 📢 **Announcement** (18-04-2022) — Notion API is officially out of beta, and
-> we are too: 1.0.0 is now released!
-> Beware, `Notion-Version` has been upgraded to `2022-02-22` and it brings
-> [breaking changes](https://developers.notion.com/changelog/releasing-notion-version-2022-02-22).
+> 📢 **Announcement** (10-12-2022) — Release 2.0.0 is out! It mostly adds new
+> helpers, support for the comments API, more tests, and Python 3.11.
+>
+> Beware, `Notion-Version` has been upgraded to `2022-06-28` and it brings
+> [breaking changes](https://developers.notion.com/changelog/releasing-notion-version-2022-06-28).
 
 <!-- markdownlint-disable -->
 ## Installation
