@@ -8,8 +8,6 @@ import pytest
 
 from notion_client import AsyncClient, Client
 
-TEST_PAGE_NAME = f"Test Page - {datetime.now()}"
-
 
 @pytest.fixture(scope="session")
 def vcr_config():
@@ -37,6 +35,11 @@ def vcr(vcr):
 @pytest.fixture(scope="session")
 def token() -> str:
     return os.environ.get("NOTION_TOKEN")
+
+
+@pytest.fixture(scope="session")
+def test_page_name():
+    return f"Test Page - {datetime.now()}"
 
 
 @pytest.fixture(scope="module")
@@ -119,13 +122,15 @@ def comment_id(client, page_id) -> str:
     yield response["id"]
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def client(token: Optional[str]):
-    return Client({"auth": token})
+    with Client({"auth": token}) as client:
+        yield client
+    client.close()
 
 
 @pytest.fixture
 async def async_client(token: Optional[str]):
-    client = AsyncClient({"auth": token})
-    yield client
+    async with AsyncClient({"auth": token}) as client:
+        yield client
     await client.aclose()

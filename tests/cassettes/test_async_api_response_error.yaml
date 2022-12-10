@@ -1,0 +1,25 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - secret_...
+      connection:
+      - keep-alive
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: GET
+    uri: https://api.notion.com/v1/invalid
+  response:
+    content: '{"object":"error","status":400,"code":"invalid_request_url","message":"Invalid
+      request URL."}'
+    headers: {}
+    http_version: HTTP/1.1
+    status_code: 400
+version: 1

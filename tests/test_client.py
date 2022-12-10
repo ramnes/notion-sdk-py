@@ -49,5 +49,3 @@ async def test_async_client_request_auth(token):
 
     response = await async_client.request("/users", "GET", auth=token)
     assert response["results"]
-
-    await async_client.aclose()

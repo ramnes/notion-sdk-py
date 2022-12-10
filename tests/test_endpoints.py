@@ -1,16 +1,12 @@
-from datetime import datetime
-
 import pytest
-
-from tests.conftest import TEST_PAGE_NAME
 
 
 @pytest.mark.vcr()
-def test_pages_create(client, parent_page_id):
+def test_pages_create(client, parent_page_id, test_page_name):
     response = client.pages.create(
         parent={"page_id": parent_page_id},
         properties={
-            "title": [{"text": {"content": TEST_PAGE_NAME}}],
+            "title": [{"text": {"content": test_page_name}}],
         },
         children=[],
     )
@@ -124,8 +120,8 @@ def test_search(client, page_id):
 
 
 @pytest.mark.vcr()
-def test_databases_create(client, page_id):
-    db_name = f"Test Database - {datetime.now()}"
+def test_databases_create(client, page_id, test_page_name):
+    db_name = f"Test Database - {test_page_name}"
     properties = {
         "Name": {"title": {}},  # required property
     }
