@@ -17,7 +17,7 @@ def test_api_response_error(client):
     with pytest.raises(APIResponseError):
         client.request("/invalid", "GET")
     with pytest.raises(APIResponseError):
-        client.request("/invalid", "GET", auth="Invalid")
+        client.request("/users", "GET", auth="Invalid")
 
 
 def test_api_request_timeout_error(token):
@@ -38,7 +38,7 @@ async def test_async_api_response_error(async_client):
     with pytest.raises(APIResponseError):
         await async_client.request("/invalid", "GET")
     with pytest.raises(APIResponseError):
-        await async_client.request("/invalid", "GET", auth="Invalid")
+        await async_client.request("/users", "GET", auth="Invalid")
 
 
 async def test_async_api_request_timeout_error(token):
