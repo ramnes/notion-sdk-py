@@ -37,11 +37,6 @@ def token() -> str:
     return os.environ.get("NOTION_TOKEN")
 
 
-@pytest.fixture(scope="session")
-def test_page_name():
-    return f"Test Page - {datetime.now()}"
-
-
 @pytest.fixture(scope="module")
 def parent_page_id(vcr) -> str:
     """this is the ID of the Notion page where the tests will be executed
@@ -126,11 +121,9 @@ def comment_id(client, page_id) -> str:
 def client(token: Optional[str]):
     with Client({"auth": token}) as client:
         yield client
-    client.close()
 
 
 @pytest.fixture
 async def async_client(token: Optional[str]):
     async with AsyncClient({"auth": token}) as client:
         yield client
-    await client.aclose()

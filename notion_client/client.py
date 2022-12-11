@@ -120,7 +120,7 @@ class BaseClient:
             try:
                 body = error.response.json()
                 code = body.get("code")
-            except json.JSONDecodeError:  # pragma: no cover
+            except json.JSONDecodeError:
                 code = None
             if code and is_api_error_code(code):
                 raise APIResponseError(response, body["message"], code)
