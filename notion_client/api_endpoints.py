@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any
 from notion_client.helpers import pick
 from notion_client.typing import SyncAsync
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from notion_client.client import BaseClient
 
 
@@ -110,7 +110,7 @@ class BlocksEndpoint(Endpoint):
 
 
 class DatabasesEndpoint(Endpoint):
-    def list(self, **kwargs: Any) -> SyncAsync[Any]:
+    def list(self, **kwargs: Any) -> SyncAsync[Any]:  # pragma: no cover
         """List all [Databases](https://developers.notion.com/reference/database) shared with the authenticated integration.
 
         > ⚠️  **Deprecated endpoint**

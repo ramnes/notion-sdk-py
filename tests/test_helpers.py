@@ -43,7 +43,9 @@ def test_get_id():
     assert get_id(db_url) == db_id
     with pytest.raises(ValueError):
         get_id("https://example.com")
+    with pytest.raises(ValueError):
         get_id("https://notion.so/123")
+    with pytest.raises(ValueError):
         get_id("https://notion.so/99572135464649b-d95a14ff08f79c7a5")
 
 
