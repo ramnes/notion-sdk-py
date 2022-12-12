@@ -5,8 +5,10 @@
   <p>
     <a href="https://pypi.org/project/notion-client"><img src="https://img.shields.io/pypi/v/notion-client.svg" alt="PyPI"></a>
     <a href="tox.ini"><img src="https://img.shields.io/pypi/pyversions/notion-client" alt="Supported Python Versions"></a>
+    <br/>
     <a href="LICENSE"><img src="https://img.shields.io/github/license/ramnes/notion-sdk-py" alt="License"></a>
     <a href="https://github.com/ambv/black"><img src="https://img.shields.io/badge/code%20style-black-black" alt="Code style"></a>
+    <a href="https://codecov.io/github/ramnes/notion-sdk-py"><img src="https://codecov.io/gh/ramnes/notion-sdk-py/branch/main/graphs/badge.svg" alt="Coverage"></a>
     <br/>
     <a href="https://github.com/ramnes/notion-sdk-py/actions/workflows/quality.yml"><img src="https://github.com/ramnes/notion-sdk-py/actions/workflows/quality.yml/badge.svg" alt="Code Quality"></a>
     <a href="https://github.com/ramnes/notion-sdk-py/actions/workflows/test.yml"><img src="https://github.com/ramnes/notion-sdk-py/actions/workflows/test.yml/badge.svg" alt="Tests"></a>
