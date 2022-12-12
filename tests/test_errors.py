@@ -1,6 +1,6 @@
 import pytest
+from httpx import TimeoutException
 
-from notion_client import AsyncClient, Client
 from notion_client.errors import (
     APIResponseError,
     HTTPResponseError,
@@ -9,7 +9,6 @@ from notion_client.errors import (
 )
 
 STATUS_PAGE_BAD_REQUEST = "https://httpstat.us/400"
-STATUS_PAGE_TIMEOUT = "https://httpstat.us/200?sleep=100"
 
 
 @pytest.mark.vcr()
@@ -20,11 +19,14 @@ def test_api_response_error(client):
         client.request("/users", "GET", auth="Invalid")
 
 
-def test_api_request_timeout_error(token):
-    client = Client({"auth": token, "timeout_ms": 1})
+def test_api_request_timeout_error(monkeypatch, client):
+    def mock_timeout_request(*args):
+        raise TimeoutException("Mock Timeout")
+
+    monkeypatch.setattr(client.client, "send", mock_timeout_request)
 
     with pytest.raises(RequestTimeoutError):
-        client.request(STATUS_PAGE_TIMEOUT, "GET")
+        client.request("/users", "GET")
 
 
 @pytest.mark.vcr()
@@ -41,11 +43,14 @@ async def test_async_api_response_error(async_client):
         await async_client.request("/users", "GET", auth="Invalid")
 
 
-async def test_async_api_request_timeout_error(token):
-    async_client = AsyncClient({"auth": token, "timeout_ms": 1})
+async def test_async_api_request_timeout_error(monkeypatch, async_client):
+    def mock_timeout_request(*args):
+        raise TimeoutException("Mock Timeout")
+
+    monkeypatch.setattr(async_client.client, "send", mock_timeout_request)
 
     with pytest.raises(RequestTimeoutError):
-        await async_client.request(STATUS_PAGE_TIMEOUT, "GET")
+        await async_client.request("/users", "GET")
 
 
 @pytest.mark.vcr()
