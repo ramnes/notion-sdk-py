@@ -139,7 +139,7 @@ class DatabasesEndpoint(Endpoint):
     def retrieve(self, database_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """Retrieve a [Database object](https://developers.notion.com/reference/database) using the ID specified.
 
-        *[🔗 Endpoint documentation](https://developers.notion.com/reference/post-database-query)*
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-database)*
         """  # noqa: E501
         return self.parent.request(
             path=f"databases/{database_id}", method="GET", auth=kwargs.get("auth")
