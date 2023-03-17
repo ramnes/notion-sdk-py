@@ -161,6 +161,17 @@ You may also set a custom `logger` to emit logs to a destination other than `std
 Have a look at [Python's logging cookbook](https://docs.python.org/3/howto/logging-cookbook.html)
 if you want to create your own logger.
 
+If you use [structlog](https://www.structlog.org/en/stable/index.html) you need to use a wrapper like so:
+
+```python
+_log = structlog.wrap_logger(
+    logging.getLogger("notion-client"),
+    logger_factory=structlog.stdlib.LoggerFactory(),
+    wrapper_class=structlog.stdlib.BoundLogger,
+)
+notion = Client(auth=token, logger=_log, log_level=logging.DEBUG)
+```
+
 ### Client options
 
 `Client` and `AsyncClient` both support the following options on initialization.
