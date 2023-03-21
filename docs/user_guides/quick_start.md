@@ -1,10 +1,10 @@
-# Quick Start
+# Quick start
 
 Get started with notion-sdk-py in just 5 minutes!
 
 ## Setup
 
-### Pre requisites
+### Prerequisites
 
 - Make sure you have `python` and `pip` properly installed in your system.
 
@@ -33,7 +33,7 @@ Get started with notion-sdk-py in just 5 minutes!
     pip install --upgrade notion-client
     ```
 
-### Create integration
+### Integration
 
 - Go to [notion.so/my-integrations](https://www.notion.so/my-integrations)
 to create an integration. Copy the token given by Notion.
@@ -53,56 +53,35 @@ to create an integration. Copy the token given by Notion.
 
 ## Play
 
-Copy paste the code, and have fun tweaking it.
+Copy paste the code, and have fun tweaking it!
 
-### Initialize the notion client
+Let's start by initializing the client:
 
 ```python
-from pprint import pprint
+import os
 from notion_client import Client
-import settings
 
-notion = Client(auth=settings.NOTION_TOKEN)
+notion = Client(auth=os.environ["NOTION_TOKEN"])
 ```
 
-### Get all users
-
-Let us fetch the list of users in the scope of our integration.
+Let's now fetch the list of users in the scope of our integration:
 
 ```python
 users = notion.users.list()
-# print(users)
 
 for user in users.get("results"):
     name, user_type = user["name"], user["type"]
-    is_bot = user["type"] == "bot"
-    print(f"{name} is a {user_type} {'😅' if is_bot else '🙋‍♂️'}")
+    emoji = "😅" if user["type"] == "bot" else "🙋‍♂️"
+    print(f"{name} is a {user_type} {emoji}")
 ```
 
-This would output something in the lines of
+It should output something in those lines:
 
 ```shell
 Aahnik Daw is a person 🙋‍♂️
-TestInti is a bot 😅
+TestIntegation is a bot 😅
 ```
 
 Do you see your name and the name of your integration?
 
 🎉 Congratulations, you are now ready to use notion-sdk-py!
-
-## Whats next ?
-
-With the simplicity of python and flexibility of Notion,
-you can connect Notion pages and databases to the tools you use every day,
-creating powerful workflows.
-
-These resources should help you along the way:
-
-- **[Examples](https://github.com/ramnes/notion-sdk-py/tree/main/examples)**
-Curated examples that are designed to make you learn.
-- **[Reference](reference/client.md)**
-Full reference of all public classes and methods.
-- **[Projects](https://github.com/ramnes/notion-sdk-py/network/dependents)**
-Compilation of open source projects that are using this library.
-- **[Discussions](https://github.com/ramnes/notion-sdk-py/discussions)**
-What people are discussing about notion-sdk-py.

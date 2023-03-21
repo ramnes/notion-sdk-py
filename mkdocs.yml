@@ -4,12 +4,14 @@ repo_url: https://github.com/ramnes/notion-sdk-py
 
 edit_uri: ""
 
+extra_css: [extra.css]
+
 theme:
   name: material
   navigation_depth: 4
   features:
-    - navigation.tabs
     - naviagation.sections
+    - navigation.indexes
   icon:
     repo: fontawesome/brands/github
   font:

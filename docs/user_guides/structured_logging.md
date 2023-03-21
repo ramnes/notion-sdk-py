@@ -1,4 +1,4 @@
-# Structured Logging
+# Structured logging
 
 You can easily get structured logging with notion-sdk-py by using
 [structlog](https://www.structlog.org/en/stable/index.html):

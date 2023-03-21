@@ -1,15 +1,15 @@
 <!-- markdownlint-disable -->
-* Home
-    * [Overview](index.md)
-    * [Quick Start](quick_start.md)
-    * User Guides
-        * [Structured Logging](structured_logging.md)
-    * [License](license.md)
+* [Home](index.md)
+* User guides
+    * [Quick start](user_guides/quick_start.md)
+    * [Structured logging](user_guides/structured_logging.md)
+    * [More examples](https://github.com/ramnes/notion-sdk-py/tree/main/examples)
 * Reference
     * [Client](reference/client.md)
-    * [API Endpoints](reference/api_endpoints.md)
+    * [API endpoints](reference/api_endpoints.md)
     * [Errors](reference/errors.md)
     * [Helpers](reference/helpers.md)
 * Development
-    * [Coverage Report](coverage.md)
-    * [Contributing Guidelines](contributing/contributing.md)
+    * [Coverage report](coverage.md)
+    * [Contributing guidelines](contributing/contributing.md)
+* [License](license.md)
