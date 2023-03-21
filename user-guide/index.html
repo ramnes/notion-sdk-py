@@ -578,13 +578,15 @@
 <h1 id="user-guide">User Guide</h1>
 <h2 id="logging">Logging</h2>
 <h3 id="structlog">Structlog</h3>
-<p>If you use <a href="https://www.structlog.org/en/stable/index.html">structlog</a> you need to use a wrapper like so:</p>
-<div class="highlight"><pre><span></span><code><span class="n">_log</span> <span class="o">=</span> <span class="n">structlog</span><span class="o">.</span><span class="n">wrap_logger</span><span class="p">(</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;notion-client&quot;</span><span class="p">),</span>  <span class="c1"># You can change the name to whatever you like.</span>
+<p>If you use <a href="https://www.structlog.org/en/stable/index.html">structlog</a> you need
+to use a wrapper like so:</p>
+<div class="highlight"><pre><span></span><code><span class="n">logger</span> <span class="o">=</span> <span class="n">structlog</span><span class="o">.</span><span class="n">wrap_logger</span><span class="p">(</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;notion-client&quot;</span><span class="p">),</span>
     <span class="n">logger_factory</span><span class="o">=</span><span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">LoggerFactory</span><span class="p">(),</span>
     <span class="n">wrapper_class</span><span class="o">=</span><span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">BoundLogger</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">_log</span><span class="p">,</span> <span class="n">log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+<span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">,</span> <span class="n">log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
 </code></pre></div>
 
 
