@@ -2,6 +2,8 @@
 * Home
     * [Overview](index.md)
     * [Quick Start](quick_start.md)
+    * User Guides
+        * [Structured Logging](structured_logging.md)
     * [License](license.md)
 * Reference
     * [Client](reference/client.md)
