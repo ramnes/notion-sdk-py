@@ -616,9 +616,8 @@
 
 
 <h1 id="structured-logging">Structured Logging</h1>
-<p>You can get structured logging with notion-sdk-py by using
-<a href="https://www.structlog.org/en/stable/index.html">structlog</a>.</p>
-<p>To do so, use <code>structlog.wrap_logger</code> like so:</p>
+<p>You can easily get structured logging with notion-sdk-py by using
+<a href="https://www.structlog.org/en/stable/index.html">structlog</a>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">logger</span> <span class="o">=</span> <span class="n">structlog</span><span class="o">.</span><span class="n">wrap_logger</span><span class="p">(</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;notion-client&quot;</span><span class="p">),</span>
     <span class="n">logger_factory</span><span class="o">=</span><span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">LoggerFactory</span><span class="p">(),</span>
