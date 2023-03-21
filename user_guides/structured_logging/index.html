@@ -9,24 +9,24 @@
       
       
       
-        <link rel="prev" href="..">
+        <link rel="prev" href="../quick_start/">
       
       
-        <link rel="next" href="../structured_logging/">
+        <link rel="next" href="../../reference/client/">
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.3">
     
     
       
-        <title>Quick Start - notion-sdk-py</title>
+        <title>Structured logging - notion-sdk-py</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.c4a75a56.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.c4a75a56.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.a0c5b2b5.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
       
       
 
@@ -42,9 +42,11 @@
       
     
     
-      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+      <link rel="stylesheet" href="../../extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -73,7 +75,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#quick-start" class="md-skip">
+        <a href="#structured-logging" class="md-skip">
           Skip to content
         </a>
       
@@ -85,9 +87,11 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="notion-sdk-py" class="md-header__button md-logo" aria-label="notion-sdk-py" data-md-component="logo">
+    <a href="../.." title="notion-sdk-py" class="md-header__button md-logo" aria-label="notion-sdk-py" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -106,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Quick Start
+              Structured logging
             
           </span>
         </div>
@@ -190,65 +194,6 @@
       
         
           
-            
-<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
-  <div class="md-grid">
-    <ul class="md-tabs__list">
-      
-        
-  
-  
-    
-  
-
-
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link md-tabs__link--active">
-        Home
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-
-
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../reference/client/" class="md-tabs__link">
-        Reference
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-
-
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../coverage/" class="md-tabs__link">
-        Development
-      </a>
-    </li>
-  
-
-      
-    </ul>
-  </div>
-</nav>
-          
         
       
       <main class="md-main" data-md-component="main">
@@ -261,12 +206,10 @@
                   <div class="md-sidebar__inner">
                     
 
-  
 
-
-<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="notion-sdk-py" class="md-nav__button md-logo" aria-label="notion-sdk-py" data-md-component="logo">
+    <a href="../.." title="notion-sdk-py" class="md-nav__button md-logo" aria-label="notion-sdk-py" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -295,6 +238,21 @@
 
   
   
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
     
   
   
@@ -304,19 +262,27 @@
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
       
       
+        
+          
+        
+          
+        
+          
+        
       
-        <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
-          Home
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          User guides
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
-        <label class="md-nav__title" for="__nav_1">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
-          Home
+          User guides
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
@@ -326,8 +292,8 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
-        Overview
+      <a href="../quick_start/" class="md-nav__link">
+        Quick start
       </a>
     </li>
   
@@ -349,150 +315,10 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Quick Start
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="./" class="md-nav__link md-nav__link--active">
-        Quick Start
+        Structured logging
       </a>
       
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
-    Setup
-  </a>
-  
-    <nav class="md-nav" aria-label="Setup">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pre-requisites" class="md-nav__link">
-    Pre requisites
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    Installation
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#create-integration" class="md-nav__link">
-    Create integration
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#play" class="md-nav__link">
-    Play
-  </a>
-  
-    <nav class="md-nav" aria-label="Play">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#initialize-the-notion-client" class="md-nav__link">
-    Initialize the notion client
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#get-all-users" class="md-nav__link">
-    Get all users
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#whats-next" class="md-nav__link">
-    Whats next ?
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-      
-      
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" >
-      
-      
-      
-        <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
-          User Guides
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
-        <label class="md-nav__title" for="__nav_1_3">
-          <span class="md-nav__icon md-icon"></span>
-          User Guides
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../structured_logging/" class="md-nav__link">
-        Structured Logging
-      </a>
-    </li>
-  
-
-            
-          
-        </ul>
-      </nav>
     </li>
   
 
@@ -504,99 +330,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../license/" class="md-nav__link">
-        License
-      </a>
-    </li>
-  
-
-            
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-      
-      
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
-      
-      
-      
-        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
-          Reference
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
-        <label class="md-nav__title" for="__nav_2">
-          <span class="md-nav__icon md-icon"></span>
-          Reference
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../reference/client/" class="md-nav__link">
-        Client
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../reference/api_endpoints/" class="md-nav__link">
-        API Endpoints
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../reference/errors/" class="md-nav__link">
-        Errors
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../reference/helpers/" class="md-nav__link">
-        Helpers
+      <a href="https://github.com/ramnes/notion-sdk-py/tree/main/examples" class="md-nav__link">
+        More examples
       </a>
     </li>
   
@@ -625,14 +360,121 @@
       <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
       
       
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
       
         <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-          Development
+          Reference
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/client/" class="md-nav__link">
+        Client
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/api_endpoints/" class="md-nav__link">
+        API endpoints
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/errors/" class="md-nav__link">
+        Errors
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/helpers/" class="md-nav__link">
+        Helpers
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Development
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
           <span class="md-nav__icon md-icon"></span>
           Development
         </label>
@@ -644,8 +486,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../coverage/" class="md-nav__link">
-        Coverage Report
+      <a href="../../coverage/" class="md-nav__link">
+        Coverage report
       </a>
     </li>
   
@@ -658,8 +500,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../contributing/contributing/" class="md-nav__link">
-        Contributing Guidelines
+      <a href="../../contributing/contributing/" class="md-nav__link">
+        Contributing guidelines
       </a>
     </li>
   
@@ -668,6 +510,21 @@
           
         </ul>
       </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        License
+      </a>
     </li>
   
 
@@ -692,82 +549,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
-    Setup
-  </a>
-  
-    <nav class="md-nav" aria-label="Setup">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pre-requisites" class="md-nav__link">
-    Pre requisites
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    Installation
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#create-integration" class="md-nav__link">
-    Create integration
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#play" class="md-nav__link">
-    Play
-  </a>
-  
-    <nav class="md-nav" aria-label="Play">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#initialize-the-notion-client" class="md-nav__link">
-    Initialize the notion client
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#get-all-users" class="md-nav__link">
-    Get all users
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#whats-next" class="md-nav__link">
-    Whats next ?
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -781,96 +562,18 @@
                   
 
 
-<h1 id="quick-start">Quick Start</h1>
-<p>Get started with notion-sdk-py in just 5 minutes!</p>
-<h2 id="setup">Setup</h2>
-<h3 id="pre-requisites">Pre requisites</h3>
-<ul>
-<li>
-<p>Make sure you have <code>python</code> and <code>pip</code> properly installed in your system.</p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>--version
-pip<span class="w"> </span>--version
-</code></pre></div>
-</li>
-<li>
-<p>Create a new directory and move into it to follow along with this tutorial.</p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>learn-notion-sdk-py<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>learn-notion-sdk-py
-</code></pre></div>
-</li>
-</ul>
-<h3 id="installation">Installation</h3>
-<ul>
-<li>
-<p>Create a virtual environment and activate it.</p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
-</code></pre></div>
-</li>
-<li>
-<p>Install <code>notion-sdk-py</code> using <code>pip</code></p>
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>notion-client
-</code></pre></div>
-</li>
-</ul>
-<h3 id="create-integration">Create integration</h3>
-<ul>
-<li>
-<p>Go to <a href="https://www.notion.so/my-integrations">notion.so/my-integrations</a>
-to create an integration. Copy the token given by Notion.</p>
-</li>
-<li>
-<p>Make it available in your environment:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">NOTION_TOKEN</span><span class="o">=</span>secret_abcd12345
-</code></pre></div>
-</li>
-</ul>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Don't forget that <code>export</code> only puts the variable in the environment of the
-current shell.
-If you don't want to redo this step for every new shell,
-add the line in your shell configuration
-or use a configuration library like <a href="https://github.com/theskumar/python-dotenv">dotenv</a>.</p>
-</div>
-<h2 id="play">Play</h2>
-<p>Copy paste the code, and have fun tweaking it.</p>
-<h3 id="initialize-the-notion-client">Initialize the notion client</h3>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
-<span class="kn">from</span> <span class="nn">notion_client</span> <span class="kn">import</span> <span class="n">Client</span>
-<span class="kn">import</span> <span class="nn">settings</span>
+<h1 id="structured-logging">Structured logging</h1>
+<p>You can easily get structured logging with notion-sdk-py by using
+<a href="https://www.structlog.org/en/stable/index.html">structlog</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">logger</span> <span class="o">=</span> <span class="n">structlog</span><span class="o">.</span><span class="n">wrap_logger</span><span class="p">(</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;notion-client&quot;</span><span class="p">),</span>
+    <span class="n">logger_factory</span><span class="o">=</span><span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">LoggerFactory</span><span class="p">(),</span>
+    <span class="n">wrapper_class</span><span class="o">=</span><span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">BoundLogger</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">NOTION_TOKEN</span><span class="p">)</span>
+<span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">,</span> <span class="n">log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="get-all-users">Get all users</h3>
-<p>Let us fetch the list of users in the scope of our integration.</p>
-<div class="highlight"><pre><span></span><code><span class="n">users</span> <span class="o">=</span> <span class="n">notion</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
-<span class="c1"># print(users)</span>
-
-<span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">):</span>
-    <span class="n">name</span><span class="p">,</span> <span class="n">user_type</span> <span class="o">=</span> <span class="n">user</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">user</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
-    <span class="n">is_bot</span> <span class="o">=</span> <span class="n">user</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;bot&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> is a </span><span class="si">{</span><span class="n">user_type</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;😅&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">is_bot</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;🙋‍♂️&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</code></pre></div>
-<p>This would output something in the lines of</p>
-<div class="highlight"><pre><span></span><code>Aahnik<span class="w"> </span>Daw<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>person<span class="w"> </span>🙋‍♂️
-TestInti<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>bot<span class="w"> </span>😅
-</code></pre></div>
-<p>Do you see your name and the name of your integration?</p>
-<p>🎉 Congratulations, you are now ready to use notion-sdk-py!</p>
-<h2 id="whats-next">Whats next ?</h2>
-<p>With the simplicity of python and flexibility of Notion,
-you can connect Notion pages and databases to the tools you use every day,
-creating powerful workflows.</p>
-<p>These resources should help you along the way:</p>
-<ul>
-<li><strong><a href="https://github.com/ramnes/notion-sdk-py/tree/main/examples">Examples</a></strong>
-Curated examples that are designed to make you learn.</li>
-<li><strong><a href="../reference/client/">Reference</a></strong>
-Full reference of all public classes and methods.</li>
-<li><strong><a href="https://github.com/ramnes/notion-sdk-py/network/dependents">Projects</a></strong>
-Compilation of open source projects that are using this library.</li>
-<li><strong><a href="https://github.com/ramnes/notion-sdk-py/discussions">Discussions</a></strong>
-What people are discussing about notion-sdk-py.</li>
-</ul>
+<p>Don't forget to add the dependency to your project!</p>
 
 
 
@@ -923,10 +626,10 @@ What people are discussing about notion-sdk-py.</li>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "naviagation.sections"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["naviagation.sections", "navigation.indexes"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.efa0ade1.min.js"></script>
+      <script src="../../assets/javascripts/bundle.efa0ade1.min.js"></script>
       
     
   </body>

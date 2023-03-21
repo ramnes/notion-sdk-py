@@ -9,7 +9,6 @@ def docs_stub(module_name):
 
 
 virtual_files = {
-    "index.md": "--8<-- 'README.md'",
     "license.md": "```text\n--8<-- 'LICENSE'\n```",
     "reference/api_endpoints.md": docs_stub("api_endpoints"),
     "reference/client.md": docs_stub("client"),
