@@ -9,13 +9,17 @@
       
       
       
+        <link rel="prev" href="../quick_start/">
+      
+      
+        <link rel="next" href="../license/">
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.3">
     
     
       
-        <title>User Guide - notion-sdk-py</title>
+        <title>Structured logging - notion-sdk-py</title>
       
     
     
@@ -69,7 +73,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#user-guide" class="md-skip">
+        <a href="#structured-logging" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              User Guide
+              Structured logging
             
           </span>
         </div>
@@ -194,13 +198,15 @@
         
   
   
+    
+  
 
 
   
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href=".." class="md-tabs__link md-tabs__link--active">
         Home
       </a>
     </li>
@@ -289,14 +295,16 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
       
       
       
@@ -305,7 +313,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
         <label class="md-nav__title" for="__nav_1">
           <span class="md-nav__icon md-icon"></span>
           Home
@@ -335,6 +343,66 @@
       <a href="../quick_start/" class="md-nav__link">
         Quick Start
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+          User guides
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_1_3">
+          <span class="md-nav__icon md-icon"></span>
+          User guides
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Structured logging
+      </a>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -534,34 +602,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#logging" class="md-nav__link">
-    Logging
-  </a>
-  
-    <nav class="md-nav" aria-label="Logging">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#structlog" class="md-nav__link">
-    Structlog
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -575,11 +615,10 @@
                   
 
 
-<h1 id="user-guide">User Guide</h1>
-<h2 id="logging">Logging</h2>
-<h3 id="structlog">Structlog</h3>
-<p>If you use <a href="https://www.structlog.org/en/stable/index.html">structlog</a> you need
-to use a wrapper like so:</p>
+<h1 id="structured-logging">Structured Logging</h1>
+<p>You can get structured logging with notion-sdk-py by using
+<a href="https://www.structlog.org/en/stable/index.html">structlog</a>.</p>
+<p>To do so, use <code>structlog.wrap_logger</code> like so:</p>
 <div class="highlight"><pre><span></span><code><span class="n">logger</span> <span class="o">=</span> <span class="n">structlog</span><span class="o">.</span><span class="n">wrap_logger</span><span class="p">(</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;notion-client&quot;</span><span class="p">),</span>
     <span class="n">logger_factory</span><span class="o">=</span><span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">LoggerFactory</span><span class="p">(),</span>
@@ -588,6 +627,7 @@ to use a wrapper like so:</p>
 
 <span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">,</span> <span class="n">log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
 </code></pre></div>
+<p>Don't forget to add the dependency to your project!</p>
 
 
 
