@@ -15,7 +15,8 @@ This project will show you how to:
 Lastly we need a notion page to experiment with.
 Duplicate [this page](https://www.notion.so/notion-sdk-py-540f8e2b79914654ba103c5d8a03e10e)
 in your workspace.
-Click on Share, and add your integration to this page.
+
+After creating an integration in [notion site](https://www.notion.com/my-integrations), you should manually [shared](https://developers.notion.com/docs/authorization) the page with the integration. To share a page with an integration, visit the page in your Notion workspace, click the ••• menu at the top right of a page, scroll down to Add connections, and use the search bar to find and select the integration from the dropdown list.
 
 ## Run the script
 
