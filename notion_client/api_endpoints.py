@@ -124,19 +124,32 @@ class DatabasesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def query(self, database_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def query(self, database_id: str, all_pages=False, **kwargs: Any) -> SyncAsync[Any]:
         """Get a list of [Pages](https://developers.notion.com/reference/page) contained in the database.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/post-database-query)*
         """  # noqa: E501
-        return self.parent.request(
+        # retrieve the first result page
+        response = self.parent.request(
             path=f"databases/{database_id}/query",
             method="POST",
             query=pick(kwargs, "filter_properties"),
             body=pick(kwargs, "filter", "sorts", "start_cursor", "page_size"),
             auth=kwargs.get("auth"),
         )
+        has_more = response["has_more"]
+        if not has_more or not all_pages:
+            return response
 
+        # retrieve other result pages
+        start_cursor = response["next_cursor"]
+        while has_more:
+            next_page = self.parent.databases.query(database_id=database_id, start_cursor=start_cursor, **kwargs)
+            response["results"] += next_page["results"]
+            has_more = next_page["has_more"]
+            start_cursor = next_page["next_cursor"]
+        return response
+    
     def retrieve(self, database_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """Retrieve a [Database object](https://developers.notion.com/reference/database) using the ID specified.
 
