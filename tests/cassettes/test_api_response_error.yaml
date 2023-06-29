@@ -6,6 +6,8 @@ interactions:
       - '*/*'
       accept-encoding:
       - gzip, deflate
+      authorization:
+      - secret_...
       connection:
       - keep-alive
       host:
