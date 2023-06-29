@@ -12,6 +12,7 @@ from notion_client.helpers import (
     is_full_comment,
     is_full_database,
     is_full_page,
+    is_full_page_or_database,
     is_full_user,
     iterate_paginated_api,
     pick,
@@ -130,6 +131,15 @@ def test_is_full_page(client, page_id):
 def test_is_full_database(client, database_id):
     response = client.databases.retrieve(database_id=database_id)
     assert is_full_database(response)
+
+
+@pytest.mark.vcr()
+def test_is_full_page_or_database(client, database_id, page_id):
+    response = client.pages.retrieve(page_id=page_id)
+    assert is_full_page_or_database(response)
+
+    response = client.databases.retrieve(database_id=database_id)
+    assert is_full_page_or_database(response)
 
 
 @pytest.mark.vcr()
