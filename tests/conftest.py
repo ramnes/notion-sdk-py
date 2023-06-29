@@ -16,7 +16,11 @@ def vcr_config():
         return response
 
     return {
-        "filter_headers": [("authorization", "secret_..."), ("user-agent", None)],
+        "filter_headers": [
+            ("authorization", "secret_..."),
+            ("user-agent", None),
+            ("cookie", None),
+        ],
         "before_record_response": remove_headers,
         "match_on": ["method", "remove_page_id_for_matches"],
     }
