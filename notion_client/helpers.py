@@ -89,6 +89,13 @@ def is_full_database(response: Dict[Any, Any]) -> bool:
     return "title" in response
 
 
+def is_full_page_or_database(response: Dict[Any, Any]) -> bool:
+    """Return `true` if `response` is a full database or a full page."""
+    if response.get("object") == "database":
+        return is_full_database(response)
+    return is_full_page(response)
+
+
 def is_full_user(response: Dict[Any, Any]) -> bool:
     """Return `true` if response is a full user."""
     return "type" in response
