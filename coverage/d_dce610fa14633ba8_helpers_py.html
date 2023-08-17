@@ -54,8 +54,8 @@
             </div>
         </aside>
         <h2>
-            <span class="text">52 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">52<span class="text"> run</span></button>
+            <span class="text">56 statements &nbsp;</span>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">56<span class="text"> run</span></button>
             <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">0<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
@@ -64,8 +64,8 @@
             <a id="indexLink" class="nav" href="covindex.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="d_dce610fa14633ba8_logging_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.2.3">coverage.py v7.2.3</a>,
-            created at 2023-04-24 15:45 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.3.0">coverage.py v7.3.0</a>,
+            created at 2023-08-17 16:56 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"/>
@@ -171,14 +171,21 @@
     <p class="run"><span class="n"><a id="t89" href="#t89">89</a></span><span class="t">    <span class="key">return</span> <span class="str">"title"</span> <span class="key">in</span> <span class="nam">response</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t90" href="#t90">90</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t91" href="#t91">91</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t92" href="#t92">92</a></span><span class="t"><span class="key">def</span> <span class="nam">is_full_user</span><span class="op">(</span><span class="nam">response</span><span class="op">:</span> <span class="nam">Dict</span><span class="op">[</span><span class="nam">Any</span><span class="op">,</span> <span class="nam">Any</span><span class="op">]</span><span class="op">)</span> <span class="op">-></span> <span class="nam">bool</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t93" href="#t93">93</a></span><span class="t">    <span class="str">"""Return `true` if response is a full user."""</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t94" href="#t94">94</a></span><span class="t">    <span class="key">return</span> <span class="str">"type"</span> <span class="key">in</span> <span class="nam">response</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t95" href="#t95">95</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t96" href="#t96">96</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t97" href="#t97">97</a></span><span class="t"><span class="key">def</span> <span class="nam">is_full_comment</span><span class="op">(</span><span class="nam">response</span><span class="op">:</span> <span class="nam">Dict</span><span class="op">[</span><span class="nam">Any</span><span class="op">,</span> <span class="nam">Any</span><span class="op">]</span><span class="op">)</span> <span class="op">-></span> <span class="nam">bool</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t98" href="#t98">98</a></span><span class="t">    <span class="str">"""Return `true` if response is a full comment."""</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t99" href="#t99">99</a></span><span class="t">    <span class="key">return</span> <span class="str">"type"</span> <span class="key">in</span> <span class="nam">response</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t92" href="#t92">92</a></span><span class="t"><span class="key">def</span> <span class="nam">is_full_page_or_database</span><span class="op">(</span><span class="nam">response</span><span class="op">:</span> <span class="nam">Dict</span><span class="op">[</span><span class="nam">Any</span><span class="op">,</span> <span class="nam">Any</span><span class="op">]</span><span class="op">)</span> <span class="op">-></span> <span class="nam">bool</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t93" href="#t93">93</a></span><span class="t">    <span class="str">"""Return `true` if `response` is a full database or a full page."""</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t94" href="#t94">94</a></span><span class="t">    <span class="key">if</span> <span class="nam">response</span><span class="op">.</span><span class="nam">get</span><span class="op">(</span><span class="str">"object"</span><span class="op">)</span> <span class="op">==</span> <span class="str">"database"</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t95" href="#t95">95</a></span><span class="t">        <span class="key">return</span> <span class="nam">is_full_database</span><span class="op">(</span><span class="nam">response</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t96" href="#t96">96</a></span><span class="t">    <span class="key">return</span> <span class="nam">is_full_page</span><span class="op">(</span><span class="nam">response</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t97" href="#t97">97</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t98" href="#t98">98</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t99" href="#t99">99</a></span><span class="t"><span class="key">def</span> <span class="nam">is_full_user</span><span class="op">(</span><span class="nam">response</span><span class="op">:</span> <span class="nam">Dict</span><span class="op">[</span><span class="nam">Any</span><span class="op">,</span> <span class="nam">Any</span><span class="op">]</span><span class="op">)</span> <span class="op">-></span> <span class="nam">bool</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t100" href="#t100">100</a></span><span class="t">    <span class="str">"""Return `true` if response is a full user."""</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t101" href="#t101">101</a></span><span class="t">    <span class="key">return</span> <span class="str">"type"</span> <span class="key">in</span> <span class="nam">response</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t102" href="#t102">102</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t103" href="#t103">103</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t104" href="#t104">104</a></span><span class="t"><span class="key">def</span> <span class="nam">is_full_comment</span><span class="op">(</span><span class="nam">response</span><span class="op">:</span> <span class="nam">Dict</span><span class="op">[</span><span class="nam">Any</span><span class="op">,</span> <span class="nam">Any</span><span class="op">]</span><span class="op">)</span> <span class="op">-></span> <span class="nam">bool</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t105" href="#t105">105</a></span><span class="t">    <span class="str">"""Return `true` if response is a full comment."""</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t106" href="#t106">106</a></span><span class="t">    <span class="key">return</span> <span class="str">"type"</span> <span class="key">in</span> <span class="nam">response</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -187,8 +194,8 @@
             <a id="indexLink" class="nav" href="covindex.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="d_dce610fa14633ba8_logging_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.2.3">coverage.py v7.2.3</a>,
-            created at 2023-04-24 15:45 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.3.0">coverage.py v7.3.0</a>,
+            created at 2023-08-17 16:56 +0000
         </p>
     </div>
 </footer>
