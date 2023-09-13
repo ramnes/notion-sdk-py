@@ -10,6 +10,12 @@ import httpx
 from httpx import Request, Response
 
 from notion_client.api_endpoints import (
+    AsyncBlocksEndpoint,
+    AsyncCommentsEndpoint,
+    AsyncDatabasesEndpoint,
+    AsyncPagesEndpoint,
+    AsyncSearchEndpoint,
+    AsyncUsersEndpoint,
     BlocksEndpoint,
     CommentsEndpoint,
     DatabasesEndpoint,
@@ -24,7 +30,6 @@ from notion_client.errors import (
     is_api_error_code,
 )
 from notion_client.logging import make_console_logger
-from notion_client.typing import SyncAsync
 
 
 @dataclass
@@ -70,13 +75,6 @@ class BaseClient:
 
         self._clients: List[Union[httpx.Client, httpx.AsyncClient]] = []
         self.client = client
-
-        self.blocks = BlocksEndpoint(self)
-        self.databases = DatabasesEndpoint(self)
-        self.users = UsersEndpoint(self)
-        self.pages = PagesEndpoint(self)
-        self.search = SearchEndpoint(self)
-        self.comments = CommentsEndpoint(self)
 
     @property
     def client(self) -> Union[httpx.Client, httpx.AsyncClient]:
@@ -139,7 +137,7 @@ class BaseClient:
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
-    ) -> SyncAsync[Any]:
+    ) -> Any:
         # noqa
         pass
 
@@ -158,6 +156,13 @@ class Client(BaseClient):
         if client is None:
             client = httpx.Client()
         super().__init__(client, options, **kwargs)
+
+        self.blocks = BlocksEndpoint(self)
+        self.databases = DatabasesEndpoint(self)
+        self.users = UsersEndpoint(self)
+        self.pages = PagesEndpoint(self)
+        self.search = SearchEndpoint(self)
+        self.comments = CommentsEndpoint(self)
 
     def __enter__(self) -> "Client":
         self.client = httpx.Client()
@@ -208,6 +213,13 @@ class AsyncClient(BaseClient):
         if client is None:
             client = httpx.AsyncClient()
         super().__init__(client, options, **kwargs)
+
+        self.blocks = AsyncBlocksEndpoint(self)
+        self.databases = AsyncDatabasesEndpoint(self)
+        self.users = AsyncUsersEndpoint(self)
+        self.pages = AsyncPagesEndpoint(self)
+        self.search = AsyncSearchEndpoint(self)
+        self.comments = AsyncCommentsEndpoint(self)
 
     async def __aenter__(self) -> "AsyncClient":
         self.client = httpx.AsyncClient()
