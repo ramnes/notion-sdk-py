@@ -1,5 +1,10 @@
 """Custom type definitions for notion-sdk-py."""
-from typing import Awaitable, TypeVar, Union
+from typing import TYPE_CHECKING, Awaitable, TypeVar, Union
+
+if TYPE_CHECKING:  # pragma: no cover
+    from notion_client.client import BaseClient
 
 T = TypeVar("T")
 SyncAsync = Union[T, Awaitable[T]]
+
+ClientType = TypeVar("ClientType", bound="BaseClient")

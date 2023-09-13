@@ -1,20 +1,19 @@
 """Notion API endpoints."""  # noqa: E501
-
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Awaitable, Dict, Generic, List, overload
 
 from notion_client.helpers import pick
-from notion_client.typing import SyncAsync
+from notion_client.typing import ClientType, SyncAsync
 
 if TYPE_CHECKING:  # pragma: no cover
-    from notion_client.client import BaseClient
+    from notion_client.client import AsyncClient, BaseClient, Client
 
 
-class Endpoint:
-    def __init__(self, parent: "BaseClient") -> None:
-        self.parent = parent
+class Endpoint(Generic[ClientType]):
+    def __init__(self, parent: ClientType) -> None:
+        self.parent: ClientType = parent
 
 
-class BlocksChildrenEndpoint(Endpoint):
+class BlocksChildrenEndpoint(Endpoint[ClientType]):
     def append(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """Create and append new children blocks to the block using the ID specified.
 
@@ -40,8 +39,10 @@ class BlocksChildrenEndpoint(Endpoint):
         )
 
 
-class BlocksEndpoint(Endpoint):
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+class BlocksEndpoint(Endpoint[ClientType]):
+    children: BlocksChildrenEndpoint[ClientType]
+
+    def __init__(self: "BlocksEndpoint[BaseClient]", *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.children = BlocksChildrenEndpoint(*args, **kwargs)
 
@@ -109,7 +110,7 @@ class BlocksEndpoint(Endpoint):
         )
 
 
-class DatabasesEndpoint(Endpoint):
+class DatabasesEndpoint(Endpoint[ClientType]):
     def list(self, **kwargs: Any) -> SyncAsync[Any]:  # pragma: no cover
         """List all [Databases](https://developers.notion.com/reference/database) shared with the authenticated integration.
 
@@ -173,7 +174,7 @@ class DatabasesEndpoint(Endpoint):
         )
 
 
-class PagesPropertiesEndpoint(Endpoint):
+class PagesPropertiesEndpoint(Endpoint[ClientType]):
     def retrieve(self, page_id: str, property_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """Retrieve a `property_item` object for a given `page_id` and `property_id`.
 
@@ -187,8 +188,10 @@ class PagesPropertiesEndpoint(Endpoint):
         )
 
 
-class PagesEndpoint(Endpoint):
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+class PagesEndpoint(Endpoint[ClientType]):
+    properties: PagesPropertiesEndpoint[ClientType]
+
+    def __init__(self: "PagesEndpoint[BaseClient]", *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.properties = PagesPropertiesEndpoint(*args, **kwargs)
 
@@ -226,8 +229,18 @@ class PagesEndpoint(Endpoint):
         )
 
 
-class UsersEndpoint(Endpoint):
-    def list(self, **kwargs: Any) -> SyncAsync[Any]:
+class UsersEndpoint(Endpoint[ClientType]):
+    @overload
+    def list(
+        self: "UsersEndpoint[AsyncClient]", **kwargs: Any
+    ) -> Awaitable[List[Dict[str, Any]]]:
+        ...
+
+    @overload
+    def list(self: "UsersEndpoint[Client]", **kwargs: Any) -> List[Dict[str, Any]]:
+        ...
+
+    def list(self, **kwargs: Any) -> Any:
         """Return a paginated list of [Users](https://developers.notion.com/reference/user) for the workspace.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/get-users)*
@@ -258,7 +271,7 @@ class UsersEndpoint(Endpoint):
         )
 
 
-class SearchEndpoint(Endpoint):
+class SearchEndpoint(Endpoint[ClientType]):
     def __call__(self, **kwargs: Any) -> SyncAsync[Any]:
         """Search all pages and child pages that are shared with the integration.
 
@@ -272,7 +285,7 @@ class SearchEndpoint(Endpoint):
         )
 
 
-class CommentsEndpoint(Endpoint):
+class CommentsEndpoint(Endpoint[ClientType]):
     def create(self, **kwargs: Any) -> SyncAsync[Any]:
         """Create a new comment in the specified page or existing discussion thread.
 

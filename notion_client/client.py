@@ -148,6 +148,12 @@ class Client(BaseClient):
     """Synchronous client for Notion's API."""
 
     client: httpx.Client
+    blocks: BlocksEndpoint["Client"]
+    databases: DatabasesEndpoint["Client"]
+    users: UsersEndpoint["Client"]
+    pages: PagesEndpoint["Client"]
+    search: SearchEndpoint["Client"]
+    comments: CommentsEndpoint["Client"]
 
     def __init__(
         self,
@@ -198,6 +204,12 @@ class AsyncClient(BaseClient):
     """Asynchronous client for Notion's API."""
 
     client: httpx.AsyncClient
+    blocks: BlocksEndpoint["AsyncClient"]
+    databases: DatabasesEndpoint["AsyncClient"]
+    users: UsersEndpoint["AsyncClient"]
+    pages: PagesEndpoint["AsyncClient"]
+    search: SearchEndpoint["AsyncClient"]
+    comments: CommentsEndpoint["AsyncClient"]
 
     def __init__(
         self,
