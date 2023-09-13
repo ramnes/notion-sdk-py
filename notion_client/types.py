@@ -1,6 +1,6 @@
 """The types for the various responses."""
 
-from typing import Any, Literal, TypedDict
+from typing import Literal, TypedDict, Union
 
 
 class EmptyObject(TypedDict):
@@ -42,14 +42,4 @@ class BotUserObjectResponse(TypedDict):
     object: Literal["user"]
 
 
-UserObjectResponse = PersonUserObjectResponse | BotUserObjectResponse
-
-
-# ---------- Block ----------
-BlockObjectResponse = Any
-
-# ---------- Database ---------
-DatabaseObjectResponse = Any
-
-# ---------- Page ----------
-PageObjectResponse = Any
+UserObjectResponse = Union[PersonUserObjectResponse, BotUserObjectResponse]
