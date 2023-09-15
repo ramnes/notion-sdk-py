@@ -1,6 +1,5 @@
 import os
 import re
-import warnings
 from datetime import datetime
 from typing import Optional
 
@@ -41,23 +40,23 @@ def token() -> str:
     return os.environ.get("NOTION_TOKEN")
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="module", autouse=True)
 def parent_page_id(vcr) -> str:
     """this is the ID of the Notion page where the tests will be executed
     the bot must have access to the page with all the capabilities enabled"""
-    notion_page_id = os.environ.get("NOTION_TEST_PAGE_ID")
-    if not notion_page_id:
-        warnings.warn(
-            """Env variable NOTION_TEST_PAGE_ID needed for testing with new cassettes.
-            Retrieving the parent_page_id from existing cassette...
-            """
-        )
+    page_id = os.environ.get("NOTION_TEST_PAGE_ID")
+    if page_id:
+        return page_id
 
+    try:
         with vcr.use_cassette("test_pages_create.yaml") as cass:
             response = cass._serializer.deserialize(cass.data[0][1]["content"])
-            notion_page_id = response["parent"]["page_id"]
-
-    return notion_page_id
+            return response["parent"]["page_id"]
+    except Exception:
+        pytest.exit(
+            "Missing base page id. Restore test_pages_create.yaml or add "
+            "NOTION_TEST_PAGE_ID to your environment.",
+        )
 
 
 @pytest.fixture(scope="function")
