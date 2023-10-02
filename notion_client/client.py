@@ -11,6 +11,7 @@ from httpx import Request, Response
 
 from notion_client.api_endpoints import (
     BlocksEndpoint,
+    BlocksChildrenEndpoint,
     CommentsEndpoint,
     DatabasesEndpoint,
     PagesEndpoint,
@@ -72,6 +73,7 @@ class BaseClient:
         self.client = client
 
         self.blocks = BlocksEndpoint(self)
+        self.blocks_children = BlocksChildrenEndpoint(self)
         self.databases = DatabasesEndpoint(self)
         self.users = UsersEndpoint(self)
         self.pages = PagesEndpoint(self)
