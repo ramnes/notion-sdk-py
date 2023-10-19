@@ -11,11 +11,11 @@ interactions:
       connection:
       - keep-alive
       host:
-      - httpstat.us
+      - mock.httpstatus.io
       notion-version:
       - '2022-06-28'
     method: GET
-    uri: https://httpstat.us/400
+    uri: https://mock.httpstatus.io/400
   response:
     content: 400 Bad Request
     headers: {}

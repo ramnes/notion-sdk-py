@@ -41,7 +41,7 @@ interactions:
     uri: https://api.notion.com/v1/users
   response:
     content: '{"object":"list","results":[{"object":"user","id":"a4f789cc-7bc8-4cf0-82b9-a8ba7d985ecf","name":"Guillaume
-      Gelin","avatar_url":"https://s3-us-west-2.amazonaws.com/public.notion-static.com/1cddf30d-ef25-4372-a8bd-b510a11e26e8/avatar.jpeg","type":"person","person":{"email":"notion@ramnes.eu"}},{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78","name":"notion-sdk-py","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"notion-sdk-py"}}],"next_cursor":null,"has_more":false,"type":"user","user":{}}'
+      Gelin","avatar_url":"https://s3-us-west-2.amazonaws.com/public.notion-static.com/1cddf30d-ef25-4372-a8bd-b510a11e26e8/avatar.jpeg","type":"person","person":{"email":"notion@ramnes.eu"}},{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78","name":"notion-sdk-py","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"notion-sdk-py"}}],"next_cursor":null,"has_more":false,"type":"user","user":{},"request_id":"efc82635-6f20-473b-97c7-2086f292dce3"}'
     headers: {}
     http_version: HTTP/1.1
     status_code: 200

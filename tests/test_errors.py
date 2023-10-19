@@ -8,7 +8,7 @@ from notion_client.errors import (
     is_api_error_code,
 )
 
-STATUS_PAGE_BAD_REQUEST = "https://httpstat.us/400"
+STATUS_PAGE_BAD_REQUEST = "https://mock.httpstatus.io/400"
 
 
 @pytest.mark.vcr()
