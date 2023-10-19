@@ -102,6 +102,10 @@ def test_users_me(client):
 def test_users_retrieve(client):
     me = client.users.me()
     response = client.users.retrieve(me["id"])
+
+    me.pop("request_id", None)
+    response.pop("request_id", None)
+
     assert response == me
 
 
