@@ -175,7 +175,7 @@ class DatabasesEndpoint(Endpoint):
                 "description",
                 "icon",
                 "cover",
-                "is_inline"
+                "is_inline",
             ),
             auth=kwargs.get("auth"),
         )
