@@ -24,11 +24,9 @@
 It is meant to be a Python version of the reference [JavaScript SDK](https://github.com/makenotion/notion-sdk-js),
 so usage should be pretty similar between both. 😊
 
-> 📢 **Announcement** (10-12-2022) — Release 2.0.0 is out! It mostly adds new
-> helpers, support for the comments API, more tests, and Python 3.11.
->
-> Beware, `Notion-Version` has been upgraded to `2022-06-28` and it brings
-> [breaking changes](https://developers.notion.com/changelog/releasing-notion-version-2022-06-28).
+> 📢 **Announcement** (04-11-2023) — Release 2.1.0 is out! It adds new helpers,
+> more tests (100% coverage, yay!) and support for Python 3.12. Also, we're out
+> of beta and now consider the package stable.
 
 <!-- markdownlint-disable -->
 ## Installation
