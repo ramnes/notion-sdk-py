@@ -76,17 +76,17 @@ async def async_collect_paginated_api(
 
 def is_full_block(response: Dict[Any, Any]) -> bool:
     """Return `true` if response is a full block."""
-    return "type" in response
+    return response.get("object") == "block" and "type" in response
 
 
 def is_full_page(response: Dict[Any, Any]) -> bool:
     """Return `true` if response is a full page."""
-    return "url" in response
+    return response.get("object") == "page" and "url" in response
 
 
 def is_full_database(response: Dict[Any, Any]) -> bool:
     """Return `true` if response is a full database."""
-    return "title" in response
+    return response.get("object") == "database" and "title" in response
 
 
 def is_full_page_or_database(response: Dict[Any, Any]) -> bool:
