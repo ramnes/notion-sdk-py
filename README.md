@@ -39,9 +39,8 @@ pip install notion-client
 
 ## Usage
 
-> Before getting started, [create an integration](https://www.notion.com/my-integrations)
-> and find the token.
-> [→ Learn more about authorization](https://developers.notion.com/docs/authorization).
+> Use Notion's [Getting Started Guide](https://developers.notion.com/docs/getting-started)
+> to get set up to use Notion's API.
 
 Import and initialize a client using an **integration token** or an
 OAuth **access token**.
@@ -260,8 +259,7 @@ to upgrade to the current stable.
 
 ## Getting help
 
-If you have a question about the library, or are having difficulty using it,
-chat with the community in [GitHub Discussions](https://github.com/ramnes/notion-sdk-py/discussions).
+If you want to submit a feature request for Notion's API, or are experiencing
+any issues with the API platform, please email `developers@makenotion.com`.
 
-If you're experiencing issues with the Notion API, such as a service interruption
-or a potential bug in the platform, reach out to [Notion help](https://www.notion.so/Help-Support-e040febf70a94950b8620e6f00005004?target=intercom).
+If you found a bug with the library, please [submit an issue](https://github.com/ramnes/notion-sdk-py/issues).
