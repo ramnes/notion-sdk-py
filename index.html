@@ -14,7 +14,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.6">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.7">
     
     
       
@@ -22,7 +22,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.35e1ed30.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.4b4a2bd9.min.css">
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.356b1318.min.css">
@@ -1057,6 +1057,10 @@ These options are all keys in the single constructor parameter.</p>
 <td>Determine whether an object is a full <a href="https://developers.notion.com/reference/database">Database object</a></td>
 </tr>
 <tr>
+<td><code>is_full_page_or_database</code></td>
+<td>Determine whether an object is a full <a href="https://developers.notion.com/reference/page">Page object</a> or <a href="https://developers.notion.com/reference/database">Database object</a></td>
+</tr>
+<tr>
 <td><code>is_full_user</code></td>
 <td>Determine whether an object is a full <a href="https://developers.notion.com/reference/user">User object</a></td>
 </tr>
@@ -1075,7 +1079,7 @@ These options are all keys in the single constructor parameter.</p>
 <span class="p">)</span>
 
 <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">full_or_partial_pages</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]:</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_full_page</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_full_page_or_database</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
         <span class="k">continue</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created at: </span><span class="si">{</span><span class="n">page</span><span class="p">[</span><span class="s1">&#39;created_time&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
