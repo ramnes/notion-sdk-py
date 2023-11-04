@@ -75,32 +75,32 @@ async def async_collect_paginated_api(
 
 
 def is_full_block(response: Dict[Any, Any]) -> bool:
-    """Return `true` if response is a full block."""
+    """Return `True` if response is a full block."""
     return response.get("object") == "block" and "type" in response
 
 
 def is_full_page(response: Dict[Any, Any]) -> bool:
-    """Return `true` if response is a full page."""
+    """Return `True` if response is a full page."""
     return response.get("object") == "page" and "url" in response
 
 
 def is_full_database(response: Dict[Any, Any]) -> bool:
-    """Return `true` if response is a full database."""
+    """Return `True` if response is a full database."""
     return response.get("object") == "database" and "title" in response
 
 
 def is_full_page_or_database(response: Dict[Any, Any]) -> bool:
-    """Return `true` if `response` is a full database or a full page."""
+    """Return `True` if `response` is a full database or a full page."""
     if response.get("object") == "database":
         return is_full_database(response)
     return is_full_page(response)
 
 
 def is_full_user(response: Dict[Any, Any]) -> bool:
-    """Return `true` if response is a full user."""
+    """Return `True` if response is a full user."""
     return "type" in response
 
 
 def is_full_comment(response: Dict[Any, Any]) -> bool:
-    """Return `true` if response is a full comment."""
+    """Return `True` if response is a full comment."""
     return "type" in response
