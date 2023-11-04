@@ -120,6 +120,44 @@ def comment_id(client, page_id) -> str:
     yield response["id"]
 
 
+text_block_id = block_id
+
+
+@pytest.fixture(scope="function")
+def equation_block_id(client, page_id) -> str:
+    """create a block inside page_id that has an equation"""
+    children = [
+        {"paragraph": {"rich_text": [{"equation": {"expression": "E = mc^2"}}]}}
+    ]
+
+    response = client.blocks.children.append(block_id=page_id, children=children)
+    yield response["results"][0]["id"]
+    client.blocks.delete(block_id=response["results"][0]["id"])
+
+
+@pytest.fixture(scope="function")
+def mention_block_id(client, page_id) -> str:
+    """create a block inside page_id that has a date mention"""
+    children = [
+        {
+            "paragraph": {
+                "rich_text": [
+                    {
+                        "mention": {
+                            "type": "date",
+                            "date": {"start": "2022-12-16", "end": None},
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+
+    response = client.blocks.children.append(block_id=page_id, children=children)
+    yield response["results"][0]["id"]
+    client.blocks.delete(block_id=response["results"][0]["id"])
+
+
 @pytest.fixture(scope="module")
 def client(token: Optional[str]):
     with Client({"auth": token}) as client:

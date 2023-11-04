@@ -104,3 +104,18 @@ def is_full_user(response: Dict[Any, Any]) -> bool:
 def is_full_comment(response: Dict[Any, Any]) -> bool:
     """Return `True` if response is a full comment."""
     return "type" in response
+
+
+def is_text_rich_text_item_response(rich_text: Dict[Any, Any]) -> bool:
+    """Return `True` if `rich_text` is a text."""
+    return rich_text.get("type") == "text"
+
+
+def is_equation_rich_text_item_response(rich_text: Dict[Any, Any]) -> bool:
+    """Return `True` if `rich_text` is an equation."""
+    return rich_text.get("type") == "equation"
+
+
+def is_mention_rich_text_item_response(rich_text: Dict[Any, Any]) -> bool:
+    """Return `True` if `rich_text` is a mention."""
+    return rich_text.get("type") == "mention"

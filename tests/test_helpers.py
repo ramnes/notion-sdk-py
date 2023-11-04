@@ -8,12 +8,15 @@ from notion_client.helpers import (
     collect_paginated_api,
     get_id,
     get_url,
+    is_equation_rich_text_item_response,
     is_full_block,
     is_full_comment,
     is_full_database,
     is_full_page,
     is_full_page_or_database,
     is_full_user,
+    is_mention_rich_text_item_response,
+    is_text_rich_text_item_response,
     iterate_paginated_api,
     pick,
 )
@@ -152,3 +155,21 @@ def test_is_full_user(client):
 def test_is_full_comment(client, page_id, comment_id):
     response = client.comments.list(block_id=page_id)
     assert is_full_comment(response)
+
+
+@pytest.mark.vcr()
+def test_is_text_rich_text_item_response(client, text_block_id):
+    response = client.blocks.retrieve(block_id=text_block_id)
+    assert is_text_rich_text_item_response(response["paragraph"]["rich_text"][0])
+
+
+@pytest.mark.vcr()
+def test_is_equation_rich_text_item_response(client, equation_block_id):
+    response = client.blocks.retrieve(block_id=equation_block_id)
+    assert is_equation_rich_text_item_response(response["paragraph"]["rich_text"][0])
+
+
+@pytest.mark.vcr()
+def test_is_mention_rich_text_item_response(client, mention_block_id):
+    response = client.blocks.retrieve(block_id=mention_block_id)
+    assert is_mention_rich_text_item_response(response["paragraph"]["rich_text"][0])
