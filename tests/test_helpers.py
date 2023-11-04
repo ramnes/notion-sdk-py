@@ -69,7 +69,7 @@ def test_iterate_paginated_api(client):
     function = client.search
     generator = iterate_paginated_api(function)
 
-    assert type(generator) == GeneratorType
+    assert isinstance(generator, GeneratorType)
     assert next(generator) is not None
 
     generator_empty = iterate_paginated_api(
@@ -83,7 +83,7 @@ def test_collect_paginated_api(client):
     function = client.search
     results = collect_paginated_api(function)
 
-    assert type(results) == list
+    assert isinstance(results, list)
     assert results != []
 
     results_empty = collect_paginated_api(function, query="This should have no results")
@@ -95,7 +95,7 @@ async def test_async_iterate_paginated_api(async_client):
     function = async_client.search
     generator = async_iterate_paginated_api(function)
 
-    assert type(generator) == AsyncGeneratorType
+    assert isinstance(generator, AsyncGeneratorType)
     assert await generator.__anext__() is not None
 
     generator_empty = async_iterate_paginated_api(
@@ -109,7 +109,7 @@ async def test_async_collect_paginated_api(async_client):
     function = async_client.search
     results = await async_collect_paginated_api(function)
 
-    assert type(results) == list
+    assert isinstance(results, list)
     assert results != []
 
     results_empty = await async_collect_paginated_api(
