@@ -1107,11 +1107,12 @@ from the paginated API.</p>
 <span class="p">)</span>
 </code></pre></div>
 <h2 id="testing">Testing</h2>
-<p>Run the tests with the <code>pytest</code> command: the tests are using pytest-vcr's cassettes
-for simulating requests to the Notion API.</p>
-<p>To create new tests or run them without cassettes, you need to set up the
-environment variables <code>NOTION_TOKEN</code> and <code>NOTION_TEST_PAGE_ID</code> (a page where
-your integration has all the capabilities enabled).</p>
+<p>Run the tests with the <code>pytest</code> command. If you want to test against all Python
+versions, you can run <code>tox</code> instead.</p>
+<p>The tests are using <code>pytest-vcr</code>'s cassettes for simulating requests to the
+Notion API. To create new tests or run them without cassettes, you need to set
+up the environment variables <code>NOTION_TOKEN</code> and <code>NOTION_TEST_PAGE_ID</code> (a page
+where your integration has all the capabilities enabled).</p>
 <p>The code will use the page at <code>NOTION_TEST_PAGE_ID</code> to generate a temporary
 environment with the Notion objects to be tested, which will be deleted
 at the end of the session.</p>
