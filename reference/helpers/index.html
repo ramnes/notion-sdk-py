@@ -576,6 +576,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#notion_client.helpers.is_equation_rich_text_item_response" class="md-nav__link">
+    is_equation_rich_text_item_response()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#notion_client.helpers.is_full_block" class="md-nav__link">
     is_full_block()
   </a>
@@ -613,6 +620,20 @@
         <li class="md-nav__item">
   <a href="#notion_client.helpers.is_full_user" class="md-nav__link">
     is_full_user()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notion_client.helpers.is_mention_rich_text_item_response" class="md-nav__link">
+    is_mention_rich_text_item_response()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notion_client.helpers.is_text_rich_text_item_response" class="md-nav__link">
+    is_text_rich_text_item_response()
   </a>
   
 </li>
@@ -822,6 +843,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#notion_client.helpers.is_equation_rich_text_item_response" class="md-nav__link">
+    is_equation_rich_text_item_response()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#notion_client.helpers.is_full_block" class="md-nav__link">
     is_full_block()
   </a>
@@ -859,6 +887,20 @@
         <li class="md-nav__item">
   <a href="#notion_client.helpers.is_full_user" class="md-nav__link">
     is_full_user()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notion_client.helpers.is_mention_rich_text_item_response" class="md-nav__link">
+    is_mention_rich_text_item_response()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notion_client.helpers.is_text_rich_text_item_response" class="md-nav__link">
+    is_text_rich_text_item_response()
   </a>
   
 </li>
@@ -1124,6 +1166,35 @@
 
 
 
+<h2 id="notion_client.helpers.is_equation_rich_text_item_response" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">is_equation_rich_text_item_response</span><span class="p">(</span><span class="n">rich_text</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Return <code>True</code> if <code>rich_text</code> is an equation.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>notion_client/helpers.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_equation_rich_text_item_response</span><span class="p">(</span><span class="n">rich_text</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if `rich_text` is an equation.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">rich_text</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;equation&quot;</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
 <h2 id="notion_client.helpers.is_full_block" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">is_full_block</span><span class="p">(</span><span class="n">response</span><span class="p">)</span></code>
 
@@ -1132,15 +1203,15 @@
 
   <div class="doc doc-contents ">
   
-      <p>Return <code>true</code> if response is a full block.</p>
+      <p>Return <code>True</code> if response is a full block.</p>
 
           <details class="quote">
             <summary>Source code in <code>notion_client/helpers.py</code></summary>
             <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">77</span>
 <span class="normal">78</span>
 <span class="normal">79</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_full_block</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `true` if response is a full block.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">response</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if response is a full block.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;block&quot;</span> <span class="ow">and</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">response</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -1161,14 +1232,14 @@
 
   <div class="doc doc-contents ">
   
-      <p>Return <code>true</code> if response is a full comment.</p>
+      <p>Return <code>True</code> if response is a full comment.</p>
 
           <details class="quote">
             <summary>Source code in <code>notion_client/helpers.py</code></summary>
             <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">104</span>
 <span class="normal">105</span>
 <span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_full_comment</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `true` if response is a full comment.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if response is a full comment.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">response</span>
 </code></pre></div></td></tr></table></div>
           </details>
@@ -1190,15 +1261,15 @@
 
   <div class="doc doc-contents ">
   
-      <p>Return <code>true</code> if response is a full database.</p>
+      <p>Return <code>True</code> if response is a full database.</p>
 
           <details class="quote">
             <summary>Source code in <code>notion_client/helpers.py</code></summary>
             <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">87</span>
 <span class="normal">88</span>
 <span class="normal">89</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_full_database</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `true` if response is a full database.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;title&quot;</span> <span class="ow">in</span> <span class="n">response</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if response is a full database.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;database&quot;</span> <span class="ow">and</span> <span class="s2">&quot;title&quot;</span> <span class="ow">in</span> <span class="n">response</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -1219,15 +1290,15 @@
 
   <div class="doc doc-contents ">
   
-      <p>Return <code>true</code> if response is a full page.</p>
+      <p>Return <code>True</code> if response is a full page.</p>
 
           <details class="quote">
             <summary>Source code in <code>notion_client/helpers.py</code></summary>
             <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">82</span>
 <span class="normal">83</span>
 <span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_full_page</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `true` if response is a full page.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;url&quot;</span> <span class="ow">in</span> <span class="n">response</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if response is a full page.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;page&quot;</span> <span class="ow">and</span> <span class="s2">&quot;url&quot;</span> <span class="ow">in</span> <span class="n">response</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -1248,7 +1319,7 @@
 
   <div class="doc doc-contents ">
   
-      <p>Return <code>true</code> if <code>response</code> is a full database or a full page.</p>
+      <p>Return <code>True</code> if <code>response</code> is a full database or a full page.</p>
 
           <details class="quote">
             <summary>Source code in <code>notion_client/helpers.py</code></summary>
@@ -1257,7 +1328,7 @@
 <span class="normal">94</span>
 <span class="normal">95</span>
 <span class="normal">96</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_full_page_or_database</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `true` if `response` is a full database or a full page.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if `response` is a full database or a full page.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;database&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">is_full_database</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">is_full_page</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
@@ -1281,15 +1352,73 @@
 
   <div class="doc doc-contents ">
   
-      <p>Return <code>true</code> if response is a full user.</p>
+      <p>Return <code>True</code> if response is a full user.</p>
 
           <details class="quote">
             <summary>Source code in <code>notion_client/helpers.py</code></summary>
             <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 99</span>
 <span class="normal">100</span>
 <span class="normal">101</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_full_user</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `true` if response is a full user.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if response is a full user.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">response</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="notion_client.helpers.is_mention_rich_text_item_response" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">is_mention_rich_text_item_response</span><span class="p">(</span><span class="n">rich_text</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Return <code>True</code> if <code>rich_text</code> is a mention.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>notion_client/helpers.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_mention_rich_text_item_response</span><span class="p">(</span><span class="n">rich_text</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if `rich_text` is a mention.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">rich_text</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;mention&quot;</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="notion_client.helpers.is_text_rich_text_item_response" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">is_text_rich_text_item_response</span><span class="p">(</span><span class="n">rich_text</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Return <code>True</code> if <code>rich_text</code> is a text.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>notion_client/helpers.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_text_rich_text_item_response</span><span class="p">(</span><span class="n">rich_text</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if `rich_text` is a text.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">rich_text</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;text&quot;</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
