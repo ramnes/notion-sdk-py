@@ -2,7 +2,7 @@
 
 This section contains several single-file examples using [notion-sdk-py].
 
-Read the [Quick Start](/docs/quick_start.md) before you come here.
+Read the [Quick Start](/docs/user_guides/quick_start.md) before you come here.
 
 ## Downloading
 
