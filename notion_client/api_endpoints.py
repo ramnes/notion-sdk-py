@@ -226,10 +226,15 @@ class PagesEndpoint(Endpoint):
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/patch-page)*
         """  # noqa: E501
+        body = pick(kwargs, "archived", "properties", "icon", "cover")
+        for nullable_attr in ("icon", "cover"): # make sure those are set to `None`
+            if kwargs.get(nullable_attr, object) is None:
+                body[nullable_attr] = None
+                
         return self.parent.request(
             path=f"pages/{page_id}",
             method="PATCH",
-            body=pick(kwargs, "archived", "properties", "icon", "cover"),
+            body=body,
             auth=kwargs.get("auth"),
         )
 
