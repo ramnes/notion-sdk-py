@@ -218,7 +218,10 @@ class PagesEndpoint(Endpoint):
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-page)*
         """  # noqa: E501
         return self.parent.request(
-            path=f"pages/{page_id}", method="GET", auth=kwargs.get("auth")
+            path=f"pages/{page_id}",
+            method="GET", 
+            query=pick(kwargs, "filter_properties"),
+            auth=kwargs.get("auth")
         )
 
     def update(self, page_id: str, **kwargs: Any) -> SyncAsync[Any]:
