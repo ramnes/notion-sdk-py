@@ -30,7 +30,7 @@ def iterate_paginated_api(
     function: Callable[..., Any], **kwargs: Any
 ) -> Generator[List[Any], None, None]:
     """Return an iterator over the results of any paginated Notion API."""
-    next_cursor = None
+    next_cursor = kwargs.pop("start_cursor", None)
 
     while True:
         response = function(**kwargs, start_cursor=next_cursor)
@@ -53,7 +53,7 @@ async def async_iterate_paginated_api(
     function: Callable[..., Awaitable[Any]], **kwargs: Any
 ) -> AsyncGenerator[List[Any], None]:
     """Return an async iterator over the results of any paginated Notion API."""
-    next_cursor = None
+    next_cursor = kwargs.pop("start_cursor", None)
 
     while True:
         response = await function(**kwargs, start_cursor=next_cursor)
