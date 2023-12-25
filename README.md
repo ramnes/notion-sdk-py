@@ -22,7 +22,8 @@
 [Notion API](https://developers.notion.com/).**
 
 It is meant to be a Python version of the reference [JavaScript SDK](https://github.com/makenotion/notion-sdk-js),
-so usage should be pretty similar between both. 😊
+so usage should be very similar between both. 😊 (If not, please open an issue
+or PR!)
 
 > 📢 **Announcement** (04-11-2023) — Release 2.1.0 is out! It adds new helpers,
 > more tests (100% coverage, yay!) and support for Python 3.12. Also, we're out
