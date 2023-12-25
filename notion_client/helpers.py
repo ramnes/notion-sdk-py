@@ -3,10 +3,60 @@ from typing import Any, AsyncGenerator, Awaitable, Callable, Dict, Generator, Li
 from urllib.parse import urlparse
 from uuid import UUID
 
+NOT_NULLABLE = (
+    "after",
+    "ai_block",
+    "archived",
+    "audio",
+    "bookmark",
+    "breadcrumb",
+    "bulleted_list_item",
+    "callout",
+    "code",
+    "description",
+    "discussion_id",
+    "divider",
+    "embed",
+    "equation",
+    "file",
+    "filter",
+    "heading_1",
+    "heading_2",
+    "heading_3",
+    "image",
+    "is_inline",
+    "link_to_page",
+    "numbered_list_item",
+    "page_size",
+    "pdf",
+    "properties",
+    "query",
+    "quote",
+    "sort",
+    "sorts",
+    "start_cursor",
+    "synced_block",
+    "table",
+    "table_of_contents",
+    "table_row",
+    "template",
+    "title",
+    "to_do",
+    "toggle",
+    "type",
+    "video",
+)
+
 
 def pick(base: Dict[Any, Any], *keys: str) -> Dict[Any, Any]:
     """Return a dict composed of key value pairs for keys passed as args."""
-    return {key: base[key] for key in keys if key in base and base[key] is not None}
+    result = {}
+    for key in keys:
+        value = base.get(key)
+        if value is None and key in NOT_NULLABLE:
+            continue
+        result[key] = value
+    return result
 
 
 def get_url(object_id: str) -> str:

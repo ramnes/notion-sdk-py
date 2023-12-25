@@ -34,7 +34,8 @@ def test_pick():
         "API": 2021,
         "python-sdk": "ramnes",
     }
-    assert pick(my_dict, "optional-variable") == {}
+    assert pick(my_dict, "optional-variable") == {"optional-variable": None}
+    assert pick(my_dict, "start_cursor") == {}
 
 
 def test_get_id():

@@ -13,6 +13,9 @@ def test_pages_create(client, parent_page_id):
 
     assert response["object"] == "page"
 
+    # cleanup
+    client.blocks.delete(block_id=response["id"])
+
 
 @pytest.mark.vcr()
 def test_pages_retrieve(client, page_id):
@@ -26,6 +29,9 @@ def test_pages_update(client, page_id):
 
     response = client.pages.update(page_id=page_id, icon=icon)
     assert response["icon"]
+
+    response = client.pages.update(page_id=page_id, icon=None)
+    assert response["icon"] is None
 
 
 @pytest.mark.vcr()
