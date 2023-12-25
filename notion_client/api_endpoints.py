@@ -219,9 +219,9 @@ class PagesEndpoint(Endpoint):
         """  # noqa: E501
         return self.parent.request(
             path=f"pages/{page_id}",
-            method="GET", 
+            method="GET",
             query=pick(kwargs, "filter_properties"),
-            auth=kwargs.get("auth")
+            auth=kwargs.get("auth"),
         )
 
     def update(self, page_id: str, **kwargs: Any) -> SyncAsync[Any]:
