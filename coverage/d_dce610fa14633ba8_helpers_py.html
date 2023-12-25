@@ -65,7 +65,7 @@
             <a id="nextFileLink" class="nav" href="d_dce610fa14633ba8_logging_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.3.4">coverage.py v7.3.4</a>,
-            created at 2023-12-25 19:36 +0000
+            created at 2023-12-25 20:59 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"/>
@@ -112,7 +112,7 @@
     <p class="pln"><span class="n"><a id="t30" href="#t30">30</a></span><span class="t">    <span class="nam">function</span><span class="op">:</span> <span class="nam">Callable</span><span class="op">[</span><span class="op">...</span><span class="op">,</span> <span class="nam">Any</span><span class="op">]</span><span class="op">,</span> <span class="op">**</span><span class="nam">kwargs</span><span class="op">:</span> <span class="nam">Any</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t31" href="#t31">31</a></span><span class="t"><span class="op">)</span> <span class="op">-></span> <span class="nam">Generator</span><span class="op">[</span><span class="nam">List</span><span class="op">[</span><span class="nam">Any</span><span class="op">]</span><span class="op">,</span> <span class="key">None</span><span class="op">,</span> <span class="key">None</span><span class="op">]</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t32" href="#t32">32</a></span><span class="t">    <span class="str">"""Return an iterator over the results of any paginated Notion API."""</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t33" href="#t33">33</a></span><span class="t">    <span class="nam">next_cursor</span> <span class="op">=</span> <span class="key">None</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t33" href="#t33">33</a></span><span class="t">    <span class="nam">next_cursor</span> <span class="op">=</span> <span class="nam">kwargs</span><span class="op">.</span><span class="nam">pop</span><span class="op">(</span><span class="str">"start_cursor"</span><span class="op">,</span> <span class="key">None</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t34" href="#t34">34</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t35" href="#t35">35</a></span><span class="t">    <span class="key">while</span> <span class="key">True</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t36" href="#t36">36</a></span><span class="t">        <span class="nam">response</span> <span class="op">=</span> <span class="nam">function</span><span class="op">(</span><span class="op">**</span><span class="nam">kwargs</span><span class="op">,</span> <span class="nam">start_cursor</span><span class="op">=</span><span class="nam">next_cursor</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
@@ -135,7 +135,7 @@
     <p class="pln"><span class="n"><a id="t53" href="#t53">53</a></span><span class="t">    <span class="nam">function</span><span class="op">:</span> <span class="nam">Callable</span><span class="op">[</span><span class="op">...</span><span class="op">,</span> <span class="nam">Awaitable</span><span class="op">[</span><span class="nam">Any</span><span class="op">]</span><span class="op">]</span><span class="op">,</span> <span class="op">**</span><span class="nam">kwargs</span><span class="op">:</span> <span class="nam">Any</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t54" href="#t54">54</a></span><span class="t"><span class="op">)</span> <span class="op">-></span> <span class="nam">AsyncGenerator</span><span class="op">[</span><span class="nam">List</span><span class="op">[</span><span class="nam">Any</span><span class="op">]</span><span class="op">,</span> <span class="key">None</span><span class="op">]</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t55" href="#t55">55</a></span><span class="t">    <span class="str">"""Return an async iterator over the results of any paginated Notion API."""</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t56" href="#t56">56</a></span><span class="t">    <span class="nam">next_cursor</span> <span class="op">=</span> <span class="key">None</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t56" href="#t56">56</a></span><span class="t">    <span class="nam">next_cursor</span> <span class="op">=</span> <span class="nam">kwargs</span><span class="op">.</span><span class="nam">pop</span><span class="op">(</span><span class="str">"start_cursor"</span><span class="op">,</span> <span class="key">None</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t57" href="#t57">57</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t58" href="#t58">58</a></span><span class="t">    <span class="key">while</span> <span class="key">True</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t59" href="#t59">59</a></span><span class="t">        <span class="nam">response</span> <span class="op">=</span> <span class="key">await</span> <span class="nam">function</span><span class="op">(</span><span class="op">**</span><span class="nam">kwargs</span><span class="op">,</span> <span class="nam">start_cursor</span><span class="op">=</span><span class="nam">next_cursor</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
@@ -210,7 +210,7 @@
             <a id="nextFileLink" class="nav" href="d_dce610fa14633ba8_logging_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.3.4">coverage.py v7.3.4</a>,
-            created at 2023-12-25 19:36 +0000
+            created at 2023-12-25 20:59 +0000
         </p>
     </div>
 </footer>
