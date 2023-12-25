@@ -25,9 +25,11 @@ It is meant to be a Python version of the reference [JavaScript SDK](https://git
 so usage should be very similar between both. 😊 (If not, please open an issue
 or PR!)
 
-> 📢 **Announcement** (04-11-2023) — Release 2.1.0 is out! It adds new helpers,
-> more tests (100% coverage, yay!) and support for Python 3.12. Also, we're out
-> of beta and now consider the package stable.
+> 📢 **Announcement** (26-12-2023) — Release 2.2.0 is out!
+>
+> * Icons and covers can now be removed from pages.
+> * `filter_properties` has been added to `notion.pages.retrieve`.
+> * You can now pass your own `start_cursor` in the iteration helpers.
 
 <!-- markdownlint-disable -->
 ## Installation
