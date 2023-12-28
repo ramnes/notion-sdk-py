@@ -8,8 +8,12 @@ def pick(base: Dict[Any, Any], *keys: str) -> Dict[Any, Any]:
     """Return a dict composed of key value pairs for keys passed as args."""
     result = {}
     for key in keys:
-        if key in base and key != "start_cursor":
-            result[key] = base.get(key)
+        if key not in base:
+            continue
+        value = base.get(key)
+        if value is None and key == "start_cursor":
+            continue
+        result[key] = value
     return result
 
 
@@ -38,7 +42,8 @@ def iterate_paginated_api(
 
     while True:
         response = function(**kwargs, start_cursor=next_cursor)
-        yield response.get("results")
+        for result in response.get("results"):
+            yield result
 
         next_cursor = response.get("next_cursor")
         if not response.get("has_more") or not next_cursor:
@@ -47,10 +52,7 @@ def iterate_paginated_api(
 
 def collect_paginated_api(function: Callable[..., Any], **kwargs: Any) -> List[Any]:
     """Collect all the results of paginating an API into a list."""
-    results = []
-    for partial_res in iterate_paginated_api(function, **kwargs):
-        results += partial_res
-    return results
+    return [result for result in iterate_paginated_api(function, **kwargs)]
 
 
 async def async_iterate_paginated_api(
@@ -61,7 +63,8 @@ async def async_iterate_paginated_api(
 
     while True:
         response = await function(**kwargs, start_cursor=next_cursor)
-        yield response.get("results")
+        for result in response.get("results"):
+            yield result
 
         next_cursor = response.get("next_cursor")
         if (not response["has_more"]) | (next_cursor is None):
@@ -72,10 +75,7 @@ async def async_collect_paginated_api(
     function: Callable[..., Awaitable[Any]], **kwargs: Any
 ) -> List[Any]:
     """Collect asynchronously all the results of paginating an API into a list."""
-    results = []
-    async for partial_res in async_iterate_paginated_api(function, **kwargs):
-        results += partial_res
-    return results
+    return [result async for result in async_iterate_paginated_api(function, **kwargs)]
 
 
 def is_full_block(response: Dict[Any, Any]) -> bool:

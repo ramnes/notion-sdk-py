@@ -1,3 +1,5 @@
+import asyncio
+import time
 from types import AsyncGeneratorType, GeneratorType
 
 import pytest
@@ -66,17 +68,46 @@ def test_get_url():
 
 
 @pytest.mark.vcr()
-def test_iterate_paginated_api(client):
-    function = client.search
-    generator = iterate_paginated_api(function)
+@pytest.mark.timeout(90)
+def test_iterate_paginated_api(client, parent_page_id):
+    def create_page(page_name):
+        page = client.pages.create(
+            parent={"page_id": parent_page_id},
+            properties={"title": [{"text": {"content": page_name}}]},
+            children=[],
+        )
+        return page["id"]
 
-    assert isinstance(generator, GeneratorType)
-    assert next(generator) is not None
+    page_ids = []
+    for i in range(0, 5):
+        page_id = create_page(f"Test Page (test_iterate_paginated_api iteration {i})")
+        page_ids.append(page_id)
 
-    generator_empty = iterate_paginated_api(
-        function, query="This should have no results"
+    # give time to Notion to index these pages
+    time.sleep(20)
+
+    generator = iterate_paginated_api(
+        client.search,
+        query="test_iterate_paginated_api",
+        page_size=2,
     )
-    assert next(generator_empty) == []
+    assert isinstance(generator, GeneratorType)
+    results = [result for result in generator]
+    assert len(results) == 5
+
+    for page_id in page_ids:
+        client.blocks.delete(block_id=page_id)
+
+    time.sleep(20)
+
+    generator = iterate_paginated_api(
+        client.search,
+        query="test_iterate_paginated_api",
+        page_size=2,
+    )
+    assert isinstance(generator, GeneratorType)
+    results = [result for result in generator]
+    assert len(results) == 0
 
 
 @pytest.mark.vcr()
@@ -92,17 +123,48 @@ def test_collect_paginated_api(client):
 
 
 @pytest.mark.vcr()
-async def test_async_iterate_paginated_api(async_client):
-    function = async_client.search
-    generator = async_iterate_paginated_api(function)
+@pytest.mark.timeout(90)
+async def test_async_iterate_paginated_api(async_client, parent_page_id):
+    async def create_page(page_name):
+        page = await async_client.pages.create(
+            parent={"page_id": parent_page_id},
+            properties={"title": [{"text": {"content": page_name}}]},
+            children=[],
+        )
+        return page["id"]
 
-    assert isinstance(generator, AsyncGeneratorType)
-    assert await generator.__anext__() is not None
+    page_ids = []
+    for i in range(0, 5):
+        page_id = await create_page(
+            f"Test Page (test_async_iterate_paginated_api iteration {i})"
+        )
+        page_ids.append(page_id)
 
-    generator_empty = async_iterate_paginated_api(
-        function, query="This should have no results"
+    # give time to Notion to index these pages
+    await asyncio.sleep(20)
+
+    generator = async_iterate_paginated_api(
+        async_client.search,
+        query="test_async_iterate_paginated_api",
+        page_size=2,
     )
-    assert await generator_empty.__anext__() == []
+    assert isinstance(generator, AsyncGeneratorType)
+    results = [result async for result in generator]
+    assert len(results) == 5
+
+    for page_id in page_ids:
+        await async_client.blocks.delete(block_id=page_id)
+
+    await asyncio.sleep(20)
+
+    generator = async_iterate_paginated_api(
+        async_client.search,
+        query="test_async_iterate_paginated_api",
+        page_size=2,
+    )
+    assert isinstance(generator, AsyncGeneratorType)
+    results = [result async for result in generator]
+    assert len(results) == 0
 
 
 @pytest.mark.vcr()
