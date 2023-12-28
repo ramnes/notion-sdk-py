@@ -25,7 +25,9 @@ It is meant to be a Python version of the reference [JavaScript SDK](https://git
 so usage should be very similar between both. 😊 (If not, please open an issue
 or PR!)
 
-> 📢 **Announcement** (26-12-2023) — Release 2.2.0 is out!
+> 📢 **Announcement** (28-12-2023) — Release 2.2.1 is out and fixes iteration helpers.
+>
+> What's new in 2.2.0 (26-12-2023):
 >
 > * Icons and covers can now be removed from pages.
 > * `filter_properties` has been added to `notion.pages.retrieve`.
