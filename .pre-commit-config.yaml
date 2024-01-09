@@ -32,3 +32,8 @@ repos:
   rev: 2.3.5
   hooks:
   - id: editorconfig-checker
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.1.11
+  hooks:
+    - id: ruff
+    - id: ruff-format
