@@ -84,7 +84,6 @@ def create_database(parent_id: str, db_name: str) -> dict:
 
 
 if __name__ == "__main__":
-
     parent_id, db_name = manual_inputs()
     newdb = create_database(parent_id=parent_id, db_name=db_name)
     print(f"\n\nDatabase {db_name} created at {newdb['url']}\n")
