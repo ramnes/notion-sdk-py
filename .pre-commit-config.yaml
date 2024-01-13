@@ -1,21 +1,9 @@
 repos:
-- repo: https://github.com/psf/black
-  rev: 22.3.0
-  hooks:
-  - id: black
-- repo: https://github.com/pycqa/isort
-  rev: 5.12.0
-  hooks:
-  - id: isort
-    args: ["--profile", "black", "--filter-files"]
-- repo: https://github.com/pycqa/flake8
-  rev: 6.1.0
-  hooks:
-  - id: flake8
 - repo: https://github.com/igorshubovych/markdownlint-cli
   rev: v0.27.1
   hooks:
   - id: markdownlint
+
 - repo: https://github.com/pre-commit/mirrors-mypy
   rev: v0.900
   hooks:
@@ -23,15 +11,12 @@ repos:
     additional_dependencies: ["httpx"]
     args: []
     files: "^notion_client\/.*"
-- repo: https://github.com/pycqa/pydocstyle
-  rev: 6.0.0
-  hooks:
-  - id: pydocstyle
-    files: "^notion_client\/.*"
+
 - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
   rev: 2.3.5
   hooks:
   - id: editorconfig-checker
+
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.1.11
   hooks:
