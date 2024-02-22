@@ -56,7 +56,7 @@ name = input("\n\nEnter the name of the person to search in People: ")
 results = notion.databases.query(
     **{
         "database_id": database_id,
-        "filter": {"property": "Name", "text": {"contains": name}},
+        "filter": {"property": "Name", "rich_text": {"contains": name}},
     }
 ).get("results")
 
