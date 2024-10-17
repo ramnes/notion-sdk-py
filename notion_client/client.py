@@ -1,7 +1,7 @@
 """Synchronous and asynchronous clients for Notion's API."""
 import json
 import logging
-from abc import abstractclassmethod
+from abc import abstractmethod
 from dataclasses import dataclass
 from types import TracebackType
 from typing import Any, Dict, List, Optional, Type, Union
@@ -131,7 +131,7 @@ class BaseClient:
 
         return body
 
-    @abstractclassmethod
+    @abstractmethod
     def request(
         self,
         path: str,
