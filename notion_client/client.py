@@ -4,7 +4,7 @@ import logging
 from abc import abstractmethod
 from dataclasses import dataclass
 from types import TracebackType
-from typing import Any, Dict, List, Optional, Type, Union
+from typing import Any, Dict, List, Generic, Optional, Type, Union
 
 import httpx
 from httpx import Request, Response
@@ -24,7 +24,7 @@ from notion_client.errors import (
     is_api_error_code,
 )
 from notion_client.logging import make_console_logger
-from notion_client.typing import SyncAsync
+from notion_client.typing import ClientType, ResponseType, SyncAsync
 
 
 @dataclass
@@ -52,7 +52,7 @@ class ClientOptions:
     notion_version: str = "2022-06-28"
 
 
-class BaseClient:
+class BaseClient(Generic[ClientType]):
     def __init__(
         self,
         client: Union[httpx.Client, httpx.AsyncClient],
@@ -71,12 +71,12 @@ class BaseClient:
         self._clients: List[Union[httpx.Client, httpx.AsyncClient]] = []
         self.client = client
 
-        self.blocks = BlocksEndpoint(self)
-        self.databases = DatabasesEndpoint(self)
-        self.users = UsersEndpoint(self)
-        self.pages = PagesEndpoint(self)
-        self.search = SearchEndpoint(self)
-        self.comments = CommentsEndpoint(self)
+        self.blocks = BlocksEndpoint[ClientType](self)
+        self.databases = DatabasesEndpoint[ClientType](self)
+        self.users = UsersEndpoint[ClientType](self)
+        self.pages = PagesEndpoint[ClientType](self)
+        self.search = SearchEndpoint[ClientType](self)
+        self.comments = CommentsEndpoint[ClientType](self)
 
     @property
     def client(self) -> Union[httpx.Client, httpx.AsyncClient]:
@@ -136,10 +136,11 @@ class BaseClient:
         self,
         path: str,
         method: str,
+        cast_to: Type[ResponseType],
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
-    ) -> SyncAsync[Any]:
+    ) -> SyncAsync[ResponseType]:
         # noqa
         pass
 
@@ -181,17 +182,18 @@ class Client(BaseClient):
         self,
         path: str,
         method: str,
+        cast_to: Type[ResponseType],
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
-    ) -> Any:
+    ) -> ResponseType:
         """Send an HTTP request."""
         request = self._build_request(method, path, query, body, auth)
         try:
             response = self.client.send(request)
         except httpx.TimeoutException:
             raise RequestTimeoutError()
-        return self._parse_response(response)
+        return cast_to(self._parse_response(response))
 
 
 class AsyncClient(BaseClient):
@@ -231,14 +233,15 @@ class AsyncClient(BaseClient):
         self,
         path: str,
         method: str,
+        cast_to: Type[ResponseType],
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
-    ) -> Any:
+    ) -> ResponseType:
         """Send an HTTP request asynchronously."""
         request = self._build_request(method, path, query, body, auth)
         try:
             response = await self.client.send(request)
         except httpx.TimeoutException:
             raise RequestTimeoutError()
-        return self._parse_response(response)
+        return cast_to(self._parse_response(response))
