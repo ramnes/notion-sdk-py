@@ -1,10 +1,10 @@
 """Utility functions for notion-sdk-py."""
-from typing import Any, AsyncGenerator, Awaitable, Callable, Dict, Generator, List
+from typing import Any, AsyncGenerator, Awaitable, Callable, Dict, Generator, Mapping, List
 from urllib.parse import urlparse
 from uuid import UUID
 
 
-def pick(base: Dict[Any, Any], *keys: str) -> Dict[Any, Any]:
+def pick(base: Mapping[Any, Any], *keys: str) -> Dict[Any, Any]:
     """Return a dict composed of key value pairs for keys passed as args."""
     result = {}
     for key in keys:
