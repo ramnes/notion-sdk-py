@@ -1,0 +1,871 @@
+{
+  "september-9-2024": {
+    "date_text": "September 9, 2024",
+    "content": [
+      "Revised Section 3.1 of the Developer Terms to include additional security and data use restrictions."
+    ]
+  },
+  "changes-for-april-2024": {
+    "date_text": "Changes for April 2024",
+    "content": [
+      "Added: New property in_trash to indicate whether a page/block/database has been deleted or placed in \"Trash\".",
+      "Support: Both archived and in_trash properties are fully supported. Contact developer support for help during this transition or reach out in our Notion Devs Slack group."
+    ]
+  },
+  "changes-for-november-27---december-10-2023": {
+    "date_text": "Changes for November 27 - December 10, 2023",
+    "content": [
+      "We added support for reading and writing names to file blocks in the public API. Read more here.",
+      "We fixed the types in the SDK to support appending table and column blocks as children of toggle blocks.",
+      "We updated the emoji and timezones available in the SDK.",
+      "We added support for australian_dollar in the format field of number database properties."
+    ]
+  },
+  "september-8---september-21-2023": {
+    "date_text": "September 8 - September 21, 2023",
+    "content": [
+      "The Examples page was updated with all our most recent demo code. We\u2019ve organized these sample integrations by level of experience with the Public API to help developers who are newer to the Public API find introductory code more easily.",
+      "A note was added to all API endpoint documentation directing developers to review the Status codes page for a complete list of error codes that can be returned by API requests.",
+      "A clarification was added to the Request limits page and Append block children endpoint documentation to indicate the current limit for appending a list of block children per API request. Up to 100 block children can be appended at a time."
+    ]
+  },
+  "september-6---september-7-2023": {
+    "date_text": "September 6 - September 7, 2023",
+    "content": [
+      "The updates related to the Formulas 2.0 launch are now live in the Public API. These changes will not impact most developers using the Public API; however, please note that the formatting of formula.expression, which is returned when  retrieving a database with a Formula property, has changed. See Notion's Help Center articles for more information on the Formula 2.0 changes: \n\nFormulas 2.0: How to use Notion\u2019s new and improved formulas with your existing setups\nHow to write Notion formulas that extend the capabilities of your databases",
+      "Formulas 2.0: How to use Notion\u2019s new and improved formulas with your existing setups",
+      "How to write Notion formulas that extend the capabilities of your databases",
+      "The example for the Formula database property was updated to align with the new Formula 2.0 launch.",
+      "New sample code was added to the Notion SDK for JavaScript\u2019s examples directory. This new example demonstrates how to use the Public API with basic and intermediate levels of difficulty."
+    ]
+  },
+  "august-23---september-5-2023": {
+    "date_text": "August 23 - September 5, 2023",
+    "content": [
+      "The Working with databases guide was revised to improve its readability and to make additional resources easier to find.",
+      "Notion's Postman collection for the API was updated. Be sure to pull recent changes into your forked version.",
+      "A reminder was added to the Comments endpoints to update integration capabilities for comments prior to using the endpoints. (Read/write comment capabilities are off by default and can be turned on in the integration dashboard.)",
+      "General clean-up and improvements, including code formatting."
+    ]
+  },
+  "august-8---august-22-2023": {
+    "date_text": "August 8 - August 22, 2023",
+    "content": [
+      "The Build your first integration guide was rewritten with new demo code to help developers learn how to use Notion\u2019s API even faster.\n\nA new sample app was added to the Notion SDK for JavaScript /examples directory. This completed sample app is referenced in the new Build your first integration guide.",
+      "A new sample app was added to the Notion SDK for JavaScript /examples directory. This completed sample app is referenced in the new Build your first integration guide.",
+      "The description for the block_id path parameter was updated for the Append block children endpoint to indicate that a block ID or page ID can be used.",
+      "A clarification was added to documentation for retrieving/updating database properties: If a property is based on a relation to another database, the related database also needs to be shared with the integration.",
+      "A clarification was added to documentation for querying databases. When filtering a multi-select property, the contains field will filter for exact matches for the string provided.",
+      "The Working with comments guide was updated with additional examples to distinguish between creating page comments and inline discussion comments.\n\nThe Create a comment endpoint description now links to the Working with comments guide to help developers find additional resources faster.",
+      "The Create a comment endpoint description now links to the Working with comments guide to help developers find additional resources faster.",
+      "If you haven\u2019t already, join our Notion Devs Slack group to learn from other developers building with the public API."
+    ]
+  },
+  "july-25---august-7-2023": {
+    "date_text": "July 25 - August 7, 2023",
+    "content": [
+      "Notion is excited to announce our Technology Partnership Program. \ud83c\udf89 This program is open to companies who have built a public integration (including Link Previews) and are interested in improving and scaling their integration with Notion\u2019s support. If you think your integration and company could be a fit, learn more and apply here.",
+      "We\u2019ve updated our API reference docs to include information on Notion\u2019s wiki databases and verified pages. Updates include:\n\nAn overview on wikis in the guide to working with databases.\nThe verification page property was added to the Page properties documentation.\nThe Create a database and Query a database endpoint documentation was updated to reflect API changes related to wikis. Namely, that querying wiki databases can return both Page and Database objects.",
+      "An overview on wikis in the guide to working with databases.",
+      "The verification page property was added to the Page properties documentation.",
+      "The Create a database and Query a database endpoint documentation was updated to reflect API changes related to wikis. Namely, that querying wiki databases can return both Page and Database objects.",
+      "The Error codes section in the Status code page was updated to include examples of the \"message\" returned with each type of API error, as well as descriptions of the issue each error code represents.",
+      "A number of sample cURL commands in our docs were still using an old Notion Version in their headers. These have all been updated.",
+      "A clarification was added to the Authorization guide that the Notion Version is always required in public API request headers."
+    ]
+  },
+  "july-11---july-24-2023": {
+    "date_text": "July 11 - July 24, 2023",
+    "content": [
+      "A new integration example was added to the Notion SDK for JavaScript repo. This example shows how to get the plain text from any block type currently supported by the public API.",
+      "The new unique ID page property was added to the Page properties documentation. When used, the unique ID (unique_id) auto-increments for every new page created in a database. An optional prefix can be included that will be applied to the ID values."
+    ]
+  },
+  "june-13---july-10-2023": {
+    "date_text": "June 13 - July 10, 2023",
+    "content": [
+      "We updated our Getting started guide to help developers who are new to the public API better understand how the API relates to integrations.",
+      "The Block object docs were updated with a tip on how to embed Vimeo links in a Notion page via the API.",
+      "A new after parameter has been added to the Append block children endpoint. Developers can now specific where to append a new block, instead of appending it to the end of a parent block by default.\ncURLcurl -X PATCH https://api.notion.com/v1/blocks/16d8004e-5f6a-42a6-9811-51c22ddada12/children \\\n  -H 'Authorization: Bearer '\"$NOTION_API_KEY\"'' \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Notion-Version: 2022-06-28\" \\\n  --data '{\n    \"children\": [\n    ...\n    }\n  ], after: \"<block_id_to_append_after>\"\n}'",
+      "The Authorization guide had a clarification added to help developers find the resources they need for Link Preview integrations.",
+      "The new public_url property was added to the docs. When a page or database has been shared publicly, the response body will include a public_url value.\nJSON{\n  \"object\": \"page\",\n  \"id\": \"<id>\",\n  \"created_time\": \"2023-06-02T19:54:00.000Z\",\n  \"last_edited_time\": \"2023-06-02T23:04:00.000Z\",\n  \"created_by\": { ... },\n  \"last_edited_by\": { ... },\n  \"cover\": null,\n  \"icon\": null,\n  \"parent\": { ... },\n  \"archived\": false,\n  \"properties\": { ... },\n  \"url\": \"<url>\",\n  \"public_url\": \"<public-url>\"\n}",
+      "The Retrieve block children endpoint documentation was updated to help developers who are new to the public API better understand the endpoint\u2019s functionality.",
+      "The Retrieve a block endpoint documentation was updated with some additional information related to working with page content.",
+      "The invalid_grant code was added to our Status codes documentation. This code is returned when the authorization grant (e.g. token) provided is invalid. For example, a status code 400 with an invalid_grant code will be returned when the token provided has expired.",
+      "The Rich text documentation was updated with additional information on what rich text is and how the Notion uses it."
+    ]
+  },
+  "may-30---june-12-2023": {
+    "date_text": "May 30 - June 12, 2023",
+    "content": [
+      "Our guides and docs related to Link Preview integrations have been updated to help developers find the information they need faster.\nImprovements have been made to the following guides and API reference docs:\n\nGetting started guide\nIntroduction to Link Previews guide\nBuilding a Link Preview integration guide\nUnfurl attribute object docs",
+      "Getting started guide",
+      "Introduction to Link Previews guide",
+      "Building a Link Preview integration guide",
+      "Unfurl attribute object docs",
+      "We added more information about the plain_text property found in the rich_text object. Learn more about rich text in our Rich text object docs.",
+      "The docs related to filtering and sorting database queries now have more code examples for developers building integrations with the Notion SDK for JavaScript.",
+      "We reorganized the REST API reference navigation bar after removing the \u201cOther\u201d section to make its child pages easier to find."
+    ]
+  },
+  "may-16---may-29-2023": {
+    "date_text": "May 16 - May 29, 2023",
+    "content": [
+      "The Query a database and Filter database entries docs were updated with additional code examples of passing single and multiple filters.",
+      "The Working with comments guide was updated to clarify how to retrieve and add comments using the REST API.",
+      "The references docs for rollup page properties, as well as the Retrieve a page property and Retrieve a page endpoints were updated with additional information related to limitations. In cases where a page property \u2014 like a rollup \u2014 has more than 25 references, the Retrieve a page property endpoint must be used to receive a complete response.",
+      "An outdated Changelog URL now redirects to this Changelog page to help avoid confusion."
+    ]
+  },
+  "may-2---may-15-2023": {
+    "date_text": "May 2 - May 15, 2023",
+    "content": [
+      "We added a database schema size recommendation of 50KB to our docs to help developers manage their database query performance. It is strongly recommended that developers keep their schema size under this number.",
+      "The Update a database page was updated to improve readability. Additional information on how this endpoint differs from related endpoints was also added to help developers better navigate the REST API docs.",
+      "The Query a database page was updated with additional information about the filter_properties query parameter.\nWhen used with the REST API, this query parameter is passed as a string, like so:"
+    ]
+  },
+  "april-18---may-1-2023": {
+    "date_text": "April 18 - May 1, 2023",
+    "content": [
+      "The Build a Link Preview integration guide was updated to reflect a change regarding how link previews are enabled in the integration dashboard.",
+      "The versioning page was updated to clarify that the Notion-Version header is required in Notion REST API requests.",
+      "The parent object page and API reference docs for database POST requests and blocks PATCH requests were updated to better explain how parenting rules work.",
+      "The Integration guide was updated with more links to help developers find resources faster.",
+      "Number database properties now support the Peruvian sol as a currency format. To use it, set\u00a0\"peruvian_sol\"\u00a0as the value for a number\u2019s\u00a0format\u00a0field when creating or updating a database\u00a0property\u00a0or\u00a0schema.",
+      "General docs housekeeping, such reducing the number of callouts in our API reference docs to improve the readability."
+    ]
+  },
+  "march-14---april-17-2023": {
+    "date_text": "March 14 - April 17, 2023",
+    "content": [
+      "Our developer community Slack invite link was updated. Join here to connect with other developers building with the Notion API.",
+      "The Authorization guide was updated to include more information on creating integrations, adding templates to public integrations, and more code examples to get you started, faster.",
+      "We\u2019ve added more code examples to our API reference docs, including Archive a page and Authentication.",
+      "General docs housekeeping, such reducing the number of callouts in our API reference docs to improve the readability."
+    ]
+  },
+  "february-28---march-13-2023": {
+    "date_text": "February 28 - March 13, 2023",
+    "content": [
+      "You can now update rollup database properties via the API. To programmatically update a rollup property, send a PATCH to Update a database that specifies the change in the properties body param."
+    ]
+  },
+  "february-14---27-2023": {
+    "date_text": "February 14 - 27, 2023",
+    "content": [
+      "You can now update rollup database properties via the API. To programmatically update a rollup property, send a PATCH to Update a database that specifies the change in the properties body param."
+    ]
+  },
+  "january-31---february-13-2023": {
+    "date_text": "January 31 - February 13, 2023",
+    "content": [
+      "Stay tuned!"
+    ]
+  },
+  "january-18---30-2023": {
+    "date_text": "January 18 - 30, 2023",
+    "content": [
+      "Stay tuned!"
+    ]
+  },
+  "january-3---17-2023": {
+    "date_text": "January 3 - 17, 2023",
+    "content": [
+      "Shipped detailed docs for Link Previews including an overview, getting started guide, and reference materials."
+    ]
+  },
+  "december-19-2022---january-2-2023": {
+    "date_text": "December 19, 2022 - January 2, 2023",
+    "content": [
+      "The Retrieve a Page endpoint can now return specific page property values when you include the filter_properties path param.",
+      "You can now request specific page property values from a database by passing filter_properties in the request body to the Query a database endpoint."
+    ]
+  },
+  "december-6---18-2022": {
+    "date_text": "December 6 - 18, 2022",
+    "content": [
+      "Updated the\u00a0Append block children\u00a0and\u00a0Retrieve block children\u00a0endpoints to specific supported block types to create a more consistent dev experience. The endpoints now throw an error if the block type in the request does not support children."
+    ]
+  },
+  "november-22---december-5-2022": {
+    "date_text": "November 22 - December 5, 2022",
+    "content": [
+      "We added a this_week filter for database queries. You can now search for database entries where the \"date\", \"created_time\", or \"last_edited_time\" property value falls within the current week. Refer to the date filter condition docs for details."
+    ]
+  },
+  "november-8---21-2022": {
+    "date_text": "November 8 - 21, 2022",
+    "content": [
+      "We added a this_week filter for database queries. You can now search for database entries where the \"date\", \"created_time\", or \"last_edited_time\" property value falls within the current week. Refer to the date filter condition docs for details."
+    ]
+  },
+  "october-25---november-7-2022": {
+    "date_text": "October 25 - November 7, 2022",
+    "content": [
+      "Number database properties now support the Singapore dollar as a currency format. To use it, set \"singapore_dollar\" as the value for a number\u2019s format field when creating or updating a database property or schema."
+    ]
+  },
+  "october-11---24-2022": {
+    "date_text": "October 11 - 24, 2022",
+    "content": [
+      "You can now add a Notion template option to a public integration from the integration\u2019s settings page. For details on what the permissions flow looks like for users who opt in to the template, refer to the Authorization guide."
+    ]
+  },
+  "september-26---october-10-2022": {
+    "date_text": "September 26 - October 10, 2022",
+    "content": [
+      "A relation property value now includes a has_more property when returned by the Retrieve a page endpoint. has_more is true if the relation has more than 25 page references. Otherwise, has_more is false.",
+      "We added a workspace_name property to bot user objects. If the bot \u00a0owner.type is \"workspace\", then\u00a0workspace.name identifies the name of the workspace that owns the bot. If the\u00a0owner.type is\u00a0\"user\", then\u00a0workspace.name is\u00a0null."
+    ]
+  },
+  "september-12---25-2022": {
+    "date_text": "September 12 - 25, 2022",
+    "content": [
+      "Fixed a bug where date mentions ended in a \u2192 character even if they only represented a single date, not a date range.",
+      "Added an Authorization URL field to the public integration form. You can now click to copy the URL that allows users to authorize your integration (read more in the Authorization guide).",
+      "Corrected an error that caused the getProperty endpoint to return only one item if the property_id belonged to a multi-item Files page property."
+    ]
+  },
+  "august-29---september-11-2022": {
+    "date_text": "August 29 - September 11, 2022",
+    "content": [
+      "Fixed a bug where date mentions ended in a \u2192 character even if they only represented a single date, not a date range.",
+      "Added an Authorization URL field to the public integration form. You can now click to copy the URL that allows users to authorize your integration (read more in the Authorization guide).",
+      "Corrected an error that caused the getProperty endpoint to return only one item if the property_id belonged to a multi-item Files page property."
+    ]
+  },
+  "august-31-2022": {
+    "date_text": "August 31, 2022",
+    "content": [
+      "The public API now supports the following functionality for status properties:\n\nReading and updating status properties on pages (read more)\nReading, but not updating, status property configuration on databases (read more)\nFiltering or sorting by status properties when querying databases (read more)",
+      "Reading and updating status properties on pages (read more)",
+      "Reading, but not updating, status property configuration on databases (read more)",
+      "Filtering or sorting by status properties when querying databases (read more)",
+      "header_1, header_2, and header_3 blocks now have an is_toggleable property, to better indicate whether they are heading toggle blocks. (read more)\n\nHeadings can be togglified and un-togglified by setting is_toggleable to true or false, but note that all the children inside the toggle must be removed before it can be untogglified.",
+      "Headings can be togglified and un-togglified by setting is_toggleable to true or false, but note that all the children inside the toggle must be removed before it can be untogglified."
+    ]
+  },
+  "august-15---28-2022": {
+    "date_text": "August 15 - 28, 2022",
+    "content": [
+      "The public API now supports the following functionality for status properties:\n\nReading and updating status properties on pages (read more)\nReading, but not updating, status property configuration on databases (read more)\nFiltering or sorting by status properties when querying databases (read more)",
+      "Reading and updating status properties on pages (read more)",
+      "Reading, but not updating, status property configuration on databases (read more)",
+      "Filtering or sorting by status properties when querying databases (read more)",
+      "header_1, header_2, and header_3 blocks now have an is_toggleable property, to better indicate whether they are heading toggle blocks. (read more)\n\nHeadings can be togglified and un-togglified by setting is_toggleable to true or false, but note that all the children inside the toggle must be removed before it can be untogglified.",
+      "Headings can be togglified and un-togglified by setting is_toggleable to true or false, but note that all the children inside the toggle must be removed before it can be untogglified."
+    ]
+  },
+  "august-1---14-2022": {
+    "date_text": "August 1 - 14, 2022",
+    "content": [
+      "Added support for reading and writing page-level comments in the API."
+    ]
+  },
+  "july-18---july-31-2022": {
+    "date_text": "July 18 - July 31, 2022",
+    "content": [
+      "Added support for reading and writing page-level comments in the API."
+    ]
+  },
+  "july-19-2022": {
+    "date_text": "July 19, 2022",
+    "content": [
+      "Read comments from a page or block.",
+      "Add a comment to a page.",
+      "Add a comment to an existing discussion thread on a block."
+    ]
+  },
+  "july-5---17-2022": {
+    "date_text": "July 5 - 17, 2022",
+    "content": [
+      "Released a new version of the API, 2022-06-28. Previous versions of the API are still supported. Read more about the new version here.",
+      "Created a new template repository for getting started with the Notion API and the official SDK. Find it here."
+    ]
+  },
+  "july-6-2022": {
+    "date_text": "July 6, 2022",
+    "content": [
+      "Page properties must be retrieved using the page properties endpoint.",
+      "Parents are now always direct parents; a parent field has been added to block.",
+      "Database relations have a type of single_property and dual_property."
+    ]
+  },
+  "june-20---july-4-2022": {
+    "date_text": "June 20 - July 4, 2022",
+    "content": [
+      "Added limited readonly support for database status properties. Read more about status properties here.\n\nStatus property values are returned in the Retrieve a page endpoint. See Property values for more information.\nStatus property configuration is not supported yet. See Property object for more information.",
+      "Status property values are returned in the Retrieve a page endpoint. See Property values for more information.",
+      "Status property configuration is not supported yet. See Property object for more information."
+    ]
+  },
+  "june-6---june-19-2022": {
+    "date_text": "June 6 - June 19, 2022",
+    "content": [
+      "Added support for creating inline databases with is_inline. Read more here.",
+      "Added support for reading and writing database descriptions with the description field. Read more here."
+    ]
+  },
+  "may-23---june-5-2022": {
+    "date_text": "May 23 - June 5, 2022",
+    "content": [
+      "The public API once again supports inlinemailto links in rich text."
+    ]
+  },
+  "may-9---22-2022": {
+    "date_text": "May 9 - 22, 2022",
+    "content": [
+      "We now validate URLs used to create inline text links in the public API. For more details on inline links in rich text, see the Rich text object documentation.",
+      "The Search endpoint now returns fuzzier matches, including plurals and different verb tenses. This corresponds to fuzzier matches while searching in the Notion app and should result in more search results overall for any given query.",
+      "Fixed a bug where the integration page at https://www.notion.so/my-integrations wouldn't load."
+    ]
+  },
+  "may-10-2022": {
+    "date_text": "May 10, 2022",
+    "content": [
+      "We've shipped a couple of improvements under the hood to make the search and query database endpoints faster. We're actively looking into 500s and timeouts on the query database endpoint in particular.",
+      "Fixed a bug in the OAuth page picker where Shared pages wouldn't load until the workspace switcher was clicked"
+    ]
+  },
+  "april-25---may-9-2022": {
+    "date_text": "April 25 - May 9, 2022",
+    "content": [
+      "We've shipped a couple of improvements under the hood to make the search and query database endpoints faster. We're actively looking into 500s and timeouts on the query database endpoint in particular.",
+      "Fixed a bug in the OAuth page picker where Shared pages wouldn't load until the workspace switcher was clicked"
+    ]
+  },
+  "april-11---24-2022": {
+    "date_text": "April 11 - 24, 2022",
+    "content": [
+      "Fixed a bug where some rollups and relations appeared empty when they shouldn't have.",
+      "Fixed a bug in the query database endpoint where an invalid pagination cursor was being returned."
+    ]
+  },
+  "march-28---april-10-2022": {
+    "date_text": "March 28 - April 10, 2022",
+    "content": [
+      "You can now filter databases on the created at and last edited at timestamps, even if they don't have a corresponding property of that type. Read more here.",
+      "A Retry-After response header is now being sent with rate limited request responses. The value of this field is set as an integer number of seconds (in decimal). Requests made after waiting this minimum amount of time should not be rate limited. Read more about our rate limits here."
+    ]
+  },
+  "march-14---27-2022": {
+    "date_text": "March 14 - 27, 2022",
+    "content": [
+      "You can now filter databases on the created at and last edited at timestamps, even if they don't have a corresponding property of that type. Read more here.",
+      "A Retry-After response header is now being sent with rate limited request responses. The value of this field is set as an integer number of seconds (in decimal). Requests made after waiting this minimum amount of time should not be rate limited. Read more about our rate limits here."
+    ]
+  },
+  "march-18-2022": {
+    "date_text": "March 18, 2022",
+    "content": [
+      "Block colors are now supported in the API! Read more about it here."
+    ]
+  },
+  "february-28-2022---march-13-2022": {
+    "date_text": "February 28, 2022 - March 13, 2022",
+    "content": [
+      "Block colors are now supported in the API! Read more about it here."
+    ]
+  },
+  "march-8-2022": {
+    "date_text": "March 8, 2022",
+    "content": [
+      "We now have a roadmap, so you have a better sense of what we'll be building next.",
+      "We released a new version of the API, 2022-02-22. This version makes our requests and responses more consistent across properties, blocks, and filters, and officially deprecates the list databases endpoint. Read more here.",
+      "We now show the public API status independently of Notion's status on https://status.notion.so/.",
+      "Added created_by and edited_by to pages, blocks, and databases, and added archived to databases. Read more here.",
+      "Added new ways for admins of Enterprise workspaces to view and control the integrations installed in their workspaces. Read more here.",
+      "Added more information to paginated responses to make it easier to fetch complete responses for complex property types. Read more here."
+    ]
+  },
+  "march-7-2022": {
+    "date_text": "March 7, 2022",
+    "content": [
+      "We now have a roadmap, so you have a better sense of what we'll be building next.",
+      "We released a new version of the API, 2022-02-22. This version makes our requests and responses more consistent across properties, blocks, and filters, and officially deprecates the list databases endpoint. Read more here.",
+      "We now show the public API status independently of Notion's status on https://status.notion.so/.",
+      "Added created_by and edited_by to pages, blocks, and databases, and added archived to databases. Read more here.",
+      "Added new ways for admins of Enterprise workspaces to view and control the integrations installed in their workspaces. Read more here.",
+      "Added more information to paginated responses to make it easier to fetch complete responses for complex property types. Read more here."
+    ]
+  },
+  "february-14-2022---28-2022-block-by-block-edition": {
+    "date_text": "February 14, 2022 - 28, 2022: Block by Block edition!",
+    "content": [
+      "We now have a roadmap, so you have a better sense of what we'll be building next.",
+      "We released a new version of the API, 2022-02-22. This version makes our requests and responses more consistent across properties, blocks, and filters, and officially deprecates the list databases endpoint. Read more here.",
+      "We now show the public API status independently of Notion's status on https://status.notion.so/.",
+      "Added created_by and edited_by to pages, blocks, and databases, and added archived to databases. Read more here.",
+      "Added new ways for admins of Enterprise workspaces to view and control the integrations installed in their workspaces. Read more here.",
+      "Added more information to paginated responses to make it easier to fetch complete responses for complex property types. Read more here."
+    ]
+  },
+  "march-1-2022": {
+    "date_text": "March 1, 2022",
+    "content": [
+      "text in blocks has been renamed to rich_text, to be consistent with the database property type.",
+      "Query database filter changes:\n\nphone and text are no longer supported in query database filters when filtering by phone_number and rich_text properties. Use phone_number and rich_text instead.\nrollup query database filters no longer accept the text keyword. Use rich_text instead.\nformula query database filters no longer accept the text keyword. Use string instead.",
+      "phone and text are no longer supported in query database filters when filtering by phone_number and rich_text properties. Use phone_number and rich_text instead.",
+      "rollup query database filters no longer accept the text keyword. Use rich_text instead.",
+      "formula query database filters no longer accept the text keyword. Use string instead.",
+      "property_item objects now return a type, next_url, and id.",
+      "Deprecated the List Databases API endpoint."
+    ]
+  },
+  "february-25-2022": {
+    "date_text": "February 25, 2022",
+    "content": [
+      "text in blocks has been renamed to rich_text, to be consistent with the database property type.",
+      "Query database filter changes:\n\nphone and text are no longer supported in query database filters when filtering by phone_number and rich_text properties. Use phone_number and rich_text instead.\nrollup query database filters no longer accept the text keyword. Use rich_text instead.\nformula query database filters no longer accept the text keyword. Use string instead.",
+      "phone and text are no longer supported in query database filters when filtering by phone_number and rich_text properties. Use phone_number and rich_text instead.",
+      "rollup query database filters no longer accept the text keyword. Use rich_text instead.",
+      "formula query database filters no longer accept the text keyword. Use string instead.",
+      "property_item objects now return a type, next_url, and id.",
+      "Deprecated the List Databases API endpoint."
+    ]
+  },
+  "january-31-2022---february-13-2022": {
+    "date_text": "January 31, 2022 - February 13, 2022",
+    "content": [
+      "We added an optimization for search when filtering by pages or databases. This should particularly help latency when using search to power a database picker in a large workspace. For more details about search and how to optimize search requests, see the search documentation.",
+      "We fixed an issue where fetching an embed block containing an uploaded file returned the wrong file URL."
+    ]
+  },
+  "january-25-2022": {
+    "date_text": "January 25, 2022",
+    "content": [
+      "The read content capability gives the integration access to read existing content in a Notion workspace.",
+      "The insert content capability gives the integration permission to create new content in a Notion workspace.",
+      "The update content capability gives the integration permission to update existing content in a Notion workspace."
+    ]
+  },
+  "january-5-2022": {
+    "date_text": "January 5, 2022",
+    "content": [
+      "The read content capability gives the integration access to read existing content in a Notion workspace.",
+      "The insert content capability gives the integration permission to create new content in a Notion workspace.",
+      "The update content capability gives the integration permission to update existing content in a Notion workspace."
+    ]
+  },
+  "december-15-2021": {
+    "date_text": "December 15, 2021",
+    "content": [
+      "The read content capability gives the integration access to read existing content in a Notion workspace.",
+      "The insert content capability gives the integration permission to create new content in a Notion workspace.",
+      "The update content capability gives the integration permission to update existing content in a Notion workspace."
+    ]
+  },
+  "december-14-2021": {
+    "date_text": "December 14, 2021",
+    "content": [
+      "Framer",
+      "Twitter (tweets)",
+      "Google Drive documents",
+      "Gist",
+      "Figma",
+      "Invision,",
+      "Loom",
+      "Typeform",
+      "Codepen",
+      "PDFs",
+      "Google Maps",
+      "Whimisical",
+      "Miro",
+      "Abstract",
+      "Excalidraw",
+      "Sketch",
+      "Replit"
+    ]
+  },
+  "november-17-2021": {
+    "date_text": "November 17, 2021",
+    "content": [
+      "Framer",
+      "Twitter (tweets)",
+      "Google Drive documents",
+      "Gist",
+      "Figma",
+      "Invision,",
+      "Loom",
+      "Typeform",
+      "Codepen",
+      "PDFs",
+      "Google Maps",
+      "Whimisical",
+      "Miro",
+      "Abstract",
+      "Excalidraw",
+      "Sketch",
+      "Replit"
+    ]
+  },
+  "november-10-2021": {
+    "date_text": "November 10, 2021",
+    "content": [
+      "Framer",
+      "Twitter (tweets)",
+      "Google Drive documents",
+      "Gist",
+      "Figma",
+      "Invision,",
+      "Loom",
+      "Typeform",
+      "Codepen",
+      "PDFs",
+      "Google Maps",
+      "Whimisical",
+      "Miro",
+      "Abstract",
+      "Excalidraw",
+      "Sketch",
+      "Replit"
+    ]
+  },
+  "october-25-2021": {
+    "date_text": "October 25, 2021",
+    "content": [
+      "Framer",
+      "Twitter (tweets)",
+      "Google Drive documents",
+      "Gist",
+      "Figma",
+      "Invision,",
+      "Loom",
+      "Typeform",
+      "Codepen",
+      "PDFs",
+      "Google Maps",
+      "Whimisical",
+      "Miro",
+      "Abstract",
+      "Excalidraw",
+      "Sketch",
+      "Replit"
+    ]
+  },
+  "october-18-2021": {
+    "date_text": "October 18, 2021",
+    "content": [
+      "Framer",
+      "Twitter (tweets)",
+      "Google Drive documents",
+      "Gist",
+      "Figma",
+      "Invision,",
+      "Loom",
+      "Typeform",
+      "Codepen",
+      "PDFs",
+      "Google Maps",
+      "Whimisical",
+      "Miro",
+      "Abstract",
+      "Excalidraw",
+      "Sketch",
+      "Replit"
+    ]
+  },
+  "october-17-2021": {
+    "date_text": "October 17, 2021",
+    "content": [
+      "Retrieve and update page and database icons and cover images.",
+      "List  and append embed, image, video, file, PDF, and bookmark blocks",
+      "Retrieve URL for file page properties",
+      "Update file page properties"
+    ]
+  },
+  "october-15-2021": {
+    "date_text": "October 15, 2021",
+    "content": [
+      "Retrieve and update page and database icons and cover images.",
+      "List  and append embed, image, video, file, PDF, and bookmark blocks",
+      "Retrieve URL for file page properties",
+      "Update file page properties"
+    ]
+  },
+  "october-14-2021": {
+    "date_text": "October 14, 2021",
+    "content": [
+      "Retrieve and update page and database icons and cover images.",
+      "List  and append embed, image, video, file, PDF, and bookmark blocks",
+      "Retrieve URL for file page properties",
+      "Update file page properties"
+    ]
+  },
+  "october-11-2021": {
+    "date_text": "October 11, 2021",
+    "content": [
+      "Retrieve and update page and database icons and cover images.",
+      "List  and append embed, image, video, file, PDF, and bookmark blocks",
+      "Retrieve URL for file page properties",
+      "Update file page properties"
+    ]
+  },
+  "october-7-2021": {
+    "date_text": "October 7, 2021",
+    "content": [
+      "Retrieve and update page and database icons and cover images.",
+      "List  and append embed, image, video, file, PDF, and bookmark blocks",
+      "Retrieve URL for file page properties",
+      "Update file page properties"
+    ]
+  },
+  "october-5-2021": {
+    "date_text": "October 5, 2021",
+    "content": [
+      "Retrieve and update page and database icons and cover images.",
+      "List  and append embed, image, video, file, PDF, and bookmark blocks",
+      "Retrieve URL for file page properties",
+      "Update file page properties"
+    ]
+  },
+  "october-4-2021": {
+    "date_text": "October 4, 2021",
+    "content": [
+      "Retrieve and update page and database icons and cover images.",
+      "List  and append embed, image, video, file, PDF, and bookmark blocks",
+      "Retrieve URL for file page properties",
+      "Update file page properties"
+    ]
+  },
+  "october-1-2021": {
+    "date_text": "October 1, 2021",
+    "content": [
+      "Retrieve and update page and database icons and cover images.",
+      "List  and append embed, image, video, file, PDF, and bookmark blocks",
+      "Retrieve URL for file page properties",
+      "Update file page properties"
+    ]
+  },
+  "september-21-2021": {
+    "date_text": "September 21, 2021",
+    "content": [
+      "Retrieve and update page and database icons and cover images.",
+      "List  and append embed, image, video, file, PDF, and bookmark blocks",
+      "Retrieve URL for file page properties",
+      "Update file page properties"
+    ]
+  },
+  "september-17-2021": {
+    "date_text": "September 17, 2021",
+    "content": [
+      "Retrieve and update page and database icons and cover images.",
+      "List  and append embed, image, video, file, PDF, and bookmark blocks",
+      "Retrieve URL for file page properties",
+      "Update file page properties"
+    ]
+  },
+  "september-10-2021": {
+    "date_text": "September 10, 2021",
+    "content": [
+      "Retrieve and update page and database icons and cover images.",
+      "List  and append embed, image, video, file, PDF, and bookmark blocks",
+      "Retrieve URL for file page properties",
+      "Update file page properties"
+    ]
+  },
+  "september-9-2021": {
+    "date_text": "September 9, 2021",
+    "content": [
+      "Retrieve and update page and database icons and cover images.",
+      "List  and append embed, image, video, file, PDF, and bookmark blocks",
+      "Retrieve URL for file page properties",
+      "Update file page properties"
+    ]
+  },
+  "august-24-2021": {
+    "date_text": "August 24, 2021",
+    "content": [
+      "Retrieve and update page and database icons and cover images.",
+      "List  and append embed, image, video, file, PDF, and bookmark blocks",
+      "Retrieve URL for file page properties",
+      "Update file page properties"
+    ]
+  },
+  "august-20-2021": {
+    "date_text": "August 20, 2021",
+    "content": [
+      "Unknown Keys Will Fail Validation",
+      "Rollup Property Types",
+      "Append Block Children",
+      "URL Safe Property IDs",
+      "Empty Properties Are Now Returned"
+    ]
+  },
+  "august-20-2021-1": {
+    "date_text": "August 20, 2021",
+    "content": [
+      "renaming the database",
+      "adding and removing properties",
+      "renaming properties",
+      "updating property types."
+    ]
+  },
+  "august-11-2021": {
+    "date_text": "August 11, 2021",
+    "content": [
+      "renaming the database",
+      "adding and removing properties",
+      "renaming properties",
+      "updating property types."
+    ]
+  },
+  "august-11-2021-1": {
+    "date_text": "August 11, 2021",
+    "content": [
+      "renaming the database",
+      "adding and removing properties",
+      "renaming properties",
+      "updating property types."
+    ]
+  },
+  "august-3-2021": {
+    "date_text": "August 3, 2021",
+    "content": [
+      "\"hong_kong_dollar\"",
+      "\"new_zealand_dollar\"",
+      "\"krona\"",
+      "\"norwegian_krone\"",
+      "\"mexican_peso\"",
+      "\"rand\"",
+      "\"new_taiwan_dollar\"",
+      "\"danish_krone\"",
+      "\"zloty\"",
+      "\"baht\"",
+      "\"forint\"",
+      "\"koruna\"",
+      "\"shekel\"",
+      "\"chilean_peso\"",
+      "\"philippine_peso\"",
+      "\"dirham\"",
+      "\"colombian_peso\"",
+      "\"riyal\"",
+      "\"ringgit\"",
+      "\"leu\""
+    ]
+  },
+  "july-26-2021": {
+    "date_text": "July 26, 2021",
+    "content": [
+      "\"hong_kong_dollar\"",
+      "\"new_zealand_dollar\"",
+      "\"krona\"",
+      "\"norwegian_krone\"",
+      "\"mexican_peso\"",
+      "\"rand\"",
+      "\"new_taiwan_dollar\"",
+      "\"danish_krone\"",
+      "\"zloty\"",
+      "\"baht\"",
+      "\"forint\"",
+      "\"koruna\"",
+      "\"shekel\"",
+      "\"chilean_peso\"",
+      "\"philippine_peso\"",
+      "\"dirham\"",
+      "\"colombian_peso\"",
+      "\"riyal\"",
+      "\"ringgit\"",
+      "\"leu\""
+    ]
+  },
+  "july-22-2021": {
+    "date_text": "July 22, 2021",
+    "content": [
+      "Inline database mentions are now included in rich_text mention responses.",
+      "When an integration does not have access to a page or database mention, we will no longer completely omit the mention. The mention will be returned with just the ID but without detailed information (title will appear as \"Untitled\" and annotations will be default).",
+      "When integrations are added to pages inside collections they can now always update page properties, even when the integration does not have access to the parent database. However, integrations will not be able to add new select or multi-select properties through the create or update page endpoints without the ability to edit the database parent."
+    ]
+  },
+  "july-21-2021": {
+    "date_text": "July 21, 2021",
+    "content": [
+      "Inline database mentions are now included in rich_text mention responses.",
+      "When an integration does not have access to a page or database mention, we will no longer completely omit the mention. The mention will be returned with just the ID but without detailed information (title will appear as \"Untitled\" and annotations will be default).",
+      "When integrations are added to pages inside collections they can now always update page properties, even when the integration does not have access to the parent database. However, integrations will not be able to add new select or multi-select properties through the create or update page endpoints without the ability to edit the database parent."
+    ]
+  },
+  "july-15-2021": {
+    "date_text": "July 15, 2021",
+    "content": [
+      "Inline database mentions are now included in rich_text mention responses.",
+      "When an integration does not have access to a page or database mention, we will no longer completely omit the mention. The mention will be returned with just the ID but without detailed information (title will appear as \"Untitled\" and annotations will be default).",
+      "When integrations are added to pages inside collections they can now always update page properties, even when the integration does not have access to the parent database. However, integrations will not be able to add new select or multi-select properties through the create or update page endpoints without the ability to edit the database parent."
+    ]
+  },
+  "july-13-2021": {
+    "date_text": "July 13, 2021",
+    "content": [
+      "Inline database mentions are now included in rich_text mention responses.",
+      "When an integration does not have access to a page or database mention, we will no longer completely omit the mention. The mention will be returned with just the ID but without detailed information (title will appear as \"Untitled\" and annotations will be default).",
+      "When integrations are added to pages inside collections they can now always update page properties, even when the integration does not have access to the parent database. However, integrations will not be able to add new select or multi-select properties through the create or update page endpoints without the ability to edit the database parent."
+    ]
+  },
+  "july-7-2021": {
+    "date_text": "July 7, 2021",
+    "content": [
+      "Inline database mentions are now included in rich_text mention responses.",
+      "When an integration does not have access to a page or database mention, we will no longer completely omit the mention. The mention will be returned with just the ID but without detailed information (title will appear as \"Untitled\" and annotations will be default).",
+      "When integrations are added to pages inside collections they can now always update page properties, even when the integration does not have access to the parent database. However, integrations will not be able to add new select or multi-select properties through the create or update page endpoints without the ability to edit the database parent."
+    ]
+  },
+  "july-1-2021": {
+    "date_text": "July 1, 2021",
+    "content": [
+      "Inline database mentions are now included in rich_text mention responses.",
+      "When an integration does not have access to a page or database mention, we will no longer completely omit the mention. The mention will be returned with just the ID but without detailed information (title will appear as \"Untitled\" and annotations will be default).",
+      "When integrations are added to pages inside collections they can now always update page properties, even when the integration does not have access to the parent database. However, integrations will not be able to add new select or multi-select properties through the create or update page endpoints without the ability to edit the database parent."
+    ]
+  },
+  "june-28-2021": {
+    "date_text": "June 28, 2021",
+    "content": [
+      "Inline database mentions are now included in rich_text mention responses.",
+      "When an integration does not have access to a page or database mention, we will no longer completely omit the mention. The mention will be returned with just the ID but without detailed information (title will appear as \"Untitled\" and annotations will be default).",
+      "When integrations are added to pages inside collections they can now always update page properties, even when the integration does not have access to the parent database. However, integrations will not be able to add new select or multi-select properties through the create or update page endpoints without the ability to edit the database parent."
+    ]
+  },
+  "june-23-2021": {
+    "date_text": "June 23, 2021",
+    "content": [
+      "Inline database mentions are now included in rich_text mention responses.",
+      "When an integration does not have access to a page or database mention, we will no longer completely omit the mention. The mention will be returned with just the ID but without detailed information (title will appear as \"Untitled\" and annotations will be default).",
+      "When integrations are added to pages inside collections they can now always update page properties, even when the integration does not have access to the parent database. However, integrations will not be able to add new select or multi-select properties through the create or update page endpoints without the ability to edit the database parent."
+    ]
+  },
+  "june-15-2021": {
+    "date_text": "June 15, 2021",
+    "content": [
+      "The title property of a page can be set, and a page can be archived or un-archived, even when the page does not belong to a database.",
+      "Retrieving pages that are shared with an integration, but where the page's parent is not shared, no longer erroneously returns a 404."
+    ]
+  },
+  "may-19-2021": {
+    "date_text": "May 19, 2021",
+    "content": []
+  },
+  "may-18-2021": {
+    "date_text": "May 18, 2021",
+    "content": []
+  },
+  "may-13-2021": {
+    "date_text": "May 13, 2021",
+    "content": []
+  },
+  "may-4-2021": {
+    "date_text": "May 4, 2021",
+    "content": []
+  },
+  "may-3-2021": {
+    "date_text": "May 3, 2021",
+    "content": []
+  },
+  "september-11-2024": {
+    "date_text": "September 11, 2024",
+    "content": [
+      "Enhance compatibility with secret scanners and other security tools, making it easier to identify and manage Notion API tokens.",
+      "Provide a clearer distinction between Notion API tokens and other types of secrets, reducing the risk of misconfiguration and improving overall security."
+    ]
+  }
+}
