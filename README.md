@@ -9,7 +9,7 @@
     <a href="LICENSE"><img src="https://img.shields.io/github/license/ramnes/notion-sdk-py" alt="License"></a>
     <a href="https://github.com/ambv/black"><img src="https://img.shields.io/badge/code%20style-black-black" alt="Code style"></a>
     <a href="https://codecov.io/github/ramnes/notion-sdk-py"><img src="https://codecov.io/gh/ramnes/notion-sdk-py/branch/main/graphs/badge.svg" alt="Coverage"></a>
-    <a href="https://snyk.io/advisor/python/notion-client"><img src="https://snyk.io/advisor/python/notion-client/badge.svg" alt="Package health"></a>
+    <a href="https://pypistats.org/packages/notion-client"><img src="https://img.shields.io/pypi/dm/notion-client" alt="Package downloads"></a>
     <br/>
     <a href="https://github.com/ramnes/notion-sdk-py/actions/workflows/quality.yml"><img src="https://github.com/ramnes/notion-sdk-py/actions/workflows/quality.yml/badge.svg" alt="Code Quality"></a>
     <a href="https://github.com/ramnes/notion-sdk-py/actions/workflows/test.yml"><img src="https://github.com/ramnes/notion-sdk-py/actions/workflows/test.yml/badge.svg" alt="Tests"></a>
