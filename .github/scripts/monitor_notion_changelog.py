@@ -6,6 +6,7 @@ from typing import Dict
 from bs4 import BeautifulSoup
 from github import Github
 import httpx
+from markdownify import markdownify as md
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
@@ -22,36 +23,6 @@ async def fetch_changelog() -> str:
         response = await client.get(NOTION_CHANGELOG_URL)
         response.raise_for_status()
         return response.text
-
-
-def html_to_markdown(element) -> str:
-    """
-    Convert an HTML element to Markdown text.
-    """
-    match element.name:
-        case "p":
-            return element.text.strip()
-        case "strong" | "b":
-            return f"**{element.text.strip()}**"
-        case "em" | "i":
-            return f"*{element.text.strip()}*"
-        case "ul":
-            items = [f"- {li.text.strip()}" for li in element.find_all("li")]
-            return "\n".join(items)
-        case "ol":
-            items = [
-                f"{i + 1}. {li.text.strip()}"
-                for i, li in enumerate(element.find_all("li"))
-            ]
-            return "\n".join(items)
-        case "h1" | "h2" | "h3" | "h4" | "h5" | "h6":
-            level = int(element.name[1])
-            return f"{'#' * level} {element.text.strip()}"
-        case "a":
-            href = element.get("href", "#")
-            return f"[{element.text.strip()}]({href})"
-        case _:
-            return element.text.strip()
 
 
 def extract_entries(html) -> Dict[str, Dict[str, str]]:
@@ -76,7 +47,7 @@ def extract_entries(html) -> Dict[str, Dict[str, str]]:
         next_element = heading.find_next_sibling()
         content = []
         while next_element and next_element.name not in {"h2"}:
-            markdown_text = html_to_markdown(next_element)
+            markdown_text = md(repr(next_element))
             if markdown_text:
                 content.append(markdown_text)
             next_element = next_element.find_next_sibling()
