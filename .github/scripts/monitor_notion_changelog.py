@@ -148,29 +148,8 @@ async def main():
 
         # Save updated known entries
         logger.info("Saving updated known entries...")
-        try:
-            known_entries.update(new_entries)
-            save_known_entries(known_entries)
-        except Exception as e:
-            logger.error(f"Error while saving updated known entries: {e}")
-            logger.info("Deleting opened issues to maintain consistency...")
-            try:
-                for entry in new_entries:
-                    title = (
-                        f"New Notion API Changelog Entry: "
-                        f"{new_entries[entry]['title']}"
-                    )
-                    g = Github(os.getenv("GITHUB_TOKEN"))
-                    repo = g.get_repo(GITHUB_REPOSITORY)
-                    for issue in repo.get_issues(labels=["changelog"], state="open"):
-                        if issue.title == title:
-                            issue.edit(state="closed")
-                            break
-            except Exception as e:
-                logger.error(f"Error while deleting opened issues: {e}")
-                raise ConnectionError("Error while deleting opened issues")
-            logger.info("Done!")
-            raise IOError("Error while saving updated known entries")
+        known_entries.update(new_entries)
+        save_known_entries(known_entries)
         logger.info("Done!")
 
 
