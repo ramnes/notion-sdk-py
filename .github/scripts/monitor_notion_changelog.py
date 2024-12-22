@@ -17,7 +17,7 @@ logger.setLevel(logging.INFO)
 # Constants
 NOTION_CHANGELOG_URL = "https://developers.notion.com/page/changelog"
 DATA_FILE = ".github/scripts/known_entries.json"
-GITHUB_REPOSITORY = "MassimoGennaro/notion-sdk-py"
+GITHUB_REPOSITORY = "ramnes/notion-sdk-py"
 
 
 async def fetch_changelog() -> str:
