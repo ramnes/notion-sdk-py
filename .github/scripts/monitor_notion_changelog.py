@@ -79,7 +79,8 @@ def read_known_entries() -> Dict[str, Dict[str, str]]:
 
 def save_known_entries(entries: Dict[str, Dict[str, str]]):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(entries, f)
+        json.dump(entries, f, indent=2)
+        f.write("\n")
 
 
 # Open a GitHub issue
