@@ -16,7 +16,7 @@ def vcr_config():
 
     return {
         "filter_headers": [
-            ("authorization", "secret_..."),
+            ("authorization", "ntn_..."),
             ("user-agent", None),
             ("cookie", None),
         ],
