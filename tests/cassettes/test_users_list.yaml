@@ -17,9 +17,17 @@ interactions:
     method: GET
     uri: https://api.notion.com/v1/users
   response:
-    content: '{"object":"list","results":[{"object":"user","id":"a4f789cc-7bc8-4cf0-82b9-a8ba7d985ecf","name":"Guillaume
-      Gelin","avatar_url":"https://s3-us-west-2.amazonaws.com/public.notion-static.com/01d7053d-e135-4f27-bba0-5de532d39296/ramnes3.jpeg","type":"person","person":{"email":"notion@ramnes.eu"}},{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78","name":"notion-sdk-py","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"notion-sdk-py"}}],"next_cursor":null,"has_more":false,"type":"user","user":{},"request_id":"d1999e67-7eb2-44d6-b1c6-6d6fc0e8b725"}'
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3RS226cMBD9lWqeGRYwN/spb/mIKkJjMzQkBlNfsk1X/HvFZnNR1b54jnxknYvn
+        Ak4/sYmgwM4hQgaeQ7IxgPp++eRSYA8ZzCMooHrqemkMdtr0WJupwL7SEqnX1I2yb9hMkMFKC4OC
+        +zRbS2nhb/ds5xUyoBeK5IfkLSh4jHEL6nQKAlPAM4eIVU4L/XYrnUNu3HLakrazyVcXZ7diiBRn
+        cyWKcuyKRozIpWiwnqoOtaYCm5EbUY1CVrI9eVpWDiJ/2vgHZBBft8PVxj64w8wNqAvwQvPh6E3n
+        7u1dzgn2PftPE13XNZMggb0UE9ZiItRt1WDdFqYtC1mbrv9s4j3A+Izb6189rMnaD3PaHf9wnOoC
+        7ryyP8CNPDv/HDYyDNkXrKJPvH+5Gf4puu8PGaz8Kw4m+eD8u/AjhWFxnkFNZAN/OLmFvQ512Y/l
+        +Jk4xOEaX9ZciFqUWEpDWBemRSl7ja0UY1U3WhjuYP8DAAD//wMAU41JcmICAAA=
     headers: {}
-    http_version: HTTP/1.1
-    status_code: 200
+    status:
+      code: 200
+      message: OK
 version: 1

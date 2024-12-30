@@ -22,12 +22,21 @@ interactions:
     method: POST
     uri: https://api.notion.com/v1/pages
   response:
-    content: '{"object":"page","id":"16cabc1e-edcd-81bc-8793-d436d9d768e6","created_time":"2024-12-30T17:20:00.000Z","last_edited_time":"2024-12-30T17:20:00.000Z","created_by":{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78"},"last_edited_by":{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78"},"cover":null,"icon":null,"parent":{"type":"page_id","page_id":"95ba0116-6776-4c19-9e45-54e77415f03b"},"archived":false,"in_trash":false,"properties":{"title":{"id":"title","type":"title","title":[{"type":"text","text":{"content":"Test
-      Page","link":null},"annotations":{"bold":false,"italic":false,"strikethrough":false,"underline":false,"code":false,"color":"default"},"plain_text":"Test
-      Page","href":null}]}},"url":"https://www.notion.so/Test-Page-16cabc1eedcd81bc8793d436d9d768e6","public_url":null,"request_id":"9814c634-9f0c-49d9-881d-fab29b76d615"}'
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6ySy3LcIBBFfyXVazEDejHwFVl4lVRKxaPlwSagIOSJa2r+PYXkke2sssiK7i7o
+        e7q5V4j6CU0GCZN6RKjAWZDAeqO0YUjQGktOrDZE1FaT8XRSumamZUihApNQZbRDdj8RJNS0bgmr
+        SUMfGJdNIyk9UEq/QQVezXlA6/7t9r2vfgV5fSdcZkx3Qs55NzaqISfRjKRtRkV0X3ek7anpGRWt
+        4Se4fRb+D+1MfMEEMizeV+BMDPd4UglDLv3z64Rv6xychWqPJIhOK8pYT3rOe9IaJojAtiNdi5y3
+        rBtpo4uKSubsXtCCHJWfsQIXhpzUfN4LU4oTpuxwXiVd9liCVWXLqjvInm6Xvu+EGX/nUi+HvIKJ
+        Ia8jwAPO+cvXzQ7ehedtxsIVQswquxhWWR39B8SsvDN7OufknjGfU1we37GXYDF5F3CvmGg/Jj4m
+        kGBxVIvPZRWTV2X4lfET2Dnh+Ab243arYEkeJJxznmZ5PF4ul0OIhfQwx2N5R8o7cjd28XWxdXH1
+        X6aeFu2dGdZ+298m/LXgnLc/rDnljNaUjA0a0hrBieiYJZ3QxhpRo9Ad3P4AAAD//wMA4+Ru6FgD
+        AAA=
     headers: {}
-    http_version: HTTP/1.1
-    status_code: 200
+    status:
+      code: 200
+      message: OK
 - request:
     body: ''
     headers:
@@ -44,11 +53,18 @@ interactions:
       notion-version:
       - '2022-06-28'
     method: DELETE
-    uri: https://api.notion.com/v1/blocks/16cabc1e-edcd-81bc-8793-d436d9d768e6
+    uri: https://api.notion.com/v1/blocks/16cabc1e-edcd-812c-92db-f88ab21c41e0
   response:
-    content: '{"object":"block","id":"16cabc1e-edcd-81bc-8793-d436d9d768e6","parent":{"type":"page_id","page_id":"95ba0116-6776-4c19-9e45-54e77415f03b"},"created_time":"2024-12-30T17:20:00.000Z","last_edited_time":"2024-12-30T17:20:00.000Z","created_by":{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78"},"last_edited_by":{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78"},"has_children":false,"archived":true,"in_trash":true,"type":"child_page","child_page":{"title":"Test
-      Page"},"request_id":"854f71ec-cc14-46f7-bae5-a2461f78fe84"}'
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//rFHLUsMwDPwVRueI8TOO/RUceuKSsWWFBEJbEpeZTqf/zril0As3blpp
+        tdJKJ9ilV6YCAdK8ozdoYMoQQLYUE0lGzpSxk4rQq5xw6LqYlCQjWUAD+7jwtkA4QTnuGQLs4wv3
+        U76UrlEAb1MUUrbYOteiIenRs7FoDTtnpB2ETnBugBaOhXNfpvcqpYQyKBVqsZEuaB2EeBRCPEMD
+        c1xLz3n6m23u2DfddKyL/vg9rLzc7Drn7KCjxs7rAY0eIqZWWTStoFYKb8h1dcX7wf8gN8a1p3Ga
+        88JbCEOcV24gLjROn5whlOXADUzbvixxHW/4+9KXvr5euVr8BfUXU5krZcNreXiqyXMDC38ceC3X
+        l5ByNAgT0ZP1aDgJTN5J9EJQm2LSnWU4fwEAAP//AwAUW1Y3HQIAAA==
     headers: {}
-    http_version: HTTP/1.1
-    status_code: 200
+    status:
+      code: 200
+      message: OK
 version: 1
