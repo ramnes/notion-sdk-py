@@ -17,7 +17,7 @@ interactions:
     method: GET
     uri: https://api.notion.com/v1/users/me
   response:
-    content: '{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78","name":"notion-sdk-py","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"notion-sdk-py"},"request_id":"00d8df84-b442-4129-953b-1479fc164683"}'
+    content: '{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78","name":"notion-sdk-py","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"notion-sdk-py"},"request_id":"a1cd03b6-0d32-4211-ad4a-67afda9d9505"}'
     headers: {}
     http_version: HTTP/1.1
     status_code: 200
