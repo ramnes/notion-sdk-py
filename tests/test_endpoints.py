@@ -90,6 +90,8 @@ def test_blocks_delete(client, block_id):
     new_retrieve = client.blocks.retrieve(block_id=block_id)
     assert new_retrieve["archived"]
 
+    client.blocks.update(block_id=block_id, archived=False)
+
 
 @pytest.mark.vcr()
 def test_users_list(client):
@@ -195,3 +197,5 @@ def test_comments_list(client, page_id, comment_id):
 def test_pages_delete(client, page_id):
     response = client.blocks.delete(block_id=page_id)
     assert response
+
+    client.pages.update(page_id=page_id, archived=False)

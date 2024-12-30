@@ -41,7 +41,7 @@ interactions:
     uri: https://api.notion.com/v1/users
   response:
     content: '{"object":"error","status":401,"code":"unauthorized","message":"API
-      token is invalid.","request_id":"da934f68-ceb1-42a9-b0e4-6f254572d4aa"}'
+      token is invalid.","request_id":"3db4e917-1be1-49a5-bfcd-f5339a6a8d4f"}'
     headers: {}
     http_version: HTTP/1.1
     status_code: 401
