@@ -41,7 +41,7 @@ to create an integration. Copy the token given by Notion.
 - Make it available in your environment:
 
     ```shell
-    export NOTION_TOKEN=secret_abcd12345
+    export NOTION_TOKEN=ntn_abcd12345
     ```
 
 !!! tip
