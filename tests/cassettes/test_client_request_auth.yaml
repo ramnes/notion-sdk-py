@@ -7,7 +7,7 @@ interactions:
       accept-encoding:
       - gzip, deflate
       authorization:
-      - secret_...
+      - ntn_...
       connection:
       - keep-alive
       host:
@@ -18,7 +18,7 @@ interactions:
     uri: https://api.notion.com/v1/users
   response:
     content: '{"object":"error","status":401,"code":"unauthorized","message":"API
-      token is invalid.","request_id":"0f68482b-68b9-44ef-874a-b195b51b61d8"}'
+      token is invalid.","request_id":"9c9434f5-86eb-4167-8cf5-c408de6733d0"}'
     headers: {}
     http_version: HTTP/1.1
     status_code: 401
@@ -30,7 +30,7 @@ interactions:
       accept-encoding:
       - gzip, deflate
       authorization:
-      - secret_...
+      - ntn_...
       connection:
       - keep-alive
       host:
@@ -41,7 +41,7 @@ interactions:
     uri: https://api.notion.com/v1/users
   response:
     content: '{"object":"list","results":[{"object":"user","id":"a4f789cc-7bc8-4cf0-82b9-a8ba7d985ecf","name":"Guillaume
-      Gelin","avatar_url":"https://s3-us-west-2.amazonaws.com/public.notion-static.com/01d7053d-e135-4f27-bba0-5de532d39296/ramnes3.jpeg","type":"person","person":{"email":"notion@ramnes.eu"}},{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78","name":"notion-sdk-py","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"notion-sdk-py"}}],"next_cursor":null,"has_more":false,"type":"user","user":{},"request_id":"8a458820-55bd-4905-9390-ad6a637ca9b4"}'
+      Gelin","avatar_url":"https://s3-us-west-2.amazonaws.com/public.notion-static.com/01d7053d-e135-4f27-bba0-5de532d39296/ramnes3.jpeg","type":"person","person":{"email":"notion@ramnes.eu"}},{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78","name":"notion-sdk-py","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"notion-sdk-py"}}],"next_cursor":null,"has_more":false,"type":"user","user":{},"request_id":"5e567f48-0a8d-4db2-9855-a187eec5d575"}'
     headers: {}
     http_version: HTTP/1.1
     status_code: 200

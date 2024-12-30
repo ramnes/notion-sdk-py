@@ -7,7 +7,7 @@ interactions:
       accept-encoding:
       - gzip, deflate
       authorization:
-      - secret_...
+      - ntn_...
       connection:
       - keep-alive
       content-length:
@@ -21,7 +21,7 @@ interactions:
     method: POST
     uri: https://api.notion.com/v1/search
   response:
-    content: '{"object":"list","results":[{"object":"page","id":"95ba0116-6776-4c19-9e45-54e77415f03b","created_time":"2023-06-29T12:47:00.000Z","last_edited_time":"2024-12-30T17:09:00.000Z","created_by":{"object":"user","id":"a4f789cc-7bc8-4cf0-82b9-a8ba7d985ecf"},"last_edited_by":{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78"},"cover":null,"icon":null,"parent":{"type":"workspace","workspace":true},"archived":false,"in_trash":false,"properties":{"title":{"id":"title","type":"title","title":[]}},"url":"https://www.notion.so/95ba011667764c199e4554e77415f03b","public_url":null}],"next_cursor":null,"has_more":false,"type":"page_or_database","page_or_database":{},"request_id":"9ec081e7-26de-41d4-ba79-37e32e2076e4"}'
+    content: '{"object":"list","results":[{"object":"page","id":"95ba0116-6776-4c19-9e45-54e77415f03b","created_time":"2023-06-29T12:47:00.000Z","last_edited_time":"2024-12-30T17:22:00.000Z","created_by":{"object":"user","id":"a4f789cc-7bc8-4cf0-82b9-a8ba7d985ecf"},"last_edited_by":{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78"},"cover":null,"icon":null,"parent":{"type":"workspace","workspace":true},"archived":false,"in_trash":false,"properties":{"title":{"id":"title","type":"title","title":[]}},"url":"https://www.notion.so/95ba011667764c199e4554e77415f03b","public_url":null}],"next_cursor":null,"has_more":false,"type":"page_or_database","page_or_database":{},"request_id":"a0917d70-3b27-402d-97b7-5eb9303f2eb8"}'
     headers: {}
     http_version: HTTP/1.1
     status_code: 200
@@ -33,7 +33,7 @@ interactions:
       accept-encoding:
       - gzip, deflate
       authorization:
-      - secret_...
+      - ntn_...
       connection:
       - keep-alive
       content-length:
@@ -47,7 +47,7 @@ interactions:
     method: POST
     uri: https://api.notion.com/v1/search
   response:
-    content: '{"object":"list","results":[],"next_cursor":null,"has_more":false,"type":"page_or_database","page_or_database":{},"request_id":"e51b7972-a33d-4b62-99da-9e94ec0fa50b"}'
+    content: '{"object":"list","results":[],"next_cursor":null,"has_more":false,"type":"page_or_database","page_or_database":{},"request_id":"d4e7ed22-fd2a-47f9-a916-91216b7390fd"}'
     headers: {}
     http_version: HTTP/1.1
     status_code: 200
