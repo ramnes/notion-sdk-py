@@ -26,6 +26,7 @@ jobs:
     - run: pytest
       env:
         NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        NOTION_TEST_PAGE_ID: ${{ secrets.NOTION_TEST_PAGE_ID }}
     - uses: codecov/codecov-action@v5
       with:
         env_vars: PYTHON
