@@ -952,13 +952,13 @@ to get set up to use Notion's API.</p>
 </blockquote>
 <p>Import and initialize a client using an <strong>integration token</strong> or an
 OAuth <strong>access token</strong>.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">notion_client</span> <span class="kn">import</span> <span class="n">Client</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">notion_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
 
 <span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;NOTION_TOKEN&quot;</span><span class="p">])</span>
 </code></pre></div>
 <p>In an asyncio environment, use the asynchronous client instead:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">notion_client</span> <span class="kn">import</span> <span class="n">AsyncClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">notion_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncClient</span>
 
 <span class="n">notion</span> <span class="o">=</span> <span class="n">AsyncClient</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;NOTION_TOKEN&quot;</span><span class="p">])</span>
 </code></pre></div>
@@ -966,7 +966,7 @@ OAuth <strong>access token</strong>.</p>
 <blockquote>
 <p>See the complete list of endpoints in the <a href="https://developers.notion.com/reference">API reference</a>.</p>
 </blockquote>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pprint</span><span class="w"> </span><span class="kn">import</span> <span class="n">pprint</span>
 
 <span class="n">list_users_response</span> <span class="o">=</span> <span class="n">notion</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">list_users_response</span><span class="p">)</span>
@@ -1004,8 +1004,8 @@ which parameters go in the path, query, or body.</p>
 <p>The error contains properties from the response, and the most helpful is <code>code</code>.
 You can compare <code>code</code> to the values in the <code>APIErrorCode</code> object to avoid
 misspelling error codes.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">notion_client</span> <span class="kn">import</span> <span class="n">APIErrorCode</span><span class="p">,</span> <span class="n">APIResponseError</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">notion_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIErrorCode</span><span class="p">,</span> <span class="n">APIResponseError</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="n">my_page</span> <span class="o">=</span> <span class="n">notion</span><span class="o">.</span><span class="n">databases</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
@@ -1123,7 +1123,7 @@ These options are all keys in the single constructor parameter.</p>
 </table>
 <!-- markdownlint-enable -->
 
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">notion_client.helpers</span> <span class="kn">import</span> <span class="n">is_full_page</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">notion_client.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_full_page</span>
 
 <span class="n">full_or_partial_pages</span> <span class="o">=</span> <span class="k">await</span> <span class="n">notion</span><span class="o">.</span><span class="n">databases</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
     <span class="n">database_id</span><span class="o">=</span><span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span>
@@ -1139,7 +1139,7 @@ These options are all keys in the single constructor parameter.</p>
 <p><code>iterate_paginated_api(function, **kwargs)</code> and its async version
 <code>async_iterate_paginated_api(function, **kwargs)</code> turn any paginated API into a generator.</p>
 <p>The <code>function</code> parameter must accept a <code>start_cursor</code> argument. Example: <code>notion.blocks.children.list</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">notion_client.helpers</span> <span class="kn">import</span> <span class="n">iterate_paginated_api</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">notion_client.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">iterate_paginated_api</span>
 
 <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">iterate_paginated_api</span><span class="p">(</span>
     <span class="n">notion</span><span class="o">.</span><span class="n">databases</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">database_id</span><span class="o">=</span><span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span>
@@ -1151,7 +1151,7 @@ These options are all keys in the single constructor parameter.</p>
 its async version <code>async_collect_paginated_api(function, **kwargs)</code> have the
 same behavior than the previous functions, but return a list of all results
 from the paginated API.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">notion_client.helpers</span> <span class="kn">import</span> <span class="n">collect_paginated_api</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">notion_client.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">collect_paginated_api</span>
 
 <span class="n">all_results</span> <span class="o">=</span> <span class="n">collect_paginated_api</span><span class="p">(</span>
     <span class="n">notion</span><span class="o">.</span><span class="n">databases</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">database_id</span><span class="o">=</span><span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span>
