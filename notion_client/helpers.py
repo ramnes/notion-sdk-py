@@ -36,7 +36,7 @@ def get_id(url: str) -> str:
 
 def iterate_paginated_api(
     function: Callable[..., Any], **kwargs: Any
-) -> Generator[List[Any], None, None]:
+) -> Generator[Any, None, None]:
     """Return an iterator over the results of any paginated Notion API."""
     next_cursor = kwargs.pop("start_cursor", None)
 
@@ -57,7 +57,7 @@ def collect_paginated_api(function: Callable[..., Any], **kwargs: Any) -> List[A
 
 async def async_iterate_paginated_api(
     function: Callable[..., Awaitable[Any]], **kwargs: Any
-) -> AsyncGenerator[List[Any], None]:
+) -> AsyncGenerator[Any, None]:
     """Return an async iterator over the results of any paginated Notion API."""
     next_cursor = kwargs.pop("start_cursor", None)
 
