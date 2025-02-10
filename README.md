@@ -251,7 +251,7 @@ at the end of the session.
 This package supports the following minimum versions:
 
 * Python >= 3.7
-* httpx >= 0.15.0
+* httpx >= 0.23.0
 
 Earlier versions may still work, but we encourage people building new applications
 to upgrade to the current stable.
