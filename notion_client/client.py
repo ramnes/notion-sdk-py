@@ -16,6 +16,7 @@ from notion_client.api_endpoints import (
     PagesEndpoint,
     SearchEndpoint,
     UsersEndpoint,
+    OAuthEndpoint,
 )
 from notion_client.errors import (
     APIResponseError,
@@ -77,6 +78,7 @@ class BaseClient:
         self.pages = PagesEndpoint(self)
         self.search = SearchEndpoint(self)
         self.comments = CommentsEndpoint(self)
+        self.oauth = OAuthEndpoint(self)
 
     @property
     def client(self) -> Union[httpx.Client, httpx.AsyncClient]:

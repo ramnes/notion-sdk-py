@@ -1,0 +1,29 @@
+interactions:
+- request:
+    body: '{"token": "ntn_..."}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - Basic '"$BASE64_ENCODED_ID_AND_SECRET"'
+      connection:
+      - keep-alive
+      content-length:
+      - '63'
+      content-type:
+      - application/json
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: POST
+    uri: https://api.notion.com/v1/oauth/introspect
+  response:
+    content: '{"active":true,"scope":"read_content insert_content update_content read_user_with_email
+      read_user_without_email","iat":1742002165921,"request_id":"14314d51-f34c-47a0-886b-4d792d9dad0c"}'
+    headers: {}
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1

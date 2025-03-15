@@ -325,3 +325,29 @@ class CommentsEndpoint(Endpoint):
             query=pick(kwargs, "block_id", "start_cursor", "page_size"),
             auth=kwargs.get("auth"),
         )
+
+
+class OAuthEndpoint(Endpoint):
+    def introspect(self, **kwargs: Any) -> SyncAsync[Any]:
+        """Introspect the provided token.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/introspect-token)*
+        """
+        return self.parent.request(
+            path="oauth/introspect",
+            method="POST",
+            body=pick(kwargs, "token"),
+            auth=kwargs.get("auth"),
+        )
+
+    def revoke(self, **kwargs: Any) -> SyncAsync[Any]:
+        """Revoke the provided token.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/revoke-token)*
+        """
+        return self.parent.request(
+            path="oauth/revoke",
+            method="POST",
+            body=pick(kwargs, "token"),
+            auth=kwargs.get("auth"),
+        )

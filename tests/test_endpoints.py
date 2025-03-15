@@ -199,3 +199,15 @@ def test_pages_delete(client, page_id):
     assert response
 
     client.pages.update(page_id=page_id, archived=False)
+
+
+@pytest.mark.vcr()
+def test_revoke_token(client, token):
+    response = client.oauth.revoke(token=token)
+    assert response
+
+
+@pytest.mark.vcr()
+def test_introspect_token(client, token):
+    response = client.oauth.introspect(token=token)
+    assert response
