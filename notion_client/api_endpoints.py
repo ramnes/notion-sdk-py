@@ -329,10 +329,10 @@ class CommentsEndpoint(Endpoint):
 
 class OAuthEndpoint(Endpoint):
     def introspect(self, **kwargs: Any) -> SyncAsync[Any]:
-        """Introspect the provided token.
+        """Get a token's active status, scope, and issued time.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/introspect-token)*
-        """
+        """  # noqa: E501
         return self.parent.request(
             path="oauth/introspect",
             method="POST",
@@ -341,10 +341,10 @@ class OAuthEndpoint(Endpoint):
         )
 
     def revoke(self, **kwargs: Any) -> SyncAsync[Any]:
-        """Revoke the provided token.
+        """Revoke an access token.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/revoke-token)*
-        """
+        """  # noqa: E501
         return self.parent.request(
             path="oauth/revoke",
             method="POST",
