@@ -207,18 +207,22 @@ def test_token(client, redirect_uri, code, client_id, client_secret):
         redirect_uri=redirect_uri,
         code=code,
         grant_type="authorization_code",
-        auth=(client_id, client_secret),
+        auth={"client_id": client_id, "client_secret": client_secret},
     )
     assert response
 
 
 @pytest.mark.vcr()
 def test_introspect_token(client, token, client_id, client_secret):
-    response = client.oauth.introspect(token=token, auth=(client_id, client_secret))
+    response = client.oauth.introspect(
+        token=token, auth={"client_id": client_id, "client_secret": client_secret}
+    )
     assert response
 
 
 @pytest.mark.vcr()
 def test_revoke_token(client, token, client_id, client_secret):
-    response = client.oauth.revoke(token=token, auth=(client_id, client_secret))
+    response = client.oauth.revoke(
+        token=token, auth={"client_id": client_id, "client_secret": client_secret}
+    )
     assert response

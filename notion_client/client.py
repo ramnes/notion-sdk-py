@@ -48,7 +48,7 @@ class ClientOptions:
         notion_version: Notion version to use.
     """
 
-    auth: Optional[Union[str, tuple[str, str]]] = None
+    auth: Optional[str] = None
     timeout_ms: int = 60_000
     base_url: str = "https://api.notion.com"
     log_level: int = logging.WARNING
@@ -98,15 +98,7 @@ class BaseClient:
             }
         )
         if self.options.auth:
-            if isinstance(self.options.auth, tuple):
-                client_id = self.options.auth[0]
-                client_secret = self.options.auth[1]
-                auth_header = base64.b64encode(
-                    f"{client_id}:{client_secret}".encode()
-                ).decode("utf-8")
-                client.headers["Authorization"] = f'Basic "{auth_header}"'
-            else:
-                client.headers["Authorization"] = f"Bearer {self.options.auth}"
+            client.headers["Authorization"] = f"Bearer {self.options.auth}"
         self._clients.append(client)
 
     def _build_request(
@@ -115,13 +107,13 @@ class BaseClient:
         path: str,
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
-        auth: Optional[Union[str, tuple[str, str]]] = None,
+        auth: Optional[Union[str, Dict[str, str]]] = None,
     ) -> Request:
         headers = httpx.Headers()
         if auth:
-            if isinstance(auth, tuple):
-                client_id = auth[0]
-                client_secret = auth[1]
+            if isinstance(auth, Dict):
+                client_id = auth["client_id"]
+                client_secret = auth["client_secret"]
                 auth_header = base64.b64encode(
                     f"{client_id}:{client_secret}".encode()
                 ).decode("utf-8")
