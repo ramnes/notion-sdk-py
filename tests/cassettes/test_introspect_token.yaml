@@ -7,7 +7,7 @@ interactions:
       accept-encoding:
       - gzip, deflate
       authorization:
-      - Basic '"$BASE64_ENCODED_ID_AND_SECRET"'
+      - ntn_... OR base64_encoded(client_id:client_secret)
       connection:
       - keep-alive
       content-length:
@@ -22,7 +22,7 @@ interactions:
     uri: https://api.notion.com/v1/oauth/introspect
   response:
     content: '{"active":true,"scope":"read_content insert_content update_content read_user_with_email
-      read_user_without_email","iat":1742002165921,"request_id":"14314d51-f34c-47a0-886b-4d792d9dad0c"}'
+      read_user_without_email","iat":1742248683519,"request_id":"ddd8cc28-162c-46cb-9268-fb890d4bb044"}'
     headers: {}
     http_version: HTTP/1.1
     status_code: 200

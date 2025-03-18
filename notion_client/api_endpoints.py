@@ -328,6 +328,18 @@ class CommentsEndpoint(Endpoint):
 
 
 class OAuthEndpoint(Endpoint):
+    def token(self, **kwargs: Any) -> SyncAsync[Any]:
+        """Creates an access token that a third-party service can use to authenticate with Notion.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-a-token)*
+        """  # noqa: E501
+        return self.parent.request(
+            path="oauth/token",
+            method="POST",
+            body=pick(kwargs, "grant_type", "code", "redirect_uri"),
+            auth=kwargs.get("auth"),
+        )
+
     def introspect(self, **kwargs: Any) -> SyncAsync[Any]:
         """Get a token's active status, scope, and issued time.
 

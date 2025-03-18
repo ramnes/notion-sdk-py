@@ -53,3 +53,24 @@ async def test_async_client_request_auth(token):
     assert response["results"]
 
     await async_client.aclose()
+
+
+@pytest.mark.vcr()
+def test_client_request_oauth(token, client_id, client_secret):
+    client = Client(auth=("Invalid", "Invalid"))
+
+    with pytest.raises(APIResponseError):
+        client.request("/oauth/introspect", "POST")
+
+    with pytest.raises(APIResponseError):
+        client.request("/oauth/introspect", "POST", auth="STRING_INVALID")
+
+    response = client.request(
+        "/oauth/introspect",
+        "POST",
+        auth=(client_id, client_secret),
+        body={"token": token},
+    )
+    assert response
+
+    client.close()

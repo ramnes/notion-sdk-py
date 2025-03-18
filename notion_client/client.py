@@ -9,6 +9,8 @@ from typing import Any, Dict, List, Optional, Type, Union
 import httpx
 from httpx import Request, Response
 
+import base64
+
 from notion_client.api_endpoints import (
     BlocksEndpoint,
     CommentsEndpoint,
@@ -23,6 +25,7 @@ from notion_client.errors import (
     HTTPResponseError,
     RequestTimeoutError,
     is_api_error_code,
+    APIErrorCode,
 )
 from notion_client.logging import make_console_logger
 from notion_client.typing import SyncAsync
@@ -33,7 +36,7 @@ class ClientOptions:
     """Options to configure the client.
 
     Attributes:
-        auth: Bearer token for authentication. If left undefined, the `auth` parameter
+        auth: Bearer token for authentication, or Base 64 encoded client ID and secret. If left undefined, the `auth` parameter
             should be set on each request.
         timeout_ms: Number of milliseconds to wait before emitting a
             `RequestTimeoutError`.
@@ -45,7 +48,7 @@ class ClientOptions:
         notion_version: Notion version to use.
     """
 
-    auth: Optional[str] = None
+    auth: Optional[Union[str, tuple[str, str]]] = None
     timeout_ms: int = 60_000
     base_url: str = "https://api.notion.com"
     log_level: int = logging.WARNING
@@ -95,7 +98,15 @@ class BaseClient:
             }
         )
         if self.options.auth:
-            client.headers["Authorization"] = f"Bearer {self.options.auth}"
+            if isinstance(self.options.auth, tuple):
+                client_id = self.options.auth[0]
+                client_secret = self.options.auth[1]
+                auth_header = base64.b64encode(
+                    f"{client_id}:{client_secret}".encode()
+                ).decode("utf-8")
+                client.headers["Authorization"] = f'Basic "{auth_header}"'
+            else:
+                client.headers["Authorization"] = f"Bearer {self.options.auth}"
         self._clients.append(client)
 
     def _build_request(
@@ -104,11 +115,19 @@ class BaseClient:
         path: str,
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
-        auth: Optional[str] = None,
+        auth: Optional[Union[str, tuple[str, str]]] = None,
     ) -> Request:
         headers = httpx.Headers()
         if auth:
-            headers["Authorization"] = f"Bearer {auth}"
+            if isinstance(auth, tuple):
+                client_id = auth[0]
+                client_secret = auth[1]
+                auth_header = base64.b64encode(
+                    f"{client_id}:{client_secret}".encode()
+                ).decode("utf-8")
+                headers["Authorization"] = f'Basic "{auth_header}"'
+            else:
+                headers["Authorization"] = f"Bearer {auth}"
         self.logger.info(f"{method} {self.client.base_url}{path}")
         self.logger.debug(f"=> {query} -- {body}")
         return self.client.build_request(
@@ -122,6 +141,11 @@ class BaseClient:
             try:
                 body = error.response.json()
                 code = body.get("code")
+                # Any oauth errors throw this exact error syntax, so handle them as so
+                if "code" not in body and body.get("error") == "invalid_client":
+                    raise APIResponseError(
+                        response, body["error"], APIErrorCode("unauthorized")
+                    )
             except json.JSONDecodeError:
                 code = None
             if code and is_api_error_code(code):

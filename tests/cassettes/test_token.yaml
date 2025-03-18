@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: '{"token": "ntn_..."}'
+    body: '{"grant_type": "authorization_code", "code": "...", "redirect_uri": "http://..."}'
     headers:
       accept:
       - '*/*'
@@ -11,7 +11,7 @@ interactions:
       connection:
       - keep-alive
       content-length:
-      - '63'
+      - '134'
       content-type:
       - application/json
       host:
@@ -19,9 +19,9 @@ interactions:
       notion-version:
       - '2022-06-28'
     method: POST
-    uri: https://api.notion.com/v1/oauth/revoke
+    uri: https://api.notion.com/v1/oauth/token
   response:
-    content: '{"request_id":"a1bffba5-3255-4cc7-9495-5676c9464105"}'
+    content: '{"access_token":"...","token_type":"...","bot_id":"...","workspace_name":"...","workspace_icon":"...","workspace_id":"...","owner":"...","duplicated_template_id":"...","request_id":"..."}'
     headers: {}
     http_version: HTTP/1.1
     status_code: 200

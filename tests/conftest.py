@@ -2,6 +2,7 @@ import os
 import re
 from datetime import datetime
 from typing import Optional
+import json
 
 import pytest
 
@@ -14,13 +15,45 @@ def vcr_config():
         response["headers"] = {}
         return response
 
+    def scrub_requests(request: dict):
+        if request.body:
+            try:
+                body_str = request.body.decode("utf-8")
+                body_json = json.loads(body_str)
+                if "token" in body_json:
+                    body_json["token"] = "ntn_..."
+                if "code" in body_json:
+                    body_json["code"] = "..."
+                if "redirect_uri" in body_json:
+                    body_json["redirect_uri"] = "http://..."
+                request.body = json.dumps(body_json).encode("utf-8")
+
+            except (json.JSONDecodeError, AttributeError):
+                pass
+        return request
+
+    def scrub_response(response: dict):
+        if "content" in response:
+            try:
+                content_json = json.loads(response["content"])
+                if "access_token" in content_json:
+                    response["content"] = json.dumps(
+                        {key: "..." for key in content_json}, separators=(",", ":")
+                    )
+
+            except json.JSONDecodeError:
+                pass
+
+        return response
+
     return {
         "filter_headers": [
-            ("authorization", "ntn_..."),
+            ("authorization", "ntn_... OR base64_encoded(client_id:client_secret)"),
             ("user-agent", None),
             ("cookie", None),
         ],
-        "before_record_response": remove_headers,
+        "before_record_request": scrub_requests,
+        "before_record_response": (remove_headers, scrub_response),
         "match_on": ["method", "remove_page_id_for_matches"],
     }
 
@@ -38,6 +71,26 @@ def vcr(vcr):
 @pytest.fixture(scope="session")
 def token() -> str:
     return os.environ.get("NOTION_TOKEN")
+
+
+@pytest.fixture(scope="session")
+def code() -> str:
+    return os.environ.get("NOTION_CODE")
+
+
+@pytest.fixture(scope="session")
+def redirect_uri() -> str:
+    return os.environ.get("NOTION_REDIRECT_URI")
+
+
+@pytest.fixture(scope="session")
+def client_id() -> str:
+    return os.environ.get("NOTION_CLIENT_ID")
+
+
+@pytest.fixture(scope="session")
+def client_secret() -> str:
+    return os.environ.get("NOTION_CLIENT_SECRET")
 
 
 @pytest.fixture(scope="module", autouse=True)
