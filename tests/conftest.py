@@ -46,9 +46,16 @@ def vcr_config():
 
         return response
 
+    def scrub_auth_header(key: str, value: str, request: Optional[object] | None):
+        if key == "authorization":
+            if value.startswith("Bearer "):
+                return "ntn_..."
+            elif value.startswith("Basic "):
+                return "Basic Base64Encoded($client_id:$client_secret)"
+
     return {
         "filter_headers": [
-            ("authorization", "ntn_... OR base64_encoded(client_id:client_secret)"),
+            ("authorization", scrub_auth_header),
             ("user-agent", None),
             ("cookie", None),
         ],
