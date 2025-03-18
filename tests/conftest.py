@@ -5,6 +5,7 @@ from typing import Optional
 import json
 
 import pytest
+from vcr.request import Request
 
 from notion_client import AsyncClient, Client
 
@@ -46,7 +47,9 @@ def vcr_config():
 
         return response
 
-    def scrub_auth_header(key: str, value: str, request: Optional[object] | None):
+    # The VCR config requires the passing of the request parameter, despite the face that it is not used
+    # (https://vcrpy.readthedocs.io/en/latest/advanced.html#advanced-use-of-filter-headers-filter-query-parameters-and-filter-post-data-parameters)
+    def scrub_auth_header(key: str, value: str, request: Optional[Request]):
         if key == "authorization":
             if value.startswith("Bearer "):
                 return "ntn_..."
