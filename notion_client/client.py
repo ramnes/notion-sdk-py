@@ -28,7 +28,7 @@ from notion_client.errors import (
     APIErrorCode,
 )
 from notion_client.logging import make_console_logger
-from notion_client.typing import SyncAsync
+from notion_client.typing import SyncAsync, OAuthHeader
 
 
 @dataclass
@@ -36,7 +36,7 @@ class ClientOptions:
     """Options to configure the client.
 
     Attributes:
-        auth: Bearer token for authentication, or Base 64 encoded client ID and secret. If left undefined, the `auth` parameter
+        auth: Bearer token for authentication. If left undefined, the `auth` parameter
             should be set on each request.
         timeout_ms: Number of milliseconds to wait before emitting a
             `RequestTimeoutError`.
@@ -107,10 +107,11 @@ class BaseClient:
         path: str,
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
-        auth: Optional[Union[str, Dict[str, str]]] = None,
+        auth: Optional[Union[str, OAuthHeader]] = None,
     ) -> Request:
         headers = httpx.Headers()
         if auth:
+            # At runtime the TypedDict is the same type as a regular Dict
             if isinstance(auth, Dict):
                 client_id = auth["client_id"]
                 client_secret = auth["client_secret"]
