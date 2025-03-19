@@ -28,9 +28,10 @@ def vcr_config():
                 if "redirect_uri" in body_json:
                     body_json["redirect_uri"] = "http://..."
                 request.body = json.dumps(body_json).encode("utf-8")
-
-            except (json.JSONDecodeError, AttributeError):
-                pass
+            except json.JSONDecodeError as e:
+                raise json.JSONDecodeError(
+                    f"Failed to decode request body: {request.body} \n Error occurred at {e.pos} with message: {e.msg}"
+                )
         return request
 
     def scrub_response(response: dict):
@@ -41,10 +42,10 @@ def vcr_config():
                     response["content"] = json.dumps(
                         {key: "..." for key in content_json}, separators=(",", ":")
                     )
-
-            except json.JSONDecodeError:
-                pass
-
+            except json.JSONDecodeError as e:
+                raise json.JSONDecodeError(
+                    f"Failed to decode response body: {response["content"]} \n Error occurred at {e.pos} with message: {e.msg}"
+                )
         return response
 
     # The VCR config requires the passing of the request parameter, despite the face that it is not used
