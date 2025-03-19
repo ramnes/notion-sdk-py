@@ -51,7 +51,7 @@ def vcr_config():
                     )
             except json.JSONDecodeError as e:
                 raise json.JSONDecodeError(
-                    f"Failed to decode response body: {response["content"]} \n Error occurred at {e.pos} with message: {e.msg}",
+                    f"Failed to decode response body: {response['content']} \n Error occurred at {e.pos} with message: {e.msg}",
                     response["content"],
                     e.pos,
                 )
