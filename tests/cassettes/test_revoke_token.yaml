@@ -7,7 +7,7 @@ interactions:
       accept-encoding:
       - gzip, deflate
       authorization:
-      - ntn_... OR base64_encoded(client_id:client_secret)
+      - Basic "Base64Encoded($client_id:$client_secret)"
       connection:
       - keep-alive
       content-length:
@@ -21,7 +21,7 @@ interactions:
     method: POST
     uri: https://api.notion.com/v1/oauth/revoke
   response:
-    content: '{"request_id":"a1bffba5-3255-4cc7-9495-5676c9464105"}'
+    content: '{"request_id":"a6dcf82b-8a97-48af-b851-8b9b3559ed69"}'
     headers: {}
     http_version: HTTP/1.1
     status_code: 200

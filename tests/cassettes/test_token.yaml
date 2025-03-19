@@ -7,7 +7,7 @@ interactions:
       accept-encoding:
       - gzip, deflate
       authorization:
-      - ntn_... OR base64_encoded(client_id:client_secret)
+      - Basic "Base64Encoded($client_id:$client_secret)"
       connection:
       - keep-alive
       content-length:

@@ -6,8 +6,6 @@ interactions:
       - '*/*'
       accept-encoding:
       - gzip, deflate
-      authorization:
-      - ntn_... OR base64_encoded(client_id:client_secret)
       connection:
       - keep-alive
       content-length:
@@ -19,7 +17,7 @@ interactions:
     method: POST
     uri: https://api.notion.com/v1/oauth/introspect
   response:
-    content: '{"error":"invalid_client","request_id":"055b49b7-5a59-4a50-a7aa-f7190a726275"}'
+    content: '{"error":"invalid_client","request_id":"141bd2e5-09c1-4697-b80b-5fd2fd4dc45b"}'
     headers: {}
     http_version: HTTP/1.1
     status_code: 401
@@ -31,7 +29,7 @@ interactions:
       accept-encoding:
       - gzip, deflate
       authorization:
-      - ntn_... OR base64_encoded(client_id:client_secret)
+      - ntn_...
       connection:
       - keep-alive
       content-length:
@@ -43,7 +41,7 @@ interactions:
     method: POST
     uri: https://api.notion.com/v1/oauth/introspect
   response:
-    content: '{"error":"invalid_client","request_id":"4da9d985-7a35-4b31-94a1-4539f9beb711"}'
+    content: '{"error":"invalid_client","request_id":"f678e9ff-7a4e-4ba7-a74e-d9edb7b81047"}'
     headers: {}
     http_version: HTTP/1.1
     status_code: 401
@@ -55,7 +53,7 @@ interactions:
       accept-encoding:
       - gzip, deflate
       authorization:
-      - ntn_... OR base64_encoded(client_id:client_secret)
+      - Basic "Base64Encoded($client_id:$client_secret)"
       connection:
       - keep-alive
       content-length:
@@ -70,7 +68,7 @@ interactions:
     uri: https://api.notion.com/v1/oauth/introspect
   response:
     content: '{"active":true,"scope":"read_content insert_content update_content read_user_with_email
-      read_user_without_email","iat":1742248683519,"request_id":"b5a7fea8-1b92-44ad-ad99-243df7723d75"}'
+      read_user_without_email","iat":1742416470043,"request_id":"498e8bad-8927-4dd9-9b82-bf7e051f86d4"}'
     headers: {}
     http_version: HTTP/1.1
     status_code: 200

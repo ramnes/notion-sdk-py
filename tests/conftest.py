@@ -30,21 +30,30 @@ def vcr_config():
                 request.body = json.dumps(body_json).encode("utf-8")
             except json.JSONDecodeError as e:
                 raise json.JSONDecodeError(
-                    f"Failed to decode request body: {request.body} \n Error occurred at {e.pos} with message: {e.msg}"
+                    f"Failed to decode request body: {request.body} \n Error occurred at {e.pos} with message: {e.msg}",
+                    request.body,
+                    e.pos,
                 )
         return request
 
     def scrub_response(response: dict):
         if "content" in response:
+            content = response["content"]
+            # Like the case tests/cassettes/test_api_async_request_bad_request_error.yaml, where the response is just a string, not JSON
+            # We don't want to raise an error here because the response is not JSON and that is ok
+            if "{" not in content:
+                return response
             try:
-                content_json = json.loads(response["content"])
+                content_json = json.loads(content)
                 if "access_token" in content_json:
                     response["content"] = json.dumps(
                         {key: "..." for key in content_json}, separators=(",", ":")
                     )
             except json.JSONDecodeError as e:
                 raise json.JSONDecodeError(
-                    f"Failed to decode response body: {response["content"]} \n Error occurred at {e.pos} with message: {e.msg}"
+                    f"Failed to decode response body: {response["content"]} \n Error occurred at {e.pos} with message: {e.msg}",
+                    response["content"],
+                    e.pos,
                 )
         return response
 
@@ -55,7 +64,7 @@ def vcr_config():
             if value.startswith("Bearer "):
                 return "ntn_..."
             elif value.startswith("Basic "):
-                return "Basic Base64Encoded($client_id:$client_secret)"
+                return 'Basic "Base64Encoded($client_id:$client_secret)"'
 
     return {
         "filter_headers": [
