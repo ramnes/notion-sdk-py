@@ -115,10 +115,11 @@ class BaseClient:
             if isinstance(auth, Dict):
                 client_id = auth["client_id"]
                 client_secret = auth["client_secret"]
-                auth_header = base64.b64encode(
-                    f"{client_id}:{client_secret}".encode()
+                unencoded_credential = f"{client_id}:{client_secret}"
+                encoded_credential = base64.b64encode(
+                    unencoded_credential.encode()
                 ).decode("utf-8")
-                headers["Authorization"] = f'Basic "{auth_header}"'
+                headers["Authorization"] = f'Basic "{encoded_credential}"'
             else:
                 headers["Authorization"] = f"Bearer {auth}"
         self.logger.info(f"{method} {self.client.base_url}{path}")
