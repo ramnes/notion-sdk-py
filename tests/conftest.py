@@ -16,7 +16,7 @@ def vcr_config():
         response["headers"] = {}
         return response
 
-    def scrub_requests(request: dict):
+    def scrub_requests(request: Request):
         if request.body:
             body_str = request.body.decode("utf-8")
             body_json = json.loads(body_str)
