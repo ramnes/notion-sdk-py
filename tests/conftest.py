@@ -18,22 +18,15 @@ def vcr_config():
 
     def scrub_requests(request: dict):
         if request.body:
-            try:
-                body_str = request.body.decode("utf-8")
-                body_json = json.loads(body_str)
-                if "token" in body_json:
-                    body_json["token"] = "ntn_..."
-                if "code" in body_json:
-                    body_json["code"] = "..."
-                if "redirect_uri" in body_json:
-                    body_json["redirect_uri"] = "http://..."
-                request.body = json.dumps(body_json).encode("utf-8")
-            except json.JSONDecodeError as e:
-                raise json.JSONDecodeError(
-                    f"Failed to decode request body: {request.body} \n Error occurred at {e.pos} with message: {e.msg}",
-                    request.body,
-                    e.pos,
-                )
+            body_str = request.body.decode("utf-8")
+            body_json = json.loads(body_str)
+            if "token" in body_json:
+                body_json["token"] = "ntn_..."
+            if "code" in body_json:
+                body_json["code"] = "..."
+            if "redirect_uri" in body_json:
+                body_json["redirect_uri"] = "http://..."
+            request.body = json.dumps(body_json).encode("utf-8")
         return request
 
     def scrub_response(response: dict):
@@ -43,17 +36,10 @@ def vcr_config():
             # We don't want to raise an error here because the response is not JSON and that is ok
             if "{" not in content:
                 return response
-            try:
-                content_json = json.loads(content)
-                if "access_token" in content_json:
-                    response["content"] = json.dumps(
-                        {key: "..." for key in content_json}, separators=(",", ":")
-                    )
-            except json.JSONDecodeError as e:
-                raise json.JSONDecodeError(
-                    f"Failed to decode response body: {response['content']} \n Error occurred at {e.pos} with message: {e.msg}",
-                    response["content"],
-                    e.pos,
+            content_json = json.loads(content)
+            if "access_token" in content_json:
+                response["content"] = json.dumps(
+                    {key: "..." for key in content_json}, separators=(",", ":")
                 )
         return response
 
