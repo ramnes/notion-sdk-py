@@ -1,6 +1,7 @@
 import pytest
 
-from notion_client import APIResponseError, AsyncClient, Client
+from notion_client import AsyncClient, Client, APIResponseError
+from notion_client.errors import HTTPResponseError
 
 
 def test_client_init(client):
@@ -59,10 +60,10 @@ async def test_async_client_request_auth(token):
 def test_client_request_oauth(token, client_id, client_secret):
     client = Client()
 
-    with pytest.raises(APIResponseError):
+    with pytest.raises(HTTPResponseError):
         client.request("/oauth/introspect", "POST")
 
-    with pytest.raises(APIResponseError):
+    with pytest.raises(HTTPResponseError):
         client.request("/oauth/introspect", "POST", auth="STRING_INVALID")
 
     response = client.request(

@@ -25,7 +25,6 @@ from notion_client.errors import (
     HTTPResponseError,
     RequestTimeoutError,
     is_api_error_code,
-    APIErrorCode,
 )
 from notion_client.logging import make_console_logger
 from notion_client.typing import SyncAsync, OAuthHeader
@@ -135,11 +134,6 @@ class BaseClient:
             try:
                 body = error.response.json()
                 code = body.get("code")
-                # Any oauth errors throw this exact error syntax, so handle them as so
-                if "code" not in body and body.get("error") == "invalid_client":
-                    raise APIResponseError(
-                        response, body["error"], APIErrorCode("unauthorized")
-                    )
             except json.JSONDecodeError:
                 code = None
             if code and is_api_error_code(code):
