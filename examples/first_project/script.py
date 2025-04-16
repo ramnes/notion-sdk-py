@@ -37,6 +37,7 @@ gh_uname = input("Enter your github username: ")
 new_page = {
     "Name": {"title": [{"text": {"content": your_name}}]},
     "Tags": {"type": "multi_select", "multi_select": [{"name": "python"}]},
+    # Properties like this must exist in the database columns
     "GitHub": {
         "type": "rich_text",
         "rich_text": [
@@ -47,7 +48,26 @@ new_page = {
         ],
     },
 }
-notion.pages.create(parent={"database_id": database_id}, properties=new_page)
+
+content = [
+    {
+        "object": "block",
+        "type": "paragraph",
+        "paragraph": {
+            "rich_text": [
+                {
+                    "type": "text",
+                    "text": {
+                        "content": (
+                            "The content of your page goes here. See https://developers.notion.com/reference/post-page"
+                        )
+                    },
+                }
+            ]
+        },
+    }
+]
+notion.pages.create(parent={"database_id": database_id}, properties=new_page, content=content)
 print("You were added to the People database!")
 
 
