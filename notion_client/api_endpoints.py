@@ -325,3 +325,41 @@ class CommentsEndpoint(Endpoint):
             query=pick(kwargs, "block_id", "start_cursor", "page_size"),
             auth=kwargs.get("auth"),
         )
+
+
+class OAuthEndpoint(Endpoint):
+    def token(self, **kwargs: Any) -> SyncAsync[Any]:
+        """Creates an access token that a third-party service can use to authenticate with Notion.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-a-token)*
+        """  # noqa: E501
+        return self.parent.request(
+            path="oauth/token",
+            method="POST",
+            body=pick(kwargs, "grant_type", "code", "redirect_uri"),
+            auth=kwargs.get("auth"),
+        )
+
+    def introspect(self, **kwargs: Any) -> SyncAsync[Any]:
+        """Get a token's active status, scope, and issued time.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/introspect-token)*
+        """  # noqa: E501
+        return self.parent.request(
+            path="oauth/introspect",
+            method="POST",
+            body=pick(kwargs, "token"),
+            auth=kwargs.get("auth"),
+        )
+
+    def revoke(self, **kwargs: Any) -> SyncAsync[Any]:
+        """Revoke an access token.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/revoke-token)*
+        """  # noqa: E501
+        return self.parent.request(
+            path="oauth/revoke",
+            method="POST",
+            body=pick(kwargs, "token"),
+            auth=kwargs.get("auth"),
+        )
