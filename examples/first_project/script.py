@@ -67,7 +67,9 @@ content = [
         },
     }
 ]
-notion.pages.create(parent={"database_id": database_id}, properties=new_page, children=content)
+notion.pages.create(
+    parent={"database_id": database_id}, properties=new_page, children=content
+)
 print("You were added to the People database!")
 
 
