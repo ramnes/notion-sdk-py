@@ -9,6 +9,8 @@ from typing import Any, Dict, List, Optional, Type, Union
 import httpx
 from httpx import Request, Response
 
+import base64
+
 from notion_client.api_endpoints import (
     BlocksEndpoint,
     CommentsEndpoint,
@@ -16,6 +18,7 @@ from notion_client.api_endpoints import (
     PagesEndpoint,
     SearchEndpoint,
     UsersEndpoint,
+    OAuthEndpoint,
 )
 from notion_client.errors import (
     APIResponseError,
@@ -24,7 +27,7 @@ from notion_client.errors import (
     is_api_error_code,
 )
 from notion_client.logging import make_console_logger
-from notion_client.typing import SyncAsync
+from notion_client.typing import SyncAsync, OAuthHeader
 
 
 @dataclass
@@ -77,6 +80,7 @@ class BaseClient:
         self.pages = PagesEndpoint(self)
         self.search = SearchEndpoint(self)
         self.comments = CommentsEndpoint(self)
+        self.oauth = OAuthEndpoint(self)
 
     @property
     def client(self) -> Union[httpx.Client, httpx.AsyncClient]:
@@ -102,11 +106,21 @@ class BaseClient:
         path: str,
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
-        auth: Optional[str] = None,
+        auth: Optional[Union[str, OAuthHeader]] = None,
     ) -> Request:
         headers = httpx.Headers()
         if auth:
-            headers["Authorization"] = f"Bearer {auth}"
+            # At runtime the TypedDict is the same type as a regular Dict
+            if isinstance(auth, Dict):
+                client_id = auth["client_id"]
+                client_secret = auth["client_secret"]
+                unencoded_credential = f"{client_id}:{client_secret}"
+                encoded_credential = base64.b64encode(
+                    unencoded_credential.encode()
+                ).decode("utf-8")
+                headers["Authorization"] = f'Basic "{encoded_credential}"'
+            else:
+                headers["Authorization"] = f"Bearer {auth}"
         self.logger.info(f"{method} {self.client.base_url}{path}")
         self.logger.debug(f"=> {query} -- {body}")
         return self.client.build_request(

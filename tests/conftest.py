@@ -2,8 +2,10 @@ import os
 import re
 from datetime import datetime
 from typing import Optional
+import json
 
 import pytest
+from vcr.request import Request
 
 from notion_client import AsyncClient, Client
 
@@ -14,13 +16,50 @@ def vcr_config():
         response["headers"] = {}
         return response
 
+    def scrub_requests(request: Request):
+        if request.body:
+            body_str = request.body.decode("utf-8")
+            body_json = json.loads(body_str)
+            if "token" in body_json:
+                body_json["token"] = "ntn_..."
+            if "code" in body_json:
+                body_json["code"] = "..."
+            if "redirect_uri" in body_json:
+                body_json["redirect_uri"] = "http://..."
+            request.body = json.dumps(body_json).encode("utf-8")
+        return request
+
+    def scrub_response(response: dict):
+        if "content" in response:
+            content = response["content"]
+            # Like the case tests/cassettes/test_api_async_request_bad_request_error.yaml, where the response is just a string, not JSON
+            # We don't want to raise an error here because the response is not JSON and that is ok
+            if "{" not in content:
+                return response
+            content_json = json.loads(content)
+            if "access_token" in content_json:
+                response["content"] = json.dumps(
+                    {key: "..." for key in content_json}, separators=(",", ":")
+                )
+        return response
+
+    # The VCR config requires the passing of the request parameter, despite the face that it is not used
+    # (https://vcrpy.readthedocs.io/en/latest/advanced.html#advanced-use-of-filter-headers-filter-query-parameters-and-filter-post-data-parameters)
+    def scrub_auth_header(key: str, value: str, request: Optional[Request]):
+        if key == "authorization":
+            if value.startswith("Bearer "):
+                return "ntn_..."
+            elif value.startswith("Basic "):
+                return 'Basic "Base64Encoded($client_id:$client_secret)"'
+
     return {
         "filter_headers": [
-            ("authorization", "ntn_..."),
+            ("authorization", scrub_auth_header),
             ("user-agent", None),
             ("cookie", None),
         ],
-        "before_record_response": remove_headers,
+        "before_record_request": scrub_requests,
+        "before_record_response": (remove_headers, scrub_response),
         "match_on": ["method", "remove_page_id_for_matches"],
     }
 
@@ -38,6 +77,26 @@ def vcr(vcr):
 @pytest.fixture(scope="session")
 def token() -> str:
     return os.environ.get("NOTION_TOKEN")
+
+
+@pytest.fixture(scope="session")
+def code() -> str:
+    return os.environ.get("NOTION_CODE")
+
+
+@pytest.fixture(scope="session")
+def redirect_uri() -> str:
+    return os.environ.get("NOTION_REDIRECT_URI")
+
+
+@pytest.fixture(scope="session")
+def client_id() -> str:
+    return os.environ.get("NOTION_CLIENT_ID")
+
+
+@pytest.fixture(scope="session")
+def client_secret() -> str:
+    return os.environ.get("NOTION_CLIENT_SECRET")
 
 
 @pytest.fixture(scope="module", autouse=True)

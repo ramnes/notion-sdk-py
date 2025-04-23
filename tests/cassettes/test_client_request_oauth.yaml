@@ -1,0 +1,75 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '0'
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: POST
+    uri: https://api.notion.com/v1/oauth/introspect
+  response:
+    content: '{"error":"invalid_client","request_id":"141bd2e5-09c1-4697-b80b-5fd2fd4dc45b"}'
+    headers: {}
+    http_version: HTTP/1.1
+    status_code: 401
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - ntn_...
+      connection:
+      - keep-alive
+      content-length:
+      - '0'
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: POST
+    uri: https://api.notion.com/v1/oauth/introspect
+  response:
+    content: '{"error":"invalid_client","request_id":"f678e9ff-7a4e-4ba7-a74e-d9edb7b81047"}'
+    headers: {}
+    http_version: HTTP/1.1
+    status_code: 401
+- request:
+    body: '{"token": "ntn_..."}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - Basic "Base64Encoded($client_id:$client_secret)"
+      connection:
+      - keep-alive
+      content-length:
+      - '63'
+      content-type:
+      - application/json
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: POST
+    uri: https://api.notion.com/v1/oauth/introspect
+  response:
+    content: '{"active":true,"scope":"read_content insert_content update_content read_user_with_email
+      read_user_without_email","iat":1742416470043,"request_id":"498e8bad-8927-4dd9-9b82-bf7e051f86d4"}'
+    headers: {}
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1
