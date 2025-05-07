@@ -94,6 +94,7 @@ class BlocksEndpoint(Endpoint):
                 "callout",
                 "synced_block",
                 "table",
+                "column",
             ),
             auth=kwargs.get("auth"),
         )
