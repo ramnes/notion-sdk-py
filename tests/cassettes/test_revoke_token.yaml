@@ -1,0 +1,28 @@
+interactions:
+- request:
+    body: '{"token": "ntn_..."}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - Basic "Base64Encoded($client_id:$client_secret)"
+      connection:
+      - keep-alive
+      content-length:
+      - '63'
+      content-type:
+      - application/json
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: POST
+    uri: https://api.notion.com/v1/oauth/revoke
+  response:
+    content: '{"request_id":"a6dcf82b-8a97-48af-b851-8b9b3559ed69"}'
+    headers: {}
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1
