@@ -17,11 +17,13 @@ interactions:
     method: GET
     uri: https://api.notion.com/v1/users
   response:
-    content: '{"object":"error","status":401,"code":"unauthorized","message":"API
-      token is invalid.","request_id":"649c77c8-264f-4e74-a2c9-4a1c6adf08ec"}'
+    body:
+      string: '{"object":"error","status":401,"code":"unauthorized","message":"API
+        token is invalid.","request_id":"a3e6c161-51f0-47e2-a7ec-055e724f444b"}'
     headers: {}
-    http_version: HTTP/1.1
-    status_code: 401
+    status:
+      code: 401
+      message: Unauthorized
 - request:
     body: ''
     headers:
@@ -40,9 +42,17 @@ interactions:
     method: GET
     uri: https://api.notion.com/v1/users
   response:
-    content: '{"object":"list","results":[{"object":"user","id":"a4f789cc-7bc8-4cf0-82b9-a8ba7d985ecf","name":"Guillaume
-      Gelin","avatar_url":"https://s3-us-west-2.amazonaws.com/public.notion-static.com/01d7053d-e135-4f27-bba0-5de532d39296/ramnes3.jpeg","type":"person","person":{"email":"notion@ramnes.eu"}},{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78","name":"notion-sdk-py","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"notion-sdk-py"}}],"next_cursor":null,"has_more":false,"type":"user","user":{},"request_id":"a1e1dc6c-d7e2-4e5f-856b-cd1414e7c987"}'
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//dFLbbpwwEP2Vap4ZlsWAsZ/ylo+oIjSYoSExmPqSbYr494rN5qKqffEc
+        +cg6F88Grn9iE0GDnUKEDDyHZGMA/X375FJgDxlMA2igapStMgZlb1qszFhgW/YKqe1JDqqt2YyQ
+        wUIzg4b7NFlLaeZv92ynBTKgF4rku+QtaHiMcQ36dAoCU8ALh4hlTjP9dgtdQm7cfFpTbyeTLy5O
+        bsEQKU7mShTnQRa1GJDPosZqLCX2PRVYD1yLchCqVM3J07xwEPnTyj8gg/i6Hq5W9sEdZm5Ab8Az
+        TYejN527t3c5J9j37D9NSCnrUZDAVokRKzES9k1ZY9UUpjkXqjKy/WziPcDwjOvrXz0sydoPc707
+        /uE49QbusrA/wI28OP8cVjIM2Reso0+8f7np/im67w8ZLPwrdib54Py78COFbnaeQY9kA384uYW9
+        Dr3tx3L8TBxid43ftmJUJVXYFHWBVd8wqpoUUikrrko51M0Z9j8AAAD//wMA4+wsRmICAAA=
     headers: {}
-    http_version: HTTP/1.1
-    status_code: 200
+    status:
+      code: 200
+      message: OK
 version: 1
