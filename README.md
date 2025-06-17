@@ -25,10 +25,6 @@ It is meant to be a Python version of the reference [JavaScript SDK](https://git
 so usage should be very similar between both. 😊 (If not, please open an issue
 or PR!)
 
-> 📢 **Announcement** (18-12-2024) — Release 2.3.0 is out! It adds
-> `in_trash` support for pages, Python 3.13 official support, fixes
-> and security updates.
-
 <!-- markdownlint-disable -->
 ## Installation
 <!-- markdownlint-enable -->
