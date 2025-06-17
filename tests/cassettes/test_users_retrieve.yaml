@@ -17,10 +17,16 @@ interactions:
     method: GET
     uri: https://api.notion.com/v1/users/me
   response:
-    content: '{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78","name":"notion-sdk-py","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"notion-sdk-py"},"request_id":"9f4d5a8f-4782-4738-87b2-db2fcc109ec9"}'
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//bI/BisMwEEP/RWcPpLWTcfwzwXHG0G3Wzjp2Syn596VlDz3sRTwkgdAT
+        ef6SUOHQdilQuCxwYOY+aq/JjjqS0dHTPJx7MkMXhlM3msAWCsl/CxxSrpecaF+utD2g4G+++jK1
+        ssKltq4K9bG9inOuUG91T+R7kvKCv/Cey3XffBCoD3a1NDk+nOnf0UOhyE+TvU7vA6dg+55Zkx6j
+        JRNZk5/PC7GYzg/GRssWxy8AAAD//wMAbn9rQP4AAAA=
     headers: {}
-    http_version: HTTP/1.1
-    status_code: 200
+    status:
+      code: 200
+      message: OK
 - request:
     body: ''
     headers:
@@ -39,8 +45,14 @@ interactions:
     method: GET
     uri: https://api.notion.com/v1/users/7775f3a3-893f-43fa-b625-460c61094c78
   response:
-    content: '{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78","name":"notion-sdk-py","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"notion-sdk-py"},"request_id":"b88ac143-7766-42fa-982e-eef6fe527ce8"}'
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA2yPwYrDIBiE32XO/hCrMdGXCcb8QreppkZbSsm7Ly176GEvw8fMwDAv5PmHQ4VD
+        27lA4LzAYRiGPiqvaLQqklbR02xOPWnTBSM7q8MwQiD5K8Mh5XrOifblQtsTAv7uqy9TKytcausq
+        UJ/buzjnCvFR90J+JC5v+AsfuVz2zQeG+GJXS+Pjy5n+HT0ECt8a73X6HOC4BOm9JWOlIR2VpZHH
+        hYKWvVTyFLnrcPwCAAD//wMADirKkP4AAAA=
     headers: {}
-    http_version: HTTP/1.1
-    status_code: 200
+    status:
+      code: 200
+      message: OK
 version: 1
