@@ -16,6 +16,7 @@ from notion_client.api_endpoints import (
     PagesEndpoint,
     SearchEndpoint,
     UsersEndpoint,
+    FileUploadsEndpoint
 )
 from notion_client.errors import (
     APIResponseError,
@@ -77,6 +78,7 @@ class BaseClient:
         self.pages = PagesEndpoint(self)
         self.search = SearchEndpoint(self)
         self.comments = CommentsEndpoint(self)
+        self.file_uploads = FileUploadsEndpoint(self)
 
     @property
     def client(self) -> Union[httpx.Client, httpx.AsyncClient]:
@@ -102,16 +104,27 @@ class BaseClient:
         path: str,
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
+        files: Optional[Dict[Any, Any]] = None,
+        data: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
     ) -> Request:
         headers = httpx.Headers()
         if auth:
             headers["Authorization"] = f"Bearer {auth}"
         self.logger.info(f"{method} {self.client.base_url}{path}")
-        self.logger.debug(f"=> {query} -- {body}")
-        return self.client.build_request(
-            method, path, params=query, json=body, headers=headers
-        )
+        self.logger.debug(f"=> {query} -- {body} -- {files} -- {data}")
+
+        # Construct different requests based on parameter types
+        if files is not None:
+            # File upload request: use files and data parameters
+            return self.client.build_request(
+                method, path, params=query, files=files, data=data, headers=headers
+            )
+        else:
+            # Standard JSON request
+            return self.client.build_request(
+                method, path, params=query, json=body, headers=headers
+            )
 
     def _parse_response(self, response: Response) -> Any:
         try:
@@ -138,6 +151,8 @@ class BaseClient:
         method: str,
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
+        files: Optional[Dict[Any, Any]] = None,
+        data: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
     ) -> SyncAsync[Any]:
         # noqa
@@ -183,10 +198,12 @@ class Client(BaseClient):
         method: str,
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
+        files: Optional[Dict[Any, Any]] = None,
+        data: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
     ) -> Any:
         """Send an HTTP request."""
-        request = self._build_request(method, path, query, body, auth)
+        request = self._build_request(method, path, query, body, files, data, auth)
         try:
             response = self.client.send(request)
         except httpx.TimeoutException:
@@ -233,10 +250,12 @@ class AsyncClient(BaseClient):
         method: str,
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
+        files: Optional[Dict[Any, Any]] = None,
+        data: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
     ) -> Any:
         """Send an HTTP request asynchronously."""
-        request = self._build_request(method, path, query, body, auth)
+        request = self._build_request(method, path, query, body, files, data, auth)
         try:
             response = await self.client.send(request)
         except httpx.TimeoutException:

@@ -1,8 +1,9 @@
 """Utility functions for notion-sdk-py."""
+import os
+import asyncio
 from typing import Any, AsyncGenerator, Awaitable, Callable, Dict, Generator, List
 from urllib.parse import urlparse
 from uuid import UUID
-
 
 def pick(base: Dict[Any, Any], *keys: str) -> Dict[Any, Any]:
     """Return a dict composed of key value pairs for keys passed as args."""
@@ -123,3 +124,65 @@ def is_equation_rich_text_item_response(rich_text: Dict[Any, Any]) -> bool:
 def is_mention_rich_text_item_response(rich_text: Dict[Any, Any]) -> bool:
     """Return `True` if `rich_text` is a mention."""
     return rich_text.get("type") == "mention"
+
+def split_file(file_path: str, chunk_size: int = 1024 * 1024 * 10) -> List[str]:
+    """
+    Split a file into chunks of a specified size.
+
+    Args:
+        file_path: Path to the input file (can be relative to the project).
+        chunk_size: Size of each chunk in bytes.
+
+    Returns:
+        A list of file paths for the resulting chunks.
+    """
+
+    output_filenames = []
+
+    # Get the file name
+    file_name = os.path.basename(file_path)
+    file_name_without_extention, _ = os.path.splitext(
+        file_name
+    )  # Remove file extension
+    # create a directory for the split files
+    file_split_name = file_name_without_extention + "_split"
+    file_dir = os.path.join(os.path.dirname(file_path), file_split_name)
+    os.makedirs(file_dir, exist_ok=True)  # create directory if it does not exist
+
+    with open(file_path, "rb") as f:
+        part_num = 1
+        while True:
+            chunk = f.read(chunk_size)
+            if not chunk:
+                break
+
+            # Generate chunk file names
+            part_file_name = f"{file_name}.sf-part{part_num}"
+            part_file_path = os.path.join(file_dir, part_file_name)
+
+            # Write chunk files
+            with open(part_file_path, "wb") as part_file:
+                part_file.write(chunk)
+
+            output_filenames.append(part_file_path)
+            part_num += 1
+
+    return output_filenames
+
+
+async def split_file_async(
+    file_path: str, chunk_size: int = 1024 * 1024 * 10
+) -> List[str]:
+    """
+    Asynchronous version of the file splitting function.
+
+    Args:
+        file_path: Path to the input file (can be relative to the project).
+        chunk_size: Size of each chunk in bytes.
+
+    Returns:
+        A list of file paths for the resulting chunks.
+    """
+    return await asyncio.get_event_loop().run_in_executor(
+        None, split_file, file_path, chunk_size
+    )
