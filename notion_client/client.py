@@ -117,7 +117,6 @@ class BaseClient:
         if form_data is not None:
             files = {}
             data = {}
-
             for key, value in form_data.items():
                 if key == "file":
                     files[key] = value
@@ -127,9 +126,16 @@ class BaseClient:
                 method,
                 path,
                 params=query,
-                json=body,
                 files=files,
                 data=data,
+                headers=headers,
+            )
+        elif body is not None:
+            return self.client.build_request(
+                method,
+                path,
+                params=query,
+                json=body,
                 headers=headers,
             )
         else:
