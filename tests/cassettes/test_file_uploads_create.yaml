@@ -1,0 +1,36 @@
+interactions:
+- request:
+    body: '{"mode":"single_part","filename":"test_file.txt","content_type":"text/plain"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - ntn_...
+      connection:
+      - keep-alive
+      content-length:
+      - '77'
+      content-type:
+      - application/json
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: POST
+    uri: https://api.notion.com/v1/file_uploads
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//jJFNjoMwDIXv4jWBECCQnGNWs0H5MW1GaWCIqVpVvfuIdhYdaRZdWn5+
+        z/58g9l+oSPQMIWI47bE2XgoIHjQIGqn1NQLZo03bKiVZwqbiXFuRddJ10ipoAC3oiH0I4UT7lNc
+        dIxLJtoPPuim1pyXnPPPF6W9gr49MzwK4ftOMGXtwNrOd8wOU82kE67th07YxkIBdF12bzsT3AuI
+        JtOIPryXipclrNf/hOqv8Hn9uK0RNByJlqyryiyhTDOFOZVuPlXnunohlat3GFUZ0w7VrO4YzuhB
+        TyZmLCCToS2DhgWTD+kAxeMNyTw2Jcw07nVJF9rpzYkw0fjLgvBC1RJNSC+9iOlAR9Bpi7GAFb+3
+        3eRBum0a6cRgmVQCWesnyWzdSmab1qD0vTWKw/0HAAD//wMAH4hcuRICAAA=
+    headers: {}
+    status:
+      code: 200
+      message: OK
+version: 1

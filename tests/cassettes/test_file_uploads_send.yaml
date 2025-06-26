@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: '{"mode":"single_part","filename":"send_test.txt","content_type":"text/plain"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - ntn_...
+      connection:
+      - keep-alive
+      content-length:
+      - '77'
+      content-type:
+      - application/json
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: POST
+    uri: https://api.notion.com/v1/file_uploads
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//jJHNboMwEITfZc8YjAEDfo6eekH+WSeuHEPxEiWK8u4VSQ+p1EPOO7Oz
+        +80NZvOFlkCBDxGnbYmzdlBAcKBA1HYcfS+Y0U6zoZYtG53vGedGGDTSSeygALuiJnQThRPuLi46
+        xiUT7UfdqaZXnJec888XpbmCuj0zHArh+k6w0ZiBtZ3rmBl8zaQVtu2HTpjGQAF0XfbdZia4FxB1
+        pgldeC8VL0tYr/8J5V/h8/tpWyMoOBItWVWVXkKZZgpzKu18qs519UIqV+8wqjKmHape7TGc0YHy
+        OmYsIJOmLYOCBZML6QDFo4akH5furokwU0kX2unNiTDR9MuC8ELVEnVIL7OI6UBHUGmLsYAVvzfM
+        ND1I90Y2mgvPLBrL2rFp2SgNMu3QeyO5HL2H+w8AAAD//wMA+x3TARICAAA=
+    headers: {}
+    status:
+      code: 200
+      message: OK
+- request:
+    body: "--2c7f6ac2cf52096e6e545ba4e0f36c73\r\nContent-Disposition: form-data; name=\"file\";
+      filename=\"send_test.txt\"\r\nContent-Type: text/plain\r\n\r\nThis is test file
+      content\r\n--2c7f6ac2cf52096e6e545ba4e0f36c73--\r\n"
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - ntn_...
+      connection:
+      - keep-alive
+      content-length:
+      - '200'
+      content-type:
+      - multipart/form-data; boundary=2c7f6ac2cf52096e6e545ba4e0f36c73
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: POST
+    uri: https://api.notion.com/v1/file_uploads/21c99f72-bada-8164-9df7-00b2beb6d6e5/send
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4yQwU7DMAyG38XnejhpkrZ5Dk5cqqRxIai0pfHQpmnvjrpxGBIHzv78//Z3gSW+
+        8yDgYcwT98d1WkKCCnICD1oNXTc2GmNIAVvlDHZpbJAo6sjRJccWKhg2DsKpl/zB+xZpi+RQm2dl
+        fd14ogMRvTyQ8Qz+cu9IrHVqrMYuxhaNTRZjOyp0gx5M01od6wgVyHnds+MicK1gCkV6Tvl/rXxa
+        83b+C3S/wbANb/mLE/gxTIUrKBLkWMDD3QvvZnZPc7hFFZ5TL1zkICfZ31tm4Vn6n2OFT/K0TiHP
+        D7OJ51d5A69tBRt/HrlIfxOheGw7YwijbRMaFxQGpwh1UkQ1cVMrC9dvAAAA//8DANmVnZmxAQAA
+    headers: {}
+    status:
+      code: 200
+      message: OK
+version: 1

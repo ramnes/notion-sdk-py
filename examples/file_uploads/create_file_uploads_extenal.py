@@ -1,37 +1,16 @@
 import os
-import sys
-
-from notion_client import Client
-from notion_client.helpers import get_id
-
-# from notion_client.helpers import guess_content_type
-from notion_mime_detector import NotionMIMETypeDetector
-
-# import httpx
-
 import time
 
-from dotenv import load_dotenv
-
-
-if os.getenv("ENV") != "production":
-    load_dotenv()
-
-NOTION_TOKEN = os.getenv("NOTION_TOKEN", "")
-
-while NOTION_TOKEN == "":
-    print("NOTION_TOKEN not found.")
-    NOTION_TOKEN = input("Enter your integration token: ").strip()
+from notion_client import Client
 
 # Initialize the client
+NOTION_TOKEN = os.getenv("NOTION_TOKEN", "")
 notion = Client(auth=NOTION_TOKEN)
-
-detector = NotionMIMETypeDetector()
 
 
 def _wait_for_upload_completion(
     file_upload_id: str, poll_interval: int = 5, max_wait_time: int = 300
-) -> str:
+):
     """
     Wait for file upload/import to complete.
 
@@ -39,9 +18,6 @@ def _wait_for_upload_completion(
         file_upload_id: The file upload ID.
         poll_interval: Polling interval in seconds.
         max_wait_time: Maximum wait time in seconds.
-
-    Returns:
-        file_upload_id: The file ID after successful completion.
     """
     start_time = time.time()
 
@@ -53,13 +29,7 @@ def _wait_for_upload_completion(
 
         if status == "uploaded":
             print("File uploaded successfully!")
-            if "filename" in upload_status:
-                print(f"Filename: {upload_status['filename']}")
-            if "content_type" in upload_status:
-                print(f"Content Type: {upload_status['content_type']}")
-            if "content_length" in upload_status:
-                print(f"File Size: {upload_status['content_length']} bytes")
-            return file_upload_id
+            return
 
         elif status == "failed":
             error_msg = "File upload failed"
@@ -82,11 +52,11 @@ def _wait_for_upload_completion(
 
 
 def main():
-
     file_waiting_for_upload_url = (
-        "https://cn.bing.com/th?id=OHR.MonaValePool_ZH-CN7968271596_UHD.jpg"
+        "https://www.bing.com/th?id=OHR.MonaValePool_ZH-CN7968271596_UHD.jpg"
     )
     file_waiting_for_upload_name = "bing.png"
+
     # create file upload
     response = notion.file_uploads.create(
         mode="external_url",
@@ -94,7 +64,6 @@ def main():
         external_url=file_waiting_for_upload_url,
     )
     file_upload_id = response["id"]
-    print(f"File upload created with ID: {file_upload_id}")
 
     # Wait for file upload to complete
     _wait_for_upload_completion(file_upload_id)

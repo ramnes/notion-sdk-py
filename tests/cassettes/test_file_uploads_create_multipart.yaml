@@ -1,0 +1,37 @@
+interactions:
+- request:
+    body: '{"mode":"multi_part","filename":"large_file.pdf","content_type":"application/pdf","number_of_parts":3}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - ntn_...
+      connection:
+      - keep-alive
+      content-length:
+      - '102'
+      content-type:
+      - application/json
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: POST
+    uri: https://api.notion.com/v1/file_uploads
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4yRzW7jMAyE34VnKZYV/+o5etqLQUl0okKRVIsuNijy7gune2iBHnolhpzhNx+Q
+        7Ss5BgNriLTsJWb0ICB4MKBbN8/rqKVFj3JqnZPzgKtUyurB+fE8awcC3EbI5BcONzq2lO6lGqTu
+        XtRkut4odVJK/fmitHcwH58enrT2Y6/lbO0ku9730k5rKwenXTdOvbZnCwL4Xo7bNjM8BESsvJAP
+        v3OlvyVs95+E83fh5/fLvkUwcGUu1TQNlnBKmUNOJ5dvzXvbfCFVm98waiqlAypu7hreyYNZMVYS
+        UBl5r2CgUPIhXUA8a0j4TBpxu9ByDE7Frwe+nJgSL/9hYCkxODyiNd8FkdKFr2DSHqOAtN8sbUte
+        l4Ib1wM9Z8YI5iygUmIw6iFgo7edKi/PWnrdrdbOKAc3oOw0aYm9aqVzSFM3qFENBI9/AAAA//8D
+        APFVun8/AgAA
+    headers: {}
+    status:
+      code: 200
+      message: OK
+version: 1

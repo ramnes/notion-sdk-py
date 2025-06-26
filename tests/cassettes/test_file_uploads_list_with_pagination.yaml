@@ -1,0 +1,36 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - ntn_...
+      connection:
+      - keep-alive
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: GET
+    uri: https://api.notion.com/v1/file_uploads?page_size=5
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA9XWXYrbMBAH8KuUebZiSZFtSaW36FNLMfoYJw6O7VrykiXksUfpEUpP1J6jOAlt
+        wmZJtiykfRQaSdbvrwFvobMrdBE0NHWIkMCAYWxiAP1x+2euqhssx77pjIcEag8aOHNKVQUn1nhD
+        JLOeWCsEodRyKQpbSJ9DAm5AE9GXsV7jtIryjNCccPGeZZpJTemMUvrhpNI+gt4ezvDIuS8yTpS1
+        kojMZ8TKipHccScKmXE7t5BAfOynvW0XYZdAY0Is0de3nYqbvh4ej4Xt2DQJmMEt6wf0oCvTBEwg
+        RBPHABoOAjgZTCKt2e8eMcRyGs/iZhJ0XRuxjeXxsyJuYto3pm5P5hpsF3EJek53yQudC2KwYkdn
+        iwyduurM7uLMnnM+K8zPCw+3L8ehAQ3LGPug09T09aztYt21M9et0weWnkiF9BajNGA7oT6fbo+t
+        r9vFX4b79o1bmiFgfDfGisgLWU+v66VpU0WkUHJ/E+pU4Vk+v5Y2ze+R9tmpr9BVP758/fnt+2zV
+        L56q12uzwHTV4+ICM89kwVn2UmmORFbq8GZY7oSdO3dVWtxFWtzYV2eFr9FXl4z+z77iSJR1h5tw
+        VdDCGnY1bXqXtOk/1lefEmhxE0s3DqEbLtjmjljH1d4WhUUuOUICSxPKdTcg6DiM+NvhPKzTkd7u
+        pt+Rz+P0VPbClZJKiQwJSiGJYJkh1vk5qXKVeWUV80UGu1/FMqWQ1AgAAA==
+    headers: {}
+    status:
+      code: 200
+      message: OK
+version: 1

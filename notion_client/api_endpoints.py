@@ -377,23 +377,11 @@ class FileUploadsEndpoint(Endpoint):
     def send(self, file_upload_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """Send a file upload
 
-        Requires a `file_upload_id`, obtained from the `id` of the Create File
-        Upload API response.
-
-        The `file` parameter contains the raw file contents or Blob/File object
-        under `file.data`, and an optional `file.filename` string.
-
-        Supply a stringified `part_number` parameter when using file uploads
-        in multi-part mode.
-
-        This endpoint sends HTTP multipart/form-data instead of JSON parameters.
-
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/send-a-file-upload)*
         """  # noqa: E501
         return self.parent.request(
             path=f"file_uploads/{file_upload_id}/send",
             method="POST",
-            files=pick(kwargs, "file"),
-            data=pick(kwargs, "part_number"),
+            form_data=pick(kwargs, "file", "part_number"),
             auth=kwargs.get("auth"),
         )

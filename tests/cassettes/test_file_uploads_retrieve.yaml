@@ -1,0 +1,66 @@
+interactions:
+- request:
+    body: '{"mode":"single_part","filename":"retrieve_test.txt","content_type":"text/plain"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - ntn_...
+      connection:
+      - keep-alive
+      content-length:
+      - '81'
+      content-type:
+      - application/json
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: POST
+    uri: https://api.notion.com/v1/file_uploads
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4yRz27DIAyH38XnkAAJ+cNz7LRLBMG0TJRkwalaVX33Ke0OnbRDz/7sn/35BrP9
+        wolAgw8Rx22Js3FQQHCgQYppGHwnmTXOsF64gfW1EoxzKz32VngloYBpRUPoRgon3Lu4VIy3TDYf
+        gmvVac5LzvnnC2mvoG/PDIdSuk5JNljbs0Y5xWzvBWsnOTVdr6StLRRA12WfbWeCewHRZBrRhfdS
+        8bKE9fofKP6Cz+vHbY2g4Ui0ZF1VZgllminMqZzmU3UW1YupXL3jqMqYdqlmnY7hjA60NzFjAZkM
+        bRk0LJhcSAcoHm9I5rHpirQGPONImKmkC+0G50SYaPz1QXihaokmpJdaxHSgI+i0xVjAit8bZhof
+        tr0fOie5YcL7ljWD75j1SjLu6k4NKFohBNx/AAAA//8DAD77FsQWAgAA
+    headers: {}
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - ntn_...
+      connection:
+      - keep-alive
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: GET
+    uri: https://api.notion.com/v1/file_uploads/21c99f72-bada-81d9-8351-00b2fe8b1f52
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//jJHPbsIwDIffxeemTUJD2zzHTrtU+eNAppB2jYtAiHefCjswaQfO/uyf
+        /fkGk/1CR6AhxITjOqfJeKggetAghRuG0ElmjTesF35g/U4JxrmVAXsrgpJQgVvQEPqR4gm3Li4V
+        43sm2w/Bteo05zXn/POFtFfQt2eGRyl9pyQbrO1Zq7xitg+C7Z10bdcraXcWKqDrvM22E8G9gmQK
+        jejje6l4meNy/Q8Uf8Hn9eO6JNBwJJqLbhozxzpPFKdcu+nUnEXzYqo07zhqCuZNqlncMZ7Rgw4m
+        FaygkKG1gIYZs4/5ANXjDdk8Nl2QlohnHAkL1XShzeCUCTONvz4IL9TMycT8UkuYD3QEndeUKljw
+        e8VC48O2saH1KIfNtmMtV5bZjiOz+6AUH4IQqoP7DwAAAP//AwDb9p1BFgIAAA==
+    headers: {}
+    status:
+      code: 200
+      message: OK
+version: 1
