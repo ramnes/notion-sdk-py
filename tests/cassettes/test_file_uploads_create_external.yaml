@@ -22,14 +22,12 @@ interactions:
     uri: https://api.notion.com/v1/file_uploads
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAA4yRwW7DIBBE/2XPxsYEYsx39NSLBWadUBFMzTpqFOXfKyc9JFIPOa40OzP79gqz
-        +8KRwMAUIg5rjrP1UEHwYEC0Y99PnWDOest0u3fMcY+Mcyds38lup1uoYFzQEvqBwgm3LS4U43sm
-        5AfXRirDec05/3xSuguY6yPDoxC+U4L1zmkmlVfM6all+1GMstNKuJ2DCuiSN283E9wqiLbQgD68
-        l4o/OSyX/4T9q/Bx/bAuEQwciXIxTWNzqNNMYU71OJ+ac9s8kSrNO4yagmmDapfxGM7owUw2Fqyg
-        kKW1gIGMyYd0gOr+hmTvTQkLDdtcZz9t9OZEmGj4Y2FzjmG0W7PmVRAxHegIJq0xVrDg97o53XE7
-        ZZ1UrWaTcIpJriemne9Zv+uUVVzspdRw+wUAAP//AwDm4048FwIAAA==
-    headers: {}
+      string: '{"object":"file_upload","id":"21f99f72-bada-8185-9a13-00b249649d7b","created_time":"2025-06-27T02:29:00.000Z","created_by":{"id":"de22d752-9bb8-45d5-b8f1-6c2c47852b3b","type":"bot"},"last_edited_time":"2025-06-27T02:29:00.000Z","expiry_time":"2025-06-27T03:29:00.000Z","upload_url":"https://api.notion.com/v1/file_uploads/21f99f72-bada-8185-9a13-00b249649d7b/send","archived":false,"status":"pending","filename":"test_file.pdf","content_type":"application/pdf","content_length":null,"request_id":"d372cd3d-6de5-429f-a745-733cec9f1dde"}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      content-length:
+      - '535'
     status:
       code: 200
       message: OK
