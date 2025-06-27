@@ -11,7 +11,14 @@ from notion_client import AsyncClient, Client
 @pytest.fixture(scope="session")
 def vcr_config():
     def remove_headers(response: dict):
-        response["headers"] = {}
+        headers_to_keep = {}
+        if response.get("headers"):
+            for key, value in response["headers"].items():
+                key_lower = key.lower()
+                if key_lower in ["content-type", "content-encoding", "content-length"]:
+                    headers_to_keep[key] = value
+
+        response["headers"] = headers_to_keep
         return response
 
     return {

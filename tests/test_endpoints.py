@@ -212,7 +212,7 @@ def test_file_uploads_create(client):
     assert response["object"] == "file_upload"
     assert response["filename"] == "test_file.txt"
     assert response["content_type"] == "text/plain"
-
+    assert "id" in response
 
 
 @pytest.mark.vcr()

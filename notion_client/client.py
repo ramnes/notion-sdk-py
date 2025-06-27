@@ -130,14 +130,6 @@ class BaseClient:
                 data=data,
                 headers=headers,
             )
-        elif body is not None:
-            return self.client.build_request(
-                method,
-                path,
-                params=query,
-                json=body,
-                headers=headers,
-            )
         else:
             return self.client.build_request(
                 method,

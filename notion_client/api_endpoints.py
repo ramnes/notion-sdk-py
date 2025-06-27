@@ -1,5 +1,4 @@
 """Notion API endpoints."""  # noqa: E501
-
 from typing import TYPE_CHECKING, Any
 
 from notion_client.helpers import pick
