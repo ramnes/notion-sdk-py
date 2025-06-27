@@ -82,10 +82,13 @@ def test_extract_json_from_response_with_bad_gzip():
     mock_response = Mock(spec=httpx.Response)
     mock_response.content = bad_gzip_content
     mock_response.json.side_effect = json.JSONDecodeError("test", "doc", 0)
-    mock_response.headers = {"content-type": "application/json", "content-encoding": "gzip"}
+    mock_response.headers = {
+        "content-type": "application/json",
+        "content-encoding": "gzip",
+    }
 
     with patch.object(client, "logger") as mock_logger:
-        with patch('gzip.decompress', side_effect=gzip.BadGzipFile("Invalid gzip file")):
+        with patch("gzip.decompress", side_effect=OSError("Invalid gzip file")):
             with pytest.raises(json.JSONDecodeError):
                 client._extract_json_from_response(mock_response)
 
@@ -95,7 +98,9 @@ def test_extract_json_from_response_with_bad_gzip():
             error_calls = [call[0][0] for call in mock_logger.error.call_args_list]
             debug_calls = [call[0][0] for call in mock_logger.debug.call_args_list]
 
-            assert any("Failed to decompress gzip response" in call for call in error_calls)
+            assert any(
+                "Failed to decompress gzip response" in call for call in error_calls
+            )
             assert any("Response headers" in call for call in debug_calls)
             assert any("Response content type" in call for call in debug_calls)
             assert any("Response content encoding" in call for call in debug_calls)
@@ -132,7 +137,7 @@ def test_build_request_with_form_data():
     form_data = {
         "file": b"file_content",
         "filename": "test.txt",
-        "content_type": "text/plain"
+        "content_type": "text/plain",
     }
 
     request = client._build_request("POST", "/upload", form_data=form_data)
@@ -151,13 +156,16 @@ def test_parse_response_with_http_error_and_json_decode_error():
     error_response.headers = {}
     error_response.json.side_effect = json.JSONDecodeError("test", "doc", 0)
 
-    http_error = httpx.HTTPStatusError("500 Server Error", request=Mock(), response=error_response)
+    http_error = httpx.HTTPStatusError(
+        "500 Server Error", request=Mock(), response=error_response
+    )
 
     mock_response = Mock(spec=httpx.Response)
     mock_response.raise_for_status.side_effect = http_error
 
-    with patch.object(client, 'logger') as mock_logger:
+    with patch.object(client, "logger") as mock_logger:
         from notion_client.errors import HTTPResponseError
+
         with pytest.raises(HTTPResponseError):
             client._parse_response(mock_response)
 
@@ -171,16 +179,26 @@ def test_parse_response_with_non_api_error_code():
     error_response.status_code = 500
     error_response.text = "Internal Server Error"
     error_response.headers = {}
-    error_response.json.return_value = {"message": "Server error", "code": "unknown_error"}
+    error_response.json.return_value = {
+        "message": "Server error",
+        "code": "unknown_error",
+    }
 
-    http_error = httpx.HTTPStatusError("500 Server Error", request=Mock(), response=error_response)
+    http_error = httpx.HTTPStatusError(
+        "500 Server Error", request=Mock(), response=error_response
+    )
 
     mock_response = Mock(spec=httpx.Response)
     mock_response.raise_for_status.side_effect = http_error
 
-    with patch.object(client, '_extract_json_from_response', return_value={"message": "Server error", "code": "unknown_error"}):
-        with patch('notion_client.errors.is_api_error_code', return_value=False):
+    with patch.object(
+        client,
+        "_extract_json_from_response",
+        return_value={"message": "Server error", "code": "unknown_error"},
+    ):
+        with patch("notion_client.errors.is_api_error_code", return_value=False):
             from notion_client.errors import HTTPResponseError
+
             with pytest.raises(HTTPResponseError):
                 client._parse_response(mock_response)
 
@@ -188,8 +206,11 @@ def test_parse_response_with_non_api_error_code():
 def test_client_request_timeout():
     client = Client()
 
-    with patch.object(client.client, 'send', side_effect=httpx.TimeoutException("Timeout")):
+    with patch.object(
+        client.client, "send", side_effect=httpx.TimeoutException("Timeout")
+    ):
         from notion_client.errors import RequestTimeoutError
+
         with pytest.raises(RequestTimeoutError):
             client.request("/test", "GET")
 
@@ -197,7 +218,10 @@ def test_client_request_timeout():
 async def test_async_client_request_timeout():
     async_client = AsyncClient()
 
-    with patch.object(async_client.client, 'send', side_effect=httpx.TimeoutException("Timeout")):
+    with patch.object(
+        async_client.client, "send", side_effect=httpx.TimeoutException("Timeout")
+    ):
         from notion_client.errors import RequestTimeoutError
+
         with pytest.raises(RequestTimeoutError):
             await async_client.request("/test", "GET")

@@ -175,7 +175,7 @@ class BaseClient:
                     decompressed_content = gzip.decompress(content)
                     return json.loads(decompressed_content.decode("utf-8"))
                 except (
-                    gzip.BadGzipFile,
+                    OSError,  # Covers BadGzipFile and other gzip errors across Python versions
                     UnicodeDecodeError,
                     json.JSONDecodeError,
                 ) as gzip_error:
