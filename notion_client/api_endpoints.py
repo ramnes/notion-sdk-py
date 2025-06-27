@@ -1,4 +1,5 @@
 """Notion API endpoints."""  # noqa: E501
+
 from typing import TYPE_CHECKING, Any
 
 from notion_client.helpers import pick
@@ -326,6 +327,7 @@ class CommentsEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
+
 class FileUploadsEndpoint(Endpoint):
     def create(self, **kwargs: Any) -> SyncAsync[Any]:
         """Create a file upload.
@@ -335,7 +337,14 @@ class FileUploadsEndpoint(Endpoint):
         return self.parent.request(
             path="file_uploads",
             method="POST",
-            body=pick(kwargs, "mode", "filename", "content_type", "number_of_parts", "external_url"),
+            body=pick(
+                kwargs,
+                "mode",
+                "filename",
+                "content_type",
+                "number_of_parts",
+                "external_url",
+            ),
             auth=kwargs.get("auth"),
         )
 

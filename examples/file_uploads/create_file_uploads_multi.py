@@ -3,7 +3,6 @@ from filesplit.split import Split
 from notion_client import Client
 
 import asyncio
-import json
 
 
 # Initialize the client
@@ -12,7 +11,6 @@ notion = Client(auth=NOTION_TOKEN)
 
 
 async def main():
-
     file_waiting_for_upload_path = "examples/file_uploads/example.mkv"
     block_type = "video"
 

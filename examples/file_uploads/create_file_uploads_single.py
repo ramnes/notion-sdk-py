@@ -1,5 +1,4 @@
 import os
-import sys
 
 from notion_client import Client
 
@@ -14,7 +13,6 @@ notion = Client(auth=NOTION_TOKEN)
 
 
 def main():
-
     file_waiting_for_upload_path = "examples/file_uploads/example.jpg"
     file_waiting_for_upload_name = os.path.basename(file_waiting_for_upload_path)
 
@@ -46,7 +44,7 @@ def main():
         upload_file_to_notion_database(
             file_waiting_for_upload_name, file_upload_id, database_id
         )
-        print(f"File added to database successfully.")
+        print("File added to database successfully.")
     else:
         print(f"File upload failed with status: {response['status']}")
 

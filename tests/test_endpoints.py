@@ -1,6 +1,7 @@
 import pytest
 import io
 
+
 @pytest.mark.vcr()
 def test_pages_create(client, parent_page_id):
     response = client.pages.create(
@@ -200,13 +201,12 @@ def test_pages_delete(client, page_id):
 
     client.pages.update(page_id=page_id, archived=False)
 
+
 @pytest.mark.vcr()
 def test_file_uploads_create(client):
     """Test creating a file upload"""
     response = client.file_uploads.create(
-        mode="single_part",
-        filename="test_file.txt",
-        content_type="text/plain"
+        mode="single_part", filename="test_file.txt", content_type="text/plain"
     )
 
     assert response["object"] == "file_upload"
@@ -222,7 +222,7 @@ def test_file_uploads_create_multipart(client):
         mode="multi_part",
         filename="large_file.pdf",
         content_type="application/pdf",
-        number_of_parts=3
+        number_of_parts=3,
     )
 
     assert response["object"] == "file_upload"
@@ -238,21 +238,20 @@ def test_file_uploads_create_external(client):
     response = client.file_uploads.create(
         mode="external_url",
         filename="test_file.pdf",
-        external_url="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+        external_url="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
     )
 
     assert response["object"] == "file_upload"
     assert response["filename"] == "test_file.pdf"
     assert "id" in response
 
+
 @pytest.mark.vcr()
 def test_file_uploads_retrieve(client):
     """Test retrieving a file upload"""
     # First create a file upload
     create_response = client.file_uploads.create(
-        mode="single_part",
-        filename="retrieve_test.txt",
-        content_type="text/plain"
+        mode="single_part", filename="retrieve_test.txt", content_type="text/plain"
     )
 
     file_upload_id = create_response["id"]
@@ -264,6 +263,7 @@ def test_file_uploads_retrieve(client):
     assert response["id"] == file_upload_id
     assert response["filename"] == "retrieve_test.txt"
     assert response["content_type"] == "text/plain"
+
 
 @pytest.mark.vcr()
 def test_file_uploads_list(client):
@@ -290,7 +290,9 @@ def test_file_uploads_list_with_status_filter(client):
 @pytest.mark.vcr()
 def test_file_uploads_list_with_stat_cursor(client):
     """Test listing file uploads with start cursor"""
-    response = client.file_uploads.list(start_cursor="21c99f72-bada-816b-b0de-00b2a9747381")
+    response = client.file_uploads.list(
+        start_cursor="21c99f72-bada-816b-b0de-00b2a9747381"
+    )
 
     assert response["object"] == "list"
     assert response["type"] == "file_upload"
@@ -308,14 +310,13 @@ def test_file_uploads_list_with_pagination(client):
     assert "results" in response
     assert len(response["results"]) <= 5
 
+
 @pytest.mark.vcr()
 def test_file_uploads_send(client):
     """Test sending a file upload"""
     # First create a file upload
     create_response = client.file_uploads.create(
-        mode="single_part",
-        filename="send_test.txt",
-        content_type="text/plain"
+        mode="single_part", filename="send_test.txt", content_type="text/plain"
     )
 
     file_upload_id = create_response["id"]
@@ -326,10 +327,7 @@ def test_file_uploads_send(client):
     file_obj.name = "send_test.txt"
 
     # Send the file
-    response = client.file_uploads.send(
-        file_upload_id=file_upload_id,
-        file=file_obj
-    )
+    response = client.file_uploads.send(file_upload_id=file_upload_id, file=file_obj)
 
     assert response["object"] == "file_upload"
     assert response["id"] == file_upload_id
@@ -346,7 +344,7 @@ def test_file_uploads_send_multipart(client):
         mode="multi_part",
         filename="large_test.pdf",
         content_type="application/pdf",
-        number_of_parts=4
+        number_of_parts=4,
     )
 
     file_upload_id = create_response["id"]
@@ -357,9 +355,7 @@ def test_file_uploads_send_multipart(client):
     file_part1.name = "large_test.pdf.sf-part1"
 
     response = client.file_uploads.send(
-        file_upload_id=file_upload_id,
-        file=file_part1,
-        part_number="1"
+        file_upload_id=file_upload_id, file=file_part1, part_number="1"
     )
 
     assert response["object"] == "file_upload"
@@ -376,11 +372,11 @@ def test_file_uploads_complete(client):
     """Test completing a file upload"""
     # First create and send a file upload
     create_response = client.file_uploads.create(
-            mode="multi_part",
-            filename="large_test.pdf",
-            content_type="application/pdf",
-            number_of_parts=4
-        )
+        mode="multi_part",
+        filename="large_test.pdf",
+        content_type="application/pdf",
+        number_of_parts=4,
+    )
 
     file_upload_id = create_response["id"]
 
@@ -390,10 +386,8 @@ def test_file_uploads_complete(client):
         file_part = io.BytesIO(test_content_part)
         file_part.name = f"large_test.pdf.sf-part{part_number}"
 
-        response_send = client.file_uploads.send(
-            file_upload_id=file_upload_id,
-            file=file_part,
-            part_number=str(part_number)
+        client.file_uploads.send(
+            file_upload_id=file_upload_id, file=file_part, part_number=str(part_number)
         )
 
     # complete the upload

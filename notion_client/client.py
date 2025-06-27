@@ -1,4 +1,5 @@
 """Synchronous and asynchronous clients for Notion's API."""
+
 import json
 import logging
 from abc import abstractclassmethod
@@ -150,7 +151,9 @@ class BaseClient:
                 code = None
                 error_body = {}
 
-            self.logger.error(f"HTTP {error.response.status_code} error: {error.response.text}")
+            self.logger.error(
+                f"HTTP {error.response.status_code} error: {error.response.text}"
+            )
 
             if code and is_api_error_code(code):
                 message = error_body.get("message", "Unknown API error")
@@ -190,7 +193,7 @@ class BaseClient:
                     raise e
             else:
                 self.logger.error(f"JSON decode error: {e}")
-                self.logger.debug(f"Response content: {content[:200]}")
+                self.logger.debug(f"Response content: {content[:200]!r}")
                 raise e
 
     @abstractclassmethod

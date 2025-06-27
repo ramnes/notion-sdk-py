@@ -7,6 +7,7 @@ import pytest
 
 from notion_client import AsyncClient, Client
 
+
 # Fix for VCR compatibility issue with cassettes that have gzip content
 def _patch_vcr_from_serialized_response():
     """Patch VCR's _from_serialized_response to handle missing content field."""
@@ -15,11 +16,11 @@ def _patch_vcr_from_serialized_response():
         from unittest.mock import patch, MagicMock
         import httpx
 
-        original_function = vcr.stubs.httpx_stubs._from_serialized_response
-
         @patch("httpx.Response.close", MagicMock())
         @patch("httpx.Response.read", MagicMock())
-        def _patched_from_serialized_response(request, serialized_response, history=None):
+        def _patched_from_serialized_response(
+            request, serialized_response, history=None
+        ):
             # Handle the case where content is None but body.string exists
             content = serialized_response.get("content")
             if content is None:
@@ -51,7 +52,9 @@ def _patch_vcr_from_serialized_response():
             response = httpx.Response(
                 status_code=status_code,
                 request=request,
-                headers=vcr.stubs.httpx_stubs._from_serialized_headers(serialized_response.get("headers")),
+                headers=vcr.stubs.httpx_stubs._from_serialized_headers(
+                    serialized_response.get("headers")
+                ),
                 content=content,
                 history=history or [],
             )
@@ -59,11 +62,14 @@ def _patch_vcr_from_serialized_response():
             return response
 
         # Apply the patch
-        vcr.stubs.httpx_stubs._from_serialized_response = _patched_from_serialized_response
+        vcr.stubs.httpx_stubs._from_serialized_response = (
+            _patched_from_serialized_response
+        )
 
     except ImportError:
         # VCR not available, skip patching
         pass
+
 
 # Apply the patch when the module is imported
 _patch_vcr_from_serialized_response()
