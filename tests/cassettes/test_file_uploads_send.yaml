@@ -1,0 +1,68 @@
+interactions:
+- request:
+    body: '{"mode":"single_part","filename":"send_test.txt","content_type":"text/plain"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - ntn_...
+      connection:
+      - keep-alive
+      content-length:
+      - '77'
+      content-type:
+      - application/json
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: POST
+    uri: https://api.notion.com/v1/file_uploads
+  response:
+    body:
+      string: '{"object":"file_upload","id":"21f99f72-bada-81c3-8032-00b2e498965c","created_time":"2025-06-27T02:29:00.000Z","created_by":{"id":"de22d752-9bb8-45d5-b8f1-6c2c47852b3b","type":"bot"},"last_edited_time":"2025-06-27T02:29:00.000Z","expiry_time":"2025-06-27T03:29:00.000Z","upload_url":"https://api.notion.com/v1/file_uploads/21f99f72-bada-81c3-8032-00b2e498965c/send","archived":false,"status":"pending","filename":"send_test.txt","content_type":"text/plain","content_length":null,"request_id":"71350303-b556-49dd-b758-077a97e2e18d"}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      content-length:
+      - '530'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: "--5dcb46b303f9055fae012c7257517911\r\nContent-Disposition: form-data; name=\"file\";
+      filename=\"send_test.txt\"\r\nContent-Type: text/plain\r\n\r\nThis is test file
+      content\r\n--5dcb46b303f9055fae012c7257517911--\r\n"
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - ntn_...
+      connection:
+      - keep-alive
+      content-length:
+      - '200'
+      content-type:
+      - multipart/form-data; boundary=5dcb46b303f9055fae012c7257517911
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: POST
+    uri: https://api.notion.com/v1/file_uploads/21f99f72-bada-81c3-8032-00b2e498965c/send
+  response:
+    body:
+      string: '{"object":"file_upload","id":"21f99f72-bada-81c3-8032-00b2e498965c","created_time":"2025-06-27T02:29:00.000Z","created_by":{"id":"de22d752-9bb8-45d5-b8f1-6c2c47852b3b","type":"bot"},"last_edited_time":"2025-06-27T02:29:00.000Z","expiry_time":"2025-06-27T03:29:00.000Z","archived":false,"status":"uploaded","filename":"send_test.txt","content_type":"text/plain","content_length":25,"request_id":"10c43b33-e820-4d11-aecb-91b55480208e"}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      content-length:
+      - '433'
+    status:
+      code: 200
+      message: OK
+version: 1

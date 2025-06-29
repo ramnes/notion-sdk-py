@@ -1,4 +1,5 @@
 """Utility functions for notion-sdk-py."""
+
 from typing import Any, AsyncGenerator, Awaitable, Callable, Dict, Generator, List
 from urllib.parse import urlparse
 from uuid import UUID

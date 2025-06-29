@@ -1,10 +1,12 @@
 """Synchronous and asynchronous clients for Notion's API."""
+
 import json
 import logging
 from abc import abstractclassmethod
 from dataclasses import dataclass
 from types import TracebackType
 from typing import Any, Dict, List, Optional, Type, Union
+import gzip
 
 import httpx
 from httpx import Request, Response
@@ -16,6 +18,7 @@ from notion_client.api_endpoints import (
     PagesEndpoint,
     SearchEndpoint,
     UsersEndpoint,
+    FileUploadsEndpoint,
 )
 from notion_client.errors import (
     APIResponseError,
@@ -77,6 +80,7 @@ class BaseClient:
         self.pages = PagesEndpoint(self)
         self.search = SearchEndpoint(self)
         self.comments = CommentsEndpoint(self)
+        self.file_uploads = FileUploadsEndpoint(self)
 
     @property
     def client(self) -> Union[httpx.Client, httpx.AsyncClient]:
@@ -102,34 +106,95 @@ class BaseClient:
         path: str,
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
+        form_data: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
     ) -> Request:
         headers = httpx.Headers()
         if auth:
             headers["Authorization"] = f"Bearer {auth}"
         self.logger.info(f"{method} {self.client.base_url}{path}")
-        self.logger.debug(f"=> {query} -- {body}")
-        return self.client.build_request(
-            method, path, params=query, json=body, headers=headers
-        )
+        self.logger.debug(f"=> {query} -- {body} -- {form_data}")
+
+        if form_data is not None:
+            files = {}
+            data = {}
+            for key, value in form_data.items():
+                if key == "file":
+                    files[key] = value
+                else:
+                    data[key] = value
+            return self.client.build_request(
+                method,
+                path,
+                params=query,
+                files=files,
+                data=data,
+                headers=headers,
+            )
+        else:
+            return self.client.build_request(
+                method,
+                path,
+                params=query,
+                json=body,
+                headers=headers,
+            )
 
     def _parse_response(self, response: Response) -> Any:
         try:
             response.raise_for_status()
         except httpx.HTTPStatusError as error:
             try:
-                body = error.response.json()
-                code = body.get("code")
+                error_body = self._extract_json_from_response(error.response)
+                code = error_body.get("code") if error_body else None
             except json.JSONDecodeError:
                 code = None
+                error_body = {}
+
+            self.logger.error(
+                f"HTTP {error.response.status_code} error: {error.response.text}"
+            )
+
             if code and is_api_error_code(code):
-                raise APIResponseError(response, body["message"], code)
+                message = error_body.get("message", "Unknown API error")
+                raise APIResponseError(error.response, message, code)
             raise HTTPResponseError(error.response)
 
-        body = response.json()
+        body = self._extract_json_from_response(response)
         self.logger.debug(f"=> {body}")
 
         return body
+
+    def _extract_json_from_response(self, response: Response) -> Any:
+        try:
+            return response.json()
+        except (json.JSONDecodeError, UnicodeDecodeError) as e:
+            content = response.content
+            if content.startswith(b"\x1f\x8b"):
+                try:
+                    decompressed_content = gzip.decompress(content)
+                    return json.loads(decompressed_content.decode("utf-8"))
+                except (
+                    OSError,  # Covers BadGzipFile and other gzip errors across Python versions
+                    UnicodeDecodeError,
+                    json.JSONDecodeError,
+                ) as gzip_error:
+                    self.logger.error(
+                        f"Failed to decompress gzip response: {gzip_error}"
+                    )
+                    self.logger.debug(f"Response headers: {response.headers}")
+                    self.logger.debug(
+                        f"Response content type: {response.headers.get('content-type', 'unknown')}"
+                    )
+                    self.logger.debug(
+                        f"Response content encoding: {response.headers.get('content-encoding', 'none')}"
+                    )
+                    self.logger.debug(f"Content starts with: {content[:20].hex()}")
+                    raise e
+            else:
+                self.logger.error(f"JSON decode error: {e}")
+                self.logger.debug(f"Response content: {content[:200]!r}")
+                raise e
 
     @abstractclassmethod
     def request(
@@ -138,6 +203,7 @@ class BaseClient:
         method: str,
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
+        form_data: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
     ) -> SyncAsync[Any]:
         # noqa
@@ -183,10 +249,11 @@ class Client(BaseClient):
         method: str,
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
+        form_data: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
     ) -> Any:
         """Send an HTTP request."""
-        request = self._build_request(method, path, query, body, auth)
+        request = self._build_request(method, path, query, body, form_data, auth)
         try:
             response = self.client.send(request)
         except httpx.TimeoutException:
@@ -233,10 +300,11 @@ class AsyncClient(BaseClient):
         method: str,
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
+        form_data: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
     ) -> Any:
         """Send an HTTP request asynchronously."""
-        request = self._build_request(method, path, query, body, auth)
+        request = self._build_request(method, path, query, body, form_data, auth)
         try:
             response = await self.client.send(request)
         except httpx.TimeoutException:
