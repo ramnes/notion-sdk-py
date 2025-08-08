@@ -73,6 +73,60 @@ def test_build_request_with_form_data():
     assert "/upload" in str(request.url)
 
 
+def test_build_request_with_file_object():
+    """Test _build_request with file-like objects to cover line 130 (tuple case)."""
+    client = Client()
+    client.client = Mock()
+
+    form_data = {
+        "file": ("test.txt", b"content", "text/plain"),
+        "name": "document",
+    }
+
+    client._build_request("POST", "/upload", form_data=form_data)
+
+    client.client.build_request.assert_called_once()
+    call_args = client.client.build_request.call_args
+
+    assert "file" in call_args[1]["files"]
+    assert "name" in call_args[1]["data"]
+
+
+def test_build_request_with_read_object():
+    """Test _build_request with objects having read method to cover line 132."""
+    client = Client()
+    client.client = Mock()
+
+    class MockFile:
+        def read(self):
+            return b"test content"
+
+    file_obj = MockFile()
+
+    form_data = {
+        "document": file_obj,
+        "title": "test document",
+    }
+
+    client._build_request("POST", "/upload", form_data=form_data)
+
+    client.client.build_request.assert_called_once()
+    call_args = client.client.build_request.call_args
+
+    assert "document" in call_args[1]["files"]
+    assert "title" in call_args[1]["data"]
+
+
+def test_build_request_with_auth():
+    """Test _build_request with auth parameter to cover line 113."""
+    client = Client()
+
+    request = client._build_request("POST", "/test", auth="test_token")
+
+    assert request.method == "POST"
+    assert "/test" in str(request.url)
+
+
 def test_parse_response_with_json_decode_error_in_error_response():
     """Test that JSON decode errors in error responses are handled properly."""
     client = Client()
@@ -105,7 +159,7 @@ def test_client_context_manager():
 def test_client_close():
     """Test client close method."""
     client = Client()
-    client.close()  # Should not raise any exception
+    client.close()
 
 
 def test_client_request_timeout():

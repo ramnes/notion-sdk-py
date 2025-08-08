@@ -2,7 +2,7 @@
 
 import json
 import logging
-from abc import abstractclassmethod
+from abc import abstractmethod
 from dataclasses import dataclass
 from types import TracebackType
 from typing import Any, Dict, List, Optional, Type, Union
@@ -123,8 +123,8 @@ class BaseClient:
                 headers=headers,
             )
 
-        files = {}
-        data = {}
+        files: Dict[str, Any] = {}
+        data: Dict[str, Any] = {}
         for key, value in form_data.items():
             if isinstance(value, tuple) and len(value) >= 2:
                 files[key] = value
@@ -162,7 +162,7 @@ class BaseClient:
 
         return body
 
-    @abstractclassmethod
+    @abstractmethod
     def request(
         self,
         path: str,
