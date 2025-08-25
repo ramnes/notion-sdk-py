@@ -326,3 +326,70 @@ class CommentsEndpoint(Endpoint):
             query=pick(kwargs, "block_id", "start_cursor", "page_size"),
             auth=kwargs.get("auth"),
         )
+
+
+class FileUploadsEndpoint(Endpoint):
+    def create(self, **kwargs: Any) -> SyncAsync[Any]:
+        """Create a file upload.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-a-file-upload)*
+        """  # noqa: E501
+        return self.parent.request(
+            path="file_uploads",
+            method="POST",
+            body=pick(
+                kwargs,
+                "mode",
+                "filename",
+                "content_type",
+                "number_of_parts",
+                "external_url",
+            ),
+            auth=kwargs.get("auth"),
+        )
+
+    def complete(self, file_upload_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Complete the file upload process.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/complete-a-file-upload)*
+        """  # noqa: E501
+        return self.parent.request(
+            path=f"file_uploads/{file_upload_id}/complete",
+            method="POST",
+            auth=kwargs.get("auth"),
+        )
+
+    def retrieve(self, file_upload_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Retrieve a file upload object using the ID specified.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-file-upload)*
+        """  # noqa: E501
+        return self.parent.request(
+            path=f"file_uploads/{file_upload_id}",
+            method="GET",
+            auth=kwargs.get("auth"),
+        )
+
+    def list(self, **kwargs: Any) -> SyncAsync[Any]:
+        """List all file uploads.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/list-file-uploads)*
+        """  # noqa: E501
+        return self.parent.request(
+            path="file_uploads",
+            method="GET",
+            query=pick(kwargs, "status", "start_cursor", "page_size"),
+            auth=kwargs.get("auth"),
+        )
+
+    def send(self, file_upload_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Send a file upload
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/send-a-file-upload)*
+        """  # noqa: E501
+        return self.parent.request(
+            path=f"file_uploads/{file_upload_id}/send",
+            method="POST",
+            form_data=pick(kwargs, "file", "part_number"),
+            auth=kwargs.get("auth"),
+        )

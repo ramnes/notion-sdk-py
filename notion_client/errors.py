@@ -2,6 +2,7 @@
 
 This module defines the exceptions that can be raised when an error occurs.
 """
+
 from enum import Enum
 from typing import Optional
 

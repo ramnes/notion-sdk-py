@@ -1,0 +1,30 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - ntn_...
+      connection:
+      - keep-alive
+      host:
+      - api.notion.com
+      notion-version:
+      - '2022-06-28'
+    method: GET
+    uri: https://api.notion.com/v1/file_uploads?page_size=5
+  response:
+    body:
+      string: '{"object":"list","results":[{"object":"file_upload","id":"21f99f72-bada-81da-842e-00b261025739","created_time":"2025-06-27T02:29:00.000Z","created_by":{"id":"de22d752-9bb8-45d5-b8f1-6c2c47852b3b","type":"bot"},"last_edited_time":"2025-06-27T02:29:00.000Z","expiry_time":"2025-06-27T03:29:00.000Z","upload_url":"https://api.notion.com/v1/file_uploads/21f99f72-bada-81da-842e-00b261025739/send","archived":false,"status":"pending","filename":"retrieve_test.txt","content_type":"text/plain","content_length":null},{"object":"file_upload","id":"21f99f72-bada-8185-9a13-00b249649d7b","created_time":"2025-06-27T02:29:00.000Z","created_by":{"id":"de22d752-9bb8-45d5-b8f1-6c2c47852b3b","type":"bot"},"last_edited_time":"2025-06-27T02:29:00.000Z","expiry_time":"2025-06-27T03:29:00.000Z","upload_url":"https://api.notion.com/v1/file_uploads/21f99f72-bada-8185-9a13-00b249649d7b/send","archived":false,"status":"pending","filename":"test_file.pdf","content_type":"application/pdf","content_length":null},{"object":"file_upload","id":"21f99f72-bada-819e-82d4-00b2e081a655","created_time":"2025-06-27T02:29:00.000Z","created_by":{"id":"de22d752-9bb8-45d5-b8f1-6c2c47852b3b","type":"bot"},"last_edited_time":"2025-06-27T02:29:00.000Z","expiry_time":"2025-06-27T03:29:00.000Z","upload_url":"https://api.notion.com/v1/file_uploads/21f99f72-bada-819e-82d4-00b2e081a655/send","archived":false,"status":"pending","filename":"large_file.pdf","content_type":"application/pdf","content_length":null,"number_of_parts":{"total":3,"sent":0}},{"object":"file_upload","id":"21f99f72-bada-813d-858b-00b2360b1bab","created_time":"2025-06-27T02:15:00.000Z","created_by":{"id":"de22d752-9bb8-45d5-b8f1-6c2c47852b3b","type":"bot"},"last_edited_time":"2025-06-27T02:15:00.000Z","expiry_time":"2025-06-27T03:15:00.000Z","upload_url":"https://api.notion.com/v1/file_uploads/21f99f72-bada-813d-858b-00b2360b1bab/send","archived":false,"status":"pending","filename":"test_file.txt","content_type":"text/plain","content_length":null},{"object":"file_upload","id":"21e99f72-bada-81f3-bd62-00b2b7fe6598","created_time":"2025-06-26T13:25:00.000Z","created_by":{"id":"de22d752-9bb8-45d5-b8f1-6c2c47852b3b","type":"bot"},"last_edited_time":"2025-06-26T15:05:00.000Z","expiry_time":null,"archived":false,"status":"expired","filename":"large_test.pdf","content_type":"application/pdf","content_length":26,"number_of_parts":{"total":4,"sent":1}}],"next_cursor":"21e99f72-bada-8144-bb46-00b2c13a79cb","has_more":true,"type":"file_upload","file_upload":{},"request_id":"dfa8bca7-0ca0-45ec-b83e-abc184c9320c"}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      content-length:
+      - '2562'
+    status:
+      code: 200
+      message: OK
+version: 1

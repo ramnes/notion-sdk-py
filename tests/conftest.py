@@ -8,10 +8,84 @@ import pytest
 from notion_client import AsyncClient, Client
 
 
+# Fix for VCR compatibility issue with cassettes that have gzip content
+def _patch_vcr_from_serialized_response():
+    """Patch VCR's _from_serialized_response to handle missing content field."""
+    try:
+        import vcr.stubs.httpx_stubs
+        from unittest.mock import patch, MagicMock
+        import httpx
+
+        @patch("httpx.Response.close", MagicMock())
+        @patch("httpx.Response.read", MagicMock())
+        def _patched_from_serialized_response(
+            request, serialized_response, history=None
+        ):
+            # Handle the case where content is None but body.string exists
+            content = serialized_response.get("content")
+            if content is None:
+                # Try to get content from body.string (for older cassettes)
+                body = serialized_response.get("body", {})
+                if isinstance(body, dict) and "string" in body:
+                    body_string = body["string"]
+                    if isinstance(body_string, bytes):
+                        content = body_string
+                    else:
+                        content = body_string.encode() if body_string else b""
+                else:
+                    content = b""
+            elif isinstance(content, str):
+                content = content.encode()
+            elif content is None:
+                content = b""
+
+            # Handle status_code - check both new and old format
+            status_code = serialized_response.get("status_code")
+            if status_code is None:
+                # Try to get from status.code (older cassettes format)
+                status = serialized_response.get("status", {})
+                if isinstance(status, dict):
+                    status_code = status.get("code", 200)
+                else:
+                    status_code = 200
+
+            response = httpx.Response(
+                status_code=status_code,
+                request=request,
+                headers=vcr.stubs.httpx_stubs._from_serialized_headers(
+                    serialized_response.get("headers")
+                ),
+                content=content,
+                history=history or [],
+            )
+            response._content = content
+            return response
+
+        # Apply the patch
+        vcr.stubs.httpx_stubs._from_serialized_response = (
+            _patched_from_serialized_response
+        )
+
+    except ImportError:
+        # VCR not available, skip patching
+        pass
+
+
+# Apply the patch when the module is imported
+_patch_vcr_from_serialized_response()
+
+
 @pytest.fixture(scope="session")
 def vcr_config():
     def remove_headers(response: dict):
-        response["headers"] = {}
+        headers_to_keep = {}
+        if response.get("headers"):
+            for key, value in response["headers"].items():
+                key_lower = key.lower()
+                if key_lower in ["content-type", "content-encoding", "content-length"]:
+                    headers_to_keep[key] = value
+
+        response["headers"] = headers_to_keep
         return response
 
     return {
@@ -22,6 +96,7 @@ def vcr_config():
         ],
         "before_record_response": remove_headers,
         "match_on": ["method", "remove_page_id_for_matches"],
+        "decode_compressed_response": True,
     }
 
 

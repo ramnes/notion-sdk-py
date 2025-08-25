@@ -1,7 +1,8 @@
 """Synchronous and asynchronous clients for Notion's API."""
+
 import json
 import logging
-from abc import abstractclassmethod
+from abc import abstractmethod
 from dataclasses import dataclass
 from types import TracebackType
 from typing import Any, Dict, List, Optional, Type, Union
@@ -16,6 +17,7 @@ from notion_client.api_endpoints import (
     PagesEndpoint,
     SearchEndpoint,
     UsersEndpoint,
+    FileUploadsEndpoint,
 )
 from notion_client.errors import (
     APIResponseError,
@@ -77,6 +79,7 @@ class BaseClient:
         self.pages = PagesEndpoint(self)
         self.search = SearchEndpoint(self)
         self.comments = CommentsEndpoint(self)
+        self.file_uploads = FileUploadsEndpoint(self)
 
     @property
     def client(self) -> Union[httpx.Client, httpx.AsyncClient]:
@@ -102,15 +105,43 @@ class BaseClient:
         path: str,
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
+        form_data: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
     ) -> Request:
         headers = httpx.Headers()
         if auth:
             headers["Authorization"] = f"Bearer {auth}"
         self.logger.info(f"{method} {self.client.base_url}{path}")
-        self.logger.debug(f"=> {query} -- {body}")
+        self.logger.debug(f"=> {query} -- {body} -- {form_data}")
+
+        if not form_data:
+            return self.client.build_request(
+                method,
+                path,
+                params=query,
+                json=body,
+                headers=headers,
+            )
+
+        files: Dict[str, Any] = {}
+        data: Dict[str, Any] = {}
+        for key, value in form_data.items():
+            if isinstance(value, tuple) and len(value) >= 2:
+                files[key] = value
+            elif hasattr(value, "read"):
+                files[key] = value
+            elif isinstance(value, str):
+                data[key] = value
+            else:
+                data[key] = str(value)
+
         return self.client.build_request(
-            method, path, params=query, json=body, headers=headers
+            method,
+            path,
+            params=query,
+            files=files,
+            data=data,
+            headers=headers,
         )
 
     def _parse_response(self, response: Response) -> Any:
@@ -131,13 +162,14 @@ class BaseClient:
 
         return body
 
-    @abstractclassmethod
+    @abstractmethod
     def request(
         self,
         path: str,
         method: str,
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
+        form_data: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
     ) -> SyncAsync[Any]:
         # noqa
@@ -183,10 +215,11 @@ class Client(BaseClient):
         method: str,
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
+        form_data: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
     ) -> Any:
         """Send an HTTP request."""
-        request = self._build_request(method, path, query, body, auth)
+        request = self._build_request(method, path, query, body, form_data, auth)
         try:
             response = self.client.send(request)
         except httpx.TimeoutException:
@@ -233,10 +266,11 @@ class AsyncClient(BaseClient):
         method: str,
         query: Optional[Dict[Any, Any]] = None,
         body: Optional[Dict[Any, Any]] = None,
+        form_data: Optional[Dict[Any, Any]] = None,
         auth: Optional[str] = None,
     ) -> Any:
         """Send an HTTP request asynchronously."""
-        request = self._build_request(method, path, query, body, auth)
+        request = self._build_request(method, path, query, body, form_data, auth)
         try:
             response = await self.client.send(request)
         except httpx.TimeoutException:
