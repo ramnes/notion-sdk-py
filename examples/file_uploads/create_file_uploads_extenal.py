@@ -1,7 +1,9 @@
 import os
 import time
-
+from dotenv import load_dotenv
 from notion_client import Client
+
+load_dotenv()
 
 # Initialize the client
 NOTION_TOKEN = os.getenv("NOTION_TOKEN", "")
@@ -19,9 +21,9 @@ def _wait_for_upload_completion(
         poll_interval: Polling interval in seconds.
         max_wait_time: Maximum wait time in seconds.
     """
-    start_time = time.time()
+    start_time = time.monotonic()
 
-    while time.time() - start_time < max_wait_time:
+    while time.monotonic() - start_time < max_wait_time:
         upload_status = notion.file_uploads.retrieve(file_upload_id=file_upload_id)
         status = upload_status["status"]
 
