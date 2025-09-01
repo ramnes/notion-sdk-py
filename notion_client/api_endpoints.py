@@ -311,7 +311,14 @@ class CommentsEndpoint(Endpoint):
         return self.parent.request(
             path="comments",
             method="POST",
-            body=pick(kwargs, "rich_text", "attachments", "display_name", "parent", "discussion_id"),
+            body=pick(
+                kwargs,
+                "rich_text",
+                "attachments",
+                "display_name",
+                "parent",
+                "discussion_id",
+            ),
             auth=kwargs.get("auth"),
         )
 
