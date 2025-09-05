@@ -510,9 +510,9 @@ class TestIdExtractionUtilities:
             # This should trigger the exception path in extract_block_id (lines 284-285)
             # The URL contains "://" so it enters the URL parsing path, then fails
             result = extract_block_id("https://notion.so/force-block-exception-test")
-            assert result is None, (
-                "Should return None when exception occurs in extract_block_id"
-            )
+            assert (
+                result is None
+            ), "Should return None when exception occurs in extract_block_id"
 
         finally:
             # Restore original function
@@ -537,9 +537,9 @@ class TestIdExtractionUtilities:
             # This should trigger the exception path in extract_notion_id
             # The URL will pass initial parsing but fail during query parameter parsing
             result = extract_notion_id("https://notion.so/test?p=someid")
-            assert result is None, (
-                "Should return None when exception occurs in URL parsing"
-            )
+            assert (
+                result is None
+            ), "Should return None when exception occurs in URL parsing"
 
         finally:
             # Restore original function
