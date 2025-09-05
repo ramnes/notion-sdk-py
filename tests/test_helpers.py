@@ -488,42 +488,59 @@ class TestIdExtractionUtilities:
         assert result is None
 
     def test_extract_block_id_url_parsing_exception(self):
-        """Test exception handling in extract_block_id URL parsing (lines 284-285)."""
+        """Test exception handling in extract_block_id URL parsing."""
+        # Use monkey patching to force the exception path specifically in extract_block_id
+        import notion_client.helpers as helpers_module
 
-        # This should trigger the exception handler in extract_block_id
-        class MockUrl:
-            def strip(self):
-                raise ValueError("Simulated parsing error")
+        # Store original function
+        original_urlparse = helpers_module.urlparse
 
-        # Since we can't easily make urlparse fail, let's test the fallback path
-        # by ensuring the exception handling works
-        malformed_url = "https://notion.so/test#" + "x" * 10000
-        result = extract_block_id(malformed_url)
-        # Should handle any exception and return None or fall back
-        assert result is None
+        def mock_urlparse_exception(url):
+            # Force an exception when parsing URLs in extract_block_id
+            if "force-block-exception" in url:
+                raise Exception(
+                    "Forced exception to test extract_block_id exception handling"
+                )
+            return original_urlparse(url)
+
+        try:
+            # Patch urlparse to throw exception during block ID URL parsing
+            helpers_module.urlparse = mock_urlparse_exception
+
+            # This should trigger the exception path in extract_block_id (lines 284-285)
+            # The URL contains "://" so it enters the URL parsing path, then fails
+            result = extract_block_id("https://notion.so/force-block-exception-test")
+            assert result is None, (
+                "Should return None when exception occurs in extract_block_id"
+            )
+
+        finally:
+            # Restore original function
+            helpers_module.urlparse = original_urlparse
 
     def test_extract_notion_id_handles_parsing_exceptions(self):
         """Test that extract_notion_id handles exceptions during URL parsing gracefully."""
         # Use monkey patching to force the exception path
         import notion_client.helpers as helpers_module
-        from urllib.parse import urlparse
-        
+
         # Store original function
         original_parse_qs = helpers_module.parse_qs
-        
+
         def mock_parse_qs_exception(query):
             # Force an exception when parsing query parameters
             raise Exception("Forced exception to test coverage")
-        
+
         try:
             # Patch parse_qs to throw exception during query parameter parsing
             helpers_module.parse_qs = mock_parse_qs_exception
-            
+
             # This should trigger the exception path in extract_notion_id
             # The URL will pass initial parsing but fail during query parameter parsing
             result = extract_notion_id("https://notion.so/test?p=someid")
-            assert result is None, "Should return None when exception occurs in URL parsing"
-            
+            assert result is None, (
+                "Should return None when exception occurs in URL parsing"
+            )
+
         finally:
             # Restore original function
             helpers_module.parse_qs = original_parse_qs
