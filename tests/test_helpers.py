@@ -8,6 +8,10 @@ from notion_client.helpers import (
     async_collect_paginated_api,
     async_iterate_paginated_api,
     collect_paginated_api,
+    extract_block_id,
+    extract_database_id,
+    extract_notion_id,
+    extract_page_id,
     get_id,
     get_url,
     is_equation_rich_text_item_response,
@@ -236,3 +240,135 @@ def test_is_equation_rich_text_item_response(client, equation_block_id):
 def test_is_mention_rich_text_item_response(client, mention_block_id):
     response = client.blocks.retrieve(block_id=mention_block_id)
     assert is_mention_rich_text_item_response(response["paragraph"]["rich_text"][0])
+
+
+class TestIdExtractionUtilities:
+    """Test the ID extraction utilities."""
+    
+    def test_extract_notion_id_with_standard_urls(self):
+        """Test extracting ID from standard Notion URLs."""
+        examples = [
+            {
+                "url": "https://www.notion.so/myworkspace/My-Database-abc123def456789012345678901234ab",
+                "expected": "abc123de-f456-7890-1234-5678901234ab",
+            },
+            {
+                "url": "https://notion.site/Database-Name-123456781234123412341234567890ab",
+                "expected": "12345678-1234-1234-1234-1234567890ab",
+            },
+        ]
+        
+        for example in examples:
+            assert extract_notion_id(example["url"]) == example["expected"]
+    
+    def test_extract_notion_id_prioritizes_path_over_query(self):
+        """Test that path ID is prioritized over query parameters."""
+        # This is the key fix - database ID in path should be extracted, not view ID in query
+        url = "https://notion.so/workspace/MyDB-abc123def456789012345678901234ab?v=def456789012345678901234abcdef12"
+        result = extract_notion_id(url)
+        assert result == "abc123de-f456-7890-1234-5678901234ab"  # DB ID, not view ID
+    
+    def test_extract_notion_id_uses_query_when_no_path_id(self):
+        """Test using query parameters when no path ID is available."""
+        url = "https://notion.so/share?p=abc123def456789012345678901234ab"
+        result = extract_notion_id(url)
+        assert result == "abc123de-f456-7890-1234-5678901234ab"
+    
+    def test_extract_notion_id_handles_formatted_uuids(self):
+        """Test handling already formatted UUIDs."""
+        uuid = "12345678-1234-1234-1234-123456789abc"
+        assert extract_notion_id(uuid) == "12345678-1234-1234-1234-123456789abc"
+    
+    def test_extract_notion_id_formats_compact_uuids(self):
+        """Test formatting compact UUIDs."""
+        compact_uuid = "123456781234123412341234567890ab"
+        assert extract_notion_id(compact_uuid) == "12345678-1234-1234-1234-1234567890ab"
+    
+    def test_extract_notion_id_returns_none_for_invalid_inputs(self):
+        """Test returning None for invalid inputs."""
+        invalid_inputs = ["", "not-a-url", "12345", None]
+        for invalid_input in invalid_inputs:
+            assert extract_notion_id(invalid_input) is None
+    
+    def test_extract_notion_id_handles_different_domains(self):
+        """Test handling different valid Notion domains."""
+        test_id = "abc123def456789012345678901234ab"
+        expected = "abc123de-f456-7890-1234-5678901234ab"
+        
+        domains = [
+            "https://notion.so/Page-" + test_id,
+            "https://www.notion.so/Page-" + test_id,
+            "https://notion.site/Page-" + test_id,
+        ]
+        
+        for url in domains:
+            assert extract_notion_id(url) == expected
+    
+    def test_extract_notion_id_rejects_invalid_domains(self):
+        """Test rejecting invalid domains."""
+        invalid_urls = [
+            "https://google.com/123456781234123412341234567890ab",
+            "https://example.com/Page-abc123def456789012345678901234ab",
+        ]
+        
+        for url in invalid_urls:
+            assert extract_notion_id(url) is None
+    
+    def test_extract_database_id(self):
+        """Test database ID extraction."""
+        url = "https://www.notion.so/Tasks-abc123def456789012345678901234ab"
+        assert extract_database_id(url) == "abc123de-f456-7890-1234-5678901234ab"
+    
+    def test_extract_page_id(self):
+        """Test page ID extraction."""
+        url = "https://www.notion.so/My-Page-123456781234123412341234567890ab"
+        assert extract_page_id(url) == "12345678-1234-1234-1234-1234567890ab"
+    
+    def test_extract_block_id_from_fragment(self):
+        """Test extracting block ID from URL fragment."""
+        url = "https://www.notion.so/Page#block-def456789012345678901234abcdef12"
+        assert extract_block_id(url) == "def45678-9012-3456-7890-1234abcdef12"
+    
+    def test_extract_block_id_without_block_prefix(self):
+        """Test extracting block ID without block- prefix."""
+        url = "https://www.notion.so/Page#def456789012345678901234abcdef12"
+        assert extract_block_id(url) == "def45678-9012-3456-7890-1234abcdef12"
+    
+    def test_extract_block_id_returns_none_without_fragment(self):
+        """Test returning None if no block fragment."""
+        assert extract_block_id("https://www.notion.so/Page") is None
+    
+    def test_extract_block_id_fallback_to_general(self):
+        """Test fallback to general ID extraction for non-URL inputs."""
+        uuid = "12345678-1234-1234-1234-123456789abc"
+        assert extract_block_id(uuid) == "12345678-1234-1234-1234-123456789abc"
+    
+    def test_extract_notion_id_case_insensitive(self):
+        """Test that extraction is case insensitive."""
+        test_cases = [
+            "ABC123DEF456789012345678901234AB",
+            "abc123def456789012345678901234ab",
+            "AbC123dEf456789012345678901234Ab",
+        ]
+        expected = "abc123de-f456-7890-1234-5678901234ab"
+        
+        for test_id in test_cases:
+            assert extract_notion_id(test_id) == expected
+    
+    def test_extract_notion_id_with_mixed_case_uuid(self):
+        """Test handling mixed case formatted UUIDs."""
+        mixed_case_uuid = "12345678-1234-1234-1234-123456789ABC"
+        expected = "12345678-1234-1234-1234-123456789abc"
+        assert extract_notion_id(mixed_case_uuid) == expected
+    
+    def test_extract_notion_id_with_whitespace(self):
+        """Test trimming whitespace from inputs."""
+        uuid_with_whitespace = "  12345678-1234-1234-1234-123456789abc  "
+        expected = "12345678-1234-1234-1234-123456789abc"
+        assert extract_notion_id(uuid_with_whitespace) == expected
+    
+    def test_extract_notion_id_with_query_id_param(self):
+        """Test extracting from 'id' query parameter."""
+        url = "https://notion.so/share?id=abc123def456789012345678901234ab"
+        expected = "abc123de-f456-7890-1234-5678901234ab"
+        assert extract_notion_id(url) == expected
