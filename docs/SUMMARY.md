@@ -3,6 +3,7 @@
 * User guides
     * [Quick start](user_guides/quick_start.md)
     * [Structured logging](user_guides/structured_logging.md)
+    * [API Upgrade (2025-09-03)](user_guides/api_upgrade_2025_09_03.md)
     * [More examples](https://github.com/ramnes/notion-sdk-py/tree/main/examples)
 * Reference
     * [Client](reference/client.md)
