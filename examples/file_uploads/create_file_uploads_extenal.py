@@ -73,8 +73,21 @@ def main():
     # Upload to the specified Notion database
     database_id = os.getenv("NOTION_DATABASE_ID", "")
 
+    # Resolve a data source ID from a database_id (or use as-is if already a
+    # data_source_id). This keeps backward compatibility with existing env vars.
+    ds_parent = {"type": "data_source_id", "data_source_id": database_id}
+    try:
+        db = notion.databases.retrieve(database_id)
+        if db.get("data_sources"):
+            ds_parent = {
+                "type": "data_source_id",
+                "data_source_id": db["data_sources"][0]["id"],
+            }
+    except Exception:
+        pass
+
     notion.pages.create(
-        parent={"database_id": database_id},
+        parent=ds_parent,
         properties={
             "Name": {"title": [{"text": {"content": file_waiting_for_upload_name}}]},
             "Files": {

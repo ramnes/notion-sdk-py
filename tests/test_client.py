@@ -50,7 +50,7 @@ async def test_async_client_request_auth(token):
     async_client = AsyncClient(auth="Invalid")
 
     with pytest.raises(APIResponseError):
-        await async_client.request("/invalid", "GET")
+        await async_client.request("/users", "GET")
 
     response = await async_client.request("/users", "GET", auth=token)
     assert response["results"]

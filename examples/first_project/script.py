@@ -27,9 +27,19 @@ results = notion.search(query="People").get("results")
 print(len(results))
 result = results[0]
 print("The result is a", result["object"])
-pprint(result["properties"])
+pprint(result.get("properties", {}))
 
-database_id = result["id"]  # store the database id in a variable for future use
+# Resolve a data source ID compatible with 2025-09-03
+data_source_id = None
+if result.get("object") == "data_source":
+    data_source_id = result["id"]
+elif result.get("object") == "database":
+    # Retrieve the database to get its data_sources list
+    db = notion.databases.retrieve(result["id"])
+    if db.get("data_sources"):
+        data_source_id = db["data_sources"][0]["id"]
+if not data_source_id:
+    raise RuntimeError("Could not resolve a data source from search results.")
 
 # Create a new page
 your_name = input("\n\nEnter your name: ")
@@ -68,18 +78,18 @@ content = [
     }
 ]
 notion.pages.create(
-    parent={"database_id": database_id}, properties=new_page, children=content
+    parent={"type": "data_source_id", "data_source_id": data_source_id},
+    properties=new_page,
+    children=content,
 )
 print("You were added to the People database!")
 
 
 # Query a database
 name = input("\n\nEnter the name of the person to search in People: ")
-results = notion.databases.query(
-    **{
-        "database_id": database_id,
-        "filter": {"property": "Name", "rich_text": {"contains": name}},
-    }
+results = notion.data_sources.query(
+    data_source_id=data_source_id,
+    filter={"property": "Name", "rich_text": {"contains": name}},
 ).get("results")
 
 no_of_results = len(results)

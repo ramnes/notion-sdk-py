@@ -1,0 +1,17 @@
+interactions:
+- request:
+    body: '{"title": []}'
+    headers:
+      accept:
+      - '*/*'
+    method: PATCH
+    uri: https://api.notion.com/v1/data_sources/16cabc1e-edcd-819b-afa1-eac238462cdc
+  response:
+    body:
+      string: '{"object":"data_source","id":"16cabc1e-edcd-819b-afa1-eac238462cdc","properties":{},"title":[{"text":{"content":"Updated"}}],"in_trash":false}'
+    headers: {}
+    status:
+      code: 200
+      message: OK
+
+version: 1

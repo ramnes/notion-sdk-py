@@ -1,0 +1,30 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+    method: POST
+    uri: https://api.notion.com/v1/data_sources/16cabc1e-edcd-819b-afa1-eac238462cdc/query
+  response:
+    body:
+      string: '{"object":"list","results":[],"next_cursor":null,"has_more":false,"data_source_id":"16cabc1e-edcd-819b-afa1-eac238462cdc"}'
+    headers: {}
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+    method: POST
+    uri: https://api.notion.com/v1/data_sources/16cabc1e-edcd-819b-afa1-eac238462cdc/query
+  response:
+    body:
+      string: '{"object":"list","results":[],"next_cursor":null,"has_more":false,"data_source_id":"16cabc1e-edcd-819b-afa1-eac238462cdc"}'
+    headers: {}
+    status:
+      code: 200
+      message: OK
+version: 1

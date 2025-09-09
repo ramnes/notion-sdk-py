@@ -127,10 +127,21 @@ class DatabasesEndpoint(Endpoint):
         )
 
     def query(self, database_id: str, **kwargs: Any) -> SyncAsync[Any]:
-        """Get a list of [Pages](https://developers.notion.com/reference/page) contained in the database.
+        """Query a database (legacy) or route to data source under 2025-09-03.
 
-        *[🔗 Endpoint documentation](https://developers.notion.com/reference/post-database-query)*
-        """  # noqa: E501
+        - For Notion-Version >= 2025-09-03, require `data_source_id` and route to
+          `data_sources.query`.
+        - For legacy versions, call the databases query endpoint.
+        """
+        new_api = getattr(self.parent.options, "notion_version", "") >= "2025-09-03"
+        data_source_id = kwargs.get("data_source_id")
+        if new_api and data_source_id:
+            _kwargs = dict(kwargs)
+            _kwargs.pop("data_source_id", None)
+            return self.parent.data_sources.query(
+                data_source_id=data_source_id, **_kwargs
+            )
+
         return self.parent.request(
             path=f"databases/{database_id}/query",
             method="POST",
@@ -157,47 +168,87 @@ class DatabasesEndpoint(Endpoint):
         )
 
     def create(self, **kwargs: Any) -> SyncAsync[Any]:
-        """Create a database as a subpage in the specified parent page.
+        """Create a database (and initial data source under 2025-09-03).
 
-        *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-a-database)*
-        """  # noqa: E501
+        For Notion-Version >= 2025-09-03, schema `properties` should be moved under
+        `initial_data_source.properties`. This method adapts automatically if only
+        `properties` is provided.
+        """
+        body = pick(
+            kwargs,
+            "parent",
+            "title",
+            "description",
+            "properties",
+            "initial_data_source",
+            "icon",
+            "cover",
+            "is_inline",
+        )
+        new_api = getattr(self.parent.options, "notion_version", "") >= "2025-09-03"
+        if new_api:
+            if "initial_data_source" not in body and "properties" in body:
+                # Move properties under initial_data_source
+                props = body.pop("properties")
+                body["initial_data_source"] = {"properties": props}
+            # If both were provided, prefer explicit initial_data_source
+            if "properties" in body:
+                body.pop("properties", None)
         return self.parent.request(
             path="databases",
             method="POST",
-            body=pick(
-                kwargs,
-                "parent",
-                "title",
-                "description",
-                "properties",
-                "icon",
-                "cover",
-                "is_inline",
-            ),
+            body=body,
             auth=kwargs.get("auth"),
         )
 
     def update(self, database_id: str, **kwargs: Any) -> SyncAsync[Any]:
-        """Update an existing database as specified by the parameters.
+        """Update a database. For schema changes under 2025-09-03, use data source update.
 
-        *[🔗 Endpoint documentation](https://developers.notion.com/reference/update-a-database)*
-        """  # noqa: E501
-        return self.parent.request(
-            path=f"databases/{database_id}",
-            method="PATCH",
-            body=pick(
-                kwargs,
-                "properties",
-                "title",
-                "description",
-                "icon",
-                "cover",
-                "is_inline",
-                "archived",
-                "in_trash",
-            ),
-            auth=kwargs.get("auth"),
+        If `properties` are supplied and Notion-Version >= 2025-09-03, you must
+        also provide `data_source_id`, and this method will dispatch to
+        `client.data_sources.update`. Remaining top-level database fields are
+        patched via the database update API.
+        """
+        new_api = getattr(self.parent.options, "notion_version", "") >= "2025-09-03"
+        body = pick(
+            kwargs,
+            "properties",
+            "title",
+            "description",
+            "icon",
+            "cover",
+            "is_inline",
+            "archived",
+            "in_trash",
+            "parent",
         )
+
+        responses = None
+        if new_api and "properties" in body:
+            data_source_id = kwargs.get("data_source_id")
+            if not data_source_id:
+                raise ValueError(
+                    "To update schema under 2025-09-03, supply data_source_id and "
+                    "use Data Sources update."
+                )
+            # Dispatch properties (and optional title) to the data source update
+            ds_payload = pick(kwargs, "properties", "title", "in_trash")
+            responses = self.parent.data_sources.update(data_source_id, **ds_payload)
+            # Remove properties from database-level update
+            body.pop("properties", None)
+
+        # If anything remains to patch at the database level, do it
+        if any(k in body for k in body.keys()):
+            db_resp = self.parent.request(
+                path=f"databases/{database_id}",
+                method="PATCH",
+                body=body,
+                auth=kwargs.get("auth"),
+            )
+            return db_resp if responses is None else db_resp
+
+        # Only data source update was needed
+        return responses
 
 
 class PagesPropertiesEndpoint(Endpoint):
@@ -294,10 +345,21 @@ class SearchEndpoint(Endpoint):
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/post-search)*
         """  # noqa: E501
+        body = pick(kwargs, "query", "sort", "filter", "start_cursor", "page_size")
+        # Under 2025-09-03, filter.object value "database" becomes "data_source"
+        new_api = getattr(self.parent.options, "notion_version", "") >= "2025-09-03"
+        filt = body.get("filter") if isinstance(body.get("filter"), dict) else None
+        if new_api and filt and filt.get("property") == "object":
+            val = filt.get("value")
+            if val == "database":
+                filt["value"] = "data_source"
+                self.parent.logger.warning(
+                    "Search filter.value 'database' is deprecated; using 'data_source'."
+                )
         return self.parent.request(
             path="search",
             method="POST",
-            body=pick(kwargs, "query", "sort", "filter", "start_cursor", "page_size"),
+            body=body,
             auth=kwargs.get("auth"),
         )
 
@@ -398,5 +460,73 @@ class FileUploadsEndpoint(Endpoint):
             path=f"file_uploads/{file_upload_id}/send",
             method="POST",
             form_data=pick(kwargs, "file", "part_number"),
+            auth=kwargs.get("auth"),
+        )
+
+
+class DataSourcesEndpoint(Endpoint):
+    def create(self, **kwargs: Any) -> SyncAsync[Any]:
+        """Create a new data source under an existing database.
+
+        Expects a database parent and the data source schema `properties`.
+        """
+        return self.parent.request(
+            path="data_sources",
+            method="POST",
+            body=pick(
+                kwargs,
+                "parent",  # {"type": "database_id", "database_id": "..."}
+                "properties",  # schema definition for this data source
+                "title",  # optional display title for the data source
+            ),
+            auth=kwargs.get("auth"),
+        )
+
+    def retrieve(self, data_source_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Retrieve a Data Source object using the ID specified.
+
+        [🔗 Endpoint documentation](/reference/retrieve-a-data-source)
+        """
+        return self.parent.request(
+            path=f"data_sources/{data_source_id}",
+            method="GET",
+            auth=kwargs.get("auth"),
+        )
+
+    def query(self, data_source_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Query a data source.
+
+        [🔗 Endpoint documentation](/reference/query-a-data-source)
+        """
+        return self.parent.request(
+            path=f"data_sources/{data_source_id}/query",
+            method="POST",
+            query=pick(kwargs, "filter_properties"),
+            body=pick(
+                kwargs,
+                "filter",
+                "sorts",
+                "start_cursor",
+                "page_size",
+                "archived",
+                "in_trash",
+            ),
+            auth=kwargs.get("auth"),
+        )
+
+    def update(self, data_source_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Update attributes of a data source such as schema properties and title.
+
+        [🔗 Endpoint documentation](/reference/update-a-data-source)
+        """
+        return self.parent.request(
+            path=f"data_sources/{data_source_id}",
+            method="PATCH",
+            body=pick(
+                kwargs,
+                "properties",
+                "title",
+                "in_trash",
+            ),
             auth=kwargs.get("auth"),
         )

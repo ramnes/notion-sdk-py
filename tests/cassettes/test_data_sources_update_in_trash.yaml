@@ -1,0 +1,32 @@
+interactions:
+- request:
+    body: '{"in_trash": true}'
+    headers:
+      accept:
+      - '*/*'
+    method: PATCH
+    uri: https://api.notion.com/v1/data_sources/16cabc1e-edcd-819b-afa1-eac238462cdc
+  response:
+    body:
+      string: '{"object":"data_source","id":"16cabc1e-edcd-819b-afa1-eac238462cdc","in_trash":true}'
+    headers: {}
+    status:
+      code: 200
+      message: OK
+
+- request:
+    body: '{"in_trash": false}'
+    headers:
+      accept:
+      - '*/*'
+    method: PATCH
+    uri: https://api.notion.com/v1/data_sources/16cabc1e-edcd-819b-afa1-eac238462cdc
+  response:
+    body:
+      string: '{"object":"data_source","id":"16cabc1e-edcd-819b-afa1-eac238462cdc","in_trash":false}'
+    headers: {}
+    status:
+      code: 200
+      message: OK
+
+version: 1

@@ -18,6 +18,7 @@ from notion_client.api_endpoints import (
     SearchEndpoint,
     UsersEndpoint,
     FileUploadsEndpoint,
+    DataSourcesEndpoint,
 )
 from notion_client.errors import (
     APIResponseError,
@@ -51,10 +52,20 @@ class ClientOptions:
     base_url: str = "https://api.notion.com"
     log_level: int = logging.WARNING
     logger: Optional[logging.Logger] = None
-    notion_version: str = "2022-06-28"
+    notion_version: str = "2025-09-03"
 
 
 class BaseClient:
+    # Typed endpoint attributes for static type checkers
+    blocks: BlocksEndpoint
+    databases: DatabasesEndpoint
+    users: UsersEndpoint
+    pages: PagesEndpoint
+    search: SearchEndpoint
+    comments: CommentsEndpoint
+    file_uploads: FileUploadsEndpoint
+    data_sources: DataSourcesEndpoint
+
     def __init__(
         self,
         client: Union[httpx.Client, httpx.AsyncClient],
@@ -80,6 +91,7 @@ class BaseClient:
         self.search = SearchEndpoint(self)
         self.comments = CommentsEndpoint(self)
         self.file_uploads = FileUploadsEndpoint(self)
+        self.data_sources = DataSourcesEndpoint(self)
 
     @property
     def client(self) -> Union[httpx.Client, httpx.AsyncClient]:

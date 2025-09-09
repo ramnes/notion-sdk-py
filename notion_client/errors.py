@@ -86,6 +86,9 @@ class APIErrorCode(str, Enum):
     This can occur when the time to respond to a request takes longer than 60 seconds,
     the maximum request timeout."""
 
+    MultipleDataSourcesForDatabase = "multiple_data_sources_for_database"
+    """A database has multiple data sources; provide a data_source_id instead."""
+
 
 class APIResponseError(HTTPResponseError):
     """An error raised by Notion API."""

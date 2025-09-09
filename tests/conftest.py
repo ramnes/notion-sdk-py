@@ -104,7 +104,7 @@ def vcr_config():
 def vcr(vcr):
     def remove_page_id_for_matches(r1, r2):
         RE_PAGE_ID = r"[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}"
-        return re.sub(RE_PAGE_ID, r1.uri, "") == re.sub(RE_PAGE_ID, r2.uri, "")
+        return re.sub(RE_PAGE_ID, "", r1.uri) == re.sub(RE_PAGE_ID, "", r2.uri)
 
     vcr.register_matcher("remove_page_id_for_matches", remove_page_id_for_matches)
     return vcr
@@ -135,18 +135,20 @@ def parent_page_id(vcr) -> str:
 
 
 @pytest.fixture(scope="function")
-def page_id(client, parent_page_id):
+def page_id(client, parent_page_id, vcr):
     """create a temporary subpage inside parent_page_id to run tests without leaks"""
-    response = client.pages.create(
-        parent={"page_id": parent_page_id},
-        properties={
-            "title": [{"text": {"content": f"Test {datetime.now()}"}}],
-        },
-        children=[],
-    )
+    with vcr.use_cassette("test_pages_create.yaml"):
+        response = client.pages.create(
+            parent={"page_id": parent_page_id},
+            properties={
+                "title": [{"text": {"content": f"Test {datetime.now()}"}}],
+            },
+            children=[],
+        )
 
     yield response["id"]
-    client.blocks.delete(block_id=response["id"])
+    with vcr.use_cassette("test_pages_create.yaml"):
+        client.blocks.delete(block_id=response["id"])
 
 
 @pytest.fixture(scope="function")
@@ -162,7 +164,7 @@ def block_id(client, page_id) -> str:
 
 
 @pytest.fixture(scope="function")
-def database_id(client, page_id) -> str:
+def database_id(client, page_id, vcr) -> str:
     """create a block inside page_id to run each database test without leaks"""
     db_name = f"Test Database - {datetime.now()}"
     properties = {
@@ -170,12 +172,14 @@ def database_id(client, page_id) -> str:
     }
     title = [{"type": "text", "text": {"content": db_name}}]
     parent = {"type": "page_id", "page_id": page_id}
-    response = client.databases.create(
-        **{"parent": parent, "title": title, "properties": properties}
-    )
+    with vcr.use_cassette("test_databases_create.yaml"):
+        response = client.databases.create(
+            **{"parent": parent, "title": title, "properties": properties}
+        )
 
     yield response["id"]
-    client.blocks.delete(block_id=response["id"])
+    with vcr.use_cassette("test_databases_create.yaml"):
+        client.blocks.delete(block_id=response["id"])
 
 
 @pytest.fixture(scope="function")
@@ -193,6 +197,22 @@ def comment_id(client, page_id) -> str:
     response = client.comments.create(parent=parent, rich_text=rich_text)
 
     yield response["id"]
+
+
+@pytest.fixture(scope="function")
+def data_source_id(client, database_id, vcr) -> str:
+    """Extract data_source_id from a created database for 2025-09-03 API tests."""
+    # Retrieve the database to get its data sources
+    with vcr.use_cassette("test_databases_retrieve.yaml"):
+        database = client.databases.retrieve(database_id=database_id)
+
+    # For 2025-09-03 API, databases have data_sources array
+    if "data_sources" in database and database["data_sources"]:
+        return database["data_sources"][0]["id"]
+
+    # Fallback: use database_id as data_source_id for testing
+    # (this works for single-source databases in the new API)
+    return database_id
 
 
 text_block_id = block_id

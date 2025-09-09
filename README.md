@@ -226,6 +226,14 @@ from notion_client.helpers import collect_paginated_api
 all_results = collect_paginated_api(
     notion.databases.query, database_id="897e5a76-ae52-4b48-9fdf-e71f5945d1af"
 )
+
+## API Upgrade (2025-09-03)
+
+This SDK now defaults to Notion-Version `2025-09-03`. The release introduces
+data sources under databases and migrates most database-scoped operations to
+`/v1/data_sources`.
+
+See New API notes and migration steps in [NewApi_250903.md](NewApi_250903.md).
 ```
 
 ## Testing
