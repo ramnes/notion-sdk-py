@@ -1,7 +1,16 @@
 """Utility functions for notion-sdk-py."""
 
 import re
-from typing import Any, AsyncGenerator, Awaitable, Callable, Dict, Generator, List, Optional
+from typing import (
+    Any,
+    AsyncGenerator,
+    Awaitable,
+    Callable,
+    Dict,
+    Generator,
+    List,
+    Optional,
+)
 from urllib.parse import urlparse
 from uuid import UUID
 
@@ -132,7 +141,6 @@ def _format_uuid(compact_uuid: str) -> str:
     if len(compact_uuid) != 32:
         raise ValueError("UUID must be exactly 32 characters")
 
-
     return (
         f"{compact_uuid[:8]}-{compact_uuid[8:12]}-{compact_uuid[12:16]}-"
         f"{compact_uuid[16:20]}-{compact_uuid[20:]}"
@@ -162,28 +170,34 @@ def extract_notion_id(url_or_id: str) -> Optional[str]:
     trimmed = url_or_id.strip()
 
     # Check if it's already a properly formatted UUID
-    uuid_pattern = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', re.IGNORECASE)
+    uuid_pattern = re.compile(
+        r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", re.IGNORECASE
+    )
     if uuid_pattern.match(trimmed):
         return trimmed.lower()
 
     # Check if it's a compact UUID (32 chars, no hyphens)
-    compact_uuid_pattern = re.compile(r'^[0-9a-f]{32}$', re.IGNORECASE)
+    compact_uuid_pattern = re.compile(r"^[0-9a-f]{32}$", re.IGNORECASE)
     if compact_uuid_pattern.match(trimmed):
         return _format_uuid(trimmed.lower())
 
     # For URLs, check if it's a valid Notion domain
-    if '://' in trimmed:
-        if not re.search(r'://(?:www\.)?notion\.(?:so|site)/', trimmed, re.IGNORECASE):
+    if "://" in trimmed:
+        if not re.search(r"://(?:www\.)?notion\.(?:so|site)/", trimmed, re.IGNORECASE):
             return None
 
     # Fallback to query parameters if no direct ID found
-    query_match = re.search(r'[?&](?:p|page_id|database_id)=([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|[0-9a-f]{32})', trimmed, re.IGNORECASE)
+    query_match = re.search(
+        r"[?&](?:p|page_id|database_id)=([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|[0-9a-f]{32})",
+        trimmed,
+        re.IGNORECASE,
+    )
     if query_match:
         match_str = query_match.group(1).lower()
-        return match_str if '-' in match_str else _format_uuid(match_str)
+        return match_str if "-" in match_str else _format_uuid(match_str)
 
     # Last resort: any 32-char hex string in the URL
-    any_match = re.search(r'([0-9a-f]{32})', trimmed, re.IGNORECASE)
+    any_match = re.search(r"([0-9a-f]{32})", trimmed, re.IGNORECASE)
     if any_match:
         return _format_uuid(any_match.group(1).lower())
 
@@ -222,11 +236,15 @@ def extract_block_id(url_or_id: str) -> Optional[str]:
         return None
 
     # Look for block fragment in URL (#block-32chars or just #32chars or #formatted-uuid)
-    block_match = re.search(r'#(?:block-)?([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|[0-9a-f]{32})', url_or_id, re.IGNORECASE)
+    block_match = re.search(
+        r"#(?:block-)?([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|[0-9a-f]{32})",
+        url_or_id,
+        re.IGNORECASE,
+    )
     if block_match:
         match_str = block_match.group(1).lower()
         # If it's already formatted, return as is; otherwise format it
-        return match_str if '-' in match_str else _format_uuid(match_str)
+        return match_str if "-" in match_str else _format_uuid(match_str)
 
     # Fall back to general ID extraction for non-URL inputs
     return extract_notion_id(url_or_id)

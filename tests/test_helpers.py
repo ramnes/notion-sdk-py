@@ -521,5 +521,3 @@ def test_extract_block_id_url_parsing_exception():
     finally:
         # Restore original function
         helpers_module.urlparse = original_urlparse
-
-
