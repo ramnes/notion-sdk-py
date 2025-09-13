@@ -217,7 +217,7 @@ class DataSourcesEndpoint(Endpoint):
         return self.parent.request(
             path=f"data_sources/{data_source_id}",
             method="PATCH",
-            body=pick(kwargs, "title", "icon", "properties", "archived", "in_trash"),
+            body=pick(kwargs, "title", "icon", "properties", "in_trash", "archived", "parent"),
             auth=kwargs.get("auth"),
         )
 
