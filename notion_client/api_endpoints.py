@@ -273,7 +273,7 @@ class PagesEndpoint(Endpoint):
         return self.parent.request(
             path=f"pages/{page_id}",
             method="PATCH",
-            body=pick(kwargs, "in_trash", "archived", "properties", "icon", "cover"),
+            body=pick(kwargs, "properties", "icon", "cover", "is_locked", "in_trash", "archived"),
             auth=kwargs.get("auth"),
         )
 
