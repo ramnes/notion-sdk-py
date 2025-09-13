@@ -91,12 +91,24 @@ class APIResponseError(HTTPResponseError):
     """An error raised by Notion API."""
 
     code: APIErrorCode
+    additional_data: Optional[dict] = None
 
     def __init__(
-        self, response: httpx.Response, message: str, code: APIErrorCode
+        self,
+        response: httpx.Response,
+        message: str,
+        code: APIErrorCode,
+        additional_data: Optional[dict] = None,
     ) -> None:
         super().__init__(response, message)
         self.code = code
+        self.additional_data = additional_data
+
+    def __str__(self) -> str:
+        base = super().__str__()
+        if self.additional_data:
+            return f"{base} (additional_data={self.additional_data})"
+        return base
 
 
 def is_api_error_code(code: str) -> bool:

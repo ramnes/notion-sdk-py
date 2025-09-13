@@ -153,10 +153,14 @@ class BaseClient:
             try:
                 body = error.response.json()
                 code = body.get("code")
+                additional_data = body.get("additional_data")
             except json.JSONDecodeError:
                 code = None
+                additional_data = None
             if code and is_api_error_code(code):
-                raise APIResponseError(response, body["message"], code)
+                raise APIResponseError(
+                    response, body["message"], code, additional_data=additional_data
+                )
             raise HTTPResponseError(error.response)
 
         body = response.json()

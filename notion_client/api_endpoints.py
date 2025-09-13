@@ -217,7 +217,9 @@ class DataSourcesEndpoint(Endpoint):
         return self.parent.request(
             path=f"data_sources/{data_source_id}",
             method="PATCH",
-            body=pick(kwargs, "title", "icon", "properties", "in_trash", "archived", "parent"),
+            body=pick(
+                kwargs, "title", "icon", "properties", "in_trash", "archived", "parent"
+            ),
             auth=kwargs.get("auth"),
         )
 
@@ -273,7 +275,15 @@ class PagesEndpoint(Endpoint):
         return self.parent.request(
             path=f"pages/{page_id}",
             method="PATCH",
-            body=pick(kwargs, "properties", "icon", "cover", "is_locked", "in_trash", "archived"),
+            body=pick(
+                kwargs,
+                "properties",
+                "icon",
+                "cover",
+                "is_locked",
+                "in_trash",
+                "archived",
+            ),
             auth=kwargs.get("auth"),
         )
 
