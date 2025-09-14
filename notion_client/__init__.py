@@ -8,5 +8,20 @@ For more information visit https://github.com/ramnes/notion-sdk-py.
 
 from .client import AsyncClient, Client
 from .errors import APIErrorCode, APIResponseError
+from .helpers import (
+    extract_block_id,
+    extract_database_id,
+    extract_notion_id,
+    extract_page_id,
+)
 
-__all__ = ["AsyncClient", "Client", "APIErrorCode", "APIResponseError"]
+__all__ = [
+    "AsyncClient",
+    "Client",
+    "APIErrorCode",
+    "APIResponseError",
+    "extract_block_id",
+    "extract_database_id",
+    "extract_notion_id",
+    "extract_page_id",
+]

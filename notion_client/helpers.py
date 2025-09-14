@@ -1,6 +1,16 @@
 """Utility functions for notion-sdk-py."""
 
-from typing import Any, AsyncGenerator, Awaitable, Callable, Dict, Generator, List
+import re
+from typing import (
+    Any,
+    AsyncGenerator,
+    Awaitable,
+    Callable,
+    Dict,
+    Generator,
+    List,
+    Optional,
+)
 from urllib.parse import urlparse
 from uuid import UUID
 
@@ -124,3 +134,117 @@ def is_equation_rich_text_item_response(rich_text: Dict[Any, Any]) -> bool:
 def is_mention_rich_text_item_response(rich_text: Dict[Any, Any]) -> bool:
     """Return `True` if `rich_text` is a mention."""
     return rich_text.get("type") == "mention"
+
+
+def _format_uuid(compact_uuid: str) -> str:
+    """Format a compact UUID (32 chars) into standard format with hyphens."""
+    if len(compact_uuid) != 32:
+        raise ValueError("UUID must be exactly 32 characters")
+
+    return (
+        f"{compact_uuid[:8]}-{compact_uuid[8:12]}-{compact_uuid[12:16]}-"
+        f"{compact_uuid[16:20]}-{compact_uuid[20:]}"
+    )
+
+
+def extract_notion_id(url_or_id: str) -> Optional[str]:
+    """Extract a Notion ID from a Notion URL or return the input if it's already a valid ID.
+
+    Prioritizes path IDs over query parameters to avoid extracting view IDs instead of database IDs.
+
+    Returns the extracted UUID in standard format (with hyphens) or None if invalid.
+
+    ```python
+    # Database URL with view ID - extracts database ID, not view ID
+    extract_notion_id('https://notion.so/workspace/DB-abc123def456789012345678901234ab?v=viewid123')
+    # Returns: 'abc123de-f456-7890-1234-5678901234ab'  # database ID
+
+    # Already formatted UUID
+    extract_notion_id('12345678-1234-1234-1234-123456789abc')
+    # Returns: '12345678-1234-1234-1234-123456789abc'
+    ```
+    """
+    if not url_or_id or not isinstance(url_or_id, str):
+        return None
+
+    trimmed = url_or_id.strip()
+
+    # Check if it's already a properly formatted UUID
+    uuid_pattern = re.compile(
+        r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", re.IGNORECASE
+    )
+    if uuid_pattern.match(trimmed):
+        return trimmed.lower()
+
+    # Check if it's a compact UUID (32 chars, no hyphens)
+    compact_uuid_pattern = re.compile(r"^[0-9a-f]{32}$", re.IGNORECASE)
+    if compact_uuid_pattern.match(trimmed):
+        return _format_uuid(trimmed.lower())
+
+    # For URLs, check if it's a valid Notion domain
+    if "://" in trimmed:
+        if not re.search(r"://(?:www\.)?notion\.(?:so|site)/", trimmed, re.IGNORECASE):
+            return None
+
+    # Fallback to query parameters if no direct ID found
+    query_match = re.search(
+        r"[?&](?:p|page_id|database_id)=([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|[0-9a-f]{32})",
+        trimmed,
+        re.IGNORECASE,
+    )
+    if query_match:
+        match_str = query_match.group(1).lower()
+        return match_str if "-" in match_str else _format_uuid(match_str)
+
+    # Last resort: any 32-char hex string in the URL
+    any_match = re.search(r"([0-9a-f]{32})", trimmed, re.IGNORECASE)
+    if any_match:
+        return _format_uuid(any_match.group(1).lower())
+
+    return None
+
+
+def extract_database_id(database_url: str) -> Optional[str]:
+    """Extract a database ID from a Notion URL or validate if it's already a valid ID.
+
+    This is an alias for `extract_notion_id` for clarity when working with databases.
+
+    Returns the extracted UUID in standard format (with hyphens) or None if invalid.
+    """
+    return extract_notion_id(database_url)
+
+
+def extract_page_id(page_url: str) -> Optional[str]:
+    """Extract a page ID from a Notion URL or validate if it's already a valid ID.
+
+    This is an alias for `extract_notion_id` for clarity when working with pages.
+
+    Returns the extracted UUID in standard format (with hyphens) or None if invalid.
+    """
+    return extract_notion_id(page_url)
+
+
+def extract_block_id(url_or_id: str) -> Optional[str]:
+    """Extract a block ID from a Notion URL fragment or validate if it's already a valid ID.
+
+    Specifically looks for block IDs in URL fragments (after #).
+    If no fragment is present, falls back to `extract_notion_id` behavior.
+
+    Returns the extracted UUID in standard format (with hyphens) or None if invalid.
+    """
+    if not url_or_id or not isinstance(url_or_id, str):
+        return None
+
+    # Look for block fragment in URL (#block-32chars or just #32chars or #formatted-uuid)
+    block_match = re.search(
+        r"#(?:block-)?([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|[0-9a-f]{32})",
+        url_or_id,
+        re.IGNORECASE,
+    )
+    if block_match:
+        match_str = block_match.group(1).lower()
+        # If it's already formatted, return as is; otherwise format it
+        return match_str if "-" in match_str else _format_uuid(match_str)
+
+    # Fall back to general ID extraction for non-URL inputs
+    return extract_notion_id(url_or_id)
