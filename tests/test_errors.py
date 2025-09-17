@@ -59,6 +59,56 @@ async def test_api_async_request_bad_request_error(async_client):
         await async_client.request(STATUS_PAGE_BAD_REQUEST, "GET")
 
 
+def test_api_response_error_additional_data():
+    import httpx
+
+    class DummyResponse:
+        status_code = 400
+        headers = {}
+        text = '{"object": "error", "message": "msg", "code": "validation_error", "additional_data": {"foo": "bar"}}'
+
+        def json(self):
+            return {
+                "object": "error",
+                "message": "msg",
+                "code": "validation_error",
+                "additional_data": {"foo": "bar"},
+            }
+
+    response = DummyResponse()
+    err = APIResponseError(
+        response, "msg", "validation_error", additional_data={"foo": "bar"}
+    )
+    assert err.additional_data == {"foo": "bar"}
+    assert "foo" in str(err)
+
+
+def test_api_response_error_without_additional_data():
+    """Test APIResponseError __str__ method without additional_data"""
+    import httpx
+
+    class DummyResponse:
+        status_code = 400
+        headers = {}
+        text = (
+            '{"object": "error", "message": "Test error", "code": "validation_error"}'
+        )
+
+        def json(self):
+            return {
+                "object": "error",
+                "message": "Test error",
+                "code": "validation_error",
+            }
+
+    response = DummyResponse()
+    err = APIResponseError(response, "Test error", "validation_error")
+
+    error_str = str(err)
+    assert "additional_data" not in error_str
+    assert "Test error" in error_str
+
+
 async def test_is_api_error_code():
     error_code = "unauthorized"
     assert is_api_error_code(error_code)

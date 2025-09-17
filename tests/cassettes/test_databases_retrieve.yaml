@@ -18,7 +18,7 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: POST
     uri: https://api.notion.com/v1/pages
   response:
@@ -47,7 +47,7 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: POST
     uri: https://api.notion.com/v1/databases
   response:
@@ -71,7 +71,7 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: GET
     uri: https://api.notion.com/v1/databases/16cabc1e-edcd-8157-b05e-e76668756101
   response:
@@ -95,7 +95,7 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: DELETE
     uri: https://api.notion.com/v1/blocks/16cabc1e-edcd-8157-b05e-e76668756101
   response:
@@ -118,7 +118,7 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: DELETE
     uri: https://api.notion.com/v1/blocks/16cabc1e-edcd-8130-87d8-d12cecc2579e
   response:

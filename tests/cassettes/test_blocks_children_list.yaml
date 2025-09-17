@@ -18,7 +18,7 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: POST
     uri: https://api.notion.com/v1/pages
   response:
@@ -42,7 +42,7 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: GET
     uri: https://api.notion.com/v1/blocks/16cabc1e-edcd-81a1-9982-e644ed7fa6a2/children
   response:
@@ -64,7 +64,7 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: DELETE
     uri: https://api.notion.com/v1/blocks/16cabc1e-edcd-81a1-9982-e644ed7fa6a2
   response:

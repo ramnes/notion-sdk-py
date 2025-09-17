@@ -3,6 +3,57 @@ import io
 
 
 @pytest.mark.vcr()
+def test_data_sources_create_and_retrieve(client, database_id):
+    title = [{"type": "text", "text": {"content": "Test DataSource"}}]
+    properties = {"Name": {"title": {}}}
+    parent = {"type": "database_id", "database_id": database_id}
+    response = client.data_sources.create(
+        parent=parent, title=title, properties=properties
+    )
+    assert response["object"] == "data_source"
+    data_source_id = response["id"]
+
+    retrieve = client.data_sources.retrieve(data_source_id)
+    assert retrieve["object"] == "data_source"
+
+
+@pytest.mark.vcr()
+def test_data_sources_query(client, database_id):
+    title = [{"type": "text", "text": {"content": "Test DataSource Query"}}]
+    properties = {"Name": {"title": {}}}
+    parent = {"type": "database_id", "database_id": database_id}
+    ds = client.data_sources.create(parent=parent, title=title, properties=properties)
+    data_source_id = ds["id"]
+
+    result = client.data_sources.query(data_source_id)
+    assert result["object"] == "list"
+
+
+@pytest.mark.vcr()
+def test_data_sources_update(client, database_id):
+    title = [{"type": "text", "text": {"content": "Test DataSource Update"}}]
+    icon = {"type": "emoji", "emoji": "🚀"}
+    properties = {"Name": {"title": {}}}
+    in_trash = False
+    archived = False
+    parent = {"type": "database_id", "database_id": database_id}
+    response = client.data_sources.create(
+        title=title,
+        icon=icon,
+        properties=properties,
+        in_trash=in_trash,
+        archived=archived,
+        parent=parent,
+    )
+    data_source_id = response["id"]
+
+    new_title = [{"type": "text", "text": {"content": "Updated DataSource"}}]
+    update = client.data_sources.update(data_source_id, title=new_title)
+    assert update["object"] == "data_source"
+    assert update["title"][0]["text"]["content"] == "Updated DataSource"
+
+
+@pytest.mark.vcr()
 def test_pages_create(client, parent_page_id):
     response = client.pages.create(
         parent={"page_id": parent_page_id},
@@ -144,18 +195,6 @@ def test_databases_create(client, page_id):
     )
 
     assert response["object"] == "database"
-
-
-@pytest.mark.vcr()
-def test_databases_query(client, database_id):
-    query = {
-        "database_id": database_id,
-        "filter": {"timestamp": "created_time", "created_time": {"past_week": {}}},
-    }
-
-    response = client.databases.query(**query)
-    assert response["object"] == "list"
-    assert not response["results"]
 
 
 @pytest.mark.vcr()
