@@ -1,7 +1,7 @@
 import os
 import re
 from datetime import datetime
-from typing import Any, Dict, Generator, Optional
+from typing import Any, Dict, Optional
 
 import pytest
 
