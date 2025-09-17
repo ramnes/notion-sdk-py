@@ -60,8 +60,6 @@ async def test_api_async_request_bad_request_error(async_client):
 
 
 def test_api_response_error_additional_data():
-    import httpx
-
     class DummyResponse:
         status_code = 400
         headers = {}
@@ -84,9 +82,6 @@ def test_api_response_error_additional_data():
 
 
 def test_api_response_error_without_additional_data():
-    """Test APIResponseError __str__ method without additional_data"""
-    import httpx
-
     class DummyResponse:
         status_code = 400
         headers = {}
