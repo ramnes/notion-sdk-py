@@ -17,11 +17,17 @@ interactions:
     method: GET
     uri: https://api.notion.com/v1/users
   response:
-    content: '{"object":"error","status":401,"code":"unauthorized","message":"API
-      token is invalid.","request_id":"9c9434f5-86eb-4167-8cf5-c408de6733d0"}'
-    headers: {}
-    http_version: HTTP/1.1
-    status_code: 401
+    body:
+      string: '{"object":"error","status":401,"code":"unauthorized","message":"API
+        token is invalid.","request_id":"0926e62a-22fe-4d8e-8747-e58d6291ecfd"}'
+    headers:
+      Content-Length:
+      - '139'
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 401
+      message: Unauthorized
 - request:
     body: ''
     headers:
@@ -40,9 +46,50 @@ interactions:
     method: GET
     uri: https://api.notion.com/v1/users
   response:
-    content: '{"object":"list","results":[{"object":"user","id":"a4f789cc-7bc8-4cf0-82b9-a8ba7d985ecf","name":"Guillaume
-      Gelin","avatar_url":"https://s3-us-west-2.amazonaws.com/public.notion-static.com/01d7053d-e135-4f27-bba0-5de532d39296/ramnes3.jpeg","type":"person","person":{"email":"notion@ramnes.eu"}},{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78","name":"notion-sdk-py","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"notion-sdk-py"}}],"next_cursor":null,"has_more":false,"type":"user","user":{},"request_id":"5e567f48-0a8d-4db2-9855-a187eec5d575"}'
-    headers: {}
-    http_version: HTTP/1.1
-    status_code: 200
+    body:
+      string: !!binary |
+        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
+        BfU8TyKxAheNkFwpFIkSG9fd/gcnR3Y2RRgAAA==
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
 version: 1

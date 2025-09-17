@@ -17,8 +17,19 @@ interactions:
     method: GET
     uri: https://api.notion.com/v1/users/me
   response:
-    content: '{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78","name":"notion-sdk-py","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"notion-sdk-py"},"request_id":"dd2d0023-75bb-4503-b71c-0850ddcc1579"}'
-    headers: {}
-    http_version: HTTP/1.1
-    status_code: 200
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//TJA5T8QwFIT/CnoNjS3l9tFR0qwotrfs+AUZEjv4ICyr/HcUtEWa0aeZ
+        d0hzh2A+cMwgoSSMQMBZkNAbXvPWWMoF72jX1YyaRg+U2ZFj1wocmAACXi8IEi64qZe3V3XFlIGA
+        /tZZR1XiDNKXeSaQb+sxZ8IRHyrvEDaP8YBHuIX4mVY9IpATyxwL7idHPX5ek/Pvz+npErIL/ryj
+        Zre4nI7Ti/5Rk5tRlXUO2qrkflE5r8wtYwLZtwNnlaibat8JRPwqmLL6L6CaOO8nPdFGmIl2g7WU
+        697QphrqigmODWth/wMAAP//AwBq11mJPgEAAA==
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
 version: 1

@@ -17,15 +17,17 @@ interactions:
     method: GET
     uri: https://api.notion.com/v1/invalid
   response:
-    content: '{"object":"error","status":400,"code":"invalid_request_url","message":"Invalid
-      request URL.","request_id":"cb2c08e6-e124-4e6e-ad34-ccd34d6236a0"}'
+    body:
+      string: '{"object":"error","status":400,"code":"invalid_request_url","message":"Invalid
+        request URL.","request_id":"5cd426ad-7827-4fd8-b7e6-d4b4d55499db"}'
     headers:
       Content-Length:
       - '145'
       Content-Type:
       - application/json; charset=utf-8
-    http_version: HTTP/1.1
-    status_code: 400
+    status:
+      code: 400
+      message: Bad Request
 - request:
     body: ''
     headers:
@@ -44,18 +46,50 @@ interactions:
     method: GET
     uri: https://api.notion.com/v1/users
   response:
-    content: "{\"object\":\"list\",\"results\":[{\"object\":\"user\",\"id\":\"e3acda97-15e8-4883-a7c8-07141d9ef043\",\"name\":\"Tsing\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/3f4cafc4-9cc1-4580-812e-9b2b94f4fa2b/Snipaste_2022-08-16_14-24-09.png\",\"type\":\"person\",\"person\":{\"email\":\"lsy2019021614@hrbeu.edu.cn\"}},{\"object\":\"user\",\"id\":\"1af4dbb0-c733-4a5c-89ff-7bb19edb745e\",\"name\":\"Save
-      to Notion - Twitter Bot\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/4c1a955a-e526-491c-af0c-65a978b23533/Save_to_Notion_Twitter_Logo.png\",\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"eef62084-53e6-484a-99e8-57d15763952c\",\"name\":\"Telegram
-      to Notion\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/ac4817ef-d166-44cb-acbc-429eeb83a879/Icon_with_space.png\",\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"c8534feb-4993-4301-bfec-970c6fdb94e4\",\"name\":\"Notero\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/0cf81d04-a906-4342-9ab3-9ca1d233d41c/NZ.png\",\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"ae73fe08-df01-4d2d-86e2-a339f6ef0b55\",\"name\":\"Zapier\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/c8ba7d4b-5bfb-4381-ba50-6a05b956b3ca/logo_black.png\",\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"69800068-c23a-4cb3-adef-927b80864d1e\",\"name\":\"Rssreader\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/23117440-71af-4e35-bb34-f877ddc431ba/%E8%AE%A2%E9%98%85.png\",\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"230ff813-6ff2-4e37-927a-9af4e630453d\",\"name\":\"NotionFeed\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/796d0877-77d3-4804-85ea-e3e8ee251464/logo.png\",\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"79cef311-dcd7-405f-8c80-7dd477d4499d\",\"name\":\"Telegram
-      to Notion Bot\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/2285ec77-c69c-4ebc-8fd2-08196de1cb07/icon_transparent.png\",\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"858ec273-e054-4d48-a2e2-be399a22dbcc\",\"name\":\"\u7B80\u60A6\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/83005d86-495f-43e0-98a7-b5cdc97c8c41/unnamed.jpg\",\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"d5e5736b-f00b-422c-a3c0-4000c9a86e28\",\"name\":\"\u8BB0\u8D26Billing\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/cd0660ba-3ec7-4df6-8a34-dd5c691587c8/%E8%B4%A6%E5%8D%95_(1).png\",\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"30e58e2d-60d9-4cb6-ae11-e90889d6a2c5\",\"name\":\"Snipo\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/f1c10096-29a5-4c3e-9feb-1174a7bf79f4/frame_22_delay-0_1512.png\",\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"1bb64e54-a503-4e51-9e81-3f0848680a96\",\"name\":\"\u8BB0\u8D26\",\"avatar_url\":null,\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"88ba53b0-04d8-4b85-abb9-718b67325c8c\",\"name\":\"Bilibili_tool\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/c597878f-0718-4386-ae71-1510fbf3f396/bilibili.png\",\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"8fef16bb-3b99-40d3-b2f1-ceb220a610a1\",\"name\":\"Alita
-      AI\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/d7a14c99-574a-441d-952c-ae9eef80780b/IJFEeHhD_400x400.jpg\",\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"ef942236-5966-4868-81c1-69a3645f85e5\",\"name\":\"IFTTT\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/7f0f722a-0a83-4101-aaba-96fce5c48b4d/ifttt-logo.png\",\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"7a16eb82-9610-4fa6-a46a-e66052615432\",\"name\":\"Bookmarks
-      to Notion V2\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/e6bdb97b-d971-4fc7-9405-4ff6082b6cb8/BTN_icon.png\",\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"e50ded41-7b33-49ff-8011-1d2a1e76d8b3\",\"name\":\"NotionHelper\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/d8927c78-36b4-4138-a32f-dc67c8925e90/notionHelper.png\",\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"9f116df1-2a85-40f6-95ea-85073a587daf\",\"name\":\"weread2notion\",\"avatar_url\":null,\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"6822cef8-d2dc-4d38-abce-91cdff22fcee\",\"name\":\"Weread\",\"avatar_url\":null,\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"fb27c9ac-0cc0-4a0d-ba0b-f848f59d9ea7\",\"name\":\"Bill_test\",\"avatar_url\":null,\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"15ad872b-594c-814f-a643-0027ec30273e\",\"name\":\"\u7B80\u60A6\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/4e43cd09-d9af-4e5b-ac5a-c97d8724790c/%E5%90%8C%E6%AD%A5%E5%8A%A9%E6%89%8B_v1-1.png\",\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"36073c3a-69b3-4e94-8e3a-a27a2f43ac8d\",\"name\":\"RSS_Database\",\"avatar_url\":null,\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"a09805a3-a912-4a1c-954e-95e83c776356\",\"name\":\"Rss_python\",\"avatar_url\":null,\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"7438707c-4d1c-418c-a7d1-8ecfaab52078\",\"name\":\"Miniflux\",\"avatar_url\":null,\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"ed1543c6-1166-4a3f-9085-85a49aaf59f5\",\"name\":\"Yuri_Test\",\"avatar_url\":null,\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"e57be02b-cb3e-4d99-a792-8edb0b4f5c56\",\"name\":\"Yuri\",\"avatar_url\":null,\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"abfc9618-0e1b-4921-a12b-163413bb65bc\",\"name\":\"yuri_test2\",\"avatar_url\":null,\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"27409263-924d-4bde-ba60-b063997ce906\",\"name\":\"MCP_Test\",\"avatar_url\":null,\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"de22d752-9bb8-45d5-b8f1-6c2c47852b3b\",\"name\":\"File_Upload\",\"avatar_url\":null,\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"9e8d4286-c1e8-4100-a732-b6871dbcba37\",\"name\":\"File_Upload_Openlist\",\"avatar_url\":\"https://s3-us-west-2.amazonaws.com/public.notion-static.com/c1663cc8-8113-47c7-a9fd-968299939454/9276ab6e-21b6-464e-b539-2df3ef925d5b.png\",\"type\":\"bot\",\"bot\":{}},{\"object\":\"user\",\"id\":\"5b8183bd-8984-4417-b2a6-7dc8e439e679\",\"name\":\"New_API_Test\",\"avatar_url\":null,\"type\":\"bot\",\"bot\":{\"owner\":{\"type\":\"workspace\",\"workspace\":true},\"workspace_name\":\"Tsing's
-      Notion\",\"workspace_limits\":{\"max_file_upload_size_in_bytes\":5368709120}}}],\"next_cursor\":null,\"has_more\":false,\"type\":\"user\",\"user\":{},\"request_id\":\"71282f1d-2bba-426b-b1df-abf732050a0f\"}"
+    body:
+      string: !!binary |
+        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
+        gebnSQIJA1MgMOwkGq5xFuPb/wBlLSTORRgAAA==
     headers:
       Content-Encoding:
       - gzip
       Content-Type:
       - application/json; charset=utf-8
-    http_version: HTTP/1.1
-    status_code: 200
+    status:
+      code: 200
+      message: OK
 version: 1

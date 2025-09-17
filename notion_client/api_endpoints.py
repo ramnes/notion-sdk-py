@@ -140,6 +140,7 @@ class DatabasesEndpoint(Endpoint):
                 "icon",
                 "cover",
                 "in_trash",
+                "is_locked"
             ),
             auth=kwargs.get("auth"),
         )

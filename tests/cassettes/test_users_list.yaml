@@ -17,9 +17,50 @@ interactions:
     method: GET
     uri: https://api.notion.com/v1/users
   response:
-    content: '{"object":"list","results":[{"object":"user","id":"a4f789cc-7bc8-4cf0-82b9-a8ba7d985ecf","name":"Guillaume
-      Gelin","avatar_url":"https://s3-us-west-2.amazonaws.com/public.notion-static.com/01d7053d-e135-4f27-bba0-5de532d39296/ramnes3.jpeg","type":"person","person":{"email":"notion@ramnes.eu"}},{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78","name":"notion-sdk-py","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"notion-sdk-py"}}],"next_cursor":null,"has_more":false,"type":"user","user":{},"request_id":"d1999e67-7eb2-44d6-b1c6-6d6fc0e8b725"}'
-    headers: {}
-    http_version: HTTP/1.1
-    status_code: 200
+    body:
+      string: !!binary |
+        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
+        EOZZDC3O98Y0qGqCoeA1u9Ld/QekNXsRRRgAAA==
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
 version: 1

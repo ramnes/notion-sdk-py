@@ -22,12 +22,18 @@ interactions:
     uri: https://api.notion.com/v1/file_uploads
   response:
     body:
-      string: '{"object":"file_upload","id":"21f99f72-bada-8185-9a13-00b249649d7b","created_time":"2025-06-27T02:29:00.000Z","created_by":{"id":"de22d752-9bb8-45d5-b8f1-6c2c47852b3b","type":"bot"},"last_edited_time":"2025-06-27T02:29:00.000Z","expiry_time":"2025-06-27T03:29:00.000Z","upload_url":"https://api.notion.com/v1/file_uploads/21f99f72-bada-8185-9a13-00b249649d7b/send","archived":false,"status":"pending","filename":"test_file.pdf","content_type":"application/pdf","content_length":null,"request_id":"d372cd3d-6de5-429f-a745-733cec9f1dde"}'
+      string: !!binary |
+        H4sIAAAAAAAAA4yRwW7DIBBE/2XPxgbsBMx39NSLtcA6oSKY2jhqFOXfKyc9JFIPOa40OzP79gqT
+        /SJXwMAYIg1rjhN6qCB4MCCV6PtRSWbRI9Ni1EzzkTPOrVQCraexhQrcTFjIDyWcaNvicsd4z4T6
+        4NpIaTivOeefT0p7AXN9ZOysFrq1nuled6zrhGJW4p4p7zR1bU971UMF5ZI3bzsVuFUQcSkD+fBe
+        Kv3kMF/+E/avwsf1wzpHMHAsJS+maTCHOk0lTKl206k5i+aJ1NK8w6hZKG1QcXbHcCYPZsS4UAVL
+        wbIuYCBT8iEdoLq/IeG9aaGlDNtcZz9u9KZUKJXhjwXmHIPDrVnzKoiUDuUIJq0xVjDT97o53XG3
+        ltCNHpnaKcc6K5Bpj5pp2aGQziuhJdx+AQAA//8DAHYg2EgXAgAA
     headers:
+      Content-Encoding:
+      - gzip
       Content-Type:
       - application/json; charset=utf-8
-      content-length:
-      - '535'
     status:
       code: 200
       message: OK

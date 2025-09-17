@@ -6,76 +6,6 @@ from typing import Optional
 import pytest
 
 from notion_client import AsyncClient, Client
-from dotenv import load_dotenv
-
-load_dotenv()
-
-
-# Fix for VCR compatibility issue with cassettes that have gzip content
-def _patch_vcr_from_serialized_response():
-    """Patch VCR's _from_serialized_response to handle missing content field."""
-    try:
-        import vcr.stubs.httpx_stubs
-        from unittest.mock import patch, MagicMock
-        import httpx
-
-        @patch("httpx.Response.close", MagicMock())
-        @patch("httpx.Response.read", MagicMock())
-        def _patched_from_serialized_response(
-            request, serialized_response, history=None
-        ):
-            # Handle the case where content is None but body.string exists
-            content = serialized_response.get("content")
-            if content is None:
-                # Try to get content from body.string (for older cassettes)
-                body = serialized_response.get("body", {})
-                if isinstance(body, dict) and "string" in body:
-                    body_string = body["string"]
-                    if isinstance(body_string, bytes):
-                        content = body_string
-                    else:
-                        content = body_string.encode() if body_string else b""
-                else:
-                    content = b""
-            elif isinstance(content, str):
-                content = content.encode()
-            elif content is None:
-                content = b""
-
-            # Handle status_code - check both new and old format
-            status_code = serialized_response.get("status_code")
-            if status_code is None:
-                # Try to get from status.code (older cassettes format)
-                status = serialized_response.get("status", {})
-                if isinstance(status, dict):
-                    status_code = status.get("code", 200)
-                else:
-                    status_code = 200
-
-            response = httpx.Response(
-                status_code=status_code,
-                request=request,
-                headers=vcr.stubs.httpx_stubs._from_serialized_headers(
-                    serialized_response.get("headers")
-                ),
-                content=content,
-                history=history or [],
-            )
-            response._content = content
-            return response
-
-        # Apply the patch
-        vcr.stubs.httpx_stubs._from_serialized_response = (
-            _patched_from_serialized_response
-        )
-
-    except ImportError:
-        # VCR not available, skip patching
-        pass
-
-
-# Apply the patch when the module is imported
-_patch_vcr_from_serialized_response()
 
 
 @pytest.fixture(scope="session")
@@ -106,18 +36,10 @@ def vcr_config():
 @pytest.fixture(scope="module")
 def vcr(vcr):
     def remove_page_id_for_matches(r1, r2):
-        try:
-            RE_PAGE_ID = r"[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}"
-            # Get URI strings safely
-            uri1 = str(getattr(r1, "uri", r1))
-            uri2 = str(getattr(r2, "uri", r2))
-            # Remove page IDs from URIs before comparing
-            uri1_clean = re.sub(RE_PAGE_ID, "", uri1)
-            uri2_clean = re.sub(RE_PAGE_ID, "", uri2)
-            return uri1_clean == uri2_clean
-        except Exception:
-            # If anything goes wrong, fall back to exact URI comparison
-            return str(getattr(r1, "uri", r1)) == str(getattr(r2, "uri", r2))
+        RE_PAGE_ID = r"[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}"
+        uri1 = str(getattr(r1, "uri", r1))
+        uri2 = str(getattr(r2, "uri", r2))
+        return re.sub(RE_PAGE_ID, "", uri1) == re.sub(RE_PAGE_ID, "", uri2)
 
     vcr.register_matcher("remove_page_id_for_matches", remove_page_id_for_matches)
     return vcr
