@@ -39,8 +39,8 @@ class ClientOptions:
             should be set on each request.
         timeout_ms: Number of milliseconds to wait before emitting a
             `RequestTimeoutError`.
-        base_url: The root URL for sending API requests. This can be changed to test with
-            a mock server.
+        base_url: The root URL for sending API requests. This can be changed to test
+            with a mock server.
         log_level: Verbosity of logs the instance will produce. By default, logs are
             written to `stdout`.
         logger: A custom logger.

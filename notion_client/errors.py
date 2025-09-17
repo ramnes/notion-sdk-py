@@ -4,7 +4,7 @@ This module defines the exceptions that can be raised when an error occurs.
 """
 
 from enum import Enum
-from typing import Optional
+from typing import Any, Dict, Optional
 
 import httpx
 
@@ -91,14 +91,14 @@ class APIResponseError(HTTPResponseError):
     """An error raised by Notion API."""
 
     code: APIErrorCode
-    additional_data: Optional[dict] = None
+    additional_data: Optional[Dict[str, Any]] = None
 
     def __init__(
         self,
         response: httpx.Response,
         message: str,
         code: APIErrorCode,
-        additional_data: Optional[dict] = None,
+        additional_data: Optional[Dict[str, Any]] = None,
     ) -> None:
         super().__init__(response, message)
         self.code = code
