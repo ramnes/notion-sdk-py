@@ -21,10 +21,20 @@ interactions:
     method: POST
     uri: https://api.notion.com/v1/search
   response:
-    content: '{"object":"list","results":[{"object":"page","id":"95ba0116-6776-4c19-9e45-54e77415f03b","created_time":"2023-06-29T12:47:00.000Z","last_edited_time":"2024-12-30T17:22:00.000Z","created_by":{"object":"user","id":"a4f789cc-7bc8-4cf0-82b9-a8ba7d985ecf"},"last_edited_by":{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78"},"cover":null,"icon":null,"parent":{"type":"workspace","workspace":true},"archived":false,"in_trash":false,"properties":{"title":{"id":"title","type":"title","title":[]}},"url":"https://www.notion.so/95ba011667764c199e4554e77415f03b","public_url":null}],"next_cursor":null,"has_more":false,"type":"page_or_database","page_or_database":{},"request_id":"a0917d70-3b27-402d-97b7-5eb9303f2eb8"}'
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//fFLbbtwgEP2XeYZdsMEYviNPjSIL8LhL4xgXcLbRyv9eseluklbq29x0
+        5pw5c4HofqAvYGAOuQCBhHmbSwbzePnorfY7AoEwggEtnWWcd7RTqqPCc001CkmlQKUElxNrHRDw
+        CW3BcSjhBcFAw5qWso42+oE3RijD2IEx9g0IzDaXAcfwdVpQ3tCWPXBlWvlp+obr3sB8YrhlTDeG
+        Vkyq195T5XxPhZ8Y7Runqe2dVaPuJfoJ9q+L/wOnlJJTa1va63aiop0sdV0jqeiY7zjTwqu+wvn4
+        ignMss0zgeDjcotXm3ApFb+8rVXeOabnvFpfb/oRm5I23AnY5E/hFUcwk50zEgjLUJLNp3thTXHF
+        VALmK2goM9bgyvY9I7dV9/R96PFp3wlsaQYDp1LWbI7H8/l8WGIJcTnkeLzZW92t5lZv/7J23dwc
+        /HBFqQr3JwIL/iqD31KO9xOcbB5eYsI77T+U6jMNMQ2jLdbZXNn9UzKXvb7izw1zGa66uPfYMeWo
+        EiOnQgpNNWeSIrd941yjLErYfwMAAP//AwDLwWio0AIAAA==
     headers: {}
-    http_version: HTTP/1.1
-    status_code: 200
+    status:
+      code: 200
+      message: OK
 - request:
     body: '{"query":"This should have no results"}'
     headers:
@@ -47,8 +57,13 @@ interactions:
     method: POST
     uri: https://api.notion.com/v1/search
   response:
-    content: '{"object":"list","results":[],"next_cursor":null,"has_more":false,"type":"page_or_database","page_or_database":{},"request_id":"d4e7ed22-fd2a-47f9-a916-91216b7390fd"}'
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//ZM1BCsMgEAXQu/y1gokhiFcpRTSZtCk2ps4ILSF3L113+zbvQEkPmgQe
+        eWWBQiVuWRj+clXY6C1hapVLhd9azgr3yOFZKsEvMTMpyGcneOzxRqHUMEeJKTJB/ZM/zl/wasQS
+        1hkey2iSs85o2zurh9E6nRbT62SNcXMyQ9d1OL8AAAD//wMA1pIvz6YAAAA=
     headers: {}
-    http_version: HTTP/1.1
-    status_code: 200
+    status:
+      code: 200
+      message: OK
 version: 1
