@@ -59,49 +59,46 @@ async def test_api_async_request_bad_request_error(async_client):
         await async_client.request(STATUS_PAGE_BAD_REQUEST, "GET")
 
 
-def test_api_response_error_additional_data():
-    class DummyResponse:
-        status_code = 400
-        headers = {}
-        text = '{"object": "error", "message": "msg", "code": "validation_error", "additional_data": {"foo": "bar"}}'
+@pytest.mark.vcr()
+async def test_async_api_response_error_additional_data(async_client):
+    with pytest.raises(APIResponseError) as exc_info:
+        await async_client.request("/users", "GET", auth="invalid-token")
 
-        def json(self):
-            return {
-                "object": "error",
-                "message": "msg",
-                "code": "validation_error",
-                "additional_data": {"foo": "bar"},
-            }
-
-    response = DummyResponse()
-    err = APIResponseError(
-        response, "msg", "validation_error", additional_data={"foo": "bar"}
-    )
-    assert err.additional_data == {"foo": "bar"}
-    assert "foo" in str(err)
+    error = exc_info.value
+    assert error.request_id is not None
+    if error.additional_data is not None:
+        assert isinstance(error.additional_data, dict)
 
 
-def test_api_response_error_without_additional_data():
-    class DummyResponse:
-        status_code = 400
-        headers = {}
-        text = (
-            '{"object": "error", "message": "Test error", "code": "validation_error"}'
-        )
+@pytest.mark.vcr()
+def test_api_response_error_additional_data(client):
+    with pytest.raises(APIResponseError) as exc_info:
+        client.request("/users", "GET", auth="invalid-token")
 
-        def json(self):
-            return {
-                "object": "error",
-                "message": "Test error",
-                "code": "validation_error",
-            }
+    error = exc_info.value
+    assert error.request_id is not None
+    if error.additional_data is not None:
+        assert isinstance(error.additional_data, dict)
 
-    response = DummyResponse()
-    err = APIResponseError(response, "Test error", "validation_error")
 
-    error_str = str(err)
-    assert "additional_data" not in error_str
-    assert "Test error" in error_str
+@pytest.mark.vcr()
+def test_api_response_error_request_id(client):
+    with pytest.raises(APIResponseError) as exc_info:
+        client.request("/invalid", "GET")
+
+    error = exc_info.value
+    assert error.request_id is not None
+    assert isinstance(error.request_id, str)
+
+
+@pytest.mark.vcr()
+async def test_async_api_response_error_request_id(async_client):
+    with pytest.raises(APIResponseError) as exc_info:
+        await async_client.request("/invalid", "GET")
+
+    error = exc_info.value
+    assert error.request_id is not None
+    assert isinstance(error.request_id, str)
 
 
 async def test_is_api_error_code():

@@ -35,7 +35,11 @@ class HTTPResponseError(Exception):
     headers: httpx.Headers
     body: str
 
-    def __init__(self, response: httpx.Response, message: Optional[str] = None) -> None:
+    def __init__(
+        self,
+        response: httpx.Response,
+        message: Optional[str] = None,
+    ) -> None:
         if message is None:
             message = (
                 f"Request to Notion API failed with status: {response.status_code}"
@@ -91,7 +95,8 @@ class APIResponseError(HTTPResponseError):
     """An error raised by Notion API."""
 
     code: APIErrorCode
-    additional_data: Optional[Dict[str, Any]] = None
+    additional_data: Optional[Dict[str, Any]]
+    request_id: Optional[str]
 
     def __init__(
         self,
@@ -99,16 +104,12 @@ class APIResponseError(HTTPResponseError):
         message: str,
         code: APIErrorCode,
         additional_data: Optional[Dict[str, Any]] = None,
+        request_id: Optional[str] = None,
     ) -> None:
         super().__init__(response, message)
         self.code = code
         self.additional_data = additional_data
-
-    def __str__(self) -> str:
-        base = super().__str__()
-        if self.additional_data:
-            return f"{base} (additional_data={self.additional_data})"
-        return base
+        self.request_id = request_id
 
 
 def is_api_error_code(code: str) -> bool:

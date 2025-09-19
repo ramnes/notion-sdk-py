@@ -154,17 +154,32 @@ class BaseClient:
                 body = error.response.json()
                 code = body.get("code")
                 additional_data = body.get("additional_data")
+                request_id = body.get("request_id")
             except json.JSONDecodeError:
                 code = None
                 additional_data = None
+                request_id = None
             if code and is_api_error_code(code):
-                raise APIResponseError(
-                    response, body["message"], code, additional_data=additional_data
+                self.logger.debug(
+                    f"Request failed with status: {error.response.status_code}, "
+                    f"requestId: {request_id}"
                 )
+                raise APIResponseError(
+                    response,
+                    body["message"],
+                    code,
+                    additional_data=additional_data,
+                    request_id=request_id,
+                )
+            self.logger.debug(
+                f"Request failed with status: {error.response.status_code}, "
+                f"requestId: {request_id}"
+            )
             raise HTTPResponseError(error.response)
 
         body = response.json()
-        self.logger.debug(f"=> {body}")
+        request_id = body.get("request_id")
+        self.logger.debug(f"Request succeeded, requestId: {request_id} => {body}")
 
         return body
 
