@@ -126,8 +126,7 @@ async def main():
             logger.info("Found 1 new entry. Opening issue for it...")
         else:
             logger.info(
-                f"Found {len(new_entries_keys)} new entries. "
-                f"Opening issues for them..."
+                f"Found {len(new_entries_keys)} new entries. Opening issues for them..."
             )
         for entry in new_entries:
             title = f"New Notion API Changelog Entry: {new_entries[entry]['title']}"

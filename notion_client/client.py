@@ -14,6 +14,7 @@ from notion_client.api_endpoints import (
     BlocksEndpoint,
     CommentsEndpoint,
     DatabasesEndpoint,
+    DataSourcesEndpoint,
     PagesEndpoint,
     SearchEndpoint,
     UsersEndpoint,
@@ -38,8 +39,8 @@ class ClientOptions:
             should be set on each request.
         timeout_ms: Number of milliseconds to wait before emitting a
             `RequestTimeoutError`.
-        base_url: The root URL for sending API requests. This can be changed to test with
-            a mock server.
+        base_url: The root URL for sending API requests. This can be changed to test
+            with a mock server.
         log_level: Verbosity of logs the instance will produce. By default, logs are
             written to `stdout`.
         logger: A custom logger.
@@ -51,7 +52,7 @@ class ClientOptions:
     base_url: str = "https://api.notion.com"
     log_level: int = logging.WARNING
     logger: Optional[logging.Logger] = None
-    notion_version: str = "2022-06-28"
+    notion_version: str = "2025-09-03"
 
 
 class BaseClient:
@@ -75,6 +76,7 @@ class BaseClient:
 
         self.blocks = BlocksEndpoint(self)
         self.databases = DatabasesEndpoint(self)
+        self.data_sources = DataSourcesEndpoint(self)
         self.users = UsersEndpoint(self)
         self.pages = PagesEndpoint(self)
         self.search = SearchEndpoint(self)
@@ -151,14 +153,33 @@ class BaseClient:
             try:
                 body = error.response.json()
                 code = body.get("code")
+                additional_data = body.get("additional_data")
+                request_id = body.get("request_id")
             except json.JSONDecodeError:
                 code = None
+                additional_data = None
+                request_id = None
             if code and is_api_error_code(code):
-                raise APIResponseError(response, body["message"], code)
+                self.logger.debug(
+                    f"Request failed with status: {error.response.status_code}, "
+                    f"requestId: {request_id}"
+                )
+                raise APIResponseError(
+                    response,
+                    body["message"],
+                    code,
+                    additional_data=additional_data,
+                    request_id=request_id,
+                )
+            self.logger.debug(
+                f"Request failed with status: {error.response.status_code}, "
+                f"requestId: {request_id}"
+            )
             raise HTTPResponseError(error.response)
 
         body = response.json()
-        self.logger.debug(f"=> {body}")
+        request_id = body.get("request_id")
+        self.logger.debug(f"Request succeeded, requestId: {request_id} => {body}")
 
         return body
 

@@ -18,7 +18,7 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: POST
     uri: https://api.notion.com/v1/pages
   response:
@@ -46,7 +46,7 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: PATCH
     uri: https://api.notion.com/v1/blocks/16cabc1e-edcd-8165-9f0b-ed678bda0d68/children
   response:
@@ -70,7 +70,7 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: GET
     uri: https://api.notion.com/v1/blocks/16cabc1e-edcd-81c8-8309-f5b7b460eed1
   response:
@@ -94,7 +94,7 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: DELETE
     uri: https://api.notion.com/v1/blocks/16cabc1e-edcd-81c8-8309-f5b7b460eed1
   response:
@@ -118,7 +118,7 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: DELETE
     uri: https://api.notion.com/v1/blocks/16cabc1e-edcd-8165-9f0b-ed678bda0d68
   response:
