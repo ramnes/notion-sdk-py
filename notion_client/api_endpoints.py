@@ -157,11 +157,11 @@ class DatabasesEndpoint(Endpoint):
                 kwargs,
                 "parent",
                 "title",
-                "properties",
-                "icon",  # 疑似没有这个参数
-                "cover",  # 疑似没有这个参数
-                "description",  # 疑似没有这个参数
-                "is_inline",  # 疑似没有这个参数
+                "description",
+                "is_inline",
+                "initial_data_source",
+                "icon",
+                "cover",
             ),
             auth=kwargs.get("auth"),
         )
