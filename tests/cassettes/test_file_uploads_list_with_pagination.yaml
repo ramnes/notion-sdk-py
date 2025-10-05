@@ -18,23 +18,12 @@ interactions:
     uri: https://api.notion.com/v1/file_uploads?page_size=5
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAA+2V3W6cMBCF32VuixcbDNh+jl61qpCNx1kqFqhtoo1W++4VkJ/dNkmz2yoXUe+w
-        PNgz55szPsBgvmMTQUHXhggJeAxTFwOor4enPdd2WE9jN2gLCbQWFGQVk9JVGTHaaiIYMiJKKwml
-        JnOS54JbAQk0HnVEW8d2h/NfNCsIlYRVn6lQWaYo3VBKv5xEmjtQh/WOwggmcmOJkIITzllFTKZL
-        UtlGIM8llpWEBOLdOJ9thgjHBDodYo22fdutuB9bf/dcoDwPXKuvJ9+Bgm2MY1Bpqsd20w+xHfpN
-        M+zSW5aeKBXSt2iUBuxnUbVvtu0tWlBOdwETCFHHKYCCEXvb9jeQLBh6vWTqMfoWb7GOGOIm7md0
-        zdBH7GN9r0fEfUzHTrf9yV6H/U3cguqnrjsmlyF2ggjq6JJ+xbSx6PKPhPhlBKsuaM8ZzNLX83oz
-        Wve7/nocu7bRc3ek5wEPEFielXw9sm534+Bjvdpvluf+lDA1DYYAyeOXOhwTWMNfqT/P5rI+Uaoo
-        heOlqFES6bBcUNuSV4xr/Eio/4mbn9HoSjd32t/gX7XS7OcE+mln0NeDq0ft5yF+gDhE3YHKEwjY
-        R1D04l7ghhiZ6aVOxgrutCv/98KfNbqyF56myvtM9ZIRaZAtqRuqKyuZfR1vpYr8/fH+cuvLeMV5
-        4KVTffXi8qxe6UXOJM8pp6/5kT/4kR+P3xLocR/rZvJh8M8gqpBIXq7dVehMUKNn+bY61LvBI6jo
-        J3yU85z56Wp5OTz+mOYWW0BprW3T0JwguoJwZAUx0hrC0GZN7lC4poDjTwC/j9UmCgAA
+      string: '{"object":"list","results":[{"object":"file_upload","id":"28399f72-bada-8173-bcc5-00b242881503","created_time":"2025-10-05T10:55:00.000Z","created_by":{"id":"5b8183bd-8984-4417-b2a6-7dc8e439e679","type":"bot"},"last_edited_time":"2025-10-05T10:55:00.000Z","expiry_time":"2025-10-05T11:55:00.000Z","upload_url":"https://api.notion.com/v1/file_uploads/28399f72-bada-8173-bcc5-00b242881503/send","archived":false,"status":"pending","filename":"retrieve_test.txt","content_type":"text/plain","content_length":null},{"object":"file_upload","id":"28399f72-bada-8128-81d9-00b274d4d59a","created_time":"2025-10-05T10:55:00.000Z","created_by":{"id":"5b8183bd-8984-4417-b2a6-7dc8e439e679","type":"bot"},"last_edited_time":"2025-10-05T10:55:00.000Z","expiry_time":"2025-10-05T11:55:00.000Z","archived":false,"status":"uploaded","filename":"test_file.pdf","content_type":"application/pdf","content_length":13264,"file_import_result":{"type":"success","success":{},"imported_time":"2025-10-05T10:55:29.000+00:00"}},{"object":"file_upload","id":"28399f72-bada-817a-94b2-00b20d820231","created_time":"2025-10-05T10:55:00.000Z","created_by":{"id":"5b8183bd-8984-4417-b2a6-7dc8e439e679","type":"bot"},"last_edited_time":"2025-10-05T10:55:00.000Z","expiry_time":"2025-10-05T11:55:00.000Z","upload_url":"https://api.notion.com/v1/file_uploads/28399f72-bada-817a-94b2-00b20d820231/send","archived":false,"status":"pending","filename":"large_file.pdf","content_type":"application/pdf","content_length":null,"number_of_parts":{"total":3,"sent":0}},{"object":"file_upload","id":"28399f72-bada-810b-97ac-00b20c865368","created_time":"2025-10-05T10:55:00.000Z","created_by":{"id":"5b8183bd-8984-4417-b2a6-7dc8e439e679","type":"bot"},"last_edited_time":"2025-10-05T10:55:00.000Z","expiry_time":"2025-10-05T11:55:00.000Z","upload_url":"https://api.notion.com/v1/file_uploads/28399f72-bada-810b-97ac-00b20c865368/send","archived":false,"status":"pending","filename":"test_file.txt","content_type":"text/plain","content_length":null},{"object":"file_upload","id":"28399f72-bada-8148-b990-00b29e88cfee","created_time":"2025-10-05T10:36:00.000Z","created_by":{"id":"5b8183bd-8984-4417-b2a6-7dc8e439e679","type":"bot"},"last_edited_time":"2025-10-05T10:36:00.000Z","expiry_time":"2025-10-05T11:36:00.000Z","archived":false,"status":"uploaded","filename":"large_test.pdf","content_type":"application/pdf","content_length":41943040,"number_of_parts":{"total":4,"sent":4}}],"next_cursor":"28399f72-bada-8131-97ec-00b26410a571","has_more":true,"type":"file_upload","file_upload":{},"request_id":"90d91ae3-33f4-4d57-a058-b111b3deb594"}'
     headers:
-      Content-Encoding:
-      - gzip
       Content-Type:
       - application/json; charset=utf-8
+      content-length:
+      - '2598'
     status:
       code: 200
       message: OK

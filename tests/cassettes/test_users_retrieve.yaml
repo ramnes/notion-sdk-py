@@ -18,17 +18,13 @@ interactions:
     uri: https://api.notion.com/v1/users/me
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAAwAAAP//TJC7boQwFER/JbpNGlsCG/CjS5lmlWJ7y4ZL5AQw8SNks+LfI6ItaEZH
-        M/chzR2C+8A+g4aSMAIBP4CG1slacjdQqWRDm6YW1DHbUTH0EhuusBMKCCx2RtBwwc28vL2aK6YM
-        BOy3zTaaEifQS5kmAvm2HnMuHPGh+g5hWzAe8Ai3ED/TansEcmKdY8H95JjHz2vyy/tzerqE7MNy
-        3jGTn31Ox+nZ/pjRT2jKOgU7mOR/0fjFuFvGBLrlnRSVqlm17wQifhVM2fwXIJExxipOUfQVbQTv
-        qW0Vpy2O2KrOMocj7H8AAAD//wMA9upEwT4BAAA=
+      string: '{"object":"user","id":"5b8183bd-8984-4417-b2a6-7dc8e439e679","name":"New_API_Test","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"Tsing''s
+        Notion","workspace_limits":{"max_file_upload_size_in_bytes":5368709120}},"request_id":"6abcdf97-68f1-4888-adfc-c0de628719e1"}'
     headers:
-      Content-Encoding:
-      - gzip
       Content-Type:
       - application/json; charset=utf-8
+      content-length:
+      - '318'
     status:
       code: 200
       message: OK
@@ -51,17 +47,13 @@ interactions:
     uri: https://api.notion.com/v1/users/5b8183bd-8984-4417-b2a6-7dc8e439e679
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAAwAAAP//TJA7b4QwEIT/SrRNGixhMGDcpUxzSnG9tYa9yImxiR8hlxP/PSK64prR
-        p5l9SHODYD5oyqCgJIpQgZ1BQWckl62ZmRylYELwgZkGezbMkyTRjtQPI1TgcSFQcKJNv7y96jOl
-        DBXgN2aMukQHyhfnKsjX9Zgz4YgPVTcIm6d4wD3cQvxMK04E1QOrHAvtD46+/zwn69+f09MpZBv8
-        4452drE5HacX/NEX60iX1QWcdbK/pK3X5popgeraXg71yJt63yuI9FUoZf1fQG1G2RIOrGk6wQQ3
-        xBDpwrBHTpPkRvYt7H8AAAD//wMAwe85tz4BAAA=
+      string: '{"object":"user","id":"5b8183bd-8984-4417-b2a6-7dc8e439e679","name":"New_API_Test","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"Tsing''s
+        Notion","workspace_limits":{"max_file_upload_size_in_bytes":5368709120}},"request_id":"8eb1d07f-19f4-43b8-bd3e-0e70b622937b"}'
     headers:
-      Content-Encoding:
-      - gzip
       Content-Type:
       - application/json; charset=utf-8
+      content-length:
+      - '318'
     status:
       code: 200
       message: OK

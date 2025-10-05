@@ -18,11 +18,10 @@ interactions:
     uri: https://mock.httpstatus.io/400
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAE/zMxMFBwSkxRCEotLE0tLgEA1aEoBA8AAAA=
+      string: 400 Bad Request
     headers:
-      content-encoding:
-      - gzip
+      content-length:
+      - '15'
       content-type:
       - text/plain
     status:

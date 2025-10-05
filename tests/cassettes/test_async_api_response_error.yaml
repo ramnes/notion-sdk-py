@@ -19,7 +19,7 @@ interactions:
   response:
     body:
       string: '{"object":"error","status":400,"code":"invalid_request_url","message":"Invalid
-        request URL.","request_id":"219dcd5c-7944-4bc9-bbdb-65d63d61163f"}'
+        request URL.","request_id":"58388fdd-e383-4c3c-a804-bf48450dac55"}'
     headers:
       Content-Length:
       - '145'
@@ -48,7 +48,7 @@ interactions:
   response:
     body:
       string: '{"object":"error","status":401,"code":"unauthorized","message":"API
-        token is invalid.","request_id":"33f89030-e633-4a86-be6d-3f92b0e8adee"}'
+        token is invalid.","request_id":"bad4a811-f2d3-4ab0-b925-91949185877f"}'
     headers:
       Content-Length:
       - '139'

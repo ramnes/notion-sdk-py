@@ -29,7 +29,7 @@ def vcr_config() -> Dict[str, Any]:
         ],
         "before_record_response": remove_headers,
         "match_on": ["method", "remove_page_id_for_matches"],
-        "decode_compressed_response": False,
+        "decode_compressed_response": True,
     }
 
 
@@ -60,10 +60,13 @@ def parent_page_id(vcr) -> str:
 
     try:
         with vcr.use_cassette("test_pages_create.yaml") as cass:
-            response = cass._serializer.deserialize(cass.data[0][1]["content"])
+            response = cass._serializer.deserialize(cass.data[0][1]["body"]["string"])
             return response["parent"]["page_id"]
     except Exception:
-        return "26899f72bada80dc843deacaf51e89ad"
+        pytest.exit(
+            "Missing base page id. Restore test_pages_create.yaml or add "
+            "NOTION_TEST_PAGE_ID to your environment.",
+        )
 
 
 @pytest.fixture(scope="function")

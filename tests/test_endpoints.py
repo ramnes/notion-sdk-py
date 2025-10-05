@@ -327,10 +327,10 @@ def test_file_uploads_list_with_status_filter(client):
 
 
 @pytest.mark.vcr()
-def test_file_uploads_list_with_stat_cursor(client):
+def test_file_uploads_list_with_start_cursor(client):
     """Test listing file uploads with start cursor"""
     response = client.file_uploads.list(
-        start_cursor="21c99f72-bada-816b-b0de-00b2a9747381"
+        start_cursor="27199f72-bada-8105-aab2-00b2d48f382b"
     )
 
     assert response["object"] == "list"

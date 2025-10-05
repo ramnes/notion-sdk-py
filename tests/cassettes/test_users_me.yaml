@@ -18,17 +18,13 @@ interactions:
     uri: https://api.notion.com/v1/users/me
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAAwAAAP//TJA5T8QwFIT/CnoNjS3l9tFR0qwotrfs+AUZEjv4ICyr/HcUtEWa0aeZ
-        d0hzh2A+cMwgoSSMQMBZkNAbXvPWWMoF72jX1YyaRg+U2ZFj1wocmAACXi8IEi64qZe3V3XFlIGA
-        /tZZR1XiDNKXeSaQb+sxZ8IRHyrvEDaP8YBHuIX4mVY9IpATyxwL7idHPX5ek/Pvz+npErIL/ryj
-        Zre4nI7Ti/5Rk5tRlXUO2qrkflE5r8wtYwLZtwNnlaibat8JRPwqmLL6L6CaOO8nPdFGmIl2g7WU
-        697QphrqigmODWth/wMAAP//AwBq11mJPgEAAA==
+      string: '{"object":"user","id":"5b8183bd-8984-4417-b2a6-7dc8e439e679","name":"New_API_Test","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"Tsing''s
+        Notion","workspace_limits":{"max_file_upload_size_in_bytes":5368709120}},"request_id":"68a6531f-ab7a-486d-bdf6-078c071d56ea"}'
     headers:
-      Content-Encoding:
-      - gzip
       Content-Type:
       - application/json; charset=utf-8
+      content-length:
+      - '318'
     status:
       code: 200
       message: OK
