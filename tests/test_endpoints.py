@@ -161,7 +161,7 @@ def test_databases_update(client, database_id):
 
 
 @pytest.mark.vcr()
-def test_data_sources_create_and_retrieve(client, database_id):
+def test_data_sources_create(client, database_id):
     title = [{"type": "text", "text": {"content": "Test DataSource"}}]
     properties = {"Name": {"title": {}}}
     parent = {"type": "database_id", "database_id": database_id}
@@ -169,46 +169,26 @@ def test_data_sources_create_and_retrieve(client, database_id):
         parent=parent, title=title, properties=properties
     )
     assert response["object"] == "data_source"
-    data_source_id = response["id"]
-
-    retrieve = client.data_sources.retrieve(data_source_id)
-    assert retrieve["object"] == "data_source"
 
 
 @pytest.mark.vcr()
-def test_data_sources_query(client, database_id):
-    title = [{"type": "text", "text": {"content": "Test DataSource Query"}}]
-    properties = {"Name": {"title": {}}}
-    parent = {"type": "database_id", "database_id": database_id}
-    ds = client.data_sources.create(parent=parent, title=title, properties=properties)
-    data_source_id = ds["id"]
-
-    result = client.data_sources.query(data_source_id)
-    assert result["object"] == "list"
+def test_data_sources_retrieve(client, data_source_id):
+    response = client.data_sources.retrieve(data_source_id)
+    assert response["object"] == "data_source"
 
 
 @pytest.mark.vcr()
-def test_data_sources_update(client, database_id):
-    title = [{"type": "text", "text": {"content": "Test DataSource Update"}}]
-    icon = {"type": "emoji", "emoji": "🚀"}
-    properties = {"Name": {"title": {}}}
-    in_trash = False
-    archived = False
-    parent = {"type": "database_id", "database_id": database_id}
-    response = client.data_sources.create(
-        title=title,
-        icon=icon,
-        properties=properties,
-        in_trash=in_trash,
-        archived=archived,
-        parent=parent,
-    )
-    data_source_id = response["id"]
+def test_data_sources_query(client, data_source_id):
+    response = client.data_sources.query(data_source_id)
+    assert response["object"] == "list"
 
+
+@pytest.mark.vcr()
+def test_data_sources_update(client, data_source_id):
     new_title = [{"type": "text", "text": {"content": "Updated DataSource"}}]
-    update = client.data_sources.update(data_source_id, title=new_title)
-    assert update["object"] == "data_source"
-    assert update["title"][0]["text"]["content"] == "Updated DataSource"
+    response = client.data_sources.update(data_source_id, title=new_title)
+    assert response["object"] == "data_source"
+    assert response["title"][0]["text"]["content"] == "Updated DataSource"
 
 
 @pytest.mark.vcr()

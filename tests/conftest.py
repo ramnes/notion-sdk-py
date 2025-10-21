@@ -114,6 +114,22 @@ def database_id(client, page_id) -> str:
 
 
 @pytest.fixture(scope="function")
+def data_source_id(client, database_id):
+    """create a block inside page_id to run each data source test without leaks"""
+    data_source_name = f"Test Data Source - {datetime.now()}"
+    parent = {"type": "database_id", "database_id": database_id}
+    properties = {"Name": {"type": "title", "title": {}}}
+    title = [{"type": "text", "text": {"content": data_source_name}}]
+    icon = {"type": "emoji", "emoji": "⚙️"}
+    response = client.data_sources.create(
+        **{"parent": parent, "properties": properties, "title": title, "icon": icon}
+    )
+
+    yield response["id"]
+    client.data_sources.update(response["id"], archived=True)
+
+
+@pytest.fixture(scope="function")
 def comment_id(client, page_id) -> str:
     """create a comment inside page_id to run each comment test without leaks"""
     parent = {"page_id": page_id}
