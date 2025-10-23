@@ -1,0 +1,28 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - mock.httpstatus.io
+      notion-version:
+      - '2025-09-03'
+    method: GET
+    uri: https://mock.httpstatus.io/400
+  response:
+    body:
+      string: 400 Bad Request
+    headers:
+      content-length:
+      - '15'
+      content-type:
+      - text/plain
+    status:
+      code: 400
+      message: Bad Request
+version: 1

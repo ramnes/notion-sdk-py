@@ -35,7 +35,11 @@ class HTTPResponseError(Exception):
     headers: httpx.Headers
     body: str
 
-    def __init__(self, response: httpx.Response, message: Optional[str] = None) -> None:
+    def __init__(
+        self,
+        response: httpx.Response,
+        message: Optional[str] = None,
+    ) -> None:
         if message is None:
             message = (
                 f"Request to Notion API failed with status: {response.status_code}"

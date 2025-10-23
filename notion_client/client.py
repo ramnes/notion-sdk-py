@@ -14,6 +14,7 @@ from notion_client.api_endpoints import (
     BlocksEndpoint,
     CommentsEndpoint,
     DatabasesEndpoint,
+    DataSourcesEndpoint,
     PagesEndpoint,
     SearchEndpoint,
     UsersEndpoint,
@@ -38,8 +39,8 @@ class ClientOptions:
             should be set on each request.
         timeout_ms: Number of milliseconds to wait before emitting a
             `RequestTimeoutError`.
-        base_url: The root URL for sending API requests. This can be changed to test with
-            a mock server.
+        base_url: The root URL for sending API requests. This can be changed to test
+            with a mock server.
         log_level: Verbosity of logs the instance will produce. By default, logs are
             written to `stdout`.
         logger: A custom logger.
@@ -51,7 +52,7 @@ class ClientOptions:
     base_url: str = "https://api.notion.com"
     log_level: int = logging.WARNING
     logger: Optional[logging.Logger] = None
-    notion_version: str = "2022-06-28"
+    notion_version: str = "2025-09-03"
 
 
 class BaseClient:
@@ -75,6 +76,7 @@ class BaseClient:
 
         self.blocks = BlocksEndpoint(self)
         self.databases = DatabasesEndpoint(self)
+        self.data_sources = DataSourcesEndpoint(self)
         self.users = UsersEndpoint(self)
         self.pages = PagesEndpoint(self)
         self.search = SearchEndpoint(self)

@@ -13,12 +13,18 @@ interactions:
       host:
       - mock.httpstatus.io
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: GET
     uri: https://mock.httpstatus.io/400
   response:
-    content: 400 Bad Request
-    headers: {}
-    http_version: HTTP/1.1
-    status_code: 400
+    body:
+      string: 400 Bad Request
+    headers:
+      content-length:
+      - '15'
+      content-type:
+      - text/plain
+    status:
+      code: 400
+      message: Bad Request
 version: 1

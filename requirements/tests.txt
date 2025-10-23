@@ -4,6 +4,4 @@ pytest-asyncio
 pytest-cov
 pytest-timeout
 pytest-vcr
-
-# I'm unable to use vcrpy 6.x cassettes (UnicodeDecodeError on JSON body), let's try again later
-vcrpy<6
+vcrpy==6.0.2

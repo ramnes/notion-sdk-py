@@ -1,84 +1,17 @@
 import os
 import re
 from datetime import datetime
-from typing import Optional
+from typing import Any, Dict, Optional
 
 import pytest
 
 from notion_client import AsyncClient, Client
 
 
-# Fix for VCR compatibility issue with cassettes that have gzip content
-def _patch_vcr_from_serialized_response():
-    """Patch VCR's _from_serialized_response to handle missing content field."""
-    try:
-        import vcr.stubs.httpx_stubs
-        from unittest.mock import patch, MagicMock
-        import httpx
-
-        @patch("httpx.Response.close", MagicMock())
-        @patch("httpx.Response.read", MagicMock())
-        def _patched_from_serialized_response(
-            request, serialized_response, history=None
-        ):
-            # Handle the case where content is None but body.string exists
-            content = serialized_response.get("content")
-            if content is None:
-                # Try to get content from body.string (for older cassettes)
-                body = serialized_response.get("body", {})
-                if isinstance(body, dict) and "string" in body:
-                    body_string = body["string"]
-                    if isinstance(body_string, bytes):
-                        content = body_string
-                    else:
-                        content = body_string.encode() if body_string else b""
-                else:
-                    content = b""
-            elif isinstance(content, str):
-                content = content.encode()
-            elif content is None:
-                content = b""
-
-            # Handle status_code - check both new and old format
-            status_code = serialized_response.get("status_code")
-            if status_code is None:
-                # Try to get from status.code (older cassettes format)
-                status = serialized_response.get("status", {})
-                if isinstance(status, dict):
-                    status_code = status.get("code", 200)
-                else:
-                    status_code = 200
-
-            response = httpx.Response(
-                status_code=status_code,
-                request=request,
-                headers=vcr.stubs.httpx_stubs._from_serialized_headers(
-                    serialized_response.get("headers")
-                ),
-                content=content,
-                history=history or [],
-            )
-            response._content = content
-            return response
-
-        # Apply the patch
-        vcr.stubs.httpx_stubs._from_serialized_response = (
-            _patched_from_serialized_response
-        )
-
-    except ImportError:
-        # VCR not available, skip patching
-        pass
-
-
-# Apply the patch when the module is imported
-_patch_vcr_from_serialized_response()
-
-
 @pytest.fixture(scope="session")
-def vcr_config():
-    def remove_headers(response: dict):
-        headers_to_keep = {}
+def vcr_config() -> Dict[str, Any]:
+    def remove_headers(response: Dict[str, Any]) -> Dict[str, Any]:
+        headers_to_keep: Dict[str, Any] = {}
         if response.get("headers"):
             for key, value in response["headers"].items():
                 key_lower = key.lower()
@@ -104,14 +37,16 @@ def vcr_config():
 def vcr(vcr):
     def remove_page_id_for_matches(r1, r2):
         RE_PAGE_ID = r"[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}"
-        return re.sub(RE_PAGE_ID, r1.uri, "") == re.sub(RE_PAGE_ID, r2.uri, "")
+        uri1 = str(getattr(r1, "uri", r1))
+        uri2 = str(getattr(r2, "uri", r2))
+        return re.sub(RE_PAGE_ID, "", uri1) == re.sub(RE_PAGE_ID, "", uri2)
 
     vcr.register_matcher("remove_page_id_for_matches", remove_page_id_for_matches)
     return vcr
 
 
 @pytest.fixture(scope="session")
-def token() -> str:
+def token() -> Optional[str]:
     return os.environ.get("NOTION_TOKEN")
 
 
@@ -125,7 +60,7 @@ def parent_page_id(vcr) -> str:
 
     try:
         with vcr.use_cassette("test_pages_create.yaml") as cass:
-            response = cass._serializer.deserialize(cass.data[0][1]["content"])
+            response = cass._serializer.deserialize(cass.data[0][1]["body"]["string"])
             return response["parent"]["page_id"]
     except Exception:
         pytest.exit(
@@ -176,6 +111,22 @@ def database_id(client, page_id) -> str:
 
     yield response["id"]
     client.blocks.delete(block_id=response["id"])
+
+
+@pytest.fixture(scope="function")
+def data_source_id(client, database_id):
+    """create a block inside page_id to run each data source test without leaks"""
+    data_source_name = f"Test Data Source - {datetime.now()}"
+    parent = {"type": "database_id", "database_id": database_id}
+    properties = {"Name": {"type": "title", "title": {}}}
+    title = [{"type": "text", "text": {"content": data_source_name}}]
+    icon = {"type": "emoji", "emoji": "⚙️"}
+    response = client.data_sources.create(
+        **{"parent": parent, "properties": properties, "title": title, "icon": icon}
+    )
+
+    yield response["id"]
+    client.data_sources.update(response["id"], archived=True)
 
 
 @pytest.fixture(scope="function")

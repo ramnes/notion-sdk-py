@@ -147,18 +147,6 @@ def test_databases_create(client, page_id):
 
 
 @pytest.mark.vcr()
-def test_databases_query(client, database_id):
-    query = {
-        "database_id": database_id,
-        "filter": {"timestamp": "created_time", "created_time": {"past_week": {}}},
-    }
-
-    response = client.databases.query(**query)
-    assert response["object"] == "list"
-    assert not response["results"]
-
-
-@pytest.mark.vcr()
 def test_databases_retrieve(client, database_id):
     response = client.databases.retrieve(database_id)
     assert response["object"] == "database"
@@ -170,6 +158,37 @@ def test_databases_update(client, database_id):
 
     response = client.databases.update(database_id=database_id, icon=icon)
     assert response["icon"]
+
+
+@pytest.mark.vcr()
+def test_data_sources_create(client, database_id):
+    title = [{"type": "text", "text": {"content": "Test DataSource"}}]
+    properties = {"Name": {"title": {}}}
+    parent = {"type": "database_id", "database_id": database_id}
+    response = client.data_sources.create(
+        parent=parent, title=title, properties=properties
+    )
+    assert response["object"] == "data_source"
+
+
+@pytest.mark.vcr()
+def test_data_sources_retrieve(client, data_source_id):
+    response = client.data_sources.retrieve(data_source_id)
+    assert response["object"] == "data_source"
+
+
+@pytest.mark.vcr()
+def test_data_sources_query(client, data_source_id):
+    response = client.data_sources.query(data_source_id)
+    assert response["object"] == "list"
+
+
+@pytest.mark.vcr()
+def test_data_sources_update(client, data_source_id):
+    new_title = [{"type": "text", "text": {"content": "Updated DataSource"}}]
+    response = client.data_sources.update(data_source_id, title=new_title)
+    assert response["object"] == "data_source"
+    assert response["title"][0]["text"]["content"] == "Updated DataSource"
 
 
 @pytest.mark.vcr()
@@ -288,10 +307,10 @@ def test_file_uploads_list_with_status_filter(client):
 
 
 @pytest.mark.vcr()
-def test_file_uploads_list_with_stat_cursor(client):
+def test_file_uploads_list_with_start_cursor(client):
     """Test listing file uploads with start cursor"""
     response = client.file_uploads.list(
-        start_cursor="21c99f72-bada-816b-b0de-00b2a9747381"
+        start_cursor="27199f72-bada-8105-aab2-00b2d48f382b"
     )
 
     assert response["object"] == "list"

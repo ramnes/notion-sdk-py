@@ -13,15 +13,21 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: GET
     uri: https://api.notion.com/v1/invalid
   response:
-    content: '{"object":"error","status":400,"code":"invalid_request_url","message":"Invalid
-      request URL."}'
-    headers: {}
-    http_version: HTTP/1.1
-    status_code: 400
+    body:
+      string: '{"object":"error","status":400,"code":"invalid_request_url","message":"Invalid
+        request URL.","request_id":"8960d1de-371c-42ae-b80a-a0cd522ba425"}'
+    headers:
+      Content-Length:
+      - '145'
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 400
+      message: Bad Request
 - request:
     body: ''
     headers:
@@ -36,13 +42,19 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: GET
     uri: https://api.notion.com/v1/users
   response:
-    content: '{"object":"error","status":401,"code":"unauthorized","message":"API
-      token is invalid.","request_id":"15ca8906-fcb1-4d90-b25a-ad03ba508350"}'
-    headers: {}
-    http_version: HTTP/1.1
-    status_code: 401
+    body:
+      string: '{"object":"error","status":401,"code":"unauthorized","message":"API
+        token is invalid.","request_id":"069e7b33-687e-4b20-b798-878437aae90c"}'
+    headers:
+      Content-Length:
+      - '139'
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 401
+      message: Unauthorized
 version: 1

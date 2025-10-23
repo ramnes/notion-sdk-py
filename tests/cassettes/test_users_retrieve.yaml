@@ -13,14 +13,21 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: GET
     uri: https://api.notion.com/v1/users/me
   response:
-    content: '{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78","name":"notion-sdk-py","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"notion-sdk-py"},"request_id":"9f4d5a8f-4782-4738-87b2-db2fcc109ec9"}'
-    headers: {}
-    http_version: HTTP/1.1
-    status_code: 200
+    body:
+      string: '{"object":"user","id":"5b8183bd-8984-4417-b2a6-7dc8e439e679","name":"New_API_Test","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"Tsing''s
+        Notion","workspace_limits":{"max_file_upload_size_in_bytes":5368709120}},"request_id":"6abcdf97-68f1-4888-adfc-c0de628719e1"}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      content-length:
+      - '318'
+    status:
+      code: 200
+      message: OK
 - request:
     body: ''
     headers:
@@ -35,12 +42,19 @@ interactions:
       host:
       - api.notion.com
       notion-version:
-      - '2022-06-28'
+      - '2025-09-03'
     method: GET
-    uri: https://api.notion.com/v1/users/7775f3a3-893f-43fa-b625-460c61094c78
+    uri: https://api.notion.com/v1/users/5b8183bd-8984-4417-b2a6-7dc8e439e679
   response:
-    content: '{"object":"user","id":"7775f3a3-893f-43fa-b625-460c61094c78","name":"notion-sdk-py","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"notion-sdk-py"},"request_id":"b88ac143-7766-42fa-982e-eef6fe527ce8"}'
-    headers: {}
-    http_version: HTTP/1.1
-    status_code: 200
+    body:
+      string: '{"object":"user","id":"5b8183bd-8984-4417-b2a6-7dc8e439e679","name":"New_API_Test","avatar_url":null,"type":"bot","bot":{"owner":{"type":"workspace","workspace":true},"workspace_name":"Tsing''s
+        Notion","workspace_limits":{"max_file_upload_size_in_bytes":5368709120}},"request_id":"8eb1d07f-19f4-43b8-bd3e-0e70b622937b"}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      content-length:
+      - '318'
+    status:
+      code: 200
+      message: OK
 version: 1
