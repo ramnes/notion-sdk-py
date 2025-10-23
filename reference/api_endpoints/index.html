@@ -632,6 +632,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#notion_client.api_endpoints.CommentsEndpoint.retrieve" class="md-nav__link">
+    <span class="md-ellipsis">
+      retrieve
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1243,6 +1252,15 @@
   <a href="#notion_client.api_endpoints.CommentsEndpoint.list" class="md-nav__link">
     <span class="md-ellipsis">
       list
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notion_client.api_endpoints.CommentsEndpoint.retrieve" class="md-nav__link">
+    <span class="md-ellipsis">
+      retrieve
     </span>
   </a>
   
@@ -2208,7 +2226,18 @@
 <span class="normal">380</span>
 <span class="normal">381</span>
 <span class="normal">382</span>
-<span class="normal">383</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">CommentsEndpoint</span><span class="p">(</span><span class="n">Endpoint</span><span class="p">):</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">CommentsEndpoint</span><span class="p">(</span><span class="n">Endpoint</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new comment in the specified page or existing discussion thread.</span>
 
@@ -2231,12 +2260,23 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve a list of un-resolved [Comment objects](https://developers.notion.com/reference/comment-object) from the specified block.</span>
 
-<span class="sd">        *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-comment)*</span>
+<span class="sd">        *[🔗 Endpoint documentation](https://developers.notion.com/reference/list-comments)*</span>
 <span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
             <span class="n">path</span><span class="o">=</span><span class="s2">&quot;comments&quot;</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
             <span class="n">query</span><span class="o">=</span><span class="n">pick</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="s2">&quot;block_id&quot;</span><span class="p">,</span> <span class="s2">&quot;start_cursor&quot;</span><span class="p">,</span> <span class="s2">&quot;page_size&quot;</span><span class="p">),</span>
+            <span class="n">auth</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;auth&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">retrieve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve a [Comment object](https://developers.notion.com/reference/comment-object) from its `comment_id`.</span>
+
+<span class="sd">        *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-comment)*</span>
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="n">path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;comments/</span><span class="si">{</span><span class="n">comment_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
             <span class="n">auth</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;auth&quot;</span><span class="p">),</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -2325,7 +2365,7 @@
     <div class="doc doc-contents ">
 
         <p>Retrieve a list of un-resolved <a href="https://developers.notion.com/reference/comment-object">Comment objects</a> from the specified block.</p>
-<p><em><a href="https://developers.notion.com/reference/retrieve-a-comment">🔗 Endpoint documentation</a></em></p>
+<p><em><a href="https://developers.notion.com/reference/list-comments">🔗 Endpoint documentation</a></em></p>
 
 
             <details class="quote">
@@ -2343,12 +2383,54 @@
 <span class="normal">383</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve a list of un-resolved [Comment objects](https://developers.notion.com/reference/comment-object) from the specified block.</span>
 
-<span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-comment)*</span>
+<span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/list-comments)*</span>
 <span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
         <span class="n">path</span><span class="o">=</span><span class="s2">&quot;comments&quot;</span><span class="p">,</span>
         <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
         <span class="n">query</span><span class="o">=</span><span class="n">pick</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="s2">&quot;block_id&quot;</span><span class="p">,</span> <span class="s2">&quot;start_cursor&quot;</span><span class="p">,</span> <span class="s2">&quot;page_size&quot;</span><span class="p">),</span>
+        <span class="n">auth</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;auth&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="notion_client.api_endpoints.CommentsEndpoint.retrieve" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">retrieve</span><span class="p">(</span><span class="n">comment_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Retrieve a <a href="https://developers.notion.com/reference/comment-object">Comment object</a> from its <code>comment_id</code>.</p>
+<p><em><a href="https://developers.notion.com/reference/retrieve-comment">🔗 Endpoint documentation</a></em></p>
+
+
+            <details class="quote">
+              <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">retrieve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve a [Comment object](https://developers.notion.com/reference/comment-object) from its `comment_id`.</span>
+
+<span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-comment)*</span>
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+        <span class="n">path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;comments/</span><span class="si">{</span><span class="n">comment_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
         <span class="n">auth</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;auth&quot;</span><span class="p">),</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -3138,18 +3220,7 @@
 
               <details class="quote">
                 <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">386</span>
-<span class="normal">387</span>
-<span class="normal">388</span>
-<span class="normal">389</span>
-<span class="normal">390</span>
-<span class="normal">391</span>
-<span class="normal">392</span>
-<span class="normal">393</span>
-<span class="normal">394</span>
-<span class="normal">395</span>
-<span class="normal">396</span>
-<span class="normal">397</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">397</span>
 <span class="normal">398</span>
 <span class="normal">399</span>
 <span class="normal">400</span>
@@ -3202,7 +3273,18 @@
 <span class="normal">447</span>
 <span class="normal">448</span>
 <span class="normal">449</span>
-<span class="normal">450</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FileUploadsEndpoint</span><span class="p">(</span><span class="n">Endpoint</span><span class="p">):</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FileUploadsEndpoint</span><span class="p">(</span><span class="n">Endpoint</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a file upload.</span>
 
@@ -3300,16 +3382,16 @@
 
             <details class="quote">
               <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">406</span>
-<span class="normal">407</span>
-<span class="normal">408</span>
-<span class="normal">409</span>
-<span class="normal">410</span>
-<span class="normal">411</span>
-<span class="normal">412</span>
-<span class="normal">413</span>
-<span class="normal">414</span>
-<span class="normal">415</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_upload_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_upload_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Complete the file upload process.</span>
 
 <span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/complete-a-file-upload)*</span>
@@ -3342,24 +3424,24 @@
 
             <details class="quote">
               <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">387</span>
-<span class="normal">388</span>
-<span class="normal">389</span>
-<span class="normal">390</span>
-<span class="normal">391</span>
-<span class="normal">392</span>
-<span class="normal">393</span>
-<span class="normal">394</span>
-<span class="normal">395</span>
-<span class="normal">396</span>
-<span class="normal">397</span>
-<span class="normal">398</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">398</span>
 <span class="normal">399</span>
 <span class="normal">400</span>
 <span class="normal">401</span>
 <span class="normal">402</span>
 <span class="normal">403</span>
-<span class="normal">404</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a file upload.</span>
 
 <span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-a-file-upload)*</span>
@@ -3400,17 +3482,17 @@
 
             <details class="quote">
               <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">428</span>
-<span class="normal">429</span>
-<span class="normal">430</span>
-<span class="normal">431</span>
-<span class="normal">432</span>
-<span class="normal">433</span>
-<span class="normal">434</span>
-<span class="normal">435</span>
-<span class="normal">436</span>
-<span class="normal">437</span>
-<span class="normal">438</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;List all file uploads.</span>
 
 <span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/list-file-uploads)*</span>
@@ -3444,16 +3526,16 @@
 
             <details class="quote">
               <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">417</span>
-<span class="normal">418</span>
-<span class="normal">419</span>
-<span class="normal">420</span>
-<span class="normal">421</span>
-<span class="normal">422</span>
-<span class="normal">423</span>
-<span class="normal">424</span>
-<span class="normal">425</span>
-<span class="normal">426</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">retrieve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_upload_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">retrieve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_upload_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve a file upload object using the ID specified.</span>
 
 <span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-file-upload)*</span>
@@ -3486,17 +3568,17 @@
 
             <details class="quote">
               <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">440</span>
-<span class="normal">441</span>
-<span class="normal">442</span>
-<span class="normal">443</span>
-<span class="normal">444</span>
-<span class="normal">445</span>
-<span class="normal">446</span>
-<span class="normal">447</span>
-<span class="normal">448</span>
-<span class="normal">449</span>
-<span class="normal">450</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_upload_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_upload_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Send a file upload</span>
 
 <span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/send-a-file-upload)*</span>
