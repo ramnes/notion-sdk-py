@@ -194,6 +194,7 @@ class DataSourcesEndpoint(Endpoint):
                 "page_size",
                 "archived",
                 "in_trash",
+                "result_type",
             ),
             auth=kwargs.get("auth"),
         )
@@ -282,8 +283,10 @@ class PagesEndpoint(Endpoint):
                 "icon",
                 "cover",
                 "is_locked",
-                "in_trash",
+                "template",
+                "erase_content",
                 "archived",
+                "in_trash",
             ),
             auth=kwargs.get("auth"),
         )
