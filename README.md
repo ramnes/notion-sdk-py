@@ -303,6 +303,11 @@ print(json.dumps(response, indent=2))
 > In the above example, the simpler approach is to use
 > `notion.comments.create()`.
 
+Another customization you can make is to pass your own `httpx.Client` or
+`httpx.AsyncClient` to the `Client` or `AsyncClient` constructor. This might be
+helpful for some execution environments where the default HTTPX client isn't
+suitable.
+
 ## Testing
 
 Run the tests with the `pytest` command. If you want to test against all Python
