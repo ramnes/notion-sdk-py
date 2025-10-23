@@ -373,12 +373,23 @@ class CommentsEndpoint(Endpoint):
     def list(self, **kwargs: Any) -> SyncAsync[Any]:
         """Retrieve a list of un-resolved [Comment objects](https://developers.notion.com/reference/comment-object) from the specified block.
 
-        *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-comment)*
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/list-comments)*
         """  # noqa: E501
         return self.parent.request(
             path="comments",
             method="GET",
             query=pick(kwargs, "block_id", "start_cursor", "page_size"),
+            auth=kwargs.get("auth"),
+        )
+
+    def retrieve(self, comment_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Retrieve a [Comment object](https://developers.notion.com/reference/comment-object) from its `comment_id`.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-comment)*
+        """  # noqa: E501
+        return self.parent.request(
+            path=f"comments/{comment_id}",
+            method="GET",
             auth=kwargs.get("auth"),
         )
 

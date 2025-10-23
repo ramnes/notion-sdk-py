@@ -222,6 +222,13 @@ def test_comments_list(client, page_id, comment_id):
 
 
 @pytest.mark.vcr()
+def test_comments_retrieve(client, comment_id):
+    response = client.comments.retrieve(comment_id=comment_id)
+    assert response["object"] == "comment"
+    assert response["id"] == comment_id
+
+
+@pytest.mark.vcr()
 def test_pages_delete(client, page_id):
     response = client.blocks.delete(block_id=page_id)
     assert response
