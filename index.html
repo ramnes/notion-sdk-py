@@ -363,6 +363,39 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Utility functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iterate_paginated_apifunction-kwargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      iterate_paginated_api(function, **kwargs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collect_paginated_apifunction-kwargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      collect_paginated_api(function, **kwargs)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom requests
+    </span>
+  </a>
+  
 </li>
         
       </ul>
@@ -380,9 +413,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
+  <a href="#requirements-and-compatibility" class="md-nav__link">
     <span class="md-ellipsis">
-      Requirements
+      Requirements and compatibility
     </span>
   </a>
   
@@ -888,6 +921,39 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Utility functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iterate_paginated_apifunction-kwargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      iterate_paginated_api(function, **kwargs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collect_paginated_apifunction-kwargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      collect_paginated_api(function, **kwargs)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom requests
+    </span>
+  </a>
+  
 </li>
         
       </ul>
@@ -905,9 +971,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
+  <a href="#requirements-and-compatibility" class="md-nav__link">
     <span class="md-ellipsis">
-      Requirements
+      Requirements and compatibility
     </span>
   </a>
   
@@ -995,14 +1061,15 @@ OAuth <strong>access token</strong>.</p>
 <span class="n">notion</span> <span class="o">=</span> <span class="n">AsyncClient</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;NOTION_TOKEN&quot;</span><span class="p">])</span>
 </code></pre></div>
 <p>Make a request to any Notion API endpoint.</p>
-<blockquote>
-<p>See the complete list of endpoints in the <a href="https://developers.notion.com/reference">API reference</a>.</p>
-</blockquote>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pprint</span><span class="w"> </span><span class="kn">import</span> <span class="n">pprint</span>
 
 <span class="n">list_users_response</span> <span class="o">=</span> <span class="n">notion</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">list_users_response</span><span class="p">)</span>
 </code></pre></div>
+<blockquote>
+<p>[!NOTE]
+See the complete list of endpoints in the <a href="https://developers.notion.com/reference">API reference</a>.</p>
+</blockquote>
 <p>or with the asynchronous client:</p>
 <div class="highlight"><pre><span></span><code><span class="n">list_users_response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">notion</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">list_users_response</span><span class="p">)</span>
@@ -1019,9 +1086,9 @@ OAuth <strong>access token</strong>.</p>
 <p>All API endpoints are available in both the synchronous and asynchronous clients.</p>
 <p>Endpoint parameters are grouped into a single object. You don't need to remember
 which parameters go in the path, query, or body.</p>
-<div class="highlight"><pre><span></span><code><span class="n">my_page</span> <span class="o">=</span> <span class="n">notion</span><span class="o">.</span><span class="n">databases</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="n">my_page</span> <span class="o">=</span> <span class="n">notion</span><span class="o">.</span><span class="n">data_sources</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
     <span class="o">**</span><span class="p">{</span>
-        <span class="s2">&quot;database_id&quot;</span><span class="p">:</span> <span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;data_source_id&quot;</span><span class="p">:</span> <span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span><span class="p">,</span>
         <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;property&quot;</span><span class="p">:</span> <span class="s2">&quot;Landmark&quot;</span><span class="p">,</span>
             <span class="s2">&quot;rich_text&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -1037,12 +1104,13 @@ which parameters go in the path, query, or body.</p>
 You can compare <code>code</code> to the values in the <code>APIErrorCode</code> object to avoid
 misspelling error codes.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">notion_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIErrorCode</span><span class="p">,</span> <span class="n">APIResponseError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">notion_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIErrorCode</span><span class="p">,</span> <span class="n">APIResponseError</span><span class="p">,</span> <span class="n">Client</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="n">my_page</span> <span class="o">=</span> <span class="n">notion</span><span class="o">.</span><span class="n">databases</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+    <span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;NOTION_TOKEN&quot;</span><span class="p">])</span>
+    <span class="n">my_page</span> <span class="o">=</span> <span class="n">notion</span><span class="o">.</span><span class="n">data_sources</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
         <span class="o">**</span><span class="p">{</span>
-            <span class="s2">&quot;database_id&quot;</span><span class="p">:</span> <span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;data_source_id&quot;</span><span class="p">:</span> <span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span><span class="p">,</span>
             <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;property&quot;</span><span class="p">:</span> <span class="s2">&quot;Landmark&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;rich_text&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -1053,17 +1121,23 @@ misspelling error codes.</p>
     <span class="p">)</span>
 <span class="k">except</span> <span class="n">APIResponseError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">APIErrorCode</span><span class="o">.</span><span class="n">ObjectNotFound</span><span class="p">:</span>
-        <span class="o">...</span>  <span class="c1"># For example: handle by asking the user to select a different database</span>
+        <span class="c1">#</span>
+        <span class="c1"># For example: handle by asking the user to select a different data source</span>
+        <span class="c1">#</span>
+        <span class="o">...</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Other error handling code</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="logging">Logging</h3>
 <p>The client emits useful information to a logger. By default, it only emits warnings
 and errors.</p>
 <p>If you're debugging an application, and would like the client to log request &amp; response
 bodies, set the <code>log_level</code> option to <code>logging.DEBUG</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">notion_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
+
+<span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span>
     <span class="n">auth</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;NOTION_TOKEN&quot;</span><span class="p">],</span>
     <span class="n">log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
 <span class="p">)</span>
@@ -1117,8 +1191,11 @@ These options are all keys in the single constructor parameter.</p>
 </tr>
 </tbody>
 </table>
+<!-- markdownlint-enable -->
+
 <h3 id="full-api-responses">Full API responses</h3>
 <p>The following functions can distinguish between full and partial API responses.</p>
+<!-- markdownlint-disable -->
 <table>
 <thead>
 <tr>
@@ -1157,8 +1234,8 @@ These options are all keys in the single constructor parameter.</p>
 
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">notion_client.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_full_page</span>
 
-<span class="n">full_or_partial_pages</span> <span class="o">=</span> <span class="k">await</span> <span class="n">notion</span><span class="o">.</span><span class="n">databases</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
-    <span class="n">database_id</span><span class="o">=</span><span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span>
+<span class="n">full_or_partial_pages</span> <span class="o">=</span> <span class="n">notion</span><span class="o">.</span><span class="n">data_sources</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+    <span class="n">data_source_id</span><span class="o">=</span><span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span>
 <span class="p">)</span>
 
 <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">full_or_partial_pages</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]:</span>
@@ -1167,28 +1244,80 @@ These options are all keys in the single constructor parameter.</p>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created at: </span><span class="si">{</span><span class="n">page</span><span class="p">[</span><span class="s1">&#39;created_time&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="utility-functions">Utility functions</h3>
-<p>These functions can be helpful for dealing with any of the paginated APIs.</p>
-<p><code>iterate_paginated_api(function, **kwargs)</code> and its async version
-<code>async_iterate_paginated_api(function, **kwargs)</code> turn any paginated API into a generator.</p>
-<p>The <code>function</code> parameter must accept a <code>start_cursor</code> argument. Example: <code>notion.blocks.children.list</code>.</p>
+<p>This package also exports a few utility functions that are helpful for dealing
+with any of the paginated APIs.</p>
+<h4 id="iterate_paginated_apifunction-kwargs"><code>iterate_paginated_api(function, **kwargs)</code></h4>
+<p>This utility turns any paginated API into a generator.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>function</code>: Any function on the Notion client that represents a paginated API
+  (i.e. accepts <code>start_cursor</code>.) Example: <code>notion.blocks.children.list</code>.</li>
+<li><code>**kwargs</code>: Arguments that should be passed to the API on the first and
+  subsequent calls to the API, for example a <code>block_id</code>.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>A generator over results from the API.</p>
+<p><strong>Example:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">notion_client.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">iterate_paginated_api</span>
 
 <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">iterate_paginated_api</span><span class="p">(</span>
-    <span class="n">notion</span><span class="o">.</span><span class="n">databases</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">database_id</span><span class="o">=</span><span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span>
+    <span class="n">notion</span><span class="o">.</span><span class="n">blocks</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">list</span><span class="p">,</span> <span class="n">block_id</span><span class="o">=</span><span class="n">parent_block_id</span>
 <span class="p">):</span>
     <span class="c1"># Do something with block.</span>
     <span class="o">...</span>
 </code></pre></div>
-<p>If you don't need a generator, <code>collect_paginated_api(function, **kwargs)</code> and
-its async version <code>async_collect_paginated_api(function, **kwargs)</code> have the
-same behavior than the previous functions, but return a list of all results
-from the paginated API.</p>
+<h4 id="collect_paginated_apifunction-kwargs"><code>collect_paginated_api(function, **kwargs)</code></h4>
+<p>This utility accepts the same arguments as <code>iterate_paginated_api</code>, but collects
+the results into an in-memory array.</p>
+<p>Before using this utility, check that the data you are dealing with is small
+enough to fit in memory.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>function</code>: Any function on the Notion client that represents a paginated API
+  (i.e. accepts <code>start_cursor</code>.) Example: <code>notion.blocks.children.list</code>.</li>
+<li><code>**kwargs</code>: Arguments that should be passed to the API on the first and
+  subsequent calls to the API, for example a <code>block_id</code>.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>An array with results from the API.</p>
+<p><strong>Example:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">notion_client.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">collect_paginated_api</span>
 
-<span class="n">all_results</span> <span class="o">=</span> <span class="n">collect_paginated_api</span><span class="p">(</span>
-    <span class="n">notion</span><span class="o">.</span><span class="n">databases</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">database_id</span><span class="o">=</span><span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span>
+<span class="n">blocks</span> <span class="o">=</span> <span class="n">collect_paginated_api</span><span class="p">(</span>
+    <span class="n">notion</span><span class="o">.</span><span class="n">blocks</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">list</span><span class="p">,</span> <span class="n">block_id</span><span class="o">=</span><span class="n">parent_block_id</span>
 <span class="p">)</span>
+<span class="c1"># Do something with blocks.</span>
 </code></pre></div>
+<p>Both utilities also have async versions: <code>async_iterate_paginated_api</code> and
+<code>async_collect_paginated_api</code>.</p>
+<h3 id="custom-requests">Custom requests</h3>
+<p>To make requests directly to a Notion API endpoint instead of using the
+pre-built families of methods, call the <code>request()</code> method. For example:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="c1"># POST /v1/comments</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">notion</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="s2">&quot;comments&quot;</span><span class="p">,</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="p">,</span>
+    <span class="n">body</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;parent&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;page_id&quot;</span><span class="p">:</span> <span class="s2">&quot;5c6a28216bb14a7eb6e1c50111515c3d&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;rich_text&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello, world!&quot;</span><span class="p">}}],</span>
+    <span class="p">},</span>
+    <span class="c1"># No `query` params in this example, only `body`.</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+<blockquote>
+<p>[!TIP]
+Usually, making custom requests with <code>notion.request()</code> isn't necessary, but
+can be helpful in some cases, e.g. when upgrading your <a href="https://developers.notion.com/reference/versioning">Notion API version</a>
+incrementally before upgrading your SDK version. For example, if there's a new
+or renamed endpoint in the new API version that isn't yet available to call
+via a dedicated method on <code>Client</code>.</p>
+<p>In the above example, the simpler approach is to use
+<code>notion.comments.create()</code>.</p>
+</blockquote>
 <h2 id="testing">Testing</h2>
 <p>Run the tests with the <code>pytest</code> command. If you want to test against all Python
 versions, you can run <code>tox</code> instead.</p>
@@ -1199,10 +1328,10 @@ where your integration has all the capabilities enabled).</p>
 <p>The code will use the page at <code>NOTION_TEST_PAGE_ID</code> to generate a temporary
 environment with the Notion objects to be tested, which will be deleted
 at the end of the session.</p>
-<h2 id="requirements">Requirements</h2>
+<h2 id="requirements-and-compatibility">Requirements and compatibility</h2>
 <p>This package supports the following minimum versions:</p>
 <ul>
-<li>Python &gt;= 3.8</li>
+<li>Runtime: Python &gt;= 3.8</li>
 <li>httpx &gt;= 0.23.0</li>
 </ul>
 <p>Earlier versions may still work, but we encourage people building new applications
