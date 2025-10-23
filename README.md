@@ -57,14 +57,15 @@ notion = AsyncClient(auth=os.environ["NOTION_TOKEN"])
 
 Make a request to any Notion API endpoint.
 
-> See the complete list of endpoints in the [API reference](https://developers.notion.com/reference).
-
 ```python
 from pprint import pprint
 
 list_users_response = notion.users.list()
 pprint(list_users_response)
 ```
+
+> [!NOTE]
+> See the complete list of endpoints in the [API reference](https://developers.notion.com/reference).
 
 or with the asynchronous client:
 
@@ -91,9 +92,9 @@ Endpoint parameters are grouped into a single object. You don't need to remember
 which parameters go in the path, query, or body.
 
 ```python
-my_page = notion.databases.query(
+my_page = notion.data_sources.query(
     **{
-        "database_id": "897e5a76-ae52-4b48-9fdf-e71f5945d1af",
+        "data_source_id": "897e5a76-ae52-4b48-9fdf-e71f5945d1af",
         "filter": {
             "property": "Landmark",
             "rich_text": {
@@ -114,12 +115,13 @@ misspelling error codes.
 
 ```python
 import logging
-from notion_client import APIErrorCode, APIResponseError
+from notion_client import APIErrorCode, APIResponseError, Client
 
 try:
-    my_page = notion.databases.query(
+    notion = Client(auth=os.environ["NOTION_TOKEN"])
+    my_page = notion.data_sources.query(
         **{
-            "database_id": "897e5a76-ae52-4b48-9fdf-e71f5945d1af",
+            "data_source_id": "897e5a76-ae52-4b48-9fdf-e71f5945d1af",
             "filter": {
                 "property": "Landmark",
                 "rich_text": {
@@ -130,10 +132,13 @@ try:
     )
 except APIResponseError as error:
     if error.code == APIErrorCode.ObjectNotFound:
-        ...  # For example: handle by asking the user to select a different database
+        #
+        # For example: handle by asking the user to select a different data source
+        #
+        ...
     else:
         # Other error handling code
-        logging.error(error)
+        print(error)
 ```
 
 ### Logging
@@ -145,6 +150,9 @@ If you're debugging an application, and would like the client to log request & r
 bodies, set the `log_level` option to `logging.DEBUG`.
 
 ```python
+import logging
+from notion_client import Client
+
 notion = Client(
     auth=os.environ["NOTION_TOKEN"],
     log_level=logging.DEBUG,
@@ -161,18 +169,20 @@ if you want to create your own logger.
 These options are all keys in the single constructor parameter.
 
 <!-- markdownlint-disable -->
-| Option | Default value | Type | Description |
-|--------|---------------|---------|-------------|
-| `auth` | `None` | `string` | Bearer token for authentication. If left undefined, the `auth` parameter should be set on each request. |
-| `log_level` | `logging.WARNING` | `int` | Verbosity of logs the instance will produce. By default, logs are written to `stdout`.
-| `timeout_ms` | `60_000` | `int` | Number of milliseconds to wait before emitting a `RequestTimeoutError` |
-| `base_url` | `"https://api.notion.com"` | `string` | The root URL for sending API requests. This can be changed to test with a mock server. |
-| `logger` | Log to console | `logging.Logger` | A custom logger. |
+| Option       | Default value              | Type              | Description                                                                                             |
+| ------------ | -------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------- |
+| `auth`       | `None`                     | `string`          | Bearer token for authentication. If left undefined, the `auth` parameter should be set on each request. |
+| `log_level`  | `logging.WARNING`          | `int`             | Verbosity of logs the instance will produce. By default, logs are written to `stdout`.                  |
+| `timeout_ms` | `60_000`                   | `int`             | Number of milliseconds to wait before emitting a `RequestTimeoutError`                                  |
+| `base_url`   | `"https://api.notion.com"` | `string`          | The root URL for sending API requests. This can be changed to test with a mock server.                  |
+| `logger`     | Log to console             | `logging.Logger`  | A custom logger.                                                                                        |
+<!-- markdownlint-enable -->
 
 ### Full API responses
 
 The following functions can distinguish between full and partial API responses.
 
+<!-- markdownlint-disable -->
 | Function                   | Purpose                                                                                                                                                                  |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `is_full_page`             | Determine whether an object is a full [Page object](https://developers.notion.com/reference/page)                                                                        |
@@ -186,8 +196,8 @@ The following functions can distinguish between full and partial API responses.
 ```python
 from notion_client.helpers import is_full_page
 
-full_or_partial_pages = await notion.databases.query(
-    database_id="897e5a76-ae52-4b48-9fdf-e71f5945d1af"
+full_or_partial_pages = notion.data_sources.query(
+    data_source_id="897e5a76-ae52-4b48-9fdf-e71f5945d1af"
 )
 
 for page in full_or_partial_pages["results"]:
@@ -198,35 +208,100 @@ for page in full_or_partial_pages["results"]:
 
 ### Utility functions
 
-These functions can be helpful for dealing with any of the paginated APIs.
+This package also exports a few utility functions that are helpful for dealing
+with any of the paginated APIs.
 
-`iterate_paginated_api(function, **kwargs)` and its async version
-`async_iterate_paginated_api(function, **kwargs)` turn any paginated API into a generator.
+#### `iterate_paginated_api(function, **kwargs)`
 
-The `function` parameter must accept a `start_cursor` argument. Example: `notion.blocks.children.list`.
+This utility turns any paginated API into a generator.
+
+**Parameters:**
+
+- `function`: Any function on the Notion client that represents a paginated API
+  (i.e. accepts `start_cursor`.) Example: `notion.blocks.children.list`.
+- `**kwargs`: Arguments that should be passed to the API on the first and
+  subsequent calls to the API, for example a `block_id`.
+
+**Returns:**
+
+A generator over results from the API.
+
+**Example:**
 
 ```python
 from notion_client.helpers import iterate_paginated_api
 
 for block in iterate_paginated_api(
-    notion.databases.query, database_id="897e5a76-ae52-4b48-9fdf-e71f5945d1af"
+    notion.blocks.children.list, block_id=parent_block_id
 ):
     # Do something with block.
     ...
 ```
 
-If you don't need a generator, `collect_paginated_api(function, **kwargs)` and
-its async version `async_collect_paginated_api(function, **kwargs)` have the
-same behavior than the previous functions, but return a list of all results
-from the paginated API.
+#### `collect_paginated_api(function, **kwargs)`
+
+This utility accepts the same arguments as `iterate_paginated_api`, but collects
+the results into an in-memory array.
+
+Before using this utility, check that the data you are dealing with is small
+enough to fit in memory.
+
+**Parameters:**
+
+- `function`: Any function on the Notion client that represents a paginated API
+  (i.e. accepts `start_cursor`.) Example: `notion.blocks.children.list`.
+- `**kwargs`: Arguments that should be passed to the API on the first and
+  subsequent calls to the API, for example a `block_id`.
+
+**Returns:**
+
+An array with results from the API.
+
+**Example:**
 
 ```python
 from notion_client.helpers import collect_paginated_api
 
-all_results = collect_paginated_api(
-    notion.databases.query, database_id="897e5a76-ae52-4b48-9fdf-e71f5945d1af"
+blocks = collect_paginated_api(
+    notion.blocks.children.list, block_id=parent_block_id
 )
+# Do something with blocks.
 ```
+
+Both utilities also have async versions: `async_iterate_paginated_api` and
+`async_collect_paginated_api`.
+
+### Custom requests
+
+To make requests directly to a Notion API endpoint instead of using the
+pre-built families of methods, call the `request()` method. For example:
+
+```python
+import json
+
+# POST /v1/comments
+response = notion.request(
+    path="comments",
+    method="post",
+    body={
+        "parent": {"page_id": "5c6a28216bb14a7eb6e1c50111515c3d"},
+        "rich_text": [{"text": {"content": "Hello, world!"}}],
+    },
+    # No `query` params in this example, only `body`.
+)
+
+print(json.dumps(response, indent=2))
+```
+
+> [!TIP]
+> Usually, making custom requests with `notion.request()` isn't necessary, but
+> can be helpful in some cases, e.g. when upgrading your [Notion API version](https://developers.notion.com/reference/versioning)
+> incrementally before upgrading your SDK version. For example, if there's a new
+> or renamed endpoint in the new API version that isn't yet available to call
+> via a dedicated method on `Client`.
+>
+> In the above example, the simpler approach is to use
+> `notion.comments.create()`.
 
 ## Testing
 
@@ -242,12 +317,12 @@ The code will use the page at `NOTION_TEST_PAGE_ID` to generate a temporary
 environment with the Notion objects to be tested, which will be deleted
 at the end of the session.
 
-## Requirements
+## Requirements and compatibility
 
 This package supports the following minimum versions:
 
-* Python >= 3.8
-* httpx >= 0.23.0
+- Runtime: Python >= 3.8
+- httpx >= 0.23.0
 
 Earlier versions may still work, but we encourage people building new applications
 to upgrade to the current stable.
