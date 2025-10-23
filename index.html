@@ -1318,6 +1318,10 @@ via a dedicated method on <code>Client</code>.</p>
 <p>In the above example, the simpler approach is to use
 <code>notion.comments.create()</code>.</p>
 </blockquote>
+<p>Another customization you can make is to pass your own <code>httpx.Client</code> or
+<code>httpx.AsyncClient</code> to the <code>Client</code> or <code>AsyncClient</code> constructor. This might be
+helpful for some execution environments where the default HTTPX client isn't
+suitable.</p>
 <h2 id="testing">Testing</h2>
 <p>Run the tests with the <code>pytest</code> command. If you want to test against all Python
 versions, you can run <code>tox</code> instead.</p>
