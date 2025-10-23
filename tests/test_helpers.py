@@ -5,8 +5,11 @@ from types import AsyncGeneratorType, GeneratorType
 import pytest
 
 from notion_client.helpers import (
+    async_collect_data_source_templates,
     async_collect_paginated_api,
+    async_iterate_data_source_templates,
     async_iterate_paginated_api,
+    collect_data_source_templates,
     collect_paginated_api,
     extract_block_id,
     extract_database_id,
@@ -23,6 +26,7 @@ from notion_client.helpers import (
     is_full_user,
     is_mention_rich_text_item_response,
     is_text_rich_text_item_response,
+    iterate_data_source_templates,
     iterate_paginated_api,
     pick,
 )
@@ -521,3 +525,77 @@ def test_extract_block_id_url_parsing_exception():
     finally:
         # Restore original function
         helpers_module.urlparse = original_urlparse
+
+
+@pytest.mark.vcr()
+def test_iterate_data_source_templates(client, data_source_id):
+    generator = iterate_data_source_templates(
+        client.data_sources.list_templates,
+        data_source_id=data_source_id,
+    )
+    assert isinstance(generator, GeneratorType)
+    templates = [template for template in generator]
+    assert isinstance(templates, list)
+
+
+@pytest.mark.vcr()
+def test_collect_data_source_templates(client, data_source_id):
+    templates = collect_data_source_templates(
+        client.data_sources.list_templates,
+        data_source_id=data_source_id,
+    )
+
+    assert isinstance(templates, list)
+
+
+@pytest.mark.vcr()
+async def test_async_iterate_data_source_templates(async_client, parent_page_id):
+    database = await async_client.databases.create(
+        parent={"type": "page_id", "page_id": parent_page_id},
+        title=[{"type": "text", "text": {"content": "Async Test DB"}}],
+    )
+    database_id = database["id"]
+
+    data_source_response = await async_client.data_sources.create(
+        parent={"type": "database_id", "database_id": database_id},
+        properties={"Name": {"type": "title", "title": {}}},
+        title=[{"type": "text", "text": {"content": "Async Test Data Source"}}],
+    )
+    data_source_id = data_source_response["id"]
+
+    generator = async_iterate_data_source_templates(
+        async_client.data_sources.list_templates,
+        data_source_id=data_source_id,
+    )
+    assert isinstance(generator, AsyncGeneratorType)
+    templates = [template async for template in generator]
+    assert isinstance(templates, list)
+
+    await async_client.data_sources.update(data_source_id, archived=True)
+    await async_client.blocks.delete(block_id=database_id)
+
+
+@pytest.mark.vcr()
+async def test_async_collect_data_source_templates(async_client, parent_page_id):
+    database = await async_client.databases.create(
+        parent={"type": "page_id", "page_id": parent_page_id},
+        title=[{"type": "text", "text": {"content": "Async Test DB 2"}}],
+    )
+    database_id = database["id"]
+
+    data_source_response = await async_client.data_sources.create(
+        parent={"type": "database_id", "database_id": database_id},
+        properties={"Name": {"type": "title", "title": {}}},
+        title=[{"type": "text", "text": {"content": "Async Test Data Source 2"}}],
+    )
+    data_source_id = data_source_response["id"]
+
+    templates = await async_collect_data_source_templates(
+        async_client.data_sources.list_templates,
+        data_source_id=data_source_id,
+    )
+
+    assert isinstance(templates, list)
+
+    await async_client.data_sources.update(data_source_id, archived=True)
+    await async_client.blocks.delete(block_id=database_id)

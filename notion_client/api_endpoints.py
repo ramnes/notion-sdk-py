@@ -225,6 +225,18 @@ class DataSourcesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
+    def list_templates(self, data_source_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """List page templates that are available for a data source.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/list-data-source-templates)*
+        """  # noqa: E501
+        return self.parent.request(
+            path=f"data_sources/{data_source_id}/templates",
+            method="GET",
+            query=pick(kwargs, "name", "start_cursor", "page_size"),
+            auth=kwargs.get("auth"),
+        )
+
 
 class PagesPropertiesEndpoint(Endpoint):
     def retrieve(self, page_id: str, property_id: str, **kwargs: Any) -> SyncAsync[Any]:

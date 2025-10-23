@@ -248,3 +248,96 @@ def extract_block_id(url_or_id: str) -> Optional[str]:
 
     # Fall back to general ID extraction for non-URL inputs
     return extract_notion_id(url_or_id)
+
+
+def iterate_data_source_templates(
+    function: Callable[..., Any], **kwargs: Any
+) -> Generator[Any, None, None]:
+    """Return an iterator over templates from a data source.
+
+    Example:
+
+    ```python
+    for template in iterate_data_source_templates(
+        client.data_sources.list_templates,
+        data_source_id=data_source_id,
+    ):
+        print(template["name"], template["is_default"])
+    ```
+    """
+    next_cursor = kwargs.pop("start_cursor", None)
+
+    while True:
+        response = function(**kwargs, start_cursor=next_cursor)
+        for template in response.get("templates", []):
+            yield template
+
+        next_cursor = response.get("next_cursor")
+        if not response.get("has_more") or not next_cursor:
+            return
+
+
+def collect_data_source_templates(
+    function: Callable[..., Any], **kwargs: Any
+) -> List[Any]:
+    """Collect all templates from a data source into a list.
+
+    Example:
+
+    ```python
+    templates = collect_data_source_templates(
+        client.data_sources.list_templates,
+        data_source_id=data_source_id,
+    )
+    # Do something with templates.
+    ```
+    """
+    return [template for template in iterate_data_source_templates(function, **kwargs)]
+
+
+async def async_iterate_data_source_templates(
+    function: Callable[..., Awaitable[Any]], **kwargs: Any
+) -> AsyncGenerator[Any, None]:
+    """Return an async iterator over templates from a data source.
+
+    Example:
+
+    ```python
+    async for template in async_iterate_data_source_templates(
+        async_client.data_sources.list_templates,
+        data_source_id=data_source_id,
+    ):
+        print(template["name"], template["is_default"])
+    ```
+    """
+    next_cursor = kwargs.pop("start_cursor", None)
+
+    while True:
+        response = await function(**kwargs, start_cursor=next_cursor)
+        for template in response.get("templates", []):
+            yield template
+
+        next_cursor = response.get("next_cursor")
+        if not response.get("has_more") or not next_cursor:
+            return
+
+
+async def async_collect_data_source_templates(
+    function: Callable[..., Awaitable[Any]], **kwargs: Any
+) -> List[Any]:
+    """Collect asynchronously all templates from a data source into a list.
+
+    Example:
+
+    ```python
+    templates = await async_collect_data_source_templates(
+        async_client.data_sources.list_templates,
+        data_source_id=data_source_id,
+    )
+    # Do something with templates.
+    ```
+    """
+    return [
+        template
+        async for template in async_iterate_data_source_templates(function, **kwargs)
+    ]

@@ -192,6 +192,14 @@ def test_data_sources_update(client, data_source_id):
 
 
 @pytest.mark.vcr()
+def test_data_sources_list_templates(client, data_source_id):
+    response = client.data_sources.list_templates(data_source_id=data_source_id)
+    assert isinstance(response["templates"], list)
+    assert isinstance(response["has_more"], bool)
+    assert "next_cursor" in response
+
+
+@pytest.mark.vcr()
 def test_comments_create(client, page_id):
     parent = {"page_id": page_id}
     rich_text = [
