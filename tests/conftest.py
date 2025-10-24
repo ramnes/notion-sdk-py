@@ -194,3 +194,87 @@ def client(token: Optional[str]):
 async def async_client(token: Optional[str]):
     async with AsyncClient({"auth": token}) as client:
         yield client
+
+
+@pytest.fixture(scope="function")
+def multiple_test_pages(client, parent_page_id):
+    page_ids = []
+    for i in range(5):
+        response = client.pages.create(
+            parent={"page_id": parent_page_id},
+            properties={
+                "title": [
+                    {
+                        "text": {
+                            "content": f"Test Page (test_iterate_paginated_api iteration {i})"
+                        }
+                    }
+                ]
+            },
+            children=[],
+        )
+        page_ids.append(response["id"])
+
+    yield page_ids
+
+    for page_id in page_ids:
+        try:
+            client.blocks.delete(block_id=page_id)
+        except Exception:
+            pass
+
+
+@pytest.fixture(scope="function")
+async def async_multiple_test_pages(async_client, parent_page_id):
+    page_ids = []
+    for i in range(5):
+        response = await async_client.pages.create(
+            parent={"page_id": parent_page_id},
+            properties={
+                "title": [
+                    {
+                        "text": {
+                            "content": f"Test Page (test_async_iterate_paginated_api iteration {i})"
+                        }
+                    }
+                ]
+            },
+            children=[],
+        )
+        page_ids.append(response["id"])
+
+    yield page_ids
+
+    for page_id in page_ids:
+        try:
+            await async_client.blocks.delete(block_id=page_id)
+        except Exception:
+            pass
+
+
+@pytest.fixture(scope="function")
+async def async_test_data_source(async_client, parent_page_id):
+    database = await async_client.databases.create(
+        parent={"type": "page_id", "page_id": parent_page_id},
+        title=[{"type": "text", "text": {"content": "Test DB"}}],
+        properties={"Name": {"type": "title", "title": {}}},
+    )
+    database_id = database["id"]
+
+    data_source = await async_client.data_sources.create(
+        parent={"type": "database_id", "database_id": database_id},
+        properties={"Name": {"type": "title", "title": {}}},
+        title=[{"type": "text", "text": {"content": "Test Data Source"}}],
+    )
+    data_source_id = data_source["id"]
+
+    yield data_source_id
+
+    try:
+        await async_client.data_sources.update(data_source_id, archived=True)
+    except Exception:
+        pass
+    try:
+        await async_client.blocks.delete(block_id=database_id)
+    except Exception:
+        pass
