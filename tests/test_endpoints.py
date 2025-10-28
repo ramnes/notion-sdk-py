@@ -1,6 +1,7 @@
 import pytest
 import io
-
+from dotenv import load_dotenv
+load_dotenv()
 
 @pytest.mark.vcr()
 def test_pages_create(client, parent_page_id):
@@ -379,12 +380,12 @@ def test_file_uploads_send_multipart(client, pending_multi_file_upload_id):
 
 
 @pytest.mark.vcr()
-def test_file_uploads_complete(client, partially_uploaded_file_id):
+def test_file_uploads_complete(client, part_uploaded_file_upload_id):
     """Test completing a file upload"""
-    response = client.file_uploads.complete(file_upload_id=partially_uploaded_file_id)
+    response = client.file_uploads.complete(file_upload_id=part_uploaded_file_upload_id)
 
     assert response["object"] == "file_upload"
-    assert response["id"] == partially_uploaded_file_id
+    assert response["id"] == part_uploaded_file_upload_id
     assert response["status"] == "uploaded"
     assert response["filename"] == "test_file_multi.txt"
     assert response["content_type"] == "text/plain"

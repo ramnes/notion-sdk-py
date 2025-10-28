@@ -185,7 +185,7 @@ def pending_multi_file_upload_id(client):
 
 
 @pytest.fixture(scope="function")
-def partially_uploaded_file_id(client, pending_multi_file_upload_id):
+def part_uploaded_file_upload_id(client, pending_multi_file_upload_id):
     """create a multi-part file upload with all parts sent but not completed"""
     for part_number in range(1, 4):
         test_content_part = b"A" * (10 * 1024 * 1024)
