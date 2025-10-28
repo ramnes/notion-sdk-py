@@ -1,5 +1,6 @@
 import os
 import re
+import io
 from datetime import datetime
 from typing import Any, Dict, Optional
 
@@ -7,6 +8,8 @@ import pytest
 
 from notion_client import AsyncClient, Client
 
+from dotenv import load_dotenv
+load_dotenv()
 
 @pytest.fixture(scope="session")
 def vcr_config() -> Dict[str, Any]:
@@ -144,6 +147,113 @@ def comment_id(client, page_id) -> str:
     response = client.comments.create(parent=parent, rich_text=rich_text)
 
     yield response["id"]
+
+
+@pytest.fixture(scope="function")
+def single_file_upload_id(client):
+    """create a small file upload ( <= 20MB) in single part mode"""
+    response = client.file_uploads.create(
+        mode="single_part", filename="test_file_small.txt", content_type="text/plain"
+    )
+    file_upload_id = response["id"]
+    # Create test file content
+    test_content = b"This is test file content"
+    file_obj = io.BytesIO(test_content)
+    file_obj.name = "test_file_small.txt"
+
+    # Send the file
+    response = client.file_uploads.send(file_upload_id=file_upload_id, file=file_obj)
+    yield response["id"]
+    # No delete endpoint for file uploads
+    # When a file is first uploaded, it has an expiry_time, one hour from the time of creation, during which it must be attached.
+
+@pytest.fixture(scope="function")
+def multi_file_upload_id(client):
+    """create a large file upload ( > 20MB) in multi part mode"""
+    response = client.file_uploads.create(
+        mode="multi_part", filename="test_file_large.txt", content_type="text/plain", number_of_parts=3
+    )
+    file_upload_id = response["id"]
+
+    # initialize parts
+    for part_number in range(1, 4):
+        test_content_part = b"A" * (10 * 1024 * 1024)
+        file_part = io.BytesIO(test_content_part)
+        file_part.name = f"test_file_large.txt.sf-part{part_number}"
+
+        client.file_uploads.send(
+            file_upload_id=file_upload_id, file=file_part, part_number=str(part_number)
+        )
+
+    # complete the upload
+    client.file_uploads.complete(file_upload_id=file_upload_id)
+    yield response["id"]
+    # No delete endpoint for file uploads
+    # When a file is first uploaded, it has an expiry_time, one hour from the time of creation, during which it must be attached.
+
+
+@pytest.fixture(scope="function")
+def external_file_upload_id(client):
+    """create an external file upload"""
+    response = client.file_uploads.create(
+        mode="external",
+        filename="MonurikiFiji_bing.jpg",
+        external_url="https://www.bing.com/th?id=OHR.MonurikiFiji_ROW9654134811_UHD.jpg",
+    )
+    yield response["id"]
+    # No delete endpoint for file uploads
+
+
+@pytest.fixture(scope="function")
+def pending_single_file_upload_id(client):
+    """create a single file upload that hasn't been sent yet"""
+    response = client.file_uploads.create(
+        mode="single_part",
+        filename="test_file_pending.txt",
+        content_type="text/plain"
+    )
+    yield response["id"]
+    # No delete endpoint for file uploads
+
+
+@pytest.fixture(scope="function")
+def pending_multi_file_upload_id(client):
+    """create a multi-part file upload that hasn't been sent yet"""
+    response = client.file_uploads.create(
+        mode="multi_part",
+        filename="test_file_multi_pending.txt",
+        content_type="text/plain",
+        number_of_parts=3
+    )
+    yield response["id"]
+    # No delete endpoint for file uploads
+
+
+@pytest.fixture(scope="function")
+def partially_uploaded_file_id(client):
+    """create a multi-part file upload with some parts sent but not completed"""
+    response = client.file_uploads.create(
+        mode="multi_part",
+        filename="test_file_partial.txt",
+        content_type="text/plain",
+        number_of_parts=3
+    )
+    file_upload_id = response["id"]
+
+    # Send first 2 parts only
+    for part_number in range(1, 4):
+        test_content_part = b"A" * (10 * 1024 * 1024)
+        file_part = io.BytesIO(test_content_part)
+        file_part.name = f"test_file_partial.txt.sf-part{part_number}"
+
+        client.file_uploads.send(
+            file_upload_id=file_upload_id,
+            file=file_part,
+            part_number=str(part_number)
+        )
+
+    yield file_upload_id
+    # No delete endpoint for file uploads
 
 
 text_block_id = block_id
