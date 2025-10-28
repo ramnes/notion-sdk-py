@@ -1,7 +1,5 @@
 import pytest
 import io
-from dotenv import load_dotenv
-load_dotenv()
 
 @pytest.mark.vcr()
 def test_pages_create(client, parent_page_id):
