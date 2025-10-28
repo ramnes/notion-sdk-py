@@ -318,9 +318,7 @@ def test_file_uploads_list_with_start_cursor(client):
     """Test listing file uploads with start cursor"""
     response_1 = client.file_uploads.list()
 
-    response = client.file_uploads.list(
-        start_cursor=response_1["results"][0]["id"]
-    )
+    response = client.file_uploads.list(start_cursor=response_1["results"][0]["id"])
 
     assert response["object"] == "list"
     assert response["type"] == "file_upload"
@@ -345,7 +343,7 @@ def test_file_uploads_send(client, pending_single_file_upload_id):
     # Create test file content
     test_content = b"This is test file content"
     file_obj = io.BytesIO(test_content)
-    file_obj.name = "test_file_pending.txt"
+    file_obj.name = "test_file_small.txt"
 
     # Send the file
     response = client.file_uploads.send(
@@ -355,7 +353,7 @@ def test_file_uploads_send(client, pending_single_file_upload_id):
     assert response["object"] == "file_upload"
     assert response["id"] == pending_single_file_upload_id
     assert response["status"] == "uploaded"
-    assert response["filename"] == "test_file_pending.txt"
+    assert response["filename"] == "test_file_small.txt"
     assert response["content_type"] == "text/plain"
 
 
@@ -365,7 +363,7 @@ def test_file_uploads_send_multipart(client, pending_multi_file_upload_id):
     # Send first part
     test_content_part1 = b"A" * (10 * 1024 * 1024)
     file_part1 = io.BytesIO(test_content_part1)
-    file_part1.name = "test_file_multi_pending.txt.sf-part1"
+    file_part1.name = "test_file_multi.txt.sf-part1"
 
     response = client.file_uploads.send(
         file_upload_id=pending_multi_file_upload_id, file=file_part1, part_number="1"
@@ -374,7 +372,7 @@ def test_file_uploads_send_multipart(client, pending_multi_file_upload_id):
     assert response["object"] == "file_upload"
     assert response["id"] == pending_multi_file_upload_id
     assert response["status"] == "pending"
-    assert response["filename"] == "test_file_multi_pending.txt"
+    assert response["filename"] == "test_file_multi.txt"
     assert response["content_type"] == "text/plain"
     assert response["number_of_parts"]["total"] == 3
     assert response["number_of_parts"]["sent"] == 1
@@ -383,22 +381,12 @@ def test_file_uploads_send_multipart(client, pending_multi_file_upload_id):
 @pytest.mark.vcr()
 def test_file_uploads_complete(client, partially_uploaded_file_id):
     """Test completing a file upload"""
-    # # Send the remaining part (part 3)
-    # test_content_part = b"A" * (10 * 1024 * 1024)
-    # file_part = io.BytesIO(test_content_part)
-    # file_part.name = "test_file_partial.txt.sf-part3"
-
-    # client.file_uploads.send(
-    #     file_upload_id=partially_uploaded_file_id, file=file_part, part_number="3"
-    # )
-
-    # Complete the upload
     response = client.file_uploads.complete(file_upload_id=partially_uploaded_file_id)
 
     assert response["object"] == "file_upload"
     assert response["id"] == partially_uploaded_file_id
     assert response["status"] == "uploaded"
-    assert response["filename"] == "test_file_partial.txt"
+    assert response["filename"] == "test_file_multi.txt"
     assert response["content_type"] == "text/plain"
     assert response["number_of_parts"]["total"] == 3
     assert response["number_of_parts"]["sent"] == 3

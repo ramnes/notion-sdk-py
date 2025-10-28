@@ -22,7 +22,7 @@ interactions:
     uri: https://api.notion.com/v1/file_uploads
   response:
     body:
-      string: '{"object":"file_upload","id":"29a99f72-bada-818d-bd27-00b2c8ec7ea3","created_time":"2025-10-28T07:52:00.000Z","created_by":{"id":"5b8183bd-8984-4417-b2a6-7dc8e439e679","type":"bot"},"last_edited_time":"2025-10-28T07:52:00.000Z","expiry_time":"2025-10-28T08:52:00.000Z","upload_url":"https://api.notion.com/v1/file_uploads/29a99f72-bada-818d-bd27-00b2c8ec7ea3/send","archived":false,"status":"pending","filename":"test_file_small.txt","content_type":"text/plain","content_length":null,"request_id":"db579ba6-8302-4291-b67e-5d02f31823ea"}'
+      string: '{"object":"file_upload","id":"29a99f72-bada-81a0-9d02-00b2c4a74153","created_time":"2025-10-28T10:43:00.000Z","created_by":{"id":"5b8183bd-8984-4417-b2a6-7dc8e439e679","type":"bot"},"last_edited_time":"2025-10-28T10:43:00.000Z","expiry_time":"2025-10-28T11:43:00.000Z","upload_url":"https://api.notion.com/v1/file_uploads/29a99f72-bada-81a0-9d02-00b2c4a74153/send","archived":false,"status":"pending","filename":"test_file_small.txt","content_type":"text/plain","content_length":null,"request_id":"c942e616-f0d8-4cdb-af45-4f52b175998e"}'
     headers:
       Content-Type:
       - application/json; charset=utf-8
@@ -32,9 +32,9 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: "--eccb07a20006a11f7a749e1171d88994\r\nContent-Disposition: form-data; name=\"file\";
+    body: "--0ed7600a23f974ff67d6fd9e16ca0c45\r\nContent-Disposition: form-data; name=\"file\";
       filename=\"test_file_small.txt\"\r\nContent-Type: text/plain\r\n\r\nThis is
-      test file content\r\n--eccb07a20006a11f7a749e1171d88994--\r\n"
+      test file content\r\n--0ed7600a23f974ff67d6fd9e16ca0c45--\r\n"
     headers:
       accept:
       - '*/*'
@@ -47,16 +47,16 @@ interactions:
       content-length:
       - '206'
       content-type:
-      - multipart/form-data; boundary=eccb07a20006a11f7a749e1171d88994
+      - multipart/form-data; boundary=0ed7600a23f974ff67d6fd9e16ca0c45
       host:
       - api.notion.com
       notion-version:
       - '2025-09-03'
     method: POST
-    uri: https://api.notion.com/v1/file_uploads/29a99f72-bada-818d-bd27-00b2c8ec7ea3/send
+    uri: https://api.notion.com/v1/file_uploads/29a99f72-bada-81a0-9d02-00b2c4a74153/send
   response:
     body:
-      string: '{"object":"file_upload","id":"29a99f72-bada-818d-bd27-00b2c8ec7ea3","created_time":"2025-10-28T07:52:00.000Z","created_by":{"id":"5b8183bd-8984-4417-b2a6-7dc8e439e679","type":"bot"},"last_edited_time":"2025-10-28T07:52:00.000Z","expiry_time":"2025-10-28T08:52:00.000Z","archived":false,"status":"uploaded","filename":"test_file_small.txt","content_type":"text/plain","content_length":25,"request_id":"9103768e-ef64-4333-be65-ea7e74214c01"}'
+      string: '{"object":"file_upload","id":"29a99f72-bada-81a0-9d02-00b2c4a74153","created_time":"2025-10-28T10:43:00.000Z","created_by":{"id":"5b8183bd-8984-4417-b2a6-7dc8e439e679","type":"bot"},"last_edited_time":"2025-10-28T10:43:00.000Z","expiry_time":"2025-10-28T11:43:00.000Z","archived":false,"status":"uploaded","filename":"test_file_small.txt","content_type":"text/plain","content_length":25,"request_id":"c4f2242a-98e1-48b8-a477-210092b6c84c"}'
     headers:
       Content-Type:
       - application/json; charset=utf-8
@@ -81,10 +81,10 @@ interactions:
       notion-version:
       - '2025-09-03'
     method: GET
-    uri: https://api.notion.com/v1/file_uploads/29a99f72-bada-818d-bd27-00b2c8ec7ea3
+    uri: https://api.notion.com/v1/file_uploads/29a99f72-bada-81a0-9d02-00b2c4a74153
   response:
     body:
-      string: '{"object":"file_upload","id":"29a99f72-bada-818d-bd27-00b2c8ec7ea3","created_time":"2025-10-28T07:52:00.000Z","created_by":{"id":"5b8183bd-8984-4417-b2a6-7dc8e439e679","type":"bot"},"last_edited_time":"2025-10-28T07:52:00.000Z","expiry_time":"2025-10-28T08:52:00.000Z","archived":false,"status":"uploaded","filename":"test_file_small.txt","content_type":"text/plain","content_length":25,"request_id":"7f6345e4-7830-4f3d-b512-7ebb0e3cb22b"}'
+      string: '{"object":"file_upload","id":"29a99f72-bada-81a0-9d02-00b2c4a74153","created_time":"2025-10-28T10:43:00.000Z","created_by":{"id":"5b8183bd-8984-4417-b2a6-7dc8e439e679","type":"bot"},"last_edited_time":"2025-10-28T10:43:00.000Z","expiry_time":"2025-10-28T11:43:00.000Z","archived":false,"status":"uploaded","filename":"test_file_small.txt","content_type":"text/plain","content_length":25,"request_id":"90c39af4-4521-4f8a-ba78-c002c7d1e88b"}'
     headers:
       Content-Type:
       - application/json; charset=utf-8
