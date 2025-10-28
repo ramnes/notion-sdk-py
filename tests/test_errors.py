@@ -59,6 +59,44 @@ async def test_api_async_request_bad_request_error(async_client):
         await async_client.request(STATUS_PAGE_BAD_REQUEST, "GET")
 
 
+@pytest.mark.vcr()
+def test_api_response_error_request_id(client):
+    with pytest.raises(APIResponseError) as exc_info:
+        client.request("/invalid", "GET")
+
+    error = exc_info.value
+    assert isinstance(error.request_id, str)
+
+
+@pytest.mark.vcr()
+async def test_async_api_response_error_request_id(async_client):
+    with pytest.raises(APIResponseError) as exc_info:
+        await async_client.request("/invalid", "GET")
+
+    error = exc_info.value
+    assert isinstance(error.request_id, str)
+
+
+@pytest.mark.vcr()
+def test_api_response_error_additional_data(client):
+    with pytest.raises(APIResponseError) as exc_info:
+        client.request("/users", "GET", auth="invalid-token")
+
+    error = exc_info.value
+    if error.additional_data is not None:
+        assert isinstance(error.additional_data, dict)
+
+
+@pytest.mark.vcr()
+async def test_async_api_response_error_additional_data(async_client):
+    with pytest.raises(APIResponseError) as exc_info:
+        await async_client.request("/users", "GET", auth="invalid-token")
+
+    error = exc_info.value
+    if error.additional_data is not None:
+        assert isinstance(error.additional_data, dict)
+
+
 async def test_is_api_error_code():
     error_code = "unauthorized"
     assert is_api_error_code(error_code)

@@ -265,7 +265,16 @@ class PagesEndpoint(Endpoint):
         return self.parent.request(
             path="pages",
             method="POST",
-            body=pick(kwargs, "parent", "properties", "children", "icon", "cover"),
+            body=pick(
+                kwargs,
+                "parent",
+                "properties",
+                "icon",
+                "cover",
+                "content",
+                "children",
+                "template",
+            ),
             auth=kwargs.get("auth"),
         )
 
