@@ -1,6 +1,7 @@
 import pytest
 import io
 
+
 @pytest.mark.vcr()
 def test_pages_create(client, parent_page_id):
     response = client.pages.create(
