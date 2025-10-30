@@ -305,12 +305,12 @@ def test_file_uploads_list(client):
 @pytest.mark.vcr()
 def test_file_uploads_list_with_status_filter(client):
     """Test listing file uploads with status filter"""
-    response = client.file_uploads.list(status="expired")
+    response = client.file_uploads.list(status="pending")
 
     assert response["object"] == "list"
     assert response["type"] == "file_upload"
     assert isinstance(response["results"], list)
-    assert all(upload["status"] == "expired" for upload in response["results"])
+    assert all(upload["status"] == "pending" for upload in response["results"])
 
 
 @pytest.mark.vcr()
