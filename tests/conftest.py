@@ -163,9 +163,9 @@ def single_file_upload_id(client, pending_single_file_upload_id):
     # No delete endpoint for file uploads
 
 
-@pytest.fixture(scope="module", autouse=True)
-def setup_file_uploads_for_start_cursor(client):
-    """Setup: Create file uploads for start_cursor testing"""
+@pytest.fixture(scope="function")
+def setup_file_uploads_ids(client):
+    """setup file_upload_ids for testing"""
     upload_ids = []
     for i in range(2):
         response = client.file_uploads.create(

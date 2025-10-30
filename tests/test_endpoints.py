@@ -303,8 +303,9 @@ def test_file_uploads_list(client):
 
 
 @pytest.mark.vcr()
-def test_file_uploads_list_with_status_filter(client):
+def test_file_uploads_list_with_status_filter(client, setup_file_uploads_ids):
     """Test listing file uploads with status filter"""
+    _ = setup_file_uploads_ids
     response = client.file_uploads.list(status="pending")
 
     assert response["object"] == "list"
@@ -314,8 +315,9 @@ def test_file_uploads_list_with_status_filter(client):
 
 
 @pytest.mark.vcr()
-def test_file_uploads_list_with_start_cursor(client):
+def test_file_uploads_list_with_start_cursor(client, setup_file_uploads_ids):
     """Test listing file uploads with start cursor"""
+    _ = setup_file_uploads_ids
     response_1 = client.file_uploads.list()
 
     response = client.file_uploads.list(start_cursor=response_1["results"][0]["id"])
@@ -327,8 +329,9 @@ def test_file_uploads_list_with_start_cursor(client):
 
 
 @pytest.mark.vcr()
-def test_file_uploads_list_with_pagination(client):
+def test_file_uploads_list_with_pagination(client, setup_file_uploads_ids):
     """Test listing file uploads with pagination"""
+    _ = setup_file_uploads_ids
     response = client.file_uploads.list(page_size=5)
 
     assert response["object"] == "list"
