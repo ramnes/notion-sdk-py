@@ -1,0 +1,31 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - ntn_...
+      connection:
+      - keep-alive
+      host:
+      - api.notion.com
+      notion-version:
+      - '2025-09-03'
+    method: GET
+    uri: https://api.notion.com/v1/users
+  response:
+    body:
+      string: '{"object":"error","status":401,"code":"unauthorized","message":"API
+        token is invalid.","request_id":"8ee1aad8-c786-4eeb-972e-8c21c0b09dde"}'
+    headers:
+      Content-Length:
+      - '139'
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 401
+      message: Unauthorized
+version: 1
