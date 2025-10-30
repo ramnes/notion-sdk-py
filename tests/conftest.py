@@ -1,5 +1,6 @@
 import os
 import re
+import io
 from datetime import datetime
 from typing import Any, Dict, Optional
 
@@ -144,6 +145,74 @@ def comment_id(client, page_id) -> str:
     response = client.comments.create(parent=parent, rich_text=rich_text)
 
     yield response["id"]
+
+
+@pytest.fixture(scope="function")
+def single_file_upload_id(client, pending_single_file_upload_id):
+    """create a small file upload ( <= 20MB) in single part mode"""
+    # Create test file content
+    test_content = b"This is test file content"
+    file_obj = io.BytesIO(test_content)
+    file_obj.name = "test_file_small.txt"
+
+    # Send the file
+    client.file_uploads.send(
+        file_upload_id=pending_single_file_upload_id, file=file_obj
+    )
+    yield pending_single_file_upload_id
+    # No delete endpoint for file uploads
+
+
+@pytest.fixture(scope="function")
+def setup_file_uploads_ids(client):
+    """setup file_upload_ids for testing"""
+    upload_ids = []
+    for i in range(2):
+        response = client.file_uploads.create(
+            mode="single_part",
+            filename=f"cursor_test_{i}.txt",
+            content_type="text/plain",
+        )
+        upload_ids.append(response["id"])
+    return upload_ids
+
+
+@pytest.fixture(scope="function")
+def pending_single_file_upload_id(client):
+    """create a single file upload that hasn't been sent yet"""
+    response = client.file_uploads.create(
+        mode="single_part", filename="test_file_small.txt", content_type="text/plain"
+    )
+    yield response["id"]
+
+
+@pytest.fixture(scope="function")
+def pending_multi_file_upload_id(client):
+    """create a multi-part file upload that hasn't been sent yet"""
+    response = client.file_uploads.create(
+        mode="multi_part",
+        filename="test_file_multi.txt",
+        content_type="text/plain",
+        number_of_parts=3,
+    )
+    yield response["id"]
+
+
+@pytest.fixture(scope="function")
+def part_uploaded_file_upload_id(client, pending_multi_file_upload_id):
+    """create a multi-part file upload with all parts sent but not completed"""
+    for part_number in range(1, 4):
+        test_content_part = b"A" * (10 * 1024 * 1024)
+        file_part = io.BytesIO(test_content_part)
+        file_part.name = f"test_file_partial.txt.sf-part{part_number}"
+
+        client.file_uploads.send(
+            file_upload_id=pending_multi_file_upload_id,
+            file=file_part,
+            part_number=str(part_number),
+        )
+
+    yield pending_multi_file_upload_id
 
 
 text_block_id = block_id
