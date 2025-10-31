@@ -1,10 +1,11 @@
-"""Generate random data and populate a Notion database."""
-
+# Find the official Notion API client @ https://github.com/ramnes/notion-sdk-py
+# pip install notion-client
 import os
-import sys
 import random
-from datetime import datetime, timedelta
-from typing import Any, Dict, List
+import json
+from datetime import datetime
+from typing import Any, Dict, Optional, Tuple
+from urllib.parse import unquote
 
 from notion_client import Client
 from faker import Faker
@@ -26,324 +27,351 @@ if not NOTION_TOKEN:
 
 notion = Client(auth=NOTION_TOKEN)
 
+start_time = datetime.utcnow().replace(second=0, microsecond=0, tzinfo=None)
 
+
+def user_to_string(user: Dict[str, Any]) -> str:
+    user_id = user.get("id", "")
+    name = user.get("name") or "Unknown Name"
+    return f"{user_id}: {name}"
+
+
+# Given the properties of a database, generate an object full of
+# random data that can be used to generate new rows in our Notion database.
 def make_fake_properties_data(properties: Dict[str, Any]) -> Dict[str, Any]:
-    """Generate fake data matching the database property schema."""
-    fake_data = {}
+    property_values = {}
 
-    for prop_name, prop_info in properties.items():
-        prop_type = prop_info.get("type")
+    for name, property in properties.items():
+        prop_type = property.get("type")
 
-        if prop_type in [
-            "formula",
-            "rollup",
-            "created_time",
-            "created_by",
-            "last_edited_time",
-            "last_edited_by",
-        ]:
-            continue
-        if prop_type == "title":
-            fake_data[prop_name] = {
-                "title": [{"text": {"content": fake.catch_phrase()}}]
+        if prop_type == "date":
+            property_values[name] = {
+                "type": "date",
+                "date": {"start": fake.date_time_this_year().isoformat()},
             }
-
-        elif prop_type == "rich_text":
-            fake_data[prop_name] = {
-                "rich_text": [{"text": {"content": fake.paragraph(nb_sentences=2)}}]
-            }
-
-        elif prop_type == "number":
-            fake_data[prop_name] = {"number": random.randint(0, 1000)}
-
-        elif prop_type == "select" and prop_info.get("select", {}).get("options"):
-            options = prop_info["select"]["options"]
-            if options:
-                selected = random.choice(options)
-                fake_data[prop_name] = {"select": {"name": selected["name"]}}
-
-        elif prop_type == "multi_select" and prop_info.get("multi_select", {}).get(
+        elif prop_type == "multi_select" and property.get("multi_select", {}).get(
             "options"
         ):
-            options = prop_info["multi_select"]["options"]
+            options = property["multi_select"]["options"]
             if options:
                 num_selections = random.randint(1, min(3, len(options)))
                 selected = random.sample(options, num_selections)
-                fake_data[prop_name] = {
-                    "multi_select": [{"name": opt["name"]} for opt in selected]
+                property_values[name] = {
+                    "type": "multi_select",
+                    "multi_select": [{"name": opt["name"]} for opt in selected],
                 }
-
-        elif prop_type == "date":
-            start_date = datetime.now()
-            random_days = random.randint(0, 30)
-            random_date = start_date + timedelta(days=random_days)
-            fake_data[prop_name] = {"date": {"start": random_date.strftime("%Y-%m-%d")}}
-
-        elif prop_type == "checkbox":
-            fake_data[prop_name] = {"checkbox": random.choice([True, False])}
-
-        elif prop_type == "url":
-            fake_data[prop_name] = {"url": fake.url()}
-
+        elif prop_type == "select" and property.get("select", {}).get("options"):
+            options = property["select"]["options"]
+            if options:
+                selected = random.choice(options)
+                property_values[name] = {
+                    "type": "select",
+                    "select": {"name": selected["name"]},
+                }
         elif prop_type == "email":
-            fake_data[prop_name] = {"email": fake.email()}
-
-        elif prop_type == "phone_number":
-            fake_data[prop_name] = {"phone_number": fake.phone_number()}
-
-        elif prop_type == "people":
-            pass  # Requires actual Notion user IDs
-
-        elif prop_type == "files":
-            fake_data[prop_name] = {
-                "files": [
-                    {
-                        "type": "external",
-                        "name": "Sample file",
-                        "external": {"url": fake.url()},
-                    }
-                ]
+            property_values[name] = {"type": "email", "email": fake.email()}
+        elif prop_type == "checkbox":
+            property_values[name] = {"type": "checkbox", "checkbox": fake.boolean()}
+        elif prop_type == "url":
+            property_values[name] = {"type": "url", "url": fake.url()}
+        elif prop_type == "number":
+            property_values[name] = {"type": "number", "number": fake.random_int()}
+        elif prop_type == "title":
+            property_values[name] = {
+                "type": "title",
+                "title": [
+                    {"type": "text", "text": {"content": " ".join(fake.words(3))}}
+                ],
             }
+        elif prop_type == "rich_text":
+            property_values[name] = {
+                "type": "rich_text",
+                "rich_text": [{"type": "text", "text": {"content": fake.first_name()}}],
+            }
+        elif prop_type == "phone_number":
+            property_values[name] = {
+                "type": "phone_number",
+                "phone_number": fake.phone_number(),
+            }
+        else:
+            print("unimplemented property type: ", prop_type)
 
-    return fake_data
+    return property_values
 
 
-def extract_property_value_to_string(prop_value: Any, prop_type: str) -> str:
-    """Convert Notion property values to readable strings for display."""
-    if prop_value is None:
-        return "N/A"
+def extract_property_item_value_to_string(property: Dict[str, Any]) -> str:
+    prop_type = property.get("type")
 
-    if prop_type == "title":
-        texts = prop_value.get("title", [])
-        return "".join(text.get("text", {}).get("content", "") for text in texts)
-
-    elif prop_type == "rich_text":
-        texts = prop_value.get("rich_text", [])
-        return "".join(text.get("text", {}).get("content", "") for text in texts)
-
-    elif prop_type == "number":
-        return str(prop_value.get("number", "N/A"))
-
-    elif prop_type == "select":
-        select = prop_value.get("select")
-        return select.get("name", "N/A") if select else "N/A"
-
-    elif prop_type == "multi_select":
-        options = prop_value.get("multi_select", [])
-        return ", ".join(opt.get("name", "") for opt in options) if options else "N/A"
-
-    elif prop_type == "date":
-        date_obj = prop_value.get("date")
-        if date_obj:
-            start = date_obj.get("start", "N/A")
-            end = date_obj.get("end")
-            return f"{start} - {end}" if end else start
-        return "N/A"
-
-    elif prop_type == "checkbox":
-        return "✓" if prop_value.get("checkbox") else "✗"
-
-    elif prop_type == "url":
-        return prop_value.get("url", "N/A")
-
-    elif prop_type == "email":
-        return prop_value.get("email", "N/A")
-
-    elif prop_type == "phone_number":
-        return prop_value.get("phone_number", "N/A")
-
-    elif prop_type == "formula":
-        formula = prop_value.get("formula", {})
-        formula_type = formula.get("type")
-        if formula_type:
-            return str(formula.get(formula_type, "N/A"))
-        return "N/A"
-
-    elif prop_type == "rollup":
-        rollup = prop_value.get("rollup", {})
-        rollup_type = rollup.get("type")
-        if rollup_type == "array":
-            return str(len(rollup.get("array", [])))
-        elif rollup_type:
-            return str(rollup.get(rollup_type, "N/A"))
-        return "N/A"
-
-    elif prop_type == "people":
-        people = prop_value.get("people", [])
-        return (
-            ", ".join(person.get("name", "") for person in people) if people else "N/A"
-        )
-
-    elif prop_type == "files":
-        files = prop_value.get("files", [])
-        return (
-            ", ".join(file.get("name", "Unnamed") for file in files) if files else "N/A"
-        )
-
-    elif prop_type == "created_time":
-        return prop_value.get("created_time", "N/A")
-
-    elif prop_type == "last_edited_time":
-        return prop_value.get("last_edited_time", "N/A")
-
+    if prop_type == "checkbox":
+        return str(property.get("checkbox", ""))
     elif prop_type == "created_by":
-        user = prop_value.get("created_by", {})
-        return user.get("name", user.get("id", "N/A"))
-
-    elif prop_type == "last_edited_by":
-        user = prop_value.get("last_edited_by", {})
-        return user.get("name", user.get("id", "N/A"))
-
-    else:
-        return str(prop_value)
-
-
-def exercise_writing(database_id: str, properties: Dict[str, Any]) -> List[str]:
-    """Create 10 pages with random data in the database."""
-    print("\nCreating test data...")
-    created_pages = []
-
-    for i in range(10):
-        fake_data = make_fake_properties_data(properties)
-        response = notion.pages.create(
-            parent={"database_id": database_id}, properties=fake_data
+        return user_to_string(property.get("created_by", {}))
+    elif prop_type == "created_time":
+        ct = property.get("created_time")
+        return (
+            datetime.fromisoformat(ct.replace("Z", "+00:00")).isoformat() if ct else ""
         )
-        created_pages.append(response["id"])
-        print(f"  Created {i+1}/10")
+    elif prop_type == "date":
+        date_obj = property.get("date")
+        return (
+            datetime.fromisoformat(date_obj["start"].replace("Z", "+00:00")).isoformat()
+            if date_obj
+            else ""
+        )
+    elif prop_type == "email":
+        return property.get("email") or ""
+    elif prop_type == "url":
+        return property.get("url") or ""
+    elif prop_type == "number":
+        num = property.get("number")
+        return str(num) if isinstance(num, (int, float)) else ""
+    elif prop_type == "phone_number":
+        return property.get("phone_number") or ""
+    elif prop_type == "select":
+        select = property.get("select")
+        if not select:
+            return ""
+        return f"{select.get('id', '')} {select.get('name', '')}"
+    elif prop_type == "multi_select":
+        multi_select = property.get("multi_select", [])
+        if not multi_select:
+            return ""
+        return ", ".join(
+            f"{opt.get('id', '')} {opt.get('name', '')}" for opt in multi_select
+        )
+    elif prop_type == "people":
+        return user_to_string(property.get("people", {}))
+    elif prop_type == "last_edited_by":
+        return user_to_string(property.get("last_edited_by", {}))
+    elif prop_type == "last_edited_time":
+        let = property.get("last_edited_time")
+        return (
+            datetime.fromisoformat(let.replace("Z", "+00:00")).isoformat()
+            if let
+            else ""
+        )
+    elif prop_type == "title":
+        return property.get("title", {}).get("plain_text", "")
+    elif prop_type == "rich_text":
+        return property.get("rich_text", {}).get("plain_text", "")
+    elif prop_type == "files":
+        files = property.get("files", [])
+        return ", ".join(file.get("name", "") for file in files)
+    elif prop_type == "formula":
+        formula = property.get("formula", {})
+        formula_type = formula.get("type")
+        if formula_type == "string":
+            return formula.get("string") or "???"
+        elif formula_type == "number":
+            num = formula.get("number")
+            return str(num) if num is not None else "???"
+        elif formula_type == "boolean":
+            bool_val = formula.get("boolean")
+            return str(bool_val) if bool_val is not None else "???"
+        elif formula_type == "date":
+            date_obj = formula.get("date")
+            return (
+                datetime.fromisoformat(
+                    date_obj["start"].replace("Z", "+00:00")
+                ).isoformat()
+                if date_obj and date_obj.get("start")
+                else "???"
+            )
+        return "???"
+    elif prop_type == "rollup":
+        rollup = property.get("rollup", {})
+        rollup_type = rollup.get("type")
+        if rollup_type == "number":
+            num = rollup.get("number")
+            return str(num) if num is not None else "???"
+        elif rollup_type == "date":
+            date_obj = rollup.get("date")
+            return (
+                datetime.fromisoformat(
+                    date_obj["start"].replace("Z", "+00:00")
+                ).isoformat()
+                if date_obj and date_obj.get("start")
+                else "???"
+            )
+        elif rollup_type == "array":
+            return json.dumps(rollup.get("array", []))
+        elif rollup_type in ("incomplete", "unsupported"):
+            return rollup_type
+        return "???"
+    elif prop_type == "relation":
+        relation = property.get("relation")
+        if relation:
+            return relation.get("id", "???")
+        return "???"
+    elif prop_type == "status":
+        return property.get("status", {}).get("name", "")
+    elif prop_type == "button":
+        return property.get("button", {}).get("name", "")
+    elif prop_type == "unique_id":
+        unique_id = property.get("unique_id", {})
+        prefix = unique_id.get("prefix") or ""
+        number = unique_id.get("number") or ""
+        return f"{prefix}{number}"
+    elif prop_type == "verification":
+        return property.get("verification", {}).get("state", "")
 
-    print(f"Done. Created {len(created_pages)} pages.")
-    return created_pages
+    return ""
 
 
-def exercise_reading(database_id: str, start_time: str):
-    """Query and display pages created after the given timestamp."""
-    print("\nQuerying created pages...")
+def extract_value_to_string(property: Dict[str, Any]) -> str:
+    if property.get("object") == "property_item":
+        return extract_property_item_value_to_string(property)
+    elif property.get("object") == "list":
+        results = property.get("results", [])
+        return ", ".join(
+            extract_property_item_value_to_string(result) for result in results
+        )
+    return ""
 
-    response = notion.data_sources.query(
-        data_source_id=database_id,
-        filter={"timestamp": "created_time", "created_time": {"after": start_time}},
-        sorts=[{"timestamp": "created_time", "direction": "descending"}],
+
+def exercise_writing(data_source_id: str, properties: Dict[str, Any]):
+    print("\n\n********* Exercising Writing *********\n\n")
+
+    rows_to_write = 10
+
+    for i in range(rows_to_write):
+        properties_data = make_fake_properties_data(properties)
+
+        notion.pages.create(
+            parent={"data_source_id": data_source_id}, properties=properties_data
+        )
+
+    print(f"Wrote {rows_to_write} rows after {start_time}")
+
+
+def exercise_reading(data_source_id: str, _properties: Dict[str, Any]):
+    print("\n\n********* Exercising Reading *********\n\n")
+
+    query_response = notion.data_sources.query(data_source_id=data_source_id)
+
+    num_old_rows = 0
+    for page in query_response.get("results", []):
+        if "url" not in page:
+            continue
+
+        created_time = datetime.fromisoformat(
+            page["created_time"].replace("Z", "+00:00")
+        )
+        start_dt = start_time.replace(tzinfo=created_time.tzinfo)
+        if start_dt > created_time:
+            num_old_rows += 1
+            return
+
+        print(f"New page: {page['id']}")
+
+        for name, property in page["properties"].items():
+            property_response = notion.pages.properties.retrieve(
+                page_id=page["id"], property_id=property["id"]
+            )
+            print(
+                f" - {name} {property['id']} - {extract_value_to_string(property_response)}"
+            )
+
+    print(f"Skipped printing {num_old_rows} rows that were written before {start_time}")
+
+
+def find_random_select_column_name_and_value(
+    properties: Dict[str, Any],
+) -> Tuple[str, Optional[str]]:
+    options = []
+    for name, property in properties.items():
+        if property.get("type") == "select" and property.get("select", {}).get(
+            "options"
+        ):
+            select_options = property["select"]["options"]
+            if select_options:
+                options.append(
+                    {
+                        "name": name,
+                        "value": random.choice(select_options)["name"],
+                    }
+                )
+
+    if options:
+        selected = random.choice(options)
+        return selected["name"], selected["value"]
+
+    return "", None
+
+
+def exercise_filters(data_source_id: str, properties: Dict[str, Any]):
+    print("\n\n********* Exercising Filters *********\n\n")
+
+    select_column_name, select_column_value = find_random_select_column_name_and_value(
+        properties
     )
 
-    results = response.get("results", [])
-    print(f"Found {len(results)} pages\n")
+    if not select_column_name or not select_column_value:
+        raise ValueError("need a select column to run this part of the example")
 
-    for i, page in enumerate(results[:3], 1):
-        print(f"[{i}] {page['id'][:8]}...")
-        for prop_name, prop_value in page["properties"].items():
-            prop_type = prop_value["type"]
-            value_str = extract_property_value_to_string(prop_value, prop_type)
-            if len(value_str) > 50:
-                value_str = value_str[:47] + "..."
-            print(f"    {prop_name}: {value_str}")
+    print(f"Looking for {select_column_name}={select_column_value}")
 
+    query_filter_select_filter_type_based = {
+        "property": select_column_name,
+        "select": {"equals": select_column_value},
+    }
 
-def exercise_filters(database_id: str, properties: Dict[str, Any]):
-    """Demonstrate filtering by select and text properties."""
-    print("\nTesting filters...")
+    matching_select_results = notion.data_sources.query(
+        data_source_id=data_source_id, filter=query_filter_select_filter_type_based
+    )
 
-    select_property = None
-    select_options = []
+    print(
+        f"had {len(matching_select_results.get('results', []))} matching rows for {select_column_name}={select_column_value}"
+    )
 
-    for prop_name, prop_info in properties.items():
-        if prop_info["type"] == "select" and prop_info.get("select", {}).get("options"):
-            select_property = prop_name
-            select_options = prop_info["select"]["options"]
+    text_column = None
+    for property in properties.values():
+        if property.get("type") == "rich_text":
+            text_column = property
             break
 
-    if select_property and select_options:
-        random_option = random.choice(select_options)
-        print(f"  Filter: {select_property}={random_option['name']}")
-
-        response = notion.data_sources.query(
-            data_source_id=database_id,
-            filter={
-                "property": select_property,
-                "select": {"equals": random_option["name"]},
-            },
+    if not text_column:
+        raise ValueError(
+            "Need a rich_text column for this part of the test, could not find one"
         )
 
-        results = response.get("results", [])
-        print(f"  Results: {len(results)}")
+    text_column_id = unquote(text_column["id"])
+    letter_to_find = fake.word()[:1]
 
-    text_property = None
-    for prop_name, prop_info in properties.items():
-        if prop_info["type"] in ["title", "rich_text"]:
-            text_property = prop_name
-            break
+    print(
+        f'\n\nLooking for text column with id "{text_column_id}" contains letter "{letter_to_find}"'
+    )
 
-    if text_property:
-        search_text = "the"
-        print(f"  Filter: {text_property} contains '{search_text}'")
+    text_filter = {
+        "property": text_column_id,
+        "rich_text": {"contains": letter_to_find},
+    }
 
-        filter_config = {
-            "property": text_property,
-        }
+    matching_text_results = notion.data_sources.query(
+        data_source_id=data_source_id, filter=text_filter
+    )
 
-        if properties[text_property]["type"] == "title":
-            filter_config["title"] = {"contains": search_text}
-        else:
-            filter_config["rich_text"] = {"contains": search_text}
-
-        response = notion.data_sources.query(
-            data_source_id=database_id, filter=filter_config
-        )
-
-        results = response.get("results", [])
-        print(f"  Results: {len(results)}")
+    print(
+        f'Had {len(matching_text_results.get("results", []))} matching rows in column with ID "{text_column_id}" containing letter "{letter_to_find}"'
+    )
 
 
 def main():
-    print("notion-sdk-py: generate_random_data")
-    print("-" * 40)
+    search_results = notion.search(
+        filter={"property": "object", "value": "data_source"}
+    )
 
-    start_time = datetime.utcnow().isoformat() + "Z"
+    if not search_results.get("results"):
+        raise ValueError("This bot doesn't have access to any databases!")
 
-    print("Looking for database...")
+    data_source = search_results["results"][0]
 
-    try:
-        search_response = notion.search()
-        all_results = search_response.get("results", [])
-        databases = [r for r in all_results if r.get("object") == "data_source"]
+    if not data_source or data_source.get("object") != "data_source":
+        raise ValueError("This bot doesn't have access to any databases!")
 
-        if not databases:
-            print("ERROR: No databases found. Share a database with your integration.")
-            sys.exit(1)
-
-        database = databases[0]
-        data_source_id = database["id"]
-
-        database_title = (
-            "".join(
-                text.get("text", {}).get("content", "")
-                for text in database.get("title", [])
-            )
-            if isinstance(database.get("title"), list)
-            else "Untitled"
-        )
-
-        print(f"Using: {database_title}")
-
-        db_response = notion.data_sources.retrieve(data_source_id=data_source_id)
-
-        parent = db_response.get("parent", {})
-        if parent.get("type") == "database_id":
-            database_id = parent.get("database_id")
-        else:
-            database_id = data_source_id
-
-        properties = db_response.get("properties", {})
-        print(f"Schema: {len(properties)} properties")
-
-        exercise_writing(database_id, properties)
-        exercise_reading(data_source_id, start_time)
-        exercise_filters(data_source_id, properties)
-
-        print("\nComplete.")
-
-    except Exception as e:
-        print(f"ERROR: {e}")
-        sys.exit(1)
+    exercise_writing(data_source["id"], data_source.get("properties", {}))
+    exercise_reading(data_source["id"], data_source.get("properties", {}))
+    exercise_filters(data_source["id"], data_source.get("properties", {}))
 
 
 if __name__ == "__main__":
