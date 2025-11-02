@@ -1,0 +1,2 @@
+notion-client
+python-dotenv
