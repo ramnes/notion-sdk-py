@@ -110,7 +110,7 @@ def is_full_database(response: Dict[Any, Any]) -> bool:
 
 
 def is_full_page_or_data_source(response: Dict[Any, Any]) -> bool:
-    """Return `True` if `response` is a full database or a full page."""
+    """Return `True` if `response` is a full data_source or a full page."""
     if response.get("object") == "data_source":
         return is_full_data_source(response)
     return is_full_page(response)
