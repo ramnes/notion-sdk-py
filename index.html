@@ -1213,12 +1213,12 @@ These options are all keys in the single constructor parameter.</p>
 <td>Determine whether an object is a full <a href="https://developers.notion.com/reference/block">Block object</a></td>
 </tr>
 <tr>
-<td><code>is_full_database</code></td>
-<td>Determine whether an object is a full <a href="https://developers.notion.com/reference/database">Database object</a></td>
+<td><code>is_full_data_source</code></td>
+<td>Determine whether an object is a full <a href="https://developers.notion.com/reference/data-source">Data source object</a></td>
 </tr>
 <tr>
-<td><code>is_full_page_or_database</code></td>
-<td>Determine whether an object is a full <a href="https://developers.notion.com/reference/page">Page object</a> or <a href="https://developers.notion.com/reference/database">Database object</a></td>
+<td><code>is_full_page_or_data_source</code></td>
+<td>Determine whether an object is a full <a href="https://developers.notion.com/reference/page">Page object</a> or <a href="https://developers.notion.com/reference/data-source">Data source object</a></td>
 </tr>
 <tr>
 <td><code>is_full_user</code></td>
@@ -1239,7 +1239,7 @@ These options are all keys in the single constructor parameter.</p>
 <span class="p">)</span>
 
 <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">full_or_partial_pages</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]:</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_full_page_or_database</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_full_page_or_data_source</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
         <span class="k">continue</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created at: </span><span class="si">{</span><span class="n">page</span><span class="p">[</span><span class="s1">&#39;created_time&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
