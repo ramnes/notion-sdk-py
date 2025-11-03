@@ -21,8 +21,9 @@ from notion_client.helpers import (
     is_full_block,
     is_full_comment,
     is_full_database,
+    is_full_data_source,
     is_full_page,
-    is_full_page_or_database,
+    is_full_page_or_data_source,
     is_full_user,
     is_mention_rich_text_item_response,
     is_text_rich_text_item_response,
@@ -176,18 +177,24 @@ def test_is_full_page(client, page_id):
 
 
 @pytest.mark.vcr()
+def test_is_full_data_source(client, data_source_id):
+    response = client.data_sources.retrieve(data_source_id=data_source_id)
+    assert is_full_data_source(response)
+
+
+@pytest.mark.vcr()
 def test_is_full_database(client, database_id):
     response = client.databases.retrieve(database_id=database_id)
     assert is_full_database(response)
 
 
 @pytest.mark.vcr()
-def test_is_full_page_or_database(client, database_id, page_id):
+def test_is_full_page_or_data_source(client, data_source_id, page_id):
     response = client.pages.retrieve(page_id=page_id)
-    assert is_full_page_or_database(response)
+    assert is_full_page_or_data_source(response)
 
-    response = client.databases.retrieve(database_id=database_id)
-    assert is_full_page_or_database(response)
+    response = client.data_sources.retrieve(data_source_id=data_source_id)
+    assert is_full_page_or_data_source(response)
 
 
 @pytest.mark.vcr()
