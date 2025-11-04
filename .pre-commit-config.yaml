@@ -5,7 +5,7 @@ repos:
   - id: markdownlint
 
 - repo: https://github.com/pre-commit/mirrors-mypy
-  rev: v0.900
+  rev: v1.18.2
   hooks:
   - id: mypy
     additional_dependencies: ["httpx"]
