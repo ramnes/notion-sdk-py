@@ -468,3 +468,54 @@ class FileUploadsEndpoint(Endpoint):
             form_data=pick(kwargs, "file", "part_number"),
             auth=kwargs.get("auth"),
         )
+
+
+class OAuthEndpoint(Endpoint):
+    def token(
+        self, client_id: str, client_secret: str, **kwargs: Any
+    ) -> SyncAsync[Any]:
+        """Get token.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-a-token)*
+        """  # noqa: E501
+        return self.parent.request(
+            path="oauth/token",
+            method="POST",
+            body=pick(
+                kwargs,
+                "grant_type",
+                "code",
+                "redirect_uri",
+                "external_account",
+                "refresh_token",
+            ),
+            auth={"client_id": client_id, "client_secret": client_secret},
+        )
+
+    def introspect(
+        self, client_id: str, client_secret: str, **kwargs: Any
+    ) -> SyncAsync[Any]:
+        """Introspect token.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/oauth-introspect)*
+        """  # noqa: E501
+        return self.parent.request(
+            path="oauth/introspect",
+            method="POST",
+            body=pick(kwargs, "token"),
+            auth={"client_id": client_id, "client_secret": client_secret},
+        )
+
+    def revoke(
+        self, client_id: str, client_secret: str, **kwargs: Any
+    ) -> SyncAsync[Any]:
+        """Revoke token.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/oauth-revoke)*
+        """  # noqa: E501
+        return self.parent.request(
+            path="oauth/revoke",
+            method="POST",
+            body=pick(kwargs, "token"),
+            auth={"client_id": client_id, "client_secret": client_secret},
+        )
