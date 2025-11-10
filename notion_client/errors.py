@@ -62,23 +62,31 @@ class ClientErrorCode(str, Enum):
     ResponseError = "notionhq_client_response_error"
 
 
-# Type alias for all error codes
+# Error codes on errors thrown by the `Client`.
 NotionErrorCode = Union[APIErrorCode, ClientErrorCode]
 
 
 class NotionClientErrorBase(Exception):
-    """Base error type for all Notion client errors.
-
-    This is a base class for all errors that the Notion client can raise.
-    All subclasses must define a ``code`` attribute (either as a class attribute
-    or instance attribute) to identify the specific error type.
-
-    This mirrors the TypeScript ``abstract class NotionClientErrorBase`` which
-    requires subclasses to implement an abstract ``code`` field.
-    """
+    """Base error type for all Notion client errors."""
 
     def __init__(self, message: str = "") -> None:
         super().__init__(message)
+
+
+def is_notion_client_error(error: Any) -> bool:
+    return isinstance(error, NotionClientErrorBase)
+
+
+def is_notion_client_error_with_code(error: Any, codes: Dict[str, bool]) -> bool:
+    if not is_notion_client_error(error):
+        return False
+
+    # Get the code value as string for comparison
+    error_code = error.code
+    if isinstance(error_code, Enum):
+        error_code = error_code.value
+
+    return error_code in codes
 
 
 class RequestTimeoutError(NotionClientErrorBase):
@@ -91,7 +99,17 @@ class RequestTimeoutError(NotionClientErrorBase):
 
     @staticmethod
     def is_request_timeout_error(error: Any) -> bool:
-        return isinstance(error, RequestTimeoutError)
+        """Check if the error is a RequestTimeoutError.
+
+        Args:
+            error: Any value, usually a caught exception.
+
+        Returns:
+            True if error is a RequestTimeoutError.
+        """
+        return is_notion_client_error_with_code(error, {
+            ClientErrorCode.RequestTimeout.value: True,
+        })
 
     @staticmethod
     async def reject_after_timeout(coro: Any, timeout_ms: int) -> Any:
@@ -105,14 +123,6 @@ HTTPResponseErrorCode = Union[ClientErrorCode, APIErrorCode]
 
 
 class HTTPResponseError(NotionClientErrorBase):
-    """Base class for HTTP response errors.
-
-    Responses from the API use HTTP response codes that are used to indicate general
-    classes of success and error.
-
-    Typically, you should use the concrete subclasses UnknownHTTPResponseError or
-    APIResponseError instead of instantiating this class directly.
-    """
 
     code: str
     status: int
@@ -138,6 +148,22 @@ class HTTPResponseError(NotionClientErrorBase):
         self.body = raw_body_text
         self.additional_data = additional_data
         self.request_id = request_id
+
+
+_http_response_error_codes: Dict[str, bool] = {
+    ClientErrorCode.ResponseError.value: True,
+    APIErrorCode.Unauthorized.value: True,
+    APIErrorCode.RestrictedResource.value: True,
+    APIErrorCode.ObjectNotFound.value: True,
+    APIErrorCode.RateLimited.value: True,
+    APIErrorCode.InvalidJSON.value: True,
+    APIErrorCode.InvalidRequestURL.value: True,
+    APIErrorCode.InvalidRequest.value: True,
+    APIErrorCode.ValidationError.value: True,
+    APIErrorCode.ConflictError.value: True,
+    APIErrorCode.InternalServerError.value: True,
+    APIErrorCode.ServiceUnavailable.value: True,
+}
 
 
 class UnknownHTTPResponseError(HTTPResponseError):
@@ -169,15 +195,35 @@ class UnknownHTTPResponseError(HTTPResponseError):
 
     @staticmethod
     def is_unknown_http_response_error(error: Any) -> bool:
-        return isinstance(error, UnknownHTTPResponseError)
+        """Check if the error is an UnknownHTTPResponseError.
+
+        Args:
+            error: Any value, usually a caught exception.
+
+        Returns:
+            True if error is an UnknownHTTPResponseError.
+        """
+        return is_notion_client_error_with_code(error, {
+            ClientErrorCode.ResponseError.value: True,
+        })
+
+
+_api_error_codes: Dict[str, bool] = {
+    APIErrorCode.Unauthorized.value: True,
+    APIErrorCode.RestrictedResource.value: True,
+    APIErrorCode.ObjectNotFound.value: True,
+    APIErrorCode.RateLimited.value: True,
+    APIErrorCode.InvalidJSON.value: True,
+    APIErrorCode.InvalidRequestURL.value: True,
+    APIErrorCode.InvalidRequest.value: True,
+    APIErrorCode.ValidationError.value: True,
+    APIErrorCode.ConflictError.value: True,
+    APIErrorCode.InternalServerError.value: True,
+    APIErrorCode.ServiceUnavailable.value: True,
+}
 
 
 class APIResponseError(HTTPResponseError):
-    """A response from the API indicating a problem.
-
-    Use the `code` property to handle various kinds of errors. All its possible values are in `APIErrorCode`.
-    """
-
     # Override the code type annotation for better type checking
     code: APIErrorCode
 
@@ -207,49 +253,15 @@ class APIResponseError(HTTPResponseError):
 
     @staticmethod
     def is_api_response_error(error: Any) -> bool:
-        return isinstance(error, APIResponseError)
+        return is_notion_client_error_with_code(error, _api_error_codes)
 
 
 # Type alias for all Notion client errors
 NotionClientError = Union[RequestTimeoutError, UnknownHTTPResponseError, APIResponseError]
 
 
-def is_notion_client_error(error: Any) -> bool:
-    """Check if the error is a NotionClientError.
-
-    Args:
-        error: Any value, usually a caught exception.
-
-    Returns:
-        True if error is a NotionClientError (any of the three error types).
-    """
-    return isinstance(error, NotionClientErrorBase)
-
-
 def is_http_response_error(error: Any) -> bool:
-    """Check if the error is an HTTP response error.
-
-    Args:
-        error: Any value, usually a caught exception.
-
-    Returns:
-        True if error is UnknownHTTPResponseError or APIResponseError.
-    """
-    return isinstance(error, HTTPResponseError)
-
-
-def is_api_error_code(code: Any) -> bool:
-    """Check if given code belongs to the list of valid API error codes.
-
-    Args:
-        code: Any value to check.
-
-    Returns:
-        True if code is a valid APIErrorCode.
-    """
-    if isinstance(code, str):
-        return code in (error_code.value for error_code in APIErrorCode)
-    return False
+    return is_notion_client_error_with_code(error, _http_response_error_codes)
 
 
 def build_request_error(
@@ -288,15 +300,7 @@ def build_request_error(
 
 
 def _parse_api_error_response_body(body: str) -> Optional[Dict[str, Any]]:
-    """Parse an API error response body.
 
-    Args:
-        body: The raw response body text.
-
-    Returns:
-        A dictionary containing code, message, and optionally additional_data and request_id,
-        or None if the body is not a valid API error response.
-    """
     if not isinstance(body, str):
         return None
 
@@ -308,7 +312,6 @@ def _parse_api_error_response_body(body: str) -> Optional[Dict[str, Any]]:
     if not isinstance(parsed, dict):
         return None
 
-    # Check for required fields
     message = parsed.get("message")
     code = parsed.get("code")
 
@@ -320,7 +323,6 @@ def _parse_api_error_response_body(body: str) -> Optional[Dict[str, Any]]:
         "message": message,
     }
 
-    # Add optional fields if present
     if "additional_data" in parsed:
         result["additional_data"] = parsed["additional_data"]
 
@@ -329,3 +331,8 @@ def _parse_api_error_response_body(body: str) -> Optional[Dict[str, Any]]:
 
     return result
 
+
+def is_api_error_code(code: Any) -> bool:
+    if isinstance(code, str):
+        return code in _api_error_codes
+    return False
