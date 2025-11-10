@@ -6,8 +6,7 @@ This module defines the exceptions that can be raised when an error occurs.
 import asyncio
 import json
 from enum import Enum
-from typing import Any, Dict, Optional, Type, TypeVar, Union
-from abc import ABC, abstractmethod
+from typing import Any, Dict, Optional, Union
 
 import httpx
 
@@ -67,22 +66,16 @@ class ClientErrorCode(str, Enum):
 NotionErrorCode = Union[APIErrorCode, ClientErrorCode]
 
 
-class NotionClientErrorBase(Exception, ABC):
+class NotionClientErrorBase(Exception):
     """Base error type for all Notion client errors.
 
-    Subclasses must provide a ``code`` attribute or property. We declare an
-    abstract ``code`` property here to mirror the TypeScript base class which
-    enforces a narrow-typed `code` field.
+    This is a base class for all errors that the Notion client can raise.
+    All subclasses must define a ``code`` attribute (either as a class attribute
+    or instance attribute) to identify the specific error type.
+
+    This mirrors the TypeScript ``abstract class NotionClientErrorBase`` which
+    requires subclasses to implement an abstract ``code`` field.
     """
-
-    @property
-    @abstractmethod
-    def code(self) -> Any:
-        """A narrow-typed code identifying the error kind.
-
-        Concrete subclasses may expose this as a class attribute or a property.
-        """
-        raise NotImplementedError
 
     def __init__(self, message: str = "") -> None:
         super().__init__(message)
@@ -111,15 +104,17 @@ class RequestTimeoutError(NotionClientErrorBase):
 HTTPResponseErrorCode = Union[ClientErrorCode, APIErrorCode]
 
 
-class HTTPResponseError(NotionClientErrorBase, ABC):
+class HTTPResponseError(NotionClientErrorBase):
     """Base class for HTTP response errors.
 
     Responses from the API use HTTP response codes that are used to indicate general
     classes of success and error.
 
-    This is an abstract base class. Use UnknownHTTPResponseError or APIResponseError instead.
+    Typically, you should use the concrete subclasses UnknownHTTPResponseError or
+    APIResponseError instead of instantiating this class directly.
     """
 
+    code: str
     status: int
     headers: httpx.Headers
     body: str
@@ -137,17 +132,12 @@ class HTTPResponseError(NotionClientErrorBase, ABC):
         request_id: Optional[str] = None,
     ) -> None:
         super().__init__(message)
-        self._code = code
+        self.code = code
         self.status = status
         self.headers = headers
         self.body = raw_body_text
         self.additional_data = additional_data
         self.request_id = request_id
-
-    @property
-    def code(self) -> str:
-        """Return the error code."""
-        return self._code
 
 
 class UnknownHTTPResponseError(HTTPResponseError):
@@ -168,7 +158,7 @@ class UnknownHTTPResponseError(HTTPResponseError):
             headers = httpx.Headers()
 
         super().__init__(
-            code=ClientErrorCode.ResponseError,
+            code=ClientErrorCode.ResponseError.value,
             status=status,
             message=message,
             headers=headers,
@@ -188,6 +178,9 @@ class APIResponseError(HTTPResponseError):
     Use the `code` property to handle various kinds of errors. All its possible values are in `APIErrorCode`.
     """
 
+    # Override the code type annotation for better type checking
+    code: APIErrorCode
+
     def __init__(
         self,
         code: APIErrorCode,
@@ -198,6 +191,8 @@ class APIResponseError(HTTPResponseError):
         additional_data: Optional[Dict[str, Any]] = None,
         request_id: Optional[str] = None,
     ) -> None:
+        # Store the enum directly, not just the value
+        # This is different from the parent class to maintain type information
         super().__init__(
             code=code.value if isinstance(code, APIErrorCode) else code,
             status=status,
@@ -207,11 +202,8 @@ class APIResponseError(HTTPResponseError):
             additional_data=additional_data,
             request_id=request_id,
         )
-
-    @property
-    def code(self) -> APIErrorCode:
-        """Return the API error code."""
-        return APIErrorCode(self._code)
+        # Override with the actual enum for type-safe access
+        self.code = code if isinstance(code, APIErrorCode) else APIErrorCode(code)
 
     @staticmethod
     def is_api_response_error(error: Any) -> bool:
