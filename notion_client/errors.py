@@ -288,6 +288,4 @@ def _parse_api_error_response_body(body: str) -> Optional[Dict[str, Any]]:
 
 
 def is_api_error_code(code: Any) -> bool:
-    if isinstance(code, str):
-        return code in _api_error_codes
-    return False
+    return isinstance(code, str) and code in _api_error_codes
