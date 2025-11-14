@@ -54,8 +54,8 @@
             </div>
         </aside>
         <h2>
-            <span class="text">80 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">80<span class="text"> run</span></button>
+            <span class="text">87 statements &nbsp;</span>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">87<span class="text"> run</span></button>
             <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">0<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">2<span class="text"> excluded</span></button>
         </h2>
@@ -65,7 +65,7 @@
             <a id="nextFileLink" class="nav" href="z_dce610fa14633ba8_client_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.11.3">coverage.py v7.11.3</a>,
-            created at 2025-11-13 16:15 +0000
+            created at 2025-11-14 11:21 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -550,6 +550,57 @@
     <p class="run run2"><span class="n"><a id="t468" href="#t468">468</a></span><span class="t">            <span class="nam">form_data</span><span class="op">=</span><span class="nam">pick</span><span class="op">(</span><span class="nam">kwargs</span><span class="op">,</span> <span class="str">"file"</span><span class="op">,</span> <span class="str">"part_number"</span><span class="op">)</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t469" href="#t469">469</a></span><span class="t">            <span class="nam">auth</span><span class="op">=</span><span class="nam">kwargs</span><span class="op">.</span><span class="nam">get</span><span class="op">(</span><span class="str">"auth"</span><span class="op">)</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t470" href="#t470">470</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t471" href="#t471">471</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t472" href="#t472">472</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t473" href="#t473">473</a></span><span class="t"><span class="key">class</span> <span class="nam">OAuthEndpoint</span><span class="op">(</span><span class="nam">Endpoint</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t474" href="#t474">474</a></span><span class="t">    <span class="key">def</span> <span class="nam">token</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t475" href="#t475">475</a></span><span class="t">        <span class="nam">self</span><span class="op">,</span> <span class="nam">client_id</span><span class="op">:</span> <span class="nam">str</span><span class="op">,</span> <span class="nam">client_secret</span><span class="op">:</span> <span class="nam">str</span><span class="op">,</span> <span class="op">**</span><span class="nam">kwargs</span><span class="op">:</span> <span class="nam">Any</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t476" href="#t476">476</a></span><span class="t">    <span class="op">)</span> <span class="op">-></span> <span class="nam">SyncAsync</span><span class="op">[</span><span class="nam">Any</span><span class="op">]</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t477" href="#t477">477</a></span><span class="t">        <span class="str">"""Create an access token that a third-party service can use to authenticate with Notion.</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t478" href="#t478">478</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t479" href="#t479">479</a></span><span class="t"><span class="str">        *[&#128279; Endpoint documentation](https://developers.notion.com/reference/create-a-token)*</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t480" href="#t480">480</a></span><span class="t"><span class="str">        """</span>  <span class="com"># noqa: E501</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t481" href="#t481">481</a></span><span class="t">        <span class="key">return</span> <span class="nam">self</span><span class="op">.</span><span class="nam">parent</span><span class="op">.</span><span class="nam">request</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t482" href="#t482">482</a></span><span class="t">            <span class="nam">path</span><span class="op">=</span><span class="str">"oauth/token"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t483" href="#t483">483</a></span><span class="t">            <span class="nam">method</span><span class="op">=</span><span class="str">"POST"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t484" href="#t484">484</a></span><span class="t">            <span class="nam">body</span><span class="op">=</span><span class="nam">pick</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t485" href="#t485">485</a></span><span class="t">                <span class="nam">kwargs</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t486" href="#t486">486</a></span><span class="t">                <span class="str">"grant_type"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t487" href="#t487">487</a></span><span class="t">                <span class="str">"code"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t488" href="#t488">488</a></span><span class="t">                <span class="str">"redirect_uri"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t489" href="#t489">489</a></span><span class="t">                <span class="str">"external_account"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t490" href="#t490">490</a></span><span class="t">                <span class="str">"refresh_token"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t491" href="#t491">491</a></span><span class="t">            <span class="op">)</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t492" href="#t492">492</a></span><span class="t">            <span class="nam">auth</span><span class="op">=</span><span class="op">{</span><span class="str">"client_id"</span><span class="op">:</span> <span class="nam">client_id</span><span class="op">,</span> <span class="str">"client_secret"</span><span class="op">:</span> <span class="nam">client_secret</span><span class="op">}</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t493" href="#t493">493</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t494" href="#t494">494</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t495" href="#t495">495</a></span><span class="t">    <span class="key">def</span> <span class="nam">introspect</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t496" href="#t496">496</a></span><span class="t">        <span class="nam">self</span><span class="op">,</span> <span class="nam">client_id</span><span class="op">:</span> <span class="nam">str</span><span class="op">,</span> <span class="nam">client_secret</span><span class="op">:</span> <span class="nam">str</span><span class="op">,</span> <span class="op">**</span><span class="nam">kwargs</span><span class="op">:</span> <span class="nam">Any</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t497" href="#t497">497</a></span><span class="t">    <span class="op">)</span> <span class="op">-></span> <span class="nam">SyncAsync</span><span class="op">[</span><span class="nam">Any</span><span class="op">]</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t498" href="#t498">498</a></span><span class="t">        <span class="str">"""Get a token's active status, scope, and issued time.</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t499" href="#t499">499</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t500" href="#t500">500</a></span><span class="t"><span class="str">        *[&#128279; Endpoint documentation](https://developers.notion.com/reference/introspect-token)*</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t501" href="#t501">501</a></span><span class="t"><span class="str">        """</span>  <span class="com"># noqa: E501</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t502" href="#t502">502</a></span><span class="t">        <span class="key">return</span> <span class="nam">self</span><span class="op">.</span><span class="nam">parent</span><span class="op">.</span><span class="nam">request</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t503" href="#t503">503</a></span><span class="t">            <span class="nam">path</span><span class="op">=</span><span class="str">"oauth/introspect"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t504" href="#t504">504</a></span><span class="t">            <span class="nam">method</span><span class="op">=</span><span class="str">"POST"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t505" href="#t505">505</a></span><span class="t">            <span class="nam">body</span><span class="op">=</span><span class="nam">pick</span><span class="op">(</span><span class="nam">kwargs</span><span class="op">,</span> <span class="str">"token"</span><span class="op">)</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t506" href="#t506">506</a></span><span class="t">            <span class="nam">auth</span><span class="op">=</span><span class="op">{</span><span class="str">"client_id"</span><span class="op">:</span> <span class="nam">client_id</span><span class="op">,</span> <span class="str">"client_secret"</span><span class="op">:</span> <span class="nam">client_secret</span><span class="op">}</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t507" href="#t507">507</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t508" href="#t508">508</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t509" href="#t509">509</a></span><span class="t">    <span class="key">def</span> <span class="nam">revoke</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t510" href="#t510">510</a></span><span class="t">        <span class="nam">self</span><span class="op">,</span> <span class="nam">client_id</span><span class="op">:</span> <span class="nam">str</span><span class="op">,</span> <span class="nam">client_secret</span><span class="op">:</span> <span class="nam">str</span><span class="op">,</span> <span class="op">**</span><span class="nam">kwargs</span><span class="op">:</span> <span class="nam">Any</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t511" href="#t511">511</a></span><span class="t">    <span class="op">)</span> <span class="op">-></span> <span class="nam">SyncAsync</span><span class="op">[</span><span class="nam">Any</span><span class="op">]</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t512" href="#t512">512</a></span><span class="t">        <span class="str">"""Revoke an access token.</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t513" href="#t513">513</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t514" href="#t514">514</a></span><span class="t"><span class="str">        *[&#128279; Endpoint documentation](https://developers.notion.com/reference/revoke-token)*</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t515" href="#t515">515</a></span><span class="t"><span class="str">        """</span>  <span class="com"># noqa: E501</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t516" href="#t516">516</a></span><span class="t">        <span class="key">return</span> <span class="nam">self</span><span class="op">.</span><span class="nam">parent</span><span class="op">.</span><span class="nam">request</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t517" href="#t517">517</a></span><span class="t">            <span class="nam">path</span><span class="op">=</span><span class="str">"oauth/revoke"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t518" href="#t518">518</a></span><span class="t">            <span class="nam">method</span><span class="op">=</span><span class="str">"POST"</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t519" href="#t519">519</a></span><span class="t">            <span class="nam">body</span><span class="op">=</span><span class="nam">pick</span><span class="op">(</span><span class="nam">kwargs</span><span class="op">,</span> <span class="str">"token"</span><span class="op">)</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t520" href="#t520">520</a></span><span class="t">            <span class="nam">auth</span><span class="op">=</span><span class="op">{</span><span class="str">"client_id"</span><span class="op">:</span> <span class="nam">client_id</span><span class="op">,</span> <span class="str">"client_secret"</span><span class="op">:</span> <span class="nam">client_secret</span><span class="op">}</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t521" href="#t521">521</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -559,7 +610,7 @@
             <a class="nav" href="z_dce610fa14633ba8_client_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.11.3">coverage.py v7.11.3</a>,
-            created at 2025-11-13 16:15 +0000
+            created at 2025-11-14 11:21 +0000
         </p>
     </div>
 </footer>
