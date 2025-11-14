@@ -474,7 +474,7 @@ class OAuthEndpoint(Endpoint):
     def token(
         self, client_id: str, client_secret: str, **kwargs: Any
     ) -> SyncAsync[Any]:
-        """Get token.
+        """Create an access token that a third-party service can use to authenticate with Notion.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-a-token)*
         """  # noqa: E501
@@ -495,9 +495,9 @@ class OAuthEndpoint(Endpoint):
     def introspect(
         self, client_id: str, client_secret: str, **kwargs: Any
     ) -> SyncAsync[Any]:
-        """Introspect token.
+        """Get a token's active status, scope, and issued time.
 
-        *[🔗 Endpoint documentation](https://developers.notion.com/reference/oauth-introspect)*
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/introspect-token)*
         """  # noqa: E501
         return self.parent.request(
             path="oauth/introspect",
@@ -509,9 +509,9 @@ class OAuthEndpoint(Endpoint):
     def revoke(
         self, client_id: str, client_secret: str, **kwargs: Any
     ) -> SyncAsync[Any]:
-        """Revoke token.
+        """Revoke an access token.
 
-        *[🔗 Endpoint documentation](https://developers.notion.com/reference/oauth-revoke)*
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/revoke-token)*
         """  # noqa: E501
         return self.parent.request(
             path="oauth/revoke",

@@ -51,24 +51,6 @@ def token() -> Optional[str]:
     return os.environ.get("NOTION_TOKEN")
 
 
-@pytest.fixture(scope="session")
-def oauth_client_id() -> Optional[str]:
-    """OAuth client ID for testing OAuth endpoints"""
-    return os.environ.get("NOTION_OAUTH_CLIENT_ID")
-
-
-@pytest.fixture(scope="session")
-def oauth_client_secret() -> Optional[str]:
-    """OAuth client secret for testing OAuth endpoints"""
-    return os.environ.get("NOTION_OAUTH_CLIENT_SECRET")
-
-
-@pytest.fixture(scope="session")
-def oauth_token() -> Optional[str]:
-    """OAuth token for testing OAuth introspect and revoke endpoints"""
-    return os.environ.get("NOTION_OAUTH_TOKEN")
-
-
 @pytest.fixture(scope="module", autouse=True)
 def parent_page_id(vcr) -> str:
     """this is the ID of the Notion page where the tests will be executed
