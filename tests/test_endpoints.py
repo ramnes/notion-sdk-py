@@ -560,3 +560,66 @@ def test_oauth_token_refresh_token(client, mocker):
     mock_request.assert_called_once()
     call_kwargs = mock_request.call_args[1]
     assert call_kwargs["path"] == "oauth/token"
+
+
+def test_move_pages(client, mocker):
+    """Test moving a page to a new parent (mocked)."""
+
+    mock_target_parent = {
+        "object": "page",
+        "id": "target-parent-id-456",
+        "parent": {"page_id": "root-page-123"},
+    }
+
+    mock_page_to_move = {
+        "object": "page",
+        "id": "page-to-move-id-789",
+        "parent": {"page_id": "root-page-123"},
+    }
+
+    mock_move_response = {
+        "object": "page",
+        "id": "page-to-move-id-789",
+        "parent": {"page_id": "target-parent-id-456"},
+    }
+
+    mock_delete_response = {
+        "object": "block",
+        "id": "page-to-move-id-789",
+        "archived": True,
+    }
+
+    mock_request = mocker.patch.object(
+        client,
+        "request",
+        side_effect=[
+            mock_target_parent,
+            mock_page_to_move,
+            mock_move_response,
+            mock_delete_response,
+            mock_delete_response,
+        ],
+    )
+
+    target_parent = client.pages.create(
+        parent={"page_id": "root-page-123"},
+        properties={"title": [{"text": {"content": "Target Parent"}}]},
+    )
+
+    page_to_move = client.pages.create(
+        parent={"page_id": "root-page-123"},
+        properties={"title": [{"text": {"content": "Moving Page"}}]},
+    )
+
+    response = client.pages.move(
+        page_id=page_to_move["id"], parent={"page_id": target_parent["id"]}
+    )
+
+    assert response["object"] == "page"
+    assert response["parent"]["page_id"] == target_parent["id"]
+    assert response["id"] == page_to_move["id"]
+
+    client.blocks.delete(block_id=page_to_move["id"])
+    client.blocks.delete(block_id=target_parent["id"])
+
+    assert mock_request.call_count == 5

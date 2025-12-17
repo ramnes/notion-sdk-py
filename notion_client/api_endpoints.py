@@ -312,6 +312,18 @@ class PagesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
+    def move(self, page_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Use this API to move an existing Notion page to a new parent.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/move-page)*
+        """  # noqa: E501
+        return self.parent.request(
+            path=f"pages/{page_id}",
+            method="PATCH",
+            body=pick(kwargs, "parent"),
+            auth=kwargs.get("auth"),
+        )
+
 
 class UsersEndpoint(Endpoint):
     def list(self, **kwargs: Any) -> SyncAsync[Any]:
