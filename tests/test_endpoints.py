@@ -560,3 +560,27 @@ def test_oauth_token_refresh_token(client, mocker):
     mock_request.assert_called_once()
     call_kwargs = mock_request.call_args[1]
     assert call_kwargs["path"] == "oauth/token"
+
+
+@pytest.mark.vcr()
+def test_move_pages(client, page_id):
+    target_parent = client.pages.create(
+        parent={"page_id": page_id},
+        properties={"title": [{"text": {"content": "Target Parent"}}]},
+    )
+
+    page_to_move = client.pages.create(
+        parent={"page_id": page_id},
+        properties={"title": [{"text": {"content": "Moving Page"}}]},
+    )
+
+    response = client.pages.move(
+        page_id=page_to_move["id"], parent={"page_id": target_parent["id"]}
+    )
+
+    assert response["object"] == "page"
+    assert response["parent"]["page_id"] == target_parent["id"]
+    assert response["id"] == page_to_move["id"]
+
+    client.blocks.delete(block_id=page_to_move["id"])
+    client.blocks.delete(block_id=target_parent["id"])
