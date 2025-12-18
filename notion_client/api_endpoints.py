@@ -318,8 +318,8 @@ class PagesEndpoint(Endpoint):
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/move-page)*
         """  # noqa: E501
         return self.parent.request(
-            path=f"pages/{page_id}",
-            method="PATCH",
+            path=f"pages/{page_id}/move",
+            method="POST",
             body=pick(kwargs, "parent"),
             auth=kwargs.get("auth"),
         )
