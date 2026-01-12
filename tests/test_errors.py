@@ -245,9 +245,9 @@ def test_api_response_error_static_method():
             headers=httpx.Headers(),
             raw_body_text="{}",
         )
-        assert APIResponseError.is_api_response_error(api_error), (
-            f"Failed for {api_code}"
-        )
+        assert APIResponseError.is_api_response_error(
+            api_error
+        ), f"Failed for {api_code}"
 
     timeout_error = RequestTimeoutError()
     assert not APIResponseError.is_api_response_error(timeout_error)
