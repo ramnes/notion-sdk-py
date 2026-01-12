@@ -8,17 +8,17 @@ For more information visit https://github.com/ramnes/notion-sdk-py.
 
 from .client import AsyncClient, Client
 from .errors import (
-  # Error codes
-  NotionErrorCode,
-  APIErrorCode,
-  ClientErrorCode,
-  # Error types
-  NotionClientError,
-  APIResponseError,
-  UnknownHTTPResponseError,
-  RequestTimeoutError,
-  # Error helpers
-  is_notion_client_error,
+    # Error codes
+    NotionErrorCode,
+    APIErrorCode,
+    ClientErrorCode,
+    # Error types
+    NotionClientError,
+    APIResponseError,
+    UnknownHTTPResponseError,
+    RequestTimeoutError,
+    # Error helpers
+    is_notion_client_error,
 )
 from .helpers import (
     collect_paginated_api,
