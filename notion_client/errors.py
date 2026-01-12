@@ -115,7 +115,7 @@ HTTPResponseErrorCode = Union[ClientErrorCode, APIErrorCode]
 
 
 class HTTPResponseError(NotionClientErrorBase):
-    code: str
+    code: Union[str, APIErrorCode]
     status: int
     headers: httpx.Headers
     body: str
@@ -124,7 +124,7 @@ class HTTPResponseError(NotionClientErrorBase):
 
     def __init__(
         self,
-        code: str,
+        code: Union[str, APIErrorCode],
         status: int,
         message: str,
         headers: httpx.Headers,
@@ -235,8 +235,8 @@ def build_request_error(
     api_error_response_body = _parse_api_error_response_body(body_text)
 
     if api_error_response_body is not None:
-        error = APIResponseError(
-            code=api_error_response_body["code"].value,
+        return APIResponseError(
+            code=api_error_response_body["code"],
             message=api_error_response_body["message"],
             headers=response.headers,
             status=response.status_code,
@@ -244,8 +244,6 @@ def build_request_error(
             additional_data=api_error_response_body.get("additional_data"),
             request_id=api_error_response_body.get("request_id"),
         )
-        error.code = api_error_response_body["code"]
-        return error
 
     return UnknownHTTPResponseError(
         message=None,
