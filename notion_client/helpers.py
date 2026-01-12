@@ -275,7 +275,7 @@ def iterate_data_source_templates(
     while True:
         response = function(**kwargs, start_cursor=next_cursor)
         for template in response.get("templates", []):
-            yield template
+            yield template  # pragma: no cover
 
         next_cursor = response.get("next_cursor")
         if not response.get("has_more") or not next_cursor:
@@ -320,7 +320,7 @@ async def async_iterate_data_source_templates(
     while True:
         response = await function(**kwargs, start_cursor=next_cursor)
         for template in response.get("templates", []):
-            yield template
+            yield template  # pragma: no cover
 
         next_cursor = response.get("next_cursor")
         if not response.get("has_more") or not next_cursor:

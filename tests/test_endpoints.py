@@ -393,3 +393,194 @@ def test_file_uploads_complete(client, part_uploaded_file_upload_id):
     assert response["content_type"] == "text/plain"
     assert response["number_of_parts"]["total"] == 3
     assert response["number_of_parts"]["sent"] == 3
+
+
+def test_oauth_introspect(client, mocker):
+    """Test OAuth token introspection with mock - tests Basic auth encoding"""
+    mock_response = {"active": False, "request_id": "test-request-id"}
+
+    mock_send = mocker.patch.object(
+        client.client,
+        "send",
+        return_value=mocker.Mock(
+            json=lambda: mock_response, raise_for_status=lambda: None
+        ),
+    )
+
+    response = client.oauth.introspect(
+        client_id="test_client_id",
+        client_secret="test_client_secret",
+        token="test_token",
+    )
+
+    assert "active" in response
+    assert isinstance(response["active"], bool)
+
+    mock_send.assert_called_once()
+    request = mock_send.call_args[0][0]
+    assert "Authorization" in request.headers
+    assert request.headers["Authorization"].startswith("Basic ")
+    assert (
+        request.headers["Authorization"]
+        == "Basic dGVzdF9jbGllbnRfaWQ6dGVzdF9jbGllbnRfc2VjcmV0"
+    )
+
+
+def test_oauth_token_with_basic_auth(client, mocker):
+    """Test OAuth token exchange with Basic auth - exercises auth encoding path"""
+    mock_response = {
+        "access_token": "secret_test_token",
+        "token_type": "bearer",
+        "bot_id": "bot_123",
+    }
+
+    mock_send = mocker.patch.object(
+        client.client,
+        "send",
+        return_value=mocker.Mock(
+            json=lambda: mock_response, raise_for_status=lambda: None
+        ),
+    )
+
+    response = client.oauth.token(
+        client_id="test_client_id",
+        client_secret="test_client_secret",
+        grant_type="authorization_code",
+        code="test_code",
+        redirect_uri="http://localhost:3000/callback",
+    )
+
+    assert response["access_token"] == "secret_test_token"
+
+    mock_send.assert_called_once()
+    request = mock_send.call_args[0][0]
+    assert "Authorization" in request.headers
+    assert request.headers["Authorization"].startswith("Basic ")
+    import base64
+
+    expected = base64.b64encode(b"test_client_id:test_client_secret").decode()
+    assert request.headers["Authorization"] == f"Basic {expected}"
+
+
+def test_oauth_revoke_with_basic_auth(client, mocker):
+    """Test OAuth revoke with Basic auth - exercises auth encoding path"""
+    mock_response = {}
+
+    mock_send = mocker.patch.object(
+        client.client,
+        "send",
+        return_value=mocker.Mock(
+            json=lambda: mock_response, raise_for_status=lambda: None
+        ),
+    )
+
+    response = client.oauth.revoke(
+        client_id="test_client_id",
+        client_secret="test_client_secret",
+        token="test_token",
+    )
+
+    assert response == {}
+
+    mock_send.assert_called_once()
+    request = mock_send.call_args[0][0]
+    assert "Authorization" in request.headers
+    assert request.headers["Authorization"].startswith("Basic ")
+
+
+def test_oauth_revoke(client, mocker):
+    """Test OAuth token revocation with mock (can't use cassette - token becomes invalid)"""
+    mock_response = {}
+    mock_request = mocker.patch.object(client, "request", return_value=mock_response)
+
+    response = client.oauth.revoke(
+        client_id="test_client_id",
+        client_secret="test_client_secret",
+        token="test_token",
+    )
+
+    assert response == {}
+    mock_request.assert_called_once_with(
+        path="oauth/revoke",
+        method="POST",
+        body={"token": "test_token"},
+        auth={"client_id": "test_client_id", "client_secret": "test_client_secret"},
+    )
+
+
+def test_oauth_token_authorization_code(client, mocker):
+    mock_response = {
+        "access_token": "secret_test_token",
+        "token_type": "bearer",
+        "bot_id": "bot_123",
+        "workspace_id": "ws_456",
+        "workspace_name": "Test Workspace",
+        "owner": {"type": "user", "user": {"object": "user", "id": "user_789"}},
+    }
+
+    mock_request = mocker.patch.object(client, "request", return_value=mock_response)
+
+    response = client.oauth.token(
+        client_id="test_client_id",
+        client_secret="test_client_secret",
+        grant_type="authorization_code",
+        code="test_code",
+        redirect_uri="http://localhost:3000/callback",
+    )
+
+    assert response["access_token"] == "secret_test_token"
+    assert response["bot_id"] == "bot_123"
+    mock_request.assert_called_once()
+    call_kwargs = mock_request.call_args[1]
+    assert call_kwargs["path"] == "oauth/token"
+    assert call_kwargs["method"] == "POST"
+    assert call_kwargs["auth"] == {
+        "client_id": "test_client_id",
+        "client_secret": "test_client_secret",
+    }
+
+
+def test_oauth_token_refresh_token(client, mocker):
+    mock_response = {
+        "access_token": "secret_refreshed_token",
+        "token_type": "bearer",
+        "bot_id": "bot_123",
+    }
+
+    mock_request = mocker.patch.object(client, "request", return_value=mock_response)
+
+    response = client.oauth.token(
+        client_id="test_client_id",
+        client_secret="test_client_secret",
+        grant_type="refresh_token",
+        refresh_token="test_refresh_token",
+    )
+
+    assert response["access_token"] == "secret_refreshed_token"
+    mock_request.assert_called_once()
+    call_kwargs = mock_request.call_args[1]
+    assert call_kwargs["path"] == "oauth/token"
+
+
+@pytest.mark.vcr()
+def test_move_pages(client, page_id):
+    target_parent = client.pages.create(
+        parent={"page_id": page_id},
+        properties={"title": [{"text": {"content": "Target Parent"}}]},
+    )
+
+    page_to_move = client.pages.create(
+        parent={"page_id": page_id},
+        properties={"title": [{"text": {"content": "Moving Page"}}]},
+    )
+
+    response = client.pages.move(
+        page_id=page_to_move["id"], parent={"page_id": target_parent["id"]}
+    )
+
+    assert response["object"] == "page"
+    assert response["parent"]["page_id"] == target_parent["id"]
+    assert response["id"] == page_to_move["id"]
+
+    client.blocks.delete(block_id=page_to_move["id"])
+    client.blocks.delete(block_id=target_parent["id"])
