@@ -1,7 +1,6 @@
 """Synchronous and asynchronous clients for Notion's API."""
 
 import base64
-import json
 import logging
 from abc import abstractmethod
 from dataclasses import dataclass
