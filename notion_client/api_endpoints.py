@@ -274,6 +274,7 @@ class PagesEndpoint(Endpoint):
                 "content",
                 "children",
                 "template",
+                "position",
             ),
             auth=kwargs.get("auth"),
         )
