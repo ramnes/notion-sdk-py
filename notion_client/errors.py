@@ -89,7 +89,7 @@ def is_notion_client_error_with_code(error: Any, codes: Dict[str, bool]) -> bool
 class RequestTimeoutError(NotionClientErrorBase):
     """Error thrown by the client if a request times out."""
 
-    code: str = ClientErrorCode.RequestTimeout
+    code: ClientErrorCode = ClientErrorCode.RequestTimeout
 
     def __init__(self, message: str = "Request to Notion API has timed out") -> None:
         super().__init__(message)
