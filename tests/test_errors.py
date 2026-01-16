@@ -7,15 +7,12 @@ from notion_client.errors import (
     APIErrorCode,
     ClientErrorCode,
     is_notion_client_error,
-    is_notion_client_error_with_code,
     RequestTimeoutError,
     HTTPResponseError,
     is_http_response_error,
     UnknownHTTPResponseError,
     APIResponseError,
     build_request_error,
-    _parse_api_error_response_body,
-    is_api_error_code,
 )
 
 STATUS_PAGE_BAD_REQUEST = "https://mock.httpstatus.io/400"
@@ -107,13 +104,6 @@ async def test_async_api_response_error_additional_data(async_client):
         assert isinstance(error.additional_data, dict)
 
 
-async def test_is_api_error_code():
-    error_code = "unauthorized"
-    assert is_api_error_code(error_code)
-    assert not is_api_error_code(None)
-    assert not is_api_error_code(404)
-
-
 def test_is_notion_client_error():
     """Test is_notion_client_error function."""
     timeout_error = RequestTimeoutError()
@@ -135,40 +125,6 @@ def test_is_notion_client_error():
     assert not is_notion_client_error(None)
     assert not is_notion_client_error("error string")
     assert not is_notion_client_error(404)
-
-
-def test_is_notion_client_error_with_code():
-    """Test is_notion_client_error_with_code function."""
-    timeout_error = RequestTimeoutError()
-    assert is_notion_client_error_with_code(
-        timeout_error, {ClientErrorCode.RequestTimeout.value}
-    )
-    assert not is_notion_client_error_with_code(
-        timeout_error, {ClientErrorCode.ResponseError.value}
-    )
-
-    unknown_error = UnknownHTTPResponseError(status=500)
-    assert is_notion_client_error_with_code(
-        unknown_error, {ClientErrorCode.ResponseError.value}
-    )
-
-    api_error = APIResponseError(
-        code=APIErrorCode.ObjectNotFound,
-        status=404,
-        message="Not found",
-        headers=httpx.Headers(),
-        raw_body_text="{}",
-    )
-    assert is_notion_client_error_with_code(
-        api_error, {APIErrorCode.ObjectNotFound.value}
-    )
-
-    assert not is_notion_client_error_with_code(
-        None, {ClientErrorCode.RequestTimeout.value}
-    )
-    assert not is_notion_client_error_with_code(
-        "error", {ClientErrorCode.RequestTimeout.value}
-    )
 
 
 def test_is_http_response_error():
@@ -372,6 +328,17 @@ def test_build_request_error_creates_unknown_http_response_error():
     error = build_request_error(response, body_text)
     assert isinstance(error, UnknownHTTPResponseError)
 
+    response = httpx.Response(
+        status_code=400,
+        headers=httpx.Headers(),
+        content=b"Error",
+    )
+    error = build_request_error(response, None)  # type: ignore
+    assert isinstance(error, UnknownHTTPResponseError)
+
+    error = build_request_error(response, 123)  # type: ignore
+    assert isinstance(error, UnknownHTTPResponseError)
+
 
 def test_unknown_http_response_error_default_message():
     """Test UnknownHTTPResponseError generates default message."""
@@ -390,20 +357,6 @@ def test_unknown_http_response_error_custom_message():
 
     assert error.status == 500
     assert str(error) == custom_message
-
-
-def test_is_api_error_code_comprehensive():
-    """Test is_api_error_code with all valid and invalid inputs."""
-    for api_code in APIErrorCode:
-        assert is_api_error_code(api_code.value), f"Failed for {api_code.value}"
-
-    assert not is_api_error_code("invalid_code")
-    assert not is_api_error_code(ClientErrorCode.RequestTimeout.value)
-    assert not is_api_error_code(ClientErrorCode.ResponseError.value)
-    assert not is_api_error_code(None)
-    assert not is_api_error_code(404)
-    assert not is_api_error_code([])
-    assert not is_api_error_code({})
 
 
 def test_error_code_enums():
@@ -442,13 +395,3 @@ async def test_request_timeout_error_reject_after_timeout():
 
     with pytest.raises(RequestTimeoutError):
         await RequestTimeoutError.reject_after_timeout(slow_task(), 100)
-
-
-def test_parse_api_error_response_body_with_non_string():
-    """Test _parse_api_error_response_body with non-string input."""
-
-    result = _parse_api_error_response_body(None)  # type: ignore
-    assert result is None
-
-    result = _parse_api_error_response_body(123)  # type: ignore
-    assert result is None

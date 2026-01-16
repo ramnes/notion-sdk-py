@@ -76,7 +76,7 @@ def is_notion_client_error(error: Any) -> bool:
     return isinstance(error, NotionClientErrorBase)
 
 
-def is_notion_client_error_with_code(error: Any, codes: Set[str]) -> bool:
+def _is_notion_client_error_with_code(error: Any, codes: Set[str]) -> bool:
     if not is_notion_client_error(error):
         return False
     error_code = error.code
@@ -96,7 +96,7 @@ class RequestTimeoutError(NotionClientErrorBase):
 
     @staticmethod
     def is_request_timeout_error(error: Any) -> bool:
-        return is_notion_client_error_with_code(
+        return _is_notion_client_error_with_code(
             error,
             {ClientErrorCode.RequestTimeout.value},
         )
@@ -156,7 +156,7 @@ _http_response_error_codes: Set[str] = {
 
 
 def is_http_response_error(error: Any) -> bool:
-    return is_notion_client_error_with_code(error, _http_response_error_codes)
+    return _is_notion_client_error_with_code(error, _http_response_error_codes)
 
 
 class UnknownHTTPResponseError(HTTPResponseError):
@@ -188,7 +188,7 @@ class UnknownHTTPResponseError(HTTPResponseError):
 
     @staticmethod
     def is_unknown_http_response_error(error: Any) -> bool:
-        return is_notion_client_error_with_code(
+        return _is_notion_client_error_with_code(
             error,
             {ClientErrorCode.ResponseError.value},
         )
@@ -215,7 +215,7 @@ class APIResponseError(HTTPResponseError):
 
     @staticmethod
     def is_api_response_error(error: Any) -> bool:
-        return is_notion_client_error_with_code(error, _api_error_codes)
+        return _is_notion_client_error_with_code(error, _api_error_codes)
 
 
 # Type alias for all Notion client errors
@@ -264,7 +264,7 @@ def _parse_api_error_response_body(body: str) -> Optional[Dict[str, Any]]:
     message = parsed.get("message")
     code = parsed.get("code")
 
-    if not isinstance(message, str) or not is_api_error_code(code):
+    if not isinstance(message, str) or not _is_api_error_code(code):
         return None
 
     result: Dict[str, Any] = {
@@ -281,5 +281,5 @@ def _parse_api_error_response_body(body: str) -> Optional[Dict[str, Any]]:
     return result
 
 
-def is_api_error_code(code: Any) -> bool:
+def _is_api_error_code(code: Any) -> bool:
     return isinstance(code, str) and code in _api_error_codes
