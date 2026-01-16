@@ -76,7 +76,7 @@ def is_notion_client_error(error: Any) -> bool:
     return isinstance(error, NotionClientErrorBase)
 
 
-def is_notion_client_error_with_code(error: Any, codes: Dict[str, bool]) -> bool:
+def is_notion_client_error_with_code(error: Any, codes: set[str]) -> bool:
     if not is_notion_client_error(error):
         return False
     error_code = error.code
@@ -98,9 +98,7 @@ class RequestTimeoutError(NotionClientErrorBase):
     def is_request_timeout_error(error: Any) -> bool:
         return is_notion_client_error_with_code(
             error,
-            {
-                ClientErrorCode.RequestTimeout.value: True,
-            },
+            {ClientErrorCode.RequestTimeout.value},
         )
 
     @staticmethod
@@ -141,19 +139,19 @@ class HTTPResponseError(NotionClientErrorBase):
         self.request_id = request_id
 
 
-_http_response_error_codes: Dict[str, bool] = {
-    ClientErrorCode.ResponseError.value: True,
-    APIErrorCode.Unauthorized.value: True,
-    APIErrorCode.RestrictedResource.value: True,
-    APIErrorCode.ObjectNotFound.value: True,
-    APIErrorCode.RateLimited.value: True,
-    APIErrorCode.InvalidJSON.value: True,
-    APIErrorCode.InvalidRequestURL.value: True,
-    APIErrorCode.InvalidRequest.value: True,
-    APIErrorCode.ValidationError.value: True,
-    APIErrorCode.ConflictError.value: True,
-    APIErrorCode.InternalServerError.value: True,
-    APIErrorCode.ServiceUnavailable.value: True,
+_http_response_error_codes: set[str] = {
+    ClientErrorCode.ResponseError.value,
+    APIErrorCode.Unauthorized.value,
+    APIErrorCode.RestrictedResource.value,
+    APIErrorCode.ObjectNotFound.value,
+    APIErrorCode.RateLimited.value,
+    APIErrorCode.InvalidJSON.value,
+    APIErrorCode.InvalidRequestURL.value,
+    APIErrorCode.InvalidRequest.value,
+    APIErrorCode.ValidationError.value,
+    APIErrorCode.ConflictError.value,
+    APIErrorCode.InternalServerError.value,
+    APIErrorCode.ServiceUnavailable.value,
 }
 
 
@@ -192,24 +190,22 @@ class UnknownHTTPResponseError(HTTPResponseError):
     def is_unknown_http_response_error(error: Any) -> bool:
         return is_notion_client_error_with_code(
             error,
-            {
-                ClientErrorCode.ResponseError.value: True,
-            },
+            {ClientErrorCode.ResponseError.value},
         )
 
 
-_api_error_codes: Dict[str, bool] = {
-    APIErrorCode.Unauthorized.value: True,
-    APIErrorCode.RestrictedResource.value: True,
-    APIErrorCode.ObjectNotFound.value: True,
-    APIErrorCode.RateLimited.value: True,
-    APIErrorCode.InvalidJSON.value: True,
-    APIErrorCode.InvalidRequestURL.value: True,
-    APIErrorCode.InvalidRequest.value: True,
-    APIErrorCode.ValidationError.value: True,
-    APIErrorCode.ConflictError.value: True,
-    APIErrorCode.InternalServerError.value: True,
-    APIErrorCode.ServiceUnavailable.value: True,
+_api_error_codes: set[str] = {
+    APIErrorCode.Unauthorized.value,
+    APIErrorCode.RestrictedResource.value,
+    APIErrorCode.ObjectNotFound.value,
+    APIErrorCode.RateLimited.value,
+    APIErrorCode.InvalidJSON.value,
+    APIErrorCode.InvalidRequestURL.value,
+    APIErrorCode.InvalidRequest.value,
+    APIErrorCode.ValidationError.value,
+    APIErrorCode.ConflictError.value,
+    APIErrorCode.InternalServerError.value,
+    APIErrorCode.ServiceUnavailable.value,
 }
 
 

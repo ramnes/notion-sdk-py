@@ -141,15 +141,15 @@ def test_is_notion_client_error_with_code():
     """Test is_notion_client_error_with_code function."""
     timeout_error = RequestTimeoutError()
     assert is_notion_client_error_with_code(
-        timeout_error, {ClientErrorCode.RequestTimeout.value: True}
+        timeout_error, {ClientErrorCode.RequestTimeout.value}
     )
     assert not is_notion_client_error_with_code(
-        timeout_error, {ClientErrorCode.ResponseError.value: True}
+        timeout_error, {ClientErrorCode.ResponseError.value}
     )
 
     unknown_error = UnknownHTTPResponseError(status=500)
     assert is_notion_client_error_with_code(
-        unknown_error, {ClientErrorCode.ResponseError.value: True}
+        unknown_error, {ClientErrorCode.ResponseError.value}
     )
 
     api_error = APIResponseError(
@@ -160,14 +160,14 @@ def test_is_notion_client_error_with_code():
         raw_body_text="{}",
     )
     assert is_notion_client_error_with_code(
-        api_error, {APIErrorCode.ObjectNotFound.value: True}
+        api_error, {APIErrorCode.ObjectNotFound.value}
     )
 
     assert not is_notion_client_error_with_code(
-        None, {ClientErrorCode.RequestTimeout.value: True}
+        None, {ClientErrorCode.RequestTimeout.value}
     )
     assert not is_notion_client_error_with_code(
-        "error", {ClientErrorCode.RequestTimeout.value: True}
+        "error", {ClientErrorCode.RequestTimeout.value}
     )
 
 
