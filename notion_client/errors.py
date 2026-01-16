@@ -6,7 +6,7 @@ This module defines the exceptions that can be raised when an error occurs.
 import asyncio
 import json
 from enum import Enum
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Optional, Union, Set
 
 import httpx
 
@@ -76,7 +76,7 @@ def is_notion_client_error(error: Any) -> bool:
     return isinstance(error, NotionClientErrorBase)
 
 
-def is_notion_client_error_with_code(error: Any, codes: set[str]) -> bool:
+def is_notion_client_error_with_code(error: Any, codes: Set[str]) -> bool:
     if not is_notion_client_error(error):
         return False
     error_code = error.code
@@ -139,7 +139,7 @@ class HTTPResponseError(NotionClientErrorBase):
         self.request_id = request_id
 
 
-_http_response_error_codes: set[str] = {
+_http_response_error_codes: Set[str] = {
     ClientErrorCode.ResponseError.value,
     APIErrorCode.Unauthorized.value,
     APIErrorCode.RestrictedResource.value,
@@ -194,7 +194,7 @@ class UnknownHTTPResponseError(HTTPResponseError):
         )
 
 
-_api_error_codes: set[str] = {
+_api_error_codes: Set[str] = {
     APIErrorCode.Unauthorized.value,
     APIErrorCode.RestrictedResource.value,
     APIErrorCode.ObjectNotFound.value,
