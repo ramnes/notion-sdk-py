@@ -1,7 +1,6 @@
 """Synchronous and asynchronous clients for Notion's API."""
 
 import base64
-import json
 import logging
 from abc import abstractmethod
 from dataclasses import dataclass
@@ -23,10 +22,8 @@ from notion_client.api_endpoints import (
     OAuthEndpoint,
 )
 from notion_client.errors import (
-    APIResponseError,
-    HTTPResponseError,
     RequestTimeoutError,
-    is_api_error_code,
+    build_request_error,
 )
 from notion_client.logging import make_console_logger
 from notion_client.typing import SyncAsync
@@ -160,24 +157,8 @@ class BaseClient:
         try:
             response.raise_for_status()
         except httpx.HTTPStatusError as error:
-            try:
-                body = error.response.json()
-                code = body.get("code")
-                additional_data = body.get("additional_data")
-                request_id = body.get("request_id")
-            except json.JSONDecodeError:
-                code = None
-                additional_data = None
-                request_id = None
-            if code and is_api_error_code(code):
-                raise APIResponseError(
-                    response,
-                    body["message"],
-                    code,
-                    additional_data,
-                    request_id,
-                )
-            raise HTTPResponseError(error.response)
+            body_text = error.response.text
+            raise build_request_error(error.response, body_text)
 
         body = response.json()
         self.logger.debug(f"=> {body}")
