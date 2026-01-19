@@ -1,3 +1,3 @@
 -r tests.txt
 -r quality.txt
-tox
+tox>=4.34.1
