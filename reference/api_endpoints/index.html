@@ -2041,7 +2041,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
             <span class="n">path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;blocks/</span><span class="si">{</span><span class="n">block_id</span><span class="si">}</span><span class="s2">/children&quot;</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="s2">&quot;PATCH&quot;</span><span class="p">,</span>
-            <span class="n">body</span><span class="o">=</span><span class="n">pick</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="s2">&quot;children&quot;</span><span class="p">,</span> <span class="s2">&quot;after&quot;</span><span class="p">),</span>
+            <span class="n">body</span><span class="o">=</span><span class="n">pick</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="s2">&quot;children&quot;</span><span class="p">,</span> <span class="s2">&quot;after&quot;</span><span class="p">,</span> <span class="s2">&quot;position&quot;</span><span class="p">),</span>
             <span class="n">auth</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;auth&quot;</span><span class="p">),</span>
         <span class="p">)</span>
 
@@ -2107,7 +2107,7 @@
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
         <span class="n">path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;blocks/</span><span class="si">{</span><span class="n">block_id</span><span class="si">}</span><span class="s2">/children&quot;</span><span class="p">,</span>
         <span class="n">method</span><span class="o">=</span><span class="s2">&quot;PATCH&quot;</span><span class="p">,</span>
-        <span class="n">body</span><span class="o">=</span><span class="n">pick</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="s2">&quot;children&quot;</span><span class="p">,</span> <span class="s2">&quot;after&quot;</span><span class="p">),</span>
+        <span class="n">body</span><span class="o">=</span><span class="n">pick</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="s2">&quot;children&quot;</span><span class="p">,</span> <span class="s2">&quot;after&quot;</span><span class="p">,</span> <span class="s2">&quot;position&quot;</span><span class="p">),</span>
         <span class="n">auth</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;auth&quot;</span><span class="p">),</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
