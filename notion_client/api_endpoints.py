@@ -23,7 +23,7 @@ class BlocksChildrenEndpoint(Endpoint):
         return self.parent.request(
             path=f"blocks/{block_id}/children",
             method="PATCH",
-            body=pick(kwargs, "children", "after"),
+            body=pick(kwargs, "children", "after", "position"),
             auth=kwargs.get("auth"),
         )
 
