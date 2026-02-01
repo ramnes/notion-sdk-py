@@ -148,12 +148,7 @@ def validate_request_path(path: str) -> None:
     # Check for URL-encoded path traversal (%2e = '.')
     # Only decode if path contains potential encoded dots
     if re.search(r"%2e", path, re.IGNORECASE):
-        try:
-            decoded = unquote(path)
-        except Exception:
-            # Invalid percent encoding - not a traversal concern
-            return
-
+        decoded = unquote(path)
         if ".." in decoded:
             raise InvalidPathParameterError(
                 f'Request path "{path}" contains encoded path traversal sequence'
