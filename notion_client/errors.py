@@ -9,7 +9,6 @@ from enum import Enum
 from typing import Any, Dict, Optional, Union, Set
 
 import httpx
-import re
 from urllib.parse import unquote
 
 
@@ -147,7 +146,7 @@ def validate_request_path(path: str) -> None:
 
     # Check for URL-encoded path traversal (%2e = '.')
     # Only decode if path contains potential encoded dots
-    if re.search(r"%2e", path, re.IGNORECASE):
+    if "%2e" in path.lower():
         decoded = unquote(path)
         if ".." in decoded:
             raise InvalidPathParameterError(
