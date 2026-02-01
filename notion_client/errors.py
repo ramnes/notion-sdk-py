@@ -9,6 +9,8 @@ from enum import Enum
 from typing import Any, Dict, Optional, Union, Set
 
 import httpx
+import re
+from urllib.parse import unquote
 
 
 class APIErrorCode(str, Enum):
@@ -59,6 +61,7 @@ class ClientErrorCode(str, Enum):
 
     RequestTimeout = "notionhq_client_request_timeout"
     ResponseError = "notionhq_client_response_error"
+    InvalidPathParameter = "notionhq_client_invalid_path_parameter"
 
 
 # Error codes on errors thrown by the `Client`.
@@ -107,6 +110,54 @@ class RequestTimeoutError(NotionClientErrorBase):
             return await asyncio.wait_for(coro, timeout=timeout_ms / 1000.0)
         except asyncio.TimeoutError:
             raise RequestTimeoutError()
+
+
+class InvalidPathParameterError(NotionClientErrorBase):
+    """Error thrown when a path parameter contains invalid characters such as
+    path traversal sequences (..) that could alter the intended API endpoint."""
+
+    code: ClientErrorCode = ClientErrorCode.InvalidPathParameter
+
+    def __init__(
+        self,
+        message: str = (
+            "Path parameter contains invalid characters that could alter the request path"
+        ),
+    ) -> None:
+        super().__init__(message)
+
+    @staticmethod
+    def is_invalid_path_parameter_error(error: object) -> bool:
+        return _is_notion_client_error_with_code(
+            error,
+            {ClientErrorCode.InvalidPathParameter.value},
+        )
+
+
+def validate_request_path(path: str) -> None:
+    """Validates that a request path does not contain path traversal sequences.
+    Raises InvalidPathParameterError if the path contains ".." segments,
+    including URL-encoded variants like %2e%2e."""
+
+    # Check for literal path traversal
+    if ".." in path:
+        raise InvalidPathParameterError(
+            f'Request path "{path}" contains path traversal sequence ".."'
+        )
+
+    # Check for URL-encoded path traversal (%2e = '.')
+    # Only decode if path contains potential encoded dots
+    if re.search(r"%2e", path, re.IGNORECASE):
+        try:
+            decoded = unquote(path)
+        except Exception:
+            # Invalid percent encoding - not a traversal concern
+            return
+
+        if ".." in decoded:
+            raise InvalidPathParameterError(
+                f'Request path "{path}" contains encoded path traversal sequence'
+            )
 
 
 HTTPResponseErrorCode = Union[ClientErrorCode, APIErrorCode]
@@ -220,7 +271,10 @@ class APIResponseError(HTTPResponseError):
 
 # Type alias for all Notion client errors
 NotionClientError = Union[
-    RequestTimeoutError, UnknownHTTPResponseError, APIResponseError
+    RequestTimeoutError,
+    UnknownHTTPResponseError,
+    APIResponseError,
+    InvalidPathParameterError,
 ]
 
 

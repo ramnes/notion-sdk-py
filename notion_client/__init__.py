@@ -17,6 +17,7 @@ from .errors import (
     APIResponseError,
     UnknownHTTPResponseError,
     RequestTimeoutError,
+    InvalidPathParameterError,
     # Error helpers
     is_notion_client_error,
 )
@@ -48,6 +49,7 @@ __all__ = [
     "APIResponseError",
     "UnknownHTTPResponseError",
     "RequestTimeoutError",
+    "InvalidPathParameterError",
     "is_notion_client_error",
     "collect_paginated_api",
     "iterate_paginated_api",
