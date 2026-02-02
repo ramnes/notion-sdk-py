@@ -22,8 +22,10 @@ from notion_client.api_endpoints import (
     OAuthEndpoint,
 )
 from notion_client.errors import (
-    RequestTimeoutError,
     build_request_error,
+    is_http_response_error,
+    is_notion_client_error,
+    RequestTimeoutError,
 )
 from notion_client.logging import make_console_logger
 from notion_client.typing import SyncAsync
@@ -160,10 +162,7 @@ class BaseClient:
             body_text = error.response.text
             raise build_request_error(error.response, body_text)
 
-        body = response.json()
-        self.logger.debug(f"=> {body}")
-
-        return body
+        return response.json()
 
     @abstractmethod
     def request(
@@ -224,10 +223,37 @@ class Client(BaseClient):
         """Send an HTTP request."""
         request = self._build_request(method, path, query, body, form_data, auth)
         try:
-            response = self.client.send(request)
-        except httpx.TimeoutException:
-            raise RequestTimeoutError()
-        return self._parse_response(response)
+            try:
+                response = self.client.send(request)
+            except httpx.TimeoutException:
+                raise RequestTimeoutError()
+            response_body = self._parse_response(response)
+            request_id = (
+                response_body.get("request_id")
+                if isinstance(response_body, dict)
+                else None
+            )
+            if request_id:
+                self.logger.info(
+                    f"request success: method={method}, path={path}, "
+                    f"request_id={request_id}"
+                )
+            else:
+                self.logger.info(f"request success: method={method}, path={path}")
+            return response_body
+        except Exception as error:
+            if not is_notion_client_error(error):
+                raise
+
+            # Log the error if it's one of our known error types
+            self.logger.warning(f"request fail: code={error.code}, message={error}")
+
+            if is_http_response_error(error):
+                # The response body may contain sensitive information
+                # so it is logged separately at the DEBUG level
+                self.logger.debug(f"failed response body: {error.body}")
+
+            raise
 
 
 class AsyncClient(BaseClient):
@@ -275,7 +301,34 @@ class AsyncClient(BaseClient):
         """Send an HTTP request asynchronously."""
         request = self._build_request(method, path, query, body, form_data, auth)
         try:
-            response = await self.client.send(request)
-        except httpx.TimeoutException:
-            raise RequestTimeoutError()
-        return self._parse_response(response)
+            try:
+                response = await self.client.send(request)
+            except httpx.TimeoutException:
+                raise RequestTimeoutError()
+            response_body = self._parse_response(response)
+            request_id = (
+                response_body.get("request_id")
+                if isinstance(response_body, dict)
+                else None
+            )
+            if request_id:
+                self.logger.info(
+                    f"request success: method={method}, path={path}, "
+                    f"request_id={request_id}"
+                )
+            else:
+                self.logger.info(f"request success: method={method}, path={path}")
+            return response_body
+        except Exception as error:
+            if not is_notion_client_error(error):
+                raise
+
+            # Log the error if it's one of our known error types
+            self.logger.warning(f"request fail: code={error.code}, message={error}")
+
+            if is_http_response_error(error):
+                # The response body may contain sensitive information
+                # so it is logged separately at the DEBUG level
+                self.logger.debug(f"failed response body: {error.body}")
+
+            raise
