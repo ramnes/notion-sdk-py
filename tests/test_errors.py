@@ -8,6 +8,8 @@ from notion_client.errors import (
     ClientErrorCode,
     is_notion_client_error,
     RequestTimeoutError,
+    InvalidPathParameterError,
+    validate_request_path,
     HTTPResponseError,
     is_http_response_error,
     UnknownHTTPResponseError,
@@ -367,6 +369,10 @@ def test_error_code_enums():
 
     assert ClientErrorCode.RequestTimeout.value == "notionhq_client_request_timeout"
     assert ClientErrorCode.ResponseError.value == "notionhq_client_response_error"
+    assert (
+        ClientErrorCode.InvalidPathParameter.value
+        == "notionhq_client_invalid_path_parameter"
+    )
 
 
 def test_request_timeout_error_custom_message():
@@ -395,3 +401,98 @@ async def test_request_timeout_error_reject_after_timeout():
 
     with pytest.raises(RequestTimeoutError):
         await RequestTimeoutError.reject_after_timeout(slow_task(), 100)
+
+
+def test_invalid_path_parameter_error():
+    """Test InvalidPathParameterError class."""
+    error = InvalidPathParameterError()
+    assert error.code == ClientErrorCode.InvalidPathParameter
+    assert "invalid characters" in str(error)
+
+    custom_message = "Custom path error message"
+    error = InvalidPathParameterError(message=custom_message)
+    assert str(error) == custom_message
+
+
+def test_invalid_path_parameter_error_static_method():
+    """Test InvalidPathParameterError.is_invalid_path_parameter_error static method."""
+    path_error = InvalidPathParameterError()
+    assert InvalidPathParameterError.is_invalid_path_parameter_error(path_error)
+
+    timeout_error = RequestTimeoutError()
+    assert not InvalidPathParameterError.is_invalid_path_parameter_error(timeout_error)
+
+    unknown_error = UnknownHTTPResponseError(status=500)
+    assert not InvalidPathParameterError.is_invalid_path_parameter_error(unknown_error)
+
+    api_error = APIResponseError(
+        code=APIErrorCode.ObjectNotFound,
+        status=404,
+        message="Not found",
+        headers=httpx.Headers(),
+        raw_body_text="{}",
+    )
+    assert not InvalidPathParameterError.is_invalid_path_parameter_error(api_error)
+
+    assert not InvalidPathParameterError.is_invalid_path_parameter_error(None)
+    assert not InvalidPathParameterError.is_invalid_path_parameter_error("error")
+
+
+def test_is_notion_client_error_with_invalid_path_parameter_error():
+    """Test is_notion_client_error recognizes InvalidPathParameterError."""
+    path_error = InvalidPathParameterError()
+    assert is_notion_client_error(path_error)
+
+
+def test_validate_request_path_allows_valid_paths():
+    """Test validate_request_path allows valid paths."""
+    # Valid UUID
+    validate_request_path("blocks/9f96555b-cf98-4889-83b0-bd6bbe53911e")
+    # Simple API paths
+    validate_request_path("v1/users")
+    validate_request_path("databases")
+
+
+def test_validate_request_path_rejects_literal_path_traversal():
+    """Test validate_request_path rejects literal '..' sequences."""
+    with pytest.raises(InvalidPathParameterError) as exc_info:
+        validate_request_path("../databases/xyz")
+    assert ".." in str(exc_info.value)
+    assert "../databases/xyz" in str(exc_info.value)
+
+    with pytest.raises(InvalidPathParameterError):
+        validate_request_path("blocks/../databases/xyz")
+
+    with pytest.raises(InvalidPathParameterError):
+        validate_request_path("foo/../bar")
+
+    with pytest.raises(InvalidPathParameterError):
+        validate_request_path("path/to/../../secret")
+
+
+def test_validate_request_path_rejects_encoded_path_traversal():
+    """Test validate_request_path rejects URL-encoded '..' sequences."""
+    # Lowercase %2e%2e
+    with pytest.raises(InvalidPathParameterError) as exc_info:
+        validate_request_path("%2e%2e/databases/xyz")
+    assert "encoded" in str(exc_info.value).lower()
+
+    # Uppercase %2E%2E
+    with pytest.raises(InvalidPathParameterError):
+        validate_request_path("%2E%2E/databases/xyz")
+
+    # Mixed case %2E%2e
+    with pytest.raises(InvalidPathParameterError):
+        validate_request_path("%2E%2e/databases/xyz")
+
+    # Fully encoded path traversal %2e%2e%2f
+    with pytest.raises(InvalidPathParameterError):
+        validate_request_path("%2e%2e%2fdatabases/xyz")
+
+
+def test_validate_request_path_handles_invalid_percent_encoding():
+    """Test validate_request_path handles invalid percent encoding gracefully."""
+    # Invalid percent encoding should not raise (not a traversal concern)
+    # Python's unquote preserves invalid sequences unlike JS's decodeURIComponent
+    validate_request_path("%2einvalid%2e%ZZ")
+    validate_request_path("path%2ewith%invalid")
