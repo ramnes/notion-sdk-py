@@ -1,7 +1,7 @@
 import pytest
 import json
 from unittest.mock import Mock, patch
-
+import base64
 from notion_client import APIResponseError, AsyncClient, Client
 import httpx
 
@@ -184,3 +184,38 @@ async def test_async_client_request_timeout():
 
         with pytest.raises(RequestTimeoutError):
             await async_client.request("/test", "GET")
+
+
+def test_build_request_with_dict_auth(client):
+    """Test _build_request with public integration auth"""
+
+    auth_dict = {
+        "client_id": "test_client_id",
+        "client_secret": "test_client_secret",
+    }
+
+    request = client._build_request("POST", "/oauth/token", auth=auth_dict)
+
+    expected_credentials = "test_client_id:test_client_secret"
+    expected_encoded = base64.b64encode(expected_credentials.encode()).decode()
+
+    assert request.headers["Authorization"] == f"Basic {expected_encoded}"
+
+
+def test_log_request_success_without_request_id(client):
+    """Test _log_request_success when response has no request_id."""
+    response_body = {"results": []}
+
+    with patch.object(client.logger, "info") as mock_info:
+        client._log_request_success("GET", "/users", response_body)
+
+        mock_info.assert_called_once_with("request success: method=GET, path=/users")
+
+
+def test_log_request_error_with_non_notion_error(client):
+    """Test _handle_request_error with non-notion error."""
+
+    generic_error = ValueError("Some generic error")
+
+    with pytest.raises(ValueError, match="Some generic error"):
+        client._log_request_error(generic_error)

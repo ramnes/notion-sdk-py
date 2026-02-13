@@ -167,10 +167,8 @@ class BaseClient:
         return response.json()
 
     def _log_request_success(self, method: str, path: str, response_body: Any) -> None:
-        """Log a successful request."""
-        request_id = (
-            response_body.get("request_id") if isinstance(response_body, dict) else None
-        )
+        """Logs a successful request."""
+        request_id = response_body.get("request_id")
         if request_id:
             self.logger.info(
                 f"request success: method={method}, path={path}, "
@@ -179,8 +177,8 @@ class BaseClient:
         else:
             self.logger.info(f"request success: method={method}, path={path}")
 
-    def _handle_request_error(self, error: Exception) -> None:
-        """Handle and log request errors, then re-raise."""
+    def _log_request_error(self, error: Exception) -> None:
+        """Logs a request error with appropriate detail level."""
         if not is_notion_client_error(error):
             raise error
 
@@ -261,7 +259,7 @@ class Client(BaseClient):
             self._log_request_success(method, path, response_body)
             return response_body
         except Exception as error:
-            self._handle_request_error(error)
+            self._log_request_error(error)
 
 
 class AsyncClient(BaseClient):
@@ -317,4 +315,4 @@ class AsyncClient(BaseClient):
             self._log_request_success(method, path, response_body)
             return response_body
         except Exception as error:
-            self._handle_request_error(error)
+            self._log_request_error(error)
