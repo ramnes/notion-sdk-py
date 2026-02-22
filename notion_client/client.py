@@ -25,6 +25,7 @@ from notion_client.errors import (
     build_request_error,
     is_http_response_error,
     is_notion_client_error,
+    NotionClientError,
     RequestTimeoutError,
     validate_request_path,
 )
@@ -177,20 +178,11 @@ class BaseClient:
         else:
             self.logger.info(f"request success: method={method}, path={path}")
 
-    def _log_request_error(self, error: Exception) -> None:
+    def _log_request_error(self, error: NotionClientError) -> None:
         """Logs a request error with appropriate detail level."""
-        if not is_notion_client_error(error):
-            raise error
-
-        # Log the error if it's one of our known error types
         self.logger.warning(f"request fail: code={error.code}, message={error}")
-
         if is_http_response_error(error):
-            # The response body may contain sensitive information
-            # so it is logged separately at the DEBUG level
             self.logger.debug(f"failed response body: {error.body}")
-
-        raise error
 
     @abstractmethod
     def request(
@@ -259,7 +251,11 @@ class Client(BaseClient):
             self._log_request_success(method, path, response_body)
             return response_body
         except Exception as error:
+            if not is_notion_client_error(error):
+                raise error
+
             self._log_request_error(error)
+            raise error
 
 
 class AsyncClient(BaseClient):
@@ -315,4 +311,8 @@ class AsyncClient(BaseClient):
             self._log_request_success(method, path, response_body)
             return response_body
         except Exception as error:
+            if not is_notion_client_error(error):
+                raise error
+
             self._log_request_error(error)
+            raise error

@@ -7,10 +7,14 @@ import asyncio
 import json
 from enum import Enum
 from typing import Any, Dict, Optional, Union, Set
-from typing_extensions import TypeGuard
-
+import sys
 import httpx
 from urllib.parse import unquote
+
+if sys.version_info >= (3, 10):
+    from typing import TypeGuard
+else:
+    from typing_extensions import TypeGuard
 
 
 class APIErrorCode(str, Enum):
@@ -77,7 +81,7 @@ class NotionClientErrorBase(Exception):
         super().__init__(message)
 
 
-def is_notion_client_error(error: Any) -> TypeGuard[NotionClientErrorBase]:
+def is_notion_client_error(error: Any) -> TypeGuard["NotionClientError"]:
     return isinstance(error, NotionClientErrorBase)
 
 
