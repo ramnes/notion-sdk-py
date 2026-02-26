@@ -167,20 +167,29 @@ class BaseClient:
 
         return response.json()
 
+    def _extract_request_id(self, obj: Any) -> Optional[str]:
+        """Extracts request_id from an object if present."""
+        if isinstance(obj, dict):
+            return obj.get("request_id")
+        else:
+            request_id = getattr(obj, "request_id", None)
+        return request_id if isinstance(request_id, str) else None
+
     def _log_request_success(self, method: str, path: str, response_body: Any) -> None:
         """Logs a successful request."""
-        request_id = response_body.get("request_id")
+        request_id = self._extract_request_id(response_body)
+        msg = f"request success: method={method}, path={path}"
         if request_id:
-            self.logger.info(
-                f"request success: method={method}, path={path}, "
-                f"request_id={request_id}"
-            )
-        else:
-            self.logger.info(f"request success: method={method}, path={path}")
+            msg += f", request_id={request_id}"
+        self.logger.info(msg)
 
     def _log_request_error(self, error: NotionClientError) -> None:
         """Logs a request error with appropriate detail level."""
-        self.logger.warning(f"request fail: code={error.code}, message={error}")
+        request_id = self._extract_request_id(error)
+        msg = f"request fail: code={error.code}, message={error}"
+        if request_id:
+            msg += f", request_id={request_id}"
+        self.logger.warning(msg)
         if is_http_response_error(error):
             self.logger.debug(f"failed response body: {error.body}")
 
@@ -242,20 +251,37 @@ class Client(BaseClient):
     ) -> Any:
         """Send an HTTP request."""
         request = self._build_request(method, path, query, body, form_data, auth)
+        return self._execute(request, method, path, query, body, form_data, auth)
+
+    def _execute(
+        self,
+        request: Request,
+        method: str,
+        path: str,
+        query: Optional[Dict[Any, Any]],
+        body: Optional[Dict[Any, Any]],
+        form_data: Optional[Dict[Any, Any]],
+        auth: Optional[Union[str, Dict[str, str]]],
+    ) -> Any:
+        """Executes the request with retry logic."""
         try:
-            try:
-                response = self.client.send(request)
-            except httpx.TimeoutException:
-                raise RequestTimeoutError()
-            response_body = self._parse_response(response)
-            self._log_request_success(method, path, response_body)
-            return response_body
+            return self._execute_single_request(request, method, path)
         except Exception as error:
             if not is_notion_client_error(error):
                 raise error
 
             self._log_request_error(error)
             raise error
+
+    def _execute_single_request(self, request: Request, method: str, path: str) -> Any:
+        """Executes a single HTTP request (no retry)."""
+        try:
+            response = self.client.send(request)
+        except httpx.TimeoutException:
+            raise RequestTimeoutError()
+        response_body = self._parse_response(response)
+        self._log_request_success(method, path, response_body)
+        return response_body
 
 
 class AsyncClient(BaseClient):
@@ -302,17 +328,36 @@ class AsyncClient(BaseClient):
     ) -> Any:
         """Send an HTTP request asynchronously."""
         request = self._build_request(method, path, query, body, form_data, auth)
+        return await self._execute(request, method, path, query, body, form_data, auth)
+
+    async def _execute(
+        self,
+        request: Request,
+        method: str,
+        path: str,
+        query: Optional[Dict[Any, Any]],
+        body: Optional[Dict[Any, Any]],
+        form_data: Optional[Dict[Any, Any]],
+        auth: Optional[Union[str, Dict[str, str]]],
+    ) -> Any:
+        """Executes the request with retry logic."""
         try:
-            try:
-                response = await self.client.send(request)
-            except httpx.TimeoutException:
-                raise RequestTimeoutError()
-            response_body = self._parse_response(response)
-            self._log_request_success(method, path, response_body)
-            return response_body
+            return await self._execute_single_request(request, method, path)
         except Exception as error:
             if not is_notion_client_error(error):
                 raise error
 
             self._log_request_error(error)
             raise error
+
+    async def _execute_single_request(
+        self, request: Request, method: str, path: str
+    ) -> Any:
+        """Executes a single HTTP request (no retry)."""
+        try:
+            response = await self.client.send(request)
+        except httpx.TimeoutException:
+            raise RequestTimeoutError()
+        response_body = self._parse_response(response)
+        self._log_request_success(method, path, response_body)
+        return response_body
