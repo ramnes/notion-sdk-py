@@ -218,9 +218,7 @@ def test_request_logs_success_without_request_id(client):
         with patch.object(client.logger, "info") as mock_info:
             client.request("/users", "GET")
 
-            mock_info.assert_called_with(
-                "request success: method=GET, path=/users"
-            )
+            mock_info.assert_called_with("request success: method=GET, path=/users")
 
 
 def test_request_propagates_non_notion_error(client):
