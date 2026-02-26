@@ -251,17 +251,13 @@ class Client(BaseClient):
     ) -> Any:
         """Send an HTTP request."""
         request = self._build_request(method, path, query, body, form_data, auth)
-        return self._execute(request, method, path, query, body, form_data, auth)
+        return self._execute(request, method, path)
 
     def _execute(
         self,
         request: Request,
         method: str,
         path: str,
-        query: Optional[Dict[Any, Any]],
-        body: Optional[Dict[Any, Any]],
-        form_data: Optional[Dict[Any, Any]],
-        auth: Optional[Union[str, Dict[str, str]]],
     ) -> Any:
         """Executes the request with retry logic."""
         try:
@@ -328,17 +324,13 @@ class AsyncClient(BaseClient):
     ) -> Any:
         """Send an HTTP request asynchronously."""
         request = self._build_request(method, path, query, body, form_data, auth)
-        return await self._execute(request, method, path, query, body, form_data, auth)
+        return await self._execute(request, method, path)
 
     async def _execute(
         self,
         request: Request,
         method: str,
         path: str,
-        query: Optional[Dict[Any, Any]],
-        body: Optional[Dict[Any, Any]],
-        form_data: Optional[Dict[Any, Any]],
-        auth: Optional[Union[str, Dict[str, str]]],
     ) -> Any:
         """Executes the request with retry logic."""
         try:
