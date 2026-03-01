@@ -1,7 +1,7 @@
 import pytest
 import json
 from unittest.mock import Mock, patch
-
+import base64
 from notion_client import APIResponseError, AsyncClient, Client
 import httpx
 
@@ -183,4 +183,57 @@ async def test_async_client_request_timeout():
         from notion_client.errors import RequestTimeoutError
 
         with pytest.raises(RequestTimeoutError):
+            await async_client.request("/test", "GET")
+
+
+def test_request_with_dict_auth(client):
+    """Test that dict auth produces a Basic Auth Authorization header."""
+    auth_dict = {
+        "client_id": "test_client_id",
+        "client_secret": "test_client_secret",
+    }
+
+    mock_response = Mock(spec=httpx.Response)
+    mock_response.raise_for_status.return_value = None
+    mock_response.json.return_value = {"object": "token"}
+
+    with patch.object(client.client, "send", return_value=mock_response) as mock_send:
+        client.request("/oauth/token", "POST", auth=auth_dict)
+
+    captured_request = mock_send.call_args.args[0]
+
+    expected_credentials = "test_client_id:test_client_secret"
+    expected_encoded = base64.b64encode(expected_credentials.encode()).decode()
+
+    assert captured_request.headers["Authorization"] == f"Basic {expected_encoded}"
+
+
+def test_request_logs_success_without_request_id(client):
+    """Test that a successful response without request_id is logged correctly."""
+    mock_response = Mock(spec=httpx.Response)
+    mock_response.raise_for_status.return_value = None
+    mock_response.json.return_value = {"results": []}
+
+    with patch.object(client.client, "send", return_value=mock_response):
+        with patch.object(client.logger, "info") as mock_info:
+            client.request("/users", "GET")
+
+            mock_info.assert_called_with("request success: method=GET, path=/users")
+
+
+def test_request_propagates_non_notion_error(client):
+    """Test that non-Notion errors raised during request propagate to the caller."""
+    with patch.object(
+        client.client, "send", side_effect=ValueError("unexpected error")
+    ):
+        with pytest.raises(ValueError, match="unexpected error"):
+            client.request("/test", "GET")
+
+
+async def test_async_request_propagates_non_notion_error(async_client):
+    """Test that non-Notion errors raised during async request propagate to the caller."""
+    with patch.object(
+        async_client.client, "send", side_effect=ValueError("unexpected error")
+    ):
+        with pytest.raises(ValueError, match="unexpected error"):
             await async_client.request("/test", "GET")

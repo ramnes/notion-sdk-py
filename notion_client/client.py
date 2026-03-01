@@ -22,8 +22,12 @@ from notion_client.api_endpoints import (
     OAuthEndpoint,
 )
 from notion_client.errors import (
-    RequestTimeoutError,
     build_request_error,
+    is_http_response_error,
+    is_notion_client_error,
+    NotionClientError,
+    RequestTimeoutError,
+    validate_request_path,
 )
 from notion_client.logging import make_console_logger
 from notion_client.typing import SyncAsync
@@ -111,6 +115,7 @@ class BaseClient:
         auth: Optional[Union[str, Dict[str, str]]] = None,
     ) -> Request:
         headers = httpx.Headers()
+        validate_request_path(path)
         if auth:
             if isinstance(auth, dict):
                 client_id = auth.get("client_id", "")
@@ -160,10 +165,33 @@ class BaseClient:
             body_text = error.response.text
             raise build_request_error(error.response, body_text)
 
-        body = response.json()
-        self.logger.debug(f"=> {body}")
+        return response.json()
 
-        return body
+    def _extract_request_id(self, obj: Any) -> Optional[str]:
+        """Extracts request_id from an object if present."""
+        if isinstance(obj, dict):
+            return obj.get("request_id")
+        else:
+            request_id = getattr(obj, "request_id", None)
+        return request_id if isinstance(request_id, str) else None
+
+    def _log_request_success(self, method: str, path: str, response_body: Any) -> None:
+        """Logs a successful request."""
+        request_id = self._extract_request_id(response_body)
+        msg = f"request success: method={method}, path={path}"
+        if request_id:
+            msg += f", request_id={request_id}"
+        self.logger.info(msg)
+
+    def _log_request_error(self, error: NotionClientError) -> None:
+        """Logs a request error with appropriate detail level."""
+        request_id = self._extract_request_id(error)
+        msg = f"request fail: code={error.code}, message={error}"
+        if request_id:
+            msg += f", request_id={request_id}"
+        self.logger.warning(msg)
+        if is_http_response_error(error):
+            self.logger.debug(f"failed response body: {error.body}")
 
     @abstractmethod
     def request(
@@ -223,11 +251,33 @@ class Client(BaseClient):
     ) -> Any:
         """Send an HTTP request."""
         request = self._build_request(method, path, query, body, form_data, auth)
+        return self._execute(request, method, path)
+
+    def _execute(
+        self,
+        request: Request,
+        method: str,
+        path: str,
+    ) -> Any:
+        """Executes the request with retry logic."""
+        try:
+            return self._execute_single_request(request, method, path)
+        except Exception as error:
+            if not is_notion_client_error(error):
+                raise error
+
+            self._log_request_error(error)
+            raise error
+
+    def _execute_single_request(self, request: Request, method: str, path: str) -> Any:
+        """Executes a single HTTP request (no retry)."""
         try:
             response = self.client.send(request)
         except httpx.TimeoutException:
             raise RequestTimeoutError()
-        return self._parse_response(response)
+        response_body = self._parse_response(response)
+        self._log_request_success(method, path, response_body)
+        return response_body
 
 
 class AsyncClient(BaseClient):
@@ -274,8 +324,32 @@ class AsyncClient(BaseClient):
     ) -> Any:
         """Send an HTTP request asynchronously."""
         request = self._build_request(method, path, query, body, form_data, auth)
+        return await self._execute(request, method, path)
+
+    async def _execute(
+        self,
+        request: Request,
+        method: str,
+        path: str,
+    ) -> Any:
+        """Executes the request with retry logic."""
+        try:
+            return await self._execute_single_request(request, method, path)
+        except Exception as error:
+            if not is_notion_client_error(error):
+                raise error
+
+            self._log_request_error(error)
+            raise error
+
+    async def _execute_single_request(
+        self, request: Request, method: str, path: str
+    ) -> Any:
+        """Executes a single HTTP request (no retry)."""
         try:
             response = await self.client.send(request)
         except httpx.TimeoutException:
             raise RequestTimeoutError()
-        return self._parse_response(response)
+        response_body = self._parse_response(response)
+        self._log_request_success(method, path, response_body)
+        return response_body
