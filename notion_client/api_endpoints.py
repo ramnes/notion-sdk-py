@@ -273,6 +273,7 @@ class PagesEndpoint(Endpoint):
                 "cover",
                 "content",
                 "children",
+                "markdown",
                 "template",
                 "position",
             ),
@@ -310,6 +311,30 @@ class PagesEndpoint(Endpoint):
                 "archived",
                 "in_trash",
             ),
+            auth=kwargs.get("auth"),
+        )
+
+    def retrieve_markdown(self, page_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Retrieve a page as markdown.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-page-markdown)*
+        """  # noqa: E501
+        return self.parent.request(
+            path=f"pages/{page_id}/markdown",
+            method="GET",
+            query=pick(kwargs, "include_transcript"),
+            auth=kwargs.get("auth"),
+        )
+
+    def update_markdown(self, page_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Update a page's content as markdown.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/update-page-markdown)*
+        """  # noqa: E501
+        return self.parent.request(
+            path=f"pages/{page_id}/markdown",
+            method="PATCH",
+            body=pick(kwargs, "type", "insert_content", "replace_content_range"),
             auth=kwargs.get("auth"),
         )
 

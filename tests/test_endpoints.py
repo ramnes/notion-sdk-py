@@ -228,6 +228,61 @@ def test_comments_retrieve(client, comment_id):
     assert response["id"] == comment_id
 
 
+# Markdown endpoints require a public (OAuth) integration, so we can't record cassettes
+# with our internal integration token. Using mocks instead.
+def test_pages_retrieve_markdown(client, mocker):
+    mock_response = {
+        "object": "page_markdown",
+        "id": "abc123",
+        "markdown": "# Hello",
+        "truncated": False,
+        "unknown_block_ids": [],
+    }
+    mock_request = mocker.patch.object(client, "request", return_value=mock_response)
+
+    response = client.pages.retrieve_markdown(page_id="abc123", include_transcript=True)
+
+    assert response["object"] == "page_markdown"
+    mock_request.assert_called_once_with(
+        path="pages/abc123/markdown",
+        method="GET",
+        query={"include_transcript": True},
+        auth=None,
+    )
+
+
+# Markdown endpoints require a public (OAuth) integration, so we can't record cassettes
+# with our internal integration token. Using mocks instead.
+def test_pages_update_markdown(client, mocker):
+    mock_response = {
+        "object": "page_markdown",
+        "id": "abc123",
+        "markdown": "## New Section\n\nHello from markdown.",
+        "truncated": False,
+        "unknown_block_ids": [],
+    }
+    mock_request = mocker.patch.object(client, "request", return_value=mock_response)
+
+    response = client.pages.update_markdown(
+        page_id="abc123",
+        type="insert_content",
+        insert_content={"content": "## New Section\n\nHello from markdown."},
+    )
+
+    assert response["object"] == "page_markdown"
+    mock_request.assert_called_once_with(
+        path="pages/abc123/markdown",
+        method="PATCH",
+        body={
+            "type": "insert_content",
+            "insert_content": {
+                "content": "## New Section\n\nHello from markdown.",
+            },
+        },
+        auth=None,
+    )
+
+
 @pytest.mark.vcr()
 def test_pages_delete(client, page_id):
     response = client.blocks.delete(block_id=page_id)
