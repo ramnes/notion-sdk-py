@@ -266,7 +266,7 @@ class APIResponseError(HTTPResponseError):
     request_id: Optional[str]
 
     @staticmethod
-    def is_api_response_error(error: Any) -> bool:
+    def is_api_response_error(error: Any) -> TypeGuard["APIResponseError"]:
         return _is_notion_client_error_with_code(error, _api_error_codes)
 
 
