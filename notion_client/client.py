@@ -390,8 +390,7 @@ class Client(BaseClient):
                 if attempt < self._max_retries and self._can_retry(error, method):
                     delay = self._calculate_retry_delay(error, attempt)
                     self.logger.info(
-                        f"retrying request: method={method}, path={path}, "
-                        f"attempt={attempt + 1}, delay_ms={delay * 1000:.0f}"
+                        f"retrying request: method={method}, path={path}, attempt={attempt + 1}, delay_ms={delay * 1000:.0f}"
                     )
                     time.sleep(delay)
                     attempt += 1
@@ -485,8 +484,7 @@ class AsyncClient(BaseClient):
                 if attempt < self._max_retries and self._can_retry(error, method):
                     delay = self._calculate_retry_delay(error, attempt)
                     self.logger.info(
-                        f"retrying request: method={method}, path={path}, "
-                        f"attempt={attempt + 1}, delay_ms={delay * 1000:.0f}"
+                        f"retrying request: method={method}, path={path}, attempt={attempt + 1}, delay_ms={delay * 1000:.0f}"
                     )
                     await asyncio.sleep(delay)
                     attempt += 1
