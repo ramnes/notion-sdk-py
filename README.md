@@ -181,15 +181,20 @@ These options are all keys in the single constructor parameter.
 
 ### Automatic retries
 
-The client automatically retries requests that fail due to rate limiting or transient server errors. By default, it will retry up to 2 times using exponential back-off with jitter.
+The client automatically retries requests that fail due to rate limiting or
+transient server errors. By default, it will retry up to 2 times using
+exponential back-off with jitter.
 
 **Retryable errors:**
 
 - `rate_limited` (HTTP 429) - Too many requests; retried for all HTTP methods
 - `internal_server_error` (HTTP 500) - Server error; retried only for GET and DELETE
-- `service_unavailable` (HTTP 503) - Service temporarily unavailable; retried only for GET and DELETE
+- `service_unavailable` (HTTP 503) - Service temporarily unavailable;
+  retried only for GET and DELETE
 
-Server errors (500, 503) are only retried for idempotent HTTP methods (GET, DELETE) to avoid duplicate side effects. Rate limits (429) are retried for all methods since the server explicitly asks clients to retry.
+Server errors (500, 503) are only retried for idempotent HTTP methods
+(GET, DELETE) to avoid duplicate side effects. Rate limits (429) are
+retried for all methods since the server explicitly asks clients to retry.
 
 **Configuration:**
 
