@@ -176,7 +176,41 @@ These options are all keys in the single constructor parameter.
 | `timeout_ms` | `60_000`                   | `int`             | Number of milliseconds to wait before emitting a `RequestTimeoutError`                                  |
 | `base_url`   | `"https://api.notion.com"` | `string`          | The root URL for sending API requests. This can be changed to test with a mock server.                  |
 | `logger`     | Log to console             | `logging.Logger`  | A custom logger.                                                                                        |
+| `retry`      | `RetryOptions()`           | `RetryOptions`    | Configuration for automatic retries on rate limits (429) and server errors (500, 503). See [Automatic retries](#automatic-retries) below. |
 <!-- markdownlint-enable -->
+
+### Automatic retries
+
+The client automatically retries requests that fail due to rate limiting or transient server errors. By default, it will retry up to 2 times using exponential back-off with jitter.
+
+**Retryable errors:**
+
+- `rate_limited` (HTTP 429) - Too many requests; retried for all HTTP methods
+- `internal_server_error` (HTTP 500) - Server error; retried only for GET and DELETE
+- `service_unavailable` (HTTP 503) - Service temporarily unavailable; retried only for GET and DELETE
+
+Server errors (500, 503) are only retried for idempotent HTTP methods (GET, DELETE) to avoid duplicate side effects. Rate limits (429) are retried for all methods since the server explicitly asks clients to retry.
+
+**Configuration:**
+
+```python
+from notion_client import Client, RetryOptions
+
+notion = Client(
+    auth="secret_...",
+    retry=RetryOptions(
+        max_retries=5,          # Maximum retry attempts (default: 2)
+        initial_retry_delay_ms=500,  # Initial delay in ms (default: 1000)
+        max_retry_delay_ms=60000,    # Maximum delay in ms (default: 60000)
+    ),
+)
+```
+
+To disable automatic retries:
+
+```python
+notion = Client(auth="secret_...", retry=False)
+```
 
 ### Full API responses
 
