@@ -361,14 +361,10 @@ class Client(BaseClient):
         auth: Optional[Union[str, Dict[str, str]]] = None,
     ) -> Any:
         """Send an HTTP request."""
-        request = self._build_request(method, path, query, body, form_data, auth)
-        return self._execute_with_retry(
-            request, method, path, query, body, form_data, auth
-        )
+        return self._execute_with_retry(method, path, query, body, form_data, auth)
 
     def _execute_with_retry(
         self,
-        request: Request,
         method: str,
         path: str,
         query: Optional[Dict[Any, Any]],
@@ -379,6 +375,7 @@ class Client(BaseClient):
         """Executes the request with retry logic."""
         attempt = 0
         while True:
+            request = self._build_request(method, path, query, body, form_data, auth)
             try:
                 return self._execute_single_request(request, method, path)
             except Exception as error:
@@ -394,9 +391,6 @@ class Client(BaseClient):
                     )
                     time.sleep(delay)
                     attempt += 1
-                    request = self._build_request(
-                        method, path, query, body, form_data, auth
-                    )
                     continue
 
                 raise error
@@ -455,14 +449,10 @@ class AsyncClient(BaseClient):
         auth: Optional[Union[str, Dict[str, str]]] = None,
     ) -> Any:
         """Send an HTTP request asynchronously."""
-        request = self._build_request(method, path, query, body, form_data, auth)
-        return await self._execute_with_retry(
-            request, method, path, query, body, form_data, auth
-        )
+        return await self._execute_with_retry(method, path, query, body, form_data, auth)
 
     async def _execute_with_retry(
         self,
-        request: Request,
         method: str,
         path: str,
         query: Optional[Dict[Any, Any]],
@@ -473,6 +463,7 @@ class AsyncClient(BaseClient):
         """Executes the request with retry logic."""
         attempt = 0
         while True:
+            request = self._build_request(method, path, query, body, form_data, auth)
             try:
                 return await self._execute_single_request(request, method, path)
             except Exception as error:
@@ -488,9 +479,6 @@ class AsyncClient(BaseClient):
                     )
                     await asyncio.sleep(delay)
                     attempt += 1
-                    request = self._build_request(
-                        method, path, query, body, form_data, auth
-                    )
                     continue
 
                 raise error
