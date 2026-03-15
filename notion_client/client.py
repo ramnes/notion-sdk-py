@@ -271,10 +271,10 @@ class BaseClient:
         # Exponential back-off with full jitter
         base_delay = self._initial_retry_delay_ms * math.pow(2, attempt)
         jitter = random.random()
-        delay_ms = (
+        delay = (
             min(base_delay * jitter + base_delay / 2, self._max_retry_delay_ms) / 1000.0
         )
-        return delay_ms
+        return delay
 
     def _parse_retry_after_header(self, headers: httpx.Headers) -> Optional[float]:
         """Parses the retry-after header value.
@@ -449,7 +449,9 @@ class AsyncClient(BaseClient):
         auth: Optional[Union[str, Dict[str, str]]] = None,
     ) -> Any:
         """Send an HTTP request asynchronously."""
-        return await self._execute_with_retry(method, path, query, body, form_data, auth)
+        return await self._execute_with_retry(
+            method, path, query, body, form_data, auth
+        )
 
     async def _execute_with_retry(
         self,
