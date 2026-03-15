@@ -384,16 +384,15 @@ class Client(BaseClient):
 
                 self._log_request_error(error, attempt)
 
-                if attempt < self._max_retries and self._can_retry(error, method):
-                    delay = self._calculate_retry_delay(error, attempt)
-                    self.logger.info(
-                        f"retrying request: method={method}, path={path}, attempt={attempt + 1}, delay_ms={delay * 1000:.0f}"
-                    )
-                    time.sleep(delay)
-                    attempt += 1
-                    continue
+                if attempt >= self._max_retries or not self._can_retry(error, method):
+                    raise error
 
-                raise error
+                delay = self._calculate_retry_delay(error, attempt)
+                self.logger.info(
+                    f"retrying request: method={method}, path={path}, attempt={attempt + 1}, delay_ms={delay * 1000:.0f}"
+                )
+                time.sleep(delay)
+                attempt += 1
 
     def _execute_single_request(self, request: Request, method: str, path: str) -> Any:
         """Executes a single HTTP request (no retry)."""
@@ -474,16 +473,15 @@ class AsyncClient(BaseClient):
 
                 self._log_request_error(error, attempt)
 
-                if attempt < self._max_retries and self._can_retry(error, method):
-                    delay = self._calculate_retry_delay(error, attempt)
-                    self.logger.info(
-                        f"retrying request: method={method}, path={path}, attempt={attempt + 1}, delay_ms={delay * 1000:.0f}"
-                    )
-                    await asyncio.sleep(delay)
-                    attempt += 1
-                    continue
+                if attempt >= self._max_retries or not self._can_retry(error, method):
+                    raise error
 
-                raise error
+                delay = self._calculate_retry_delay(error, attempt)
+                self.logger.info(
+                    f"retrying request: method={method}, path={path}, attempt={attempt + 1}, delay_ms={delay * 1000:.0f}"
+                )
+                await asyncio.sleep(delay)
+                attempt += 1
 
     async def _execute_single_request(
         self, request: Request, method: str, path: str
