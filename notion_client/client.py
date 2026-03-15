@@ -155,7 +155,6 @@ class BaseClient:
         auth: Optional[Union[str, Dict[str, str]]] = None,
     ) -> Request:
         headers = httpx.Headers()
-        validate_request_path(path)
         if auth:
             if isinstance(auth, dict):
                 client_id = auth.get("client_id", "")
@@ -165,8 +164,6 @@ class BaseClient:
                 headers["Authorization"] = f"Basic {encoded_credentials}"
             else:
                 headers["Authorization"] = f"Bearer {auth}"
-        self.logger.info(f"{method} {self.client.base_url}{path}")
-        self.logger.debug(f"=> {query} -- {body} -- {form_data}")
 
         if not form_data:
             return self.client.build_request(
@@ -361,6 +358,8 @@ class Client(BaseClient):
         auth: Optional[Union[str, Dict[str, str]]] = None,
     ) -> Any:
         """Send an HTTP request."""
+        validate_request_path(path)
+        self.logger.info(f"{method} {self.client.base_url}{path}")
         return self._execute_with_retry(method, path, query, body, form_data, auth)
 
     def _execute_with_retry(
@@ -448,6 +447,8 @@ class AsyncClient(BaseClient):
         auth: Optional[Union[str, Dict[str, str]]] = None,
     ) -> Any:
         """Send an HTTP request asynchronously."""
+        validate_request_path(path)
+        self.logger.info(f"{method} {self.client.base_url}{path}")
         return await self._execute_with_retry(
             method, path, query, body, form_data, auth
         )
