@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
     
     
       
@@ -658,6 +658,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#notion_client.client.RetryOptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RetryOptions
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1036,6 +1047,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#notion_client.client.RetryOptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RetryOptions
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1111,79 +1133,97 @@
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>notion_client/client.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">283</span>
-<span class="normal">284</span>
-<span class="normal">285</span>
-<span class="normal">286</span>
-<span class="normal">287</span>
-<span class="normal">288</span>
-<span class="normal">289</span>
-<span class="normal">290</span>
-<span class="normal">291</span>
-<span class="normal">292</span>
-<span class="normal">293</span>
-<span class="normal">294</span>
-<span class="normal">295</span>
-<span class="normal">296</span>
-<span class="normal">297</span>
-<span class="normal">298</span>
-<span class="normal">299</span>
-<span class="normal">300</span>
-<span class="normal">301</span>
-<span class="normal">302</span>
-<span class="normal">303</span>
-<span class="normal">304</span>
-<span class="normal">305</span>
-<span class="normal">306</span>
-<span class="normal">307</span>
-<span class="normal">308</span>
-<span class="normal">309</span>
-<span class="normal">310</span>
-<span class="normal">311</span>
-<span class="normal">312</span>
-<span class="normal">313</span>
-<span class="normal">314</span>
-<span class="normal">315</span>
-<span class="normal">316</span>
-<span class="normal">317</span>
-<span class="normal">318</span>
-<span class="normal">319</span>
-<span class="normal">320</span>
-<span class="normal">321</span>
-<span class="normal">322</span>
-<span class="normal">323</span>
-<span class="normal">324</span>
-<span class="normal">325</span>
-<span class="normal">326</span>
-<span class="normal">327</span>
-<span class="normal">328</span>
-<span class="normal">329</span>
-<span class="normal">330</span>
-<span class="normal">331</span>
-<span class="normal">332</span>
-<span class="normal">333</span>
-<span class="normal">334</span>
-<span class="normal">335</span>
-<span class="normal">336</span>
-<span class="normal">337</span>
-<span class="normal">338</span>
-<span class="normal">339</span>
-<span class="normal">340</span>
-<span class="normal">341</span>
-<span class="normal">342</span>
-<span class="normal">343</span>
-<span class="normal">344</span>
-<span class="normal">345</span>
-<span class="normal">346</span>
-<span class="normal">347</span>
-<span class="normal">348</span>
-<span class="normal">349</span>
-<span class="normal">350</span>
-<span class="normal">351</span>
-<span class="normal">352</span>
-<span class="normal">353</span>
-<span class="normal">354</span>
-<span class="normal">355</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">AsyncClient</span><span class="p">(</span><span class="n">BaseClient</span><span class="p">):</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
+<span class="normal">482</span>
+<span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span>
+<span class="normal">495</span>
+<span class="normal">496</span>
+<span class="normal">497</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">AsyncClient</span><span class="p">(</span><span class="n">BaseClient</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Asynchronous client for Notion&#39;s API.&quot;&quot;&quot;</span>
 
     <span class="n">client</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span>
@@ -1226,24 +1266,42 @@
         <span class="n">auth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Send an HTTP request asynchronously.&quot;&quot;&quot;</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">form_data</span><span class="p">,</span> <span class="n">auth</span><span class="p">)</span>
-        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">validate_request_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">base_url</span><span class="si">}{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_with_retry</span><span class="p">(</span>
+            <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">form_data</span><span class="p">,</span> <span class="n">auth</span>
+        <span class="p">)</span>
 
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_execute</span><span class="p">(</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_execute_with_retry</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
         <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+        <span class="n">body</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+        <span class="n">form_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+        <span class="n">auth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes the request with retry logic.&quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_single_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_notion_client_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="n">error</span>
+        <span class="n">attempt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">form_data</span><span class="p">,</span> <span class="n">auth</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_single_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">is_notion_client_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">error</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_log_request_error</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">error</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_log_request_error</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">attempt</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">attempt</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_retries</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_can_retry</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">error</span>
+
+                <span class="n">delay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_retry_delay</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">attempt</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;retrying request: method=</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">, path=</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">, attempt=</span><span class="si">{</span><span class="n">attempt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">, delay_ms=</span><span class="si">{</span><span class="n">delay</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+                <span class="n">attempt</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_execute_single_request</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span>
@@ -1292,9 +1350,9 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>notion_client/client.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">312</span>
-<span class="normal">313</span>
-<span class="normal">314</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">aclose</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">aclose</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Close the connection pool of the current inner client.&quot;&quot;&quot;</span>
     <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">aclose</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -1323,18 +1381,21 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>notion_client/client.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">316</span>
-<span class="normal">317</span>
-<span class="normal">318</span>
-<span class="normal">319</span>
-<span class="normal">320</span>
-<span class="normal">321</span>
-<span class="normal">322</span>
-<span class="normal">323</span>
-<span class="normal">324</span>
-<span class="normal">325</span>
-<span class="normal">326</span>
-<span class="normal">327</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -1344,8 +1405,11 @@
     <span class="n">auth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Send an HTTP request asynchronously.&quot;&quot;&quot;</span>
-    <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">form_data</span><span class="p">,</span> <span class="n">auth</span><span class="p">)</span>
-    <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+    <span class="n">validate_request_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">base_url</span><span class="si">}{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_with_retry</span><span class="p">(</span>
+        <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">form_data</span><span class="p">,</span> <span class="n">auth</span>
+    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -1384,33 +1448,7 @@
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>notion_client/client.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 61</span>
-<span class="normal"> 62</span>
-<span class="normal"> 63</span>
-<span class="normal"> 64</span>
-<span class="normal"> 65</span>
-<span class="normal"> 66</span>
-<span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 87</span>
 <span class="normal"> 88</span>
 <span class="normal"> 89</span>
 <span class="normal"> 90</span>
@@ -1530,206 +1568,10 @@
 <span class="normal">204</span>
 <span class="normal">205</span>
 <span class="normal">206</span>
-<span class="normal">207</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BaseClient</span><span class="p">:</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">client</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">],</span>
-        <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">ClientOptions</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">options</span> <span class="o">=</span> <span class="n">ClientOptions</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="n">options</span> <span class="o">=</span> <span class="n">ClientOptions</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">logger</span> <span class="ow">or</span> <span class="n">make_console_logger</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">log_level</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_clients</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">blocks</span> <span class="o">=</span> <span class="n">BlocksEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">databases</span> <span class="o">=</span> <span class="n">DatabasesEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_sources</span> <span class="o">=</span> <span class="n">DataSourcesEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">users</span> <span class="o">=</span> <span class="n">UsersEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pages</span> <span class="o">=</span> <span class="n">PagesEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">search</span> <span class="o">=</span> <span class="n">SearchEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">comments</span> <span class="o">=</span> <span class="n">CommentsEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">file_uploads</span> <span class="o">=</span> <span class="n">FileUploadsEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">oauth</span> <span class="o">=</span> <span class="n">OAuthEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">client</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clients</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
-    <span class="nd">@client</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">URL</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/&quot;</span><span class="p">)</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">timeout_ms</span> <span class="o">/</span> <span class="mi">1_000</span><span class="p">)</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Headers</span><span class="p">(</span>
-            <span class="p">{</span>
-                <span class="s2">&quot;Notion-Version&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">notion_version</span><span class="p">,</span>
-                <span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;ramnes/notion-sdk-py@3.0.0&quot;</span><span class="p">,</span>
-            <span class="p">}</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">auth</span><span class="p">:</span>
-            <span class="n">client</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Authorization&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">auth</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_clients</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_build_request</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">body</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">form_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">auth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Request</span><span class="p">:</span>
-        <span class="n">headers</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Headers</span><span class="p">()</span>
-        <span class="n">validate_request_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">auth</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">auth</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="n">client_id</span> <span class="o">=</span> <span class="n">auth</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;client_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-                <span class="n">client_secret</span> <span class="o">=</span> <span class="n">auth</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;client_secret&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-                <span class="n">credentials</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">client_id</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">client_secret</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="n">encoded_credentials</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
-                <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Authorization&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Basic </span><span class="si">{</span><span class="n">encoded_credentials</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Authorization&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">auth</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">base_url</span><span class="si">}{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;=&gt; </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2"> -- </span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s2"> -- </span><span class="si">{</span><span class="n">form_data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">form_data</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">build_request</span><span class="p">(</span>
-                <span class="n">method</span><span class="p">,</span>
-                <span class="n">path</span><span class="p">,</span>
-                <span class="n">params</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
-                <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
-                <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
-            <span class="p">)</span>
-
-        <span class="n">files</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">form_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">files</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">):</span>
-                <span class="n">files</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">build_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="p">,</span>
-            <span class="n">path</span><span class="p">,</span>
-            <span class="n">params</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
-            <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span>
-            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
-            <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
-        <span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-        <span class="k">except</span> <span class="n">httpx</span><span class="o">.</span><span class="n">HTTPStatusError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="n">body_text</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">text</span>
-            <span class="k">raise</span> <span class="n">build_request_error</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">body_text</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_request_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extracts request_id from an object if present.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request_id&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">request_id</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;request_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">request_id</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">request_id</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_log_request_success</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">response_body</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Logs a successful request.&quot;&quot;&quot;</span>
-        <span class="n">request_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_request_id</span><span class="p">(</span><span class="n">response_body</span><span class="p">)</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;request success: method=</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">, path=</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">if</span> <span class="n">request_id</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;, request_id=</span><span class="si">{</span><span class="n">request_id</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_log_request_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">:</span> <span class="n">NotionClientError</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Logs a request error with appropriate detail level.&quot;&quot;&quot;</span>
-        <span class="n">request_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_request_id</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;request fail: code=</span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2">, message=</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">if</span> <span class="n">request_id</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;, request_id=</span><span class="si">{</span><span class="n">request_id</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">is_http_response_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;failed response body: </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">body</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">body</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">form_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">auth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
-        <span class="c1"># noqa</span>
-        <span class="k">pass</span>
-</code></pre></div></td></tr></table></div>
-              </details>
-
-
-
-<div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-<h2 id="notion_client.client.Client" class="doc doc-heading">
-            <code>Client</code>
-
-
-</h2>
-
-
-    <div class="doc doc-contents ">
-            <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="BaseClient (notion_client.client.BaseClient)" href="#notion_client.client.BaseClient">BaseClient</a></code></p>
-
-
-
-        <p>Synchronous client for Notion's API.</p>
-
-
-
-
-
-
-
-
-              <details class="mkdocstrings-source">
-                <summary>Source code in <code>notion_client/client.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">210</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
 <span class="normal">211</span>
 <span class="normal">212</span>
 <span class="normal">213</span>
@@ -1799,7 +1641,409 @@
 <span class="normal">277</span>
 <span class="normal">278</span>
 <span class="normal">279</span>
-<span class="normal">280</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Client</span><span class="p">(</span><span class="n">BaseClient</span><span class="p">):</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BaseClient</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">client</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">],</span>
+        <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">ClientOptions</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="n">ClientOptions</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="n">ClientOptions</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">logger</span> <span class="ow">or</span> <span class="n">make_console_logger</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">log_level</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
+
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">retry</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_max_retries</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_initial_retry_delay_ms</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_max_retry_delay_ms</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span> <span class="n">RetryOptions</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_max_retries</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">retry</span><span class="o">.</span><span class="n">max_retries</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_initial_retry_delay_ms</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">retry</span><span class="o">.</span><span class="n">initial_retry_delay_ms</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_max_retry_delay_ms</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">retry</span><span class="o">.</span><span class="n">max_retry_delay_ms</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">retry_opts</span> <span class="o">=</span> <span class="n">RetryOptions</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_max_retries</span> <span class="o">=</span> <span class="n">retry_opts</span><span class="o">.</span><span class="n">max_retries</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_initial_retry_delay_ms</span> <span class="o">=</span> <span class="n">retry_opts</span><span class="o">.</span><span class="n">initial_retry_delay_ms</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_max_retry_delay_ms</span> <span class="o">=</span> <span class="n">retry_opts</span><span class="o">.</span><span class="n">max_retry_delay_ms</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_clients</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">blocks</span> <span class="o">=</span> <span class="n">BlocksEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">databases</span> <span class="o">=</span> <span class="n">DatabasesEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_sources</span> <span class="o">=</span> <span class="n">DataSourcesEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">users</span> <span class="o">=</span> <span class="n">UsersEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pages</span> <span class="o">=</span> <span class="n">PagesEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">search</span> <span class="o">=</span> <span class="n">SearchEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comments</span> <span class="o">=</span> <span class="n">CommentsEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_uploads</span> <span class="o">=</span> <span class="n">FileUploadsEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oauth</span> <span class="o">=</span> <span class="n">OAuthEndpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">client</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clients</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@client</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">URL</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/&quot;</span><span class="p">)</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">timeout_ms</span> <span class="o">/</span> <span class="mi">1_000</span><span class="p">)</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Headers</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;Notion-Version&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">notion_version</span><span class="p">,</span>
+                <span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;ramnes/notion-sdk-py@3.0.0&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">auth</span><span class="p">:</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Authorization&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">auth</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_clients</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_request</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">body</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">form_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">auth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Request</span><span class="p">:</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Headers</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">auth</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">auth</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">client_id</span> <span class="o">=</span> <span class="n">auth</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;client_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">client_secret</span> <span class="o">=</span> <span class="n">auth</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;client_secret&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">credentials</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">client_id</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">client_secret</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">encoded_credentials</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+                <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Authorization&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Basic </span><span class="si">{</span><span class="n">encoded_credentials</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Authorization&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">auth</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">form_data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">build_request</span><span class="p">(</span>
+                <span class="n">method</span><span class="p">,</span>
+                <span class="n">path</span><span class="p">,</span>
+                <span class="n">params</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+                <span class="n">json</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
+                <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">files</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">form_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">files</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">):</span>
+                <span class="n">files</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">build_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="p">,</span>
+            <span class="n">path</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+            <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">httpx</span><span class="o">.</span><span class="n">HTTPStatusError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">body_text</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">text</span>
+            <span class="k">raise</span> <span class="n">build_request_error</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">body_text</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_request_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extracts request_id from an object if present.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request_id&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">request_id</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;request_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">request_id</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">request_id</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_log_request_success</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">response_body</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Logs a successful request.&quot;&quot;&quot;</span>
+        <span class="n">request_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_request_id</span><span class="p">(</span><span class="n">response_body</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;request success: method=</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">, path=</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="n">request_id</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;, request_id=</span><span class="si">{</span><span class="n">request_id</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_log_request_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">:</span> <span class="n">NotionClientError</span><span class="p">,</span> <span class="n">attempt</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Logs a request error with appropriate detail level.&quot;&quot;&quot;</span>
+        <span class="n">request_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_request_id</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;request fail: code=</span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2">, message=</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">, attempt=</span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="n">request_id</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;, request_id=</span><span class="si">{</span><span class="n">request_id</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_http_response_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;failed response body: </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">body</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_can_retry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determines if an error can be retried based on its error code and method.</span>
+
+<span class="sd">        Rate limits (429) are always retryable since the server explicitly asks us to retry.</span>
+<span class="sd">        Server errors (500, 503) are only retried for idempotent methods</span>
+<span class="sd">        (GET, DELETE) to avoid duplicate side effects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">APIResponseError</span><span class="o">.</span><span class="n">is_api_response_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># Rate limits are always retryable - server says &quot;try again later&quot;</span>
+        <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">APIErrorCode</span><span class="o">.</span><span class="n">RateLimited</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="c1"># Server errors only retry for idempotent methods</span>
+        <span class="n">is_idempotent</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;DELETE&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_idempotent</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">error</span><span class="o">.</span><span class="n">code</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="n">APIErrorCode</span><span class="o">.</span><span class="n">InternalServerError</span><span class="p">,</span>
+                <span class="n">APIErrorCode</span><span class="o">.</span><span class="n">ServiceUnavailable</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_retry_delay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">attempt</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the delay before the next retry attempt.</span>
+
+<span class="sd">        Uses retry-after header if present, otherwise exponential back-off with jitter.</span>
+<span class="sd">        Returns delay in seconds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">APIResponseError</span><span class="o">.</span><span class="n">is_api_response_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+            <span class="n">retry_after_ms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_retry_after_header</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">retry_after_ms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">retry_after_ms</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_retry_delay_ms</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1000.0</span>
+
+        <span class="c1"># Exponential back-off with full jitter</span>
+        <span class="n">base_delay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_retry_delay_ms</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">attempt</span><span class="p">)</span>
+        <span class="n">jitter</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+        <span class="n">delay</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">min</span><span class="p">(</span><span class="n">base_delay</span> <span class="o">*</span> <span class="n">jitter</span> <span class="o">+</span> <span class="n">base_delay</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_retry_delay_ms</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1000.0</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">delay</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_retry_after_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Headers</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses the retry-after header value.</span>
+
+<span class="sd">        Supports both delta-seconds (e.g., &quot;120&quot;) and HTTP-date formats.</span>
+<span class="sd">        Returns the delay in milliseconds, or None if not present or invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">retry_after_value</span> <span class="o">=</span> <span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;retry-after&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">retry_after_value</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># Try parsing as delta-seconds (integer)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">seconds</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">retry_after_value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">seconds</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">seconds</span> <span class="o">*</span> <span class="mf">1000.0</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="c1"># Try parsing as HTTP-date</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">retry_date</span> <span class="o">=</span> <span class="n">parsedate_to_datetime</span><span class="p">(</span><span class="n">retry_after_value</span><span class="p">)</span>
+            <span class="n">delay_ms</span> <span class="o">=</span> <span class="p">(</span><span class="n">retry_date</span><span class="o">.</span><span class="n">timestamp</span><span class="p">()</span> <span class="o">-</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span> <span class="o">*</span> <span class="mf">1000.0</span>
+            <span class="k">return</span> <span class="n">delay_ms</span> <span class="k">if</span> <span class="n">delay_ms</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.0</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="k">pass</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">body</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">form_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">auth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+        <span class="c1"># noqa</span>
+        <span class="k">pass</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="notion_client.client.Client" class="doc doc-heading">
+            <code>Client</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="BaseClient (notion_client.client.BaseClient)" href="#notion_client.client.BaseClient">BaseClient</a></code></p>
+
+
+
+        <p>Synchronous client for Notion's API.</p>
+
+
+
+
+
+
+
+
+              <details class="mkdocstrings-source">
+                <summary>Source code in <code>notion_client/client.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Client</span><span class="p">(</span><span class="n">BaseClient</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Synchronous client for Notion&#39;s API.&quot;&quot;&quot;</span>
 
     <span class="n">client</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span>
@@ -1842,24 +2086,40 @@
         <span class="n">auth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Send an HTTP request.&quot;&quot;&quot;</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">form_data</span><span class="p">,</span> <span class="n">auth</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">validate_request_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">base_url</span><span class="si">}{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_with_retry</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">form_data</span><span class="p">,</span> <span class="n">auth</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_execute</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_execute_with_retry</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
         <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+        <span class="n">body</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+        <span class="n">form_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+        <span class="n">auth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes the request with retry logic.&quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_single_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_notion_client_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="n">error</span>
+        <span class="n">attempt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">form_data</span><span class="p">,</span> <span class="n">auth</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_single_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">is_notion_client_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">error</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_log_request_error</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">error</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_log_request_error</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">attempt</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">attempt</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_retries</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_can_retry</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">error</span>
+
+                <span class="n">delay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_retry_delay</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">attempt</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;retrying request: method=</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">, path=</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">, attempt=</span><span class="si">{</span><span class="n">attempt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">, delay_ms=</span><span class="si">{</span><span class="n">delay</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+                <span class="n">attempt</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_execute_single_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes a single HTTP request (no retry).&quot;&quot;&quot;</span>
@@ -1902,9 +2162,9 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>notion_client/client.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Close the connection pool of the current inner client.&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -1929,18 +2189,19 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>notion_client/client.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span>
-<span class="normal">248</span>
-<span class="normal">249</span>
-<span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -1950,8 +2211,9 @@
     <span class="n">auth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Send an HTTP request.&quot;&quot;&quot;</span>
-    <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">form_data</span><span class="p">,</span> <span class="n">auth</span><span class="p">)</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+    <span class="n">validate_request_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">base_url</span><span class="si">}{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_with_retry</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">form_data</span><span class="p">,</span> <span class="n">auth</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2068,6 +2330,23 @@ written to <code>stdout</code>.</p>
               </div>
             </td>
           </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="notion_client.client.ClientOptions.retry">retry</span></code></td>
+            <td>
+                  <code><span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="RetryOptions
+
+
+  
+      dataclass
+   (notion_client.client.RetryOptions)" href="#notion_client.client.RetryOptions">RetryOptions</a>, <span title="bool">bool</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Configuration for automatic retries on rate limit (429) and server errors.
+Set to False to disable retries entirely.</p>
+              </div>
+            </td>
+          </tr>
       </tbody>
     </table>
 
@@ -2080,29 +2359,32 @@ written to <code>stdout</code>.</p>
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>notion_client/client.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">ClientOptions</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Options to configure the client.</span>
 
@@ -2117,6 +2399,8 @@ written to <code>stdout</code>.</p>
 <span class="sd">            written to `stdout`.</span>
 <span class="sd">        logger: A custom logger.</span>
 <span class="sd">        notion_version: Notion version to use.</span>
+<span class="sd">        retry: Configuration for automatic retries on rate limit (429) and server errors.</span>
+<span class="sd">            Set to False to disable retries entirely.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">auth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -2125,6 +2409,136 @@ written to <code>stdout</code>.</p>
     <span class="n">log_level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span>
     <span class="n">logger</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">notion_version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;2025-09-03&quot;</span>
+    <span class="n">retry</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">RetryOptions</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">RetryOptions</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="notion_client.client.RetryOptions" class="doc doc-heading">
+            <code>RetryOptions</code>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Configuration for automatic retries on rate limit (429) and server errors.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="notion_client.client.RetryOptions.max_retries">max_retries</span></code></td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Maximum number of retry attempts. Set to 0 to disable retries.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="notion_client.client.RetryOptions.initial_retry_delay_ms">initial_retry_delay_ms</span></code></td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Initial delay between retries in milliseconds.
+Used as base for exponential back-off when retry-after header is absent.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="notion_client.client.RetryOptions.max_retry_delay_ms">max_retry_delay_ms</span></code></td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Maximum delay between retries in milliseconds.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+              <details class="mkdocstrings-source">
+                <summary>Source code in <code>notion_client/client.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RetryOptions</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for automatic retries on rate limit (429) and server errors.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        max_retries: Maximum number of retry attempts. Set to 0 to disable retries.</span>
+<span class="sd">        initial_retry_delay_ms: Initial delay between retries in milliseconds.</span>
+<span class="sd">            Used as base for exponential back-off when retry-after header is absent.</span>
+<span class="sd">        max_retry_delay_ms: Maximum delay between retries in milliseconds.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">initial_retry_delay_ms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="n">max_retry_delay_ms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60_000</span>
 </code></pre></div></td></tr></table></div>
               </details>
 

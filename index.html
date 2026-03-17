@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
     
     
       
@@ -363,6 +363,17 @@
     <span class="md-ellipsis">
       
         Client options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#automatic-retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automatic retries
       
     </span>
   </a>
@@ -1033,6 +1044,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#automatic-retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automatic retries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#full-api-responses" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1335,10 +1357,45 @@ These options are all keys in the single constructor parameter.</p>
 <td><code>logging.Logger</code></td>
 <td>A custom logger.</td>
 </tr>
+<tr>
+<td><code>retry</code></td>
+<td><code>RetryOptions()</code></td>
+<td><code>RetryOptions</code></td>
+<td>Configuration for automatic retries on rate limits (429) and server errors (500, 503). See <a href="#automatic-retries">Automatic retries</a> below.</td>
+</tr>
 </tbody>
 </table>
 <!-- markdownlint-enable -->
 
+<h3 id="automatic-retries">Automatic retries</h3>
+<p>The client automatically retries requests that fail due to rate limiting or
+transient server errors. By default, it will retry up to 2 times using
+exponential back-off with jitter.</p>
+<p><strong>Retryable errors:</strong></p>
+<ul>
+<li><code>rate_limited</code> (HTTP 429) - Too many requests; retried for all HTTP methods</li>
+<li><code>internal_server_error</code> (HTTP 500) - Server error; retried only for GET and DELETE</li>
+<li><code>service_unavailable</code> (HTTP 503) - Service temporarily unavailable;
+  retried only for GET and DELETE</li>
+</ul>
+<p>Server errors (500, 503) are only retried for idempotent HTTP methods
+(GET, DELETE) to avoid duplicate side effects. Rate limits (429) are
+retried for all methods since the server explicitly asks clients to retry.</p>
+<p><strong>Configuration:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">notion_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">RetryOptions</span>
+
+<span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span>
+    <span class="n">auth</span><span class="o">=</span><span class="s2">&quot;secret_...&quot;</span><span class="p">,</span>
+    <span class="n">retry</span><span class="o">=</span><span class="n">RetryOptions</span><span class="p">(</span>
+        <span class="n">max_retries</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>          <span class="c1"># Maximum retry attempts (default: 2)</span>
+        <span class="n">initial_retry_delay_ms</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>  <span class="c1"># Initial delay in ms (default: 1000)</span>
+        <span class="n">max_retry_delay_ms</span><span class="o">=</span><span class="mi">60000</span><span class="p">,</span>    <span class="c1"># Maximum delay in ms (default: 60000)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>To disable automatic retries:</p>
+<div class="highlight"><pre><span></span><code><span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="s2">&quot;secret_...&quot;</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
 <h3 id="full-api-responses">Full API responses</h3>
 <p>The following functions can distinguish between full and partial API responses.</p>
 <!-- markdownlint-disable -->
