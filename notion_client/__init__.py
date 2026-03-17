@@ -6,7 +6,7 @@ creating powerful workflows.
 For more information visit https://github.com/ramnes/notion-sdk-py.
 """
 
-from .client import AsyncClient, Client
+from .client import AsyncClient, Client, RetryOptions
 from .errors import (
     # Error codes
     NotionErrorCode,
@@ -20,6 +20,7 @@ from .errors import (
     InvalidPathParameterError,
     # Error helpers
     is_notion_client_error,
+    is_http_response_error,
 )
 from .helpers import (
     collect_paginated_api,
@@ -42,6 +43,7 @@ from .helpers import (
 __all__ = [
     "AsyncClient",
     "Client",
+    "RetryOptions",
     "NotionErrorCode",
     "APIErrorCode",
     "ClientErrorCode",
@@ -51,6 +53,7 @@ __all__ = [
     "RequestTimeoutError",
     "InvalidPathParameterError",
     "is_notion_client_error",
+    "is_http_response_error",
     "collect_paginated_api",
     "iterate_paginated_api",
     "collect_data_source_templates",
