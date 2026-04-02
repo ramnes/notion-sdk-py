@@ -59,6 +59,9 @@ class APIErrorCode(str, Enum):
     This can occur when the time to respond to a request takes longer than 60 seconds,
     the maximum request timeout."""
 
+    GatewayTimeout = "gateway_timeout"
+    """The request timed out on the server side."""
+
 
 class ClientErrorCode(str, Enum):
     """Error codes generated for client errors."""
@@ -204,6 +207,7 @@ _http_response_error_codes: Set[str] = {
     APIErrorCode.ConflictError.value,
     APIErrorCode.InternalServerError.value,
     APIErrorCode.ServiceUnavailable.value,
+    APIErrorCode.GatewayTimeout.value,
 }
 
 
@@ -258,6 +262,7 @@ _api_error_codes: Set[str] = {
     APIErrorCode.ConflictError.value,
     APIErrorCode.InternalServerError.value,
     APIErrorCode.ServiceUnavailable.value,
+    APIErrorCode.GatewayTimeout.value,
 }
 
 
