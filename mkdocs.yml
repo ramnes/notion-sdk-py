@@ -52,6 +52,8 @@ markdown_extensions:
       check_paths: true
 
 extra:
+  version:
+    provider: mike
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/ramnes/notion-sdk-py

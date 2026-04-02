@@ -3,19 +3,26 @@ name: Docs
 on:
   push:
     branches: [ main ]
+    tags: [ '*' ]
 
 jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v5
       - run: pip install -r requirements/docs.txt
       - run: pytest
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
       - run: git config user.name 'github-actions[bot]' && git config user.email 'github-actions[bot]@users.noreply.github.com'
-      - name: Publish docs
-        run: mkdocs gh-deploy
+      - name: Publish dev docs
+        if: github.ref == 'refs/heads/main'
+        run: mike deploy --push --update-aliases dev
+      - name: Publish release docs
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          mike deploy --push --update-aliases ${GITHUB_REF_NAME} latest
+          mike set-default --push latest
