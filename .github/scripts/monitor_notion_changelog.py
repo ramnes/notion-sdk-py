@@ -100,7 +100,9 @@ def open_issue(
     repo_name: str,
     labels: tuple[str] = ("investigate", "changelog"),
 ):
-    g = Github(os.getenv("GITHUB_TOKEN"))
+    from github import Auth
+
+    g = Github(auth=Auth.Token(os.getenv("GITHUB_TOKEN")))
     repo = g.get_repo(repo_name)
     # Check if an issue with same title exists
     for issue in repo.get_issues():
