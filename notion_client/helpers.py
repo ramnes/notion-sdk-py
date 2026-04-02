@@ -126,6 +126,11 @@ def is_full_comment(response: Dict[Any, Any]) -> bool:
     return "type" in response
 
 
+def is_full_view(response: Dict[Any, Any]) -> bool:
+    """Return `True` if response is a full view."""
+    return "type" in response
+
+
 def is_text_rich_text_item_response(rich_text: Dict[Any, Any]) -> bool:
     """Return `True` if `rich_text` is a text."""
     return rich_text.get("type") == "text"

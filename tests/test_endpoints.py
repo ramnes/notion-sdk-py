@@ -1,6 +1,8 @@
 import pytest
 import io
 
+from notion_client.helpers import is_full_view
+
 
 @pytest.mark.vcr()
 def test_pages_create(client, parent_page_id):
@@ -215,6 +217,7 @@ def test_views_create(client, database_id, data_source_id):
         type="table",
     )
     assert response["object"] == "view"
+    assert is_full_view(response)
     assert response["name"] == "Test View"
 
     # cleanup
@@ -225,6 +228,7 @@ def test_views_create(client, database_id, data_source_id):
 def test_views_retrieve(client, view_id):
     response = client.views.retrieve(view_id=view_id)
     assert response["object"] == "view"
+    assert is_full_view(response)
     assert response["id"] == view_id
 
 
@@ -232,6 +236,7 @@ def test_views_retrieve(client, view_id):
 def test_views_update(client, view_id):
     response = client.views.update(view_id=view_id, name="Updated View")
     assert response["object"] == "view"
+    assert is_full_view(response)
     assert response["name"] == "Updated View"
 
 
