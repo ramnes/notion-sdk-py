@@ -1,5 +1,5 @@
 // Licensed under the Apache License: http://www.apache.org/licenses/LICENSE-2.0
-// For details: https://github.com/coveragepy/coveragepy/blob/main/NOTICE.txt
+// For details: https://github.com/nedbat/coveragepy/blob/master/NOTICE.txt
 
 // Coverage.py HTML report browser code.
 /*jslint browser: true, sloppy: true, vars: true, plusplus: true, maxerr: 50, indent: 4 */
@@ -140,15 +140,12 @@ coverage.wire_up_filter = function () {
     const table_body_rows = table.querySelectorAll("tbody tr");
     const no_rows = document.getElementById("no_rows");
 
-    const footer = table.tFoot.rows[0];
-    const ratio_columns = Array.from(footer.cells).map(cell => Boolean(cell.dataset.ratio));
-
     // Observe filter keyevents.
     const filter_handler = (event => {
         // Keep running total of each metric, first index contains number of shown rows
-        const totals = ratio_columns.map(
-            is_ratio => is_ratio ? {"numer": 0, "denom": 0} : 0
-        );
+        const totals = new Array(table.rows[0].cells.length).fill(0);
+        // Accumulate the percentage as fraction
+        totals[totals.length - 1] = { "numer": 0, "denom": 0 };  // nosemgrep: eslint.detect-object-injection
 
         var text = document.getElementById("filter").value;
         // Store filter value
@@ -194,11 +191,11 @@ coverage.wire_up_filter = function () {
             for (let column = 0; column < totals.length; column++) {
                 // Accumulate dynamic totals
                 cell = row.cells[column]  // nosemgrep: eslint.detect-object-injection
-                if (cell.matches(".name, .spacer")) {
+                if (cell.classList.contains("name")) {
                     continue;
                 }
-                if (ratio_columns[column] && cell.dataset.ratio) {
-                    // Column stores a ratio
+                if (column === totals.length - 1) {
+                    // Last column contains percentage
                     const [numer, denom] = cell.dataset.ratio.split(" ");
                     totals[column]["numer"] += parseInt(numer, 10);  // nosemgrep: eslint.detect-object-injection
                     totals[column]["denom"] += parseInt(denom, 10);  // nosemgrep: eslint.detect-object-injection
@@ -221,16 +218,17 @@ coverage.wire_up_filter = function () {
         no_rows.style.display = null;
         table.style.display = null;
 
+        const footer = table.tFoot.rows[0];
         // Calculate new dynamic sum values based on visible rows.
         for (let column = 0; column < totals.length; column++) {
             // Get footer cell element.
             const cell = footer.cells[column];  // nosemgrep: eslint.detect-object-injection
-            if (cell.matches(".name, .spacer")) {
+            if (cell.classList.contains("name")) {
                 continue;
             }
 
             // Set value into dynamic footer cell element.
-            if (ratio_columns[column]) {
+            if (column === totals.length - 1) {
                 // Percentage column uses the numerator and denominator,
                 // and adapts to the number of decimal places.
                 const match = /\.([0-9]+)/.exec(cell.textContent);

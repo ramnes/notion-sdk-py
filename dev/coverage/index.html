@@ -820,20 +820,16 @@
   <h1>Coverage report</h1>
 
 <style>
-article h1, article > a, .md-sidebar--secondary {
-    display: none !important;
+.md-content {
+    max-width: none !important;
+}
+article h1, article > a {
+    display: none;
 }
 </style>
 
-<p><iframe
-    id="coviframe"
-    src="covindex.html"
-    frameborder="0"
-    scrolling="no"
-    onload="resizeIframe();"
-    width="100%">
-</iframe>
-</p>
+<iframe id="coviframe" src="covindex.html" frameborder="0" scrolling="no" onload="resizeIframe();" width="100%"></iframe>
+
 <script>
 var coviframe = document.getElementById("coviframe");
 
