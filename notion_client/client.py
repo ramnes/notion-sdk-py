@@ -15,6 +15,13 @@ from typing import Any, Dict, List, Optional, Type, Union
 import httpx
 from httpx import Request, Response
 
+from notion_client.constants import (
+    DEFAULT_BASE_URL,
+    DEFAULT_TIMEOUT_MS,
+    DEFAULT_MAX_RETRIES,
+    DEFAULT_INITIAL_RETRY_DELAY_MS,
+    DEFAULT_MAX_RETRY_DELAY_MS,
+)
 from notion_client.api_endpoints import (
     BlocksEndpoint,
     CommentsEndpoint,
@@ -51,9 +58,9 @@ class RetryOptions:
         max_retry_delay_ms: Maximum delay between retries in milliseconds.
     """
 
-    max_retries: int = 2
-    initial_retry_delay_ms: int = 1000
-    max_retry_delay_ms: int = 60_000
+    max_retries: int = DEFAULT_MAX_RETRIES
+    initial_retry_delay_ms: int = DEFAULT_INITIAL_RETRY_DELAY_MS
+    max_retry_delay_ms: int = DEFAULT_MAX_RETRY_DELAY_MS
 
 
 @dataclass
@@ -76,8 +83,8 @@ class ClientOptions:
     """
 
     auth: Optional[str] = None
-    timeout_ms: int = 60_000
-    base_url: str = "https://api.notion.com"
+    timeout_ms: int = DEFAULT_TIMEOUT_MS
+    base_url: str = DEFAULT_BASE_URL
     log_level: int = logging.WARNING
     logger: Optional[logging.Logger] = None
     notion_version: str = "2025-09-03"

@@ -169,14 +169,14 @@ if you want to create your own logger.
 These options are all keys in the single constructor parameter.
 
 <!-- markdownlint-disable -->
-| Option       | Default value              | Type              | Description                                                                                             |
-| ------------ | -------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------- |
-| `auth`       | `None`                     | `string`          | Bearer token for authentication. If left undefined, the `auth` parameter should be set on each request. |
-| `log_level`  | `logging.WARNING`          | `int`             | Verbosity of logs the instance will produce. By default, logs are written to `stdout`.                  |
-| `timeout_ms` | `60_000`                   | `int`             | Number of milliseconds to wait before emitting a `RequestTimeoutError`                                  |
-| `base_url`   | `"https://api.notion.com"` | `string`          | The root URL for sending API requests. This can be changed to test with a mock server.                  |
-| `logger`     | Log to console             | `logging.Logger`  | A custom logger.                                                                                        |
-| `retry`      | `RetryOptions()`           | `RetryOptions`    | Configuration for automatic retries on rate limits (429) and server errors (500, 503). See [Automatic retries](#automatic-retries) below. |
+| Option       | Default value               | Type              | Description                                                                                                                               |
+| ------------ | --------------------------  | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `auth`       | `None`                      | `string`          | Bearer token for authentication. If left undefined, the `auth` parameter should be set on each request.                                   |
+| `log_level`  | `logging.WARNING`           | `int`             | Verbosity of logs the instance will produce. By default, logs are written to `stdout`.                                                    |
+| `timeout_ms` | `DEFAULT_TIMEOUT_MS`        | `int`             | Number of milliseconds to wait before emitting a `RequestTimeoutError`                                                                    |
+| `base_url`   | `DEFAULT_BASE_URL`          | `string`          | The root URL for sending API requests. This can be changed to test with a mock server.                                                    |
+| `logger`     | Log to console              | `logging.Logger`  | A custom logger.                                                                                                                          |
+| `retry`      | See [constants](#constants) | `RetryOptions`    | Configuration for automatic retries on rate limits (429) and server errors (500, 503). See [Automatic retries](#automatic-retries) below. |
 <!-- markdownlint-enable -->
 
 ### Automatic retries
@@ -215,6 +215,46 @@ To disable automatic retries:
 
 ```python
 notion = Client(auth="secret_...", retry=False)
+```
+
+### Constants
+
+The SDK exports named constants for all default values used by the client, as well
+as useful Notion-specific values. You can import them directly:
+
+```python
+from notion_client import (
+    DEFAULT_BASE_URL,          # "https://api.notion.com"
+    DEFAULT_TIMEOUT_MS,        # 60_000
+    DEFAULT_MAX_RETRIES,       # 2
+    DEFAULT_INITIAL_RETRY_DELAY_MS,  # 1_000
+    DEFAULT_MAX_RETRY_DELAY_MS,      # 60_000
+    MIN_VIEW_COLUMN_WIDTH,     # 32
+)
+```
+
+`MIN_VIEW_COLUMN_WIDTH` is the minimum width (in pixels) that a table column can
+have in the Notion UI. Set a property's `width` to this value when creating or
+updating a view to make a column appear collapsed -- useful for checkbox or
+status-as-checkbox columns:
+
+```python
+await notion.views.create(
+    database_id=database_id,
+    name="My view",
+    type="table",
+    configuration={
+        "table": {
+            "properties": [
+                {
+                    "property_id": checkbox_prop_id,
+                    "visible": True,
+                    "width": MIN_VIEW_COLUMN_WIDTH,
+                },
+            ],
+        },
+    },
+)
 ```
 
 ### Full API responses
