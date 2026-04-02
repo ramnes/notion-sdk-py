@@ -25,6 +25,7 @@ from notion_client.constants import (
 from notion_client.api_endpoints import (
     BlocksEndpoint,
     CommentsEndpoint,
+    CustomEmojisEndpoint,
     DatabasesEndpoint,
     DataSourcesEndpoint,
     PagesEndpoint,
@@ -127,6 +128,7 @@ class BaseClient:
         self.blocks = BlocksEndpoint(self)
         self.databases = DatabasesEndpoint(self)
         self.data_sources = DataSourcesEndpoint(self)
+        self.custom_emojis = CustomEmojisEndpoint(self)
         self.users = UsersEndpoint(self)
         self.pages = PagesEndpoint(self)
         self.search = SearchEndpoint(self)

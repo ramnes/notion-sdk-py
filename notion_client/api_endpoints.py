@@ -398,6 +398,20 @@ class SearchEndpoint(Endpoint):
         )
 
 
+class CustomEmojisEndpoint(Endpoint):
+    def list(self, **kwargs: Any) -> SyncAsync[Any]:
+        """List custom emojis.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/list-custom-emojis)*
+        """  # noqa: E501
+        return self.parent.request(
+            path="custom_emojis",
+            method="GET",
+            query=pick(kwargs, "start_cursor", "page_size", "name"),
+            auth=kwargs.get("auth"),
+        )
+
+
 class CommentsEndpoint(Endpoint):
     def create(self, **kwargs: Any) -> SyncAsync[Any]:
         """Create a new comment in the specified page or existing discussion thread.
