@@ -381,6 +381,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#full-api-responses" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1055,6 +1066,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#full-api-responses" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1341,13 +1363,13 @@ These options are all keys in the single constructor parameter.</p>
 </tr>
 <tr>
 <td><code>timeout_ms</code></td>
-<td><code>60_000</code></td>
+<td><code>DEFAULT_TIMEOUT_MS</code></td>
 <td><code>int</code></td>
 <td>Number of milliseconds to wait before emitting a <code>RequestTimeoutError</code></td>
 </tr>
 <tr>
 <td><code>base_url</code></td>
-<td><code>"https://api.notion.com"</code></td>
+<td><code>DEFAULT_BASE_URL</code></td>
 <td><code>string</code></td>
 <td>The root URL for sending API requests. This can be changed to test with a mock server.</td>
 </tr>
@@ -1359,7 +1381,7 @@ These options are all keys in the single constructor parameter.</p>
 </tr>
 <tr>
 <td><code>retry</code></td>
-<td><code>RetryOptions()</code></td>
+<td>See <a href="#constants">constants</a></td>
 <td><code>RetryOptions</code></td>
 <td>Configuration for automatic retries on rate limits (429) and server errors (500, 503). See <a href="#automatic-retries">Automatic retries</a> below.</td>
 </tr>
@@ -1395,6 +1417,39 @@ retried for all methods since the server explicitly asks clients to retry.</p>
 </code></pre></div>
 <p>To disable automatic retries:</p>
 <div class="highlight"><pre><span></span><code><span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="s2">&quot;secret_...&quot;</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="constants">Constants</h3>
+<p>The SDK exports named constants for all default values used by the client, as well
+as useful Notion-specific values. You can import them directly:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">notion_client</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DEFAULT_BASE_URL</span><span class="p">,</span>          <span class="c1"># &quot;https://api.notion.com&quot;</span>
+    <span class="n">DEFAULT_TIMEOUT_MS</span><span class="p">,</span>        <span class="c1"># 60_000</span>
+    <span class="n">DEFAULT_MAX_RETRIES</span><span class="p">,</span>       <span class="c1"># 2</span>
+    <span class="n">DEFAULT_INITIAL_RETRY_DELAY_MS</span><span class="p">,</span>  <span class="c1"># 1_000</span>
+    <span class="n">DEFAULT_MAX_RETRY_DELAY_MS</span><span class="p">,</span>      <span class="c1"># 60_000</span>
+    <span class="n">MIN_VIEW_COLUMN_WIDTH</span><span class="p">,</span>     <span class="c1"># 32</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><code>MIN_VIEW_COLUMN_WIDTH</code> is the minimum width (in pixels) that a table column can
+have in the Notion UI. Set a property's <code>width</code> to this value when creating or
+updating a view to make a column appear collapsed -- useful for checkbox or
+status-as-checkbox columns:</p>
+<div class="highlight"><pre><span></span><code><span class="k">await</span> <span class="n">notion</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">database_id</span><span class="o">=</span><span class="n">database_id</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;My view&quot;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;table&quot;</span><span class="p">,</span>
+    <span class="n">configuration</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;table&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;property_id&quot;</span><span class="p">:</span> <span class="n">checkbox_prop_id</span><span class="p">,</span>
+                    <span class="s2">&quot;visible&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="n">MIN_VIEW_COLUMN_WIDTH</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">],</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">)</span>
 </code></pre></div>
 <h3 id="full-api-responses">Full API responses</h3>
 <p>The following functions can distinguish between full and partial API responses.</p>
