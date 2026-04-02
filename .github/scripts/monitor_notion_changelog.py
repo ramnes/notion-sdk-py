@@ -4,6 +4,7 @@ import json
 import logging
 import os
 from typing import Dict
+from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
 from github import Github
@@ -15,7 +16,8 @@ logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.INFO)
 
 # Constants
-NOTION_CHANGELOG_URL = "https://developers.notion.com/page/changelog"
+NOTION_BASE_URL = "https://developers.notion.com"
+NOTION_CHANGELOG_URL = f"{NOTION_BASE_URL}/page/changelog"
 DATA_FILE = ".github/scripts/known_entries.json"
 GITHUB_REPOSITORY = "ramnes/notion-sdk-py"
 
@@ -27,46 +29,54 @@ async def fetch_changelog() -> str:
         return response.text
 
 
+def resolve_relative_urls(element):
+    """Resolve relative URLs to absolute URLs."""
+    for tag in element.find_all(href=True):
+        tag["href"] = urljoin(NOTION_BASE_URL, tag["href"])
+    for tag in element.find_all(src=True):
+        tag["src"] = urljoin(NOTION_BASE_URL, tag["src"])
+
+
 def extract_entries(html) -> Dict[str, Dict[str, str]]:
     soup = BeautifulSoup(html, "html.parser")
 
-    # Extract all h2 headings with a specific class
-    headings = soup.find_all("h2", class_="heading heading-2 header-scroll")
+    # Each changelog entry is a div with class "update-container"
+    entries = soup.find_all("div", class_="update-container")
     parsed_data = {}
 
-    for heading in headings:
-        # Extract section id from the heading anchor
-        section_id = (
-            heading.find("div", class_="heading-anchor").get("id", None)
-            if heading.find("div", class_="heading-anchor")
-            else None
-        )
+    for entry in entries:
+        # The entry-level anchor id is on the container div itself
+        section_id = entry.get("id")
         if section_id is None:
             continue
 
-        # Extract date_text that will be used as title
-        date_text = heading.text.strip()
+        # Date is in a div with data-component-part="update-label"
+        label = entry.find(attrs={"data-component-part": "update-label"})
+        if label is None:
+            continue
+        date_text = label.text.strip()
 
-        next_element = heading.find_next_sibling()
-        content = ""  # It will be used as md5 and saved among known entries
-        content_md = []  # It will be written ONLY on the issue
-        while next_element and next_element.name not in {"h2"}:
-            content += next_element.text.strip()
-            content_md.append(md(repr(next_element)))
-            next_element = next_element.find_next_sibling()
+        # Content is in a div with data-component-part="update-content"
+        content_div = entry.find(attrs={"data-component-part": "update-content"})
+        if content_div is None:
+            continue
 
-        # Update to dictionary,
-        # keys are the md5 string of the content of each section
+        content = content_div.text.strip()
+
+        # Remove anchor link icons (zero-width space links on headings)
+        for anchor_div in content_div.find_all("div", class_="absolute"):
+            anchor_div.decompose()
+
+        resolve_relative_urls(content_div)
+        content_md = [md(str(content_div))]
+
         md5_hash = hashlib.md5(content.encode()).hexdigest()
-        parsed_data.update(
-            {
-                md5_hash: {
-                    "section_id": section_id,
-                    "title": date_text,
-                    "content_md": content_md,
-                }
-            }
-        )
+        parsed_data[md5_hash] = {
+            "section_id": section_id,
+            "title": date_text,
+            "content_md": content_md,
+        }
+
     return parsed_data
 
 
@@ -114,6 +124,11 @@ async def main():
         logger.error(f"Error while extracting entries from changelog: {e}")
         raise ValueError("Error while extracting entries changelog")
 
+    if not entries:
+        raise RuntimeError(
+            "No changelog entries found. The page structure may have changed."
+        )
+
     logger.info(f"Found {len(entries)} entries in changelog")
     known_entries = read_known_entries()
     logger.info(f"Found {len(known_entries)} already known entries")
@@ -140,7 +155,6 @@ async def main():
             body += f"Original blog post: [View here]({blog_post_url})\n"
             try:
                 open_issue(title, body, GITHUB_REPOSITORY)
-                # pass
             except Exception as e:
                 logger.error(f"Error while opening issue: {e}")
                 raise ConnectionError("Error while opening issue")
