@@ -200,6 +200,14 @@ def test_data_sources_list_templates(client, data_source_id):
 
 
 @pytest.mark.vcr()
+def test_custom_emojis_list(client):
+    response = client.custom_emojis.list()
+    assert response["object"] == "list"
+    assert response["type"] == "custom_emoji"
+    assert isinstance(response["results"], list)
+
+
+@pytest.mark.vcr()
 def test_comments_create(client, page_id):
     parent = {"page_id": page_id}
     rich_text = [
