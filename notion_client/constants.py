@@ -1,21 +1,21 @@
-# Default base URL for the Notion API.
 DEFAULT_BASE_URL = "https://api.notion.com"
+"""Default base URL for the Notion API."""
 
-# Default request timeout in milliseconds (60 seconds).
 DEFAULT_TIMEOUT_MS = 60_000
+"""Default request timeout in milliseconds (60 seconds)."""
 
-# Default maximum number of retry attempts for failed requests.
 DEFAULT_MAX_RETRIES = 2
+"""Default maximum number of retry attempts for failed requests."""
 
-# Default initial delay between retries in milliseconds (1 second).
-# Used as the base for exponential back-off when the retry-after header is absent.
 DEFAULT_INITIAL_RETRY_DELAY_MS = 1_000
+"""Default initial delay between retries in milliseconds (1 second).
+Used as the base for exponential back-off when the retry-after header is absent."""
 
-# Default maximum delay between retries in milliseconds (60 seconds).
-# Caps both retry-after and exponential back-off delays.
 DEFAULT_MAX_RETRY_DELAY_MS = 60_000
+"""Default maximum delay between retries in milliseconds (60 seconds).
+Caps both retry-after and exponential back-off delays."""
 
-# The minimum width of a view column in pixels. Use this with the views API to make
-# a property column that appears minimal/collapsed in the Notion app UI (e.g. a
-# checkbox or status-as-checkbox column).
 MIN_VIEW_COLUMN_WIDTH = 32
+"""The minimum width of a view column in pixels. Use this with the views API to make
+a property column that appears minimal/collapsed in the Notion app UI (e.g. a
+checkbox or status-as-checkbox column)."""

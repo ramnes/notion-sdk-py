@@ -7,6 +7,7 @@
 * Reference
     * [Client](reference/client.md)
     * [API endpoints](reference/api_endpoints.md)
+    * [Constants](reference/constants.md)
     * [Errors](reference/errors.md)
     * [Helpers](reference/helpers.md)
 * Development

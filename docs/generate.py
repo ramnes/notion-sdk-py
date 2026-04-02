@@ -12,6 +12,7 @@ virtual_files = {
     "license.md": "```text\n--8<-- 'LICENSE'\n```",
     "reference/api_endpoints.md": docs_stub("api_endpoints"),
     "reference/client.md": docs_stub("client"),
+    "reference/constants.md": docs_stub("constants"),
     "reference/errors.md": docs_stub("errors"),
     "reference/helpers.md": docs_stub("helpers"),
     "contributing/contributing.md": "--8<-- '.github/CONTRIBUTING.md'",
