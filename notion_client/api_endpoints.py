@@ -384,6 +384,130 @@ class UsersEndpoint(Endpoint):
         )
 
 
+class ViewsQueriesEndpoint(Endpoint):
+    def create(self, view_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Create a view query.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-view-query)*
+        """  # noqa: E501
+        return self.parent.request(
+            path=f"views/{view_id}/queries",
+            method="POST",
+            body=pick(kwargs, "page_size"),
+            auth=kwargs.get("auth"),
+        )
+
+    def results(self, view_id: str, query_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Get view query results.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/get-view-query-results)*
+        """  # noqa: E501
+        return self.parent.request(
+            path=f"views/{view_id}/queries/{query_id}",
+            method="GET",
+            query=pick(kwargs, "start_cursor", "page_size"),
+            auth=kwargs.get("auth"),
+        )
+
+    def delete(self, view_id: str, query_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Delete a view query.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/delete-view-query)*
+        """  # noqa: E501
+        return self.parent.request(
+            path=f"views/{view_id}/queries/{query_id}",
+            method="DELETE",
+            auth=kwargs.get("auth"),
+        )
+
+
+class ViewsEndpoint(Endpoint):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.queries = ViewsQueriesEndpoint(*args, **kwargs)
+
+    def create(self, **kwargs: Any) -> SyncAsync[Any]:
+        """Create a view.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-view)*
+        """  # noqa: E501
+        return self.parent.request(
+            path="views",
+            method="POST",
+            body=pick(
+                kwargs,
+                "data_source_id",
+                "name",
+                "type",
+                "database_id",
+                "view_id",
+                "filter",
+                "sorts",
+                "quick_filters",
+                "create_database",
+                "configuration",
+                "position",
+                "placement",
+            ),
+            auth=kwargs.get("auth"),
+        )
+
+    def retrieve(self, view_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Retrieve a view.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-view)*
+        """  # noqa: E501
+        return self.parent.request(
+            path=f"views/{view_id}",
+            method="GET",
+            auth=kwargs.get("auth"),
+        )
+
+    def update(self, view_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Update a view.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/update-a-view)*
+        """  # noqa: E501
+        return self.parent.request(
+            path=f"views/{view_id}",
+            method="PATCH",
+            body=pick(
+                kwargs,
+                "name",
+                "filter",
+                "sorts",
+                "quick_filters",
+                "configuration",
+            ),
+            auth=kwargs.get("auth"),
+        )
+
+    def delete(self, view_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Delete a view.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/delete-view)*
+        """  # noqa: E501
+        return self.parent.request(
+            path=f"views/{view_id}",
+            method="DELETE",
+            auth=kwargs.get("auth"),
+        )
+
+    def list(self, **kwargs: Any) -> SyncAsync[Any]:
+        """List views for a database.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/list-views)*
+        """  # noqa: E501
+        return self.parent.request(
+            path="views",
+            method="GET",
+            query=pick(
+                kwargs, "database_id", "data_source_id", "start_cursor", "page_size"
+            ),
+            auth=kwargs.get("auth"),
+        )
+
+
 class SearchEndpoint(Endpoint):
     def __call__(self, **kwargs: Any) -> SyncAsync[Any]:
         """Search all pages and child pages that are shared with the integration.

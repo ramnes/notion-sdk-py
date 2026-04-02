@@ -200,6 +200,77 @@ def test_data_sources_list_templates(client, data_source_id):
 
 
 @pytest.mark.vcr()
+def test_views_list(client, database_id):
+    response = client.views.list(database_id=database_id)
+    assert response["object"] == "list"
+    assert response["type"] == "view"
+
+
+@pytest.mark.vcr()
+def test_views_create(client, database_id, data_source_id):
+    response = client.views.create(
+        database_id=database_id,
+        data_source_id=data_source_id,
+        name="Test View",
+        type="table",
+    )
+    assert response["object"] == "view"
+    assert response["name"] == "Test View"
+
+    # cleanup
+    client.views.delete(view_id=response["id"])
+
+
+@pytest.mark.vcr()
+def test_views_retrieve(client, view_id):
+    response = client.views.retrieve(view_id=view_id)
+    assert response["object"] == "view"
+    assert response["id"] == view_id
+
+
+@pytest.mark.vcr()
+def test_views_update(client, view_id):
+    response = client.views.update(view_id=view_id, name="Updated View")
+    assert response["object"] == "view"
+    assert response["name"] == "Updated View"
+
+
+@pytest.mark.vcr()
+def test_views_delete(client, database_id, data_source_id):
+    view = client.views.create(
+        database_id=database_id,
+        data_source_id=data_source_id,
+        name="View to Delete",
+        type="table",
+    )
+    response = client.views.delete(view_id=view["id"])
+    assert response["object"] == "view"
+
+
+@pytest.mark.vcr()
+def test_views_queries_create(client, view_id):
+    response = client.views.queries.create(view_id=view_id)
+    assert response["object"] == "view_query"
+    assert response["view_id"] == view_id
+
+
+@pytest.mark.vcr()
+def test_views_queries_results(client, view_id):
+    query = client.views.queries.create(view_id=view_id)
+    response = client.views.queries.results(view_id=view_id, query_id=query["id"])
+    assert response["object"] == "list"
+    assert response["type"] == "page"
+
+
+@pytest.mark.vcr()
+def test_views_queries_delete(client, view_id):
+    query = client.views.queries.create(view_id=view_id)
+    response = client.views.queries.delete(view_id=view_id, query_id=query["id"])
+    assert response["object"] == "view_query"
+    assert response["deleted"] is True
+
+
+@pytest.mark.vcr()
 def test_custom_emojis_list(client):
     response = client.custom_emojis.list()
     assert response["object"] == "list"
