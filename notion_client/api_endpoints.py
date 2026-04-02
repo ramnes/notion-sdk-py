@@ -78,6 +78,7 @@ class BlocksEndpoint(Endpoint):
                 "equation",
                 "divider",
                 "breadcrumb",
+                "tab",
                 "table_of_contents",
                 "link_to_page",
                 "table_row",
