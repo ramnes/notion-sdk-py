@@ -335,7 +335,14 @@ class PagesEndpoint(Endpoint):
         return self.parent.request(
             path=f"pages/{page_id}/markdown",
             method="PATCH",
-            body=pick(kwargs, "type", "insert_content", "replace_content_range"),
+            body=pick(
+                kwargs,
+                "type",
+                "insert_content",
+                "replace_content_range",
+                "update_content",
+                "replace_content",
+            ),
             auth=kwargs.get("auth"),
         )
 
