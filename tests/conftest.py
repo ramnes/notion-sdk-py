@@ -131,6 +131,20 @@ def data_source_id(client, database_id):
 
 
 @pytest.fixture(scope="function")
+def view_id(client, database_id, data_source_id) -> str:
+    """create a view to run each view test without leaks"""
+    response = client.views.create(
+        database_id=database_id,
+        data_source_id=data_source_id,
+        name="Test View",
+        type="table",
+    )
+
+    yield response["id"]
+    client.views.delete(view_id=response["id"])
+
+
+@pytest.fixture(scope="function")
 def comment_id(client, page_id) -> str:
     """create a comment inside page_id to run each comment test without leaks"""
     parent = {"page_id": page_id}

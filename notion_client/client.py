@@ -31,6 +31,7 @@ from notion_client.api_endpoints import (
     PagesEndpoint,
     SearchEndpoint,
     UsersEndpoint,
+    ViewsEndpoint,
     FileUploadsEndpoint,
     OAuthEndpoint,
 )
@@ -131,6 +132,7 @@ class BaseClient:
         self.custom_emojis = CustomEmojisEndpoint(self)
         self.users = UsersEndpoint(self)
         self.pages = PagesEndpoint(self)
+        self.views = ViewsEndpoint(self)
         self.search = SearchEndpoint(self)
         self.comments = CommentsEndpoint(self)
         self.file_uploads = FileUploadsEndpoint(self)
