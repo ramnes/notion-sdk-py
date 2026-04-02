@@ -1419,7 +1419,7 @@
 <span class="normal">60</span>
 <span class="normal">61</span>
 <span class="normal">62</span>
-<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">APIErrorCode</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">APIErrorCode</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Error codes returned in responses from the API.&quot;&quot;&quot;</span>
 
     <span class="n">Unauthorized</span> <span class="o">=</span> <span class="s2">&quot;unauthorized&quot;</span>
@@ -1802,7 +1802,7 @@ the maximum request timeout.</p>
 <span class="normal">68</span>
 <span class="normal">69</span>
 <span class="normal">70</span>
-<span class="normal">71</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ClientErrorCode</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="normal">71</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ClientErrorCode</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Error codes generated for client errors.&quot;&quot;&quot;</span>
 
     <span class="n">RequestTimeout</span> <span class="o">=</span> <span class="s2">&quot;notionhq_client_request_timeout&quot;</span>
@@ -1880,13 +1880,13 @@ path traversal sequences (..) that could alter the intended API endpoint.</p>
 <span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span>
-<span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">InvalidPathParameterError</span><span class="p">(</span><span class="n">NotionClientErrorBase</span><span class="p">):</span>
+<span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">InvalidPathParameterError</span><span class="p">(</span><span class="n">NotionClientErrorBase</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Error thrown when a path parameter contains invalid characters such as</span>
 <span class="sd">    path traversal sequences (..) that could alter the intended API endpoint.&quot;&quot;&quot;</span>
 
     <span class="n">code</span><span class="p">:</span> <span class="n">ClientErrorCode</span> <span class="o">=</span> <span class="n">ClientErrorCode</span><span class="o">.</span><span class="n">InvalidPathParameter</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
             <span class="s2">&quot;Path parameter contains invalid characters that could alter the request path&quot;</span>
@@ -1895,7 +1895,7 @@ path traversal sequences (..) that could alter the intended API endpoint.</p>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">is_invalid_path_parameter_error</span><span class="p">(</span><span class="n">error</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">is_invalid_path_parameter_error</span><span class="p">(</span><span class="n">error</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_is_notion_client_error_with_code</span><span class="p">(</span>
             <span class="n">error</span><span class="p">,</span>
             <span class="p">{</span><span class="n">ClientErrorCode</span><span class="o">.</span><span class="n">InvalidPathParameter</span><span class="o">.</span><span class="n">value</span><span class="p">},</span>
@@ -1958,12 +1958,12 @@ path traversal sequences (..) that could alter the intended API endpoint.</p>
 <span class="normal">81</span>
 <span class="normal">82</span>
 <span class="normal">83</span>
-<span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">NotionClientErrorBase</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">NotionClientErrorBase</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base error type for all Notion client errors.&quot;&quot;&quot;</span>
 
     <span class="n">code</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NotionErrorCode</span><span class="p">]</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -2037,23 +2037,23 @@ path traversal sequences (..) that could alter the intended API endpoint.</p>
 <span class="normal">118</span>
 <span class="normal">119</span>
 <span class="normal">120</span>
-<span class="normal">121</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">RequestTimeoutError</span><span class="p">(</span><span class="n">NotionClientErrorBase</span><span class="p">):</span>
+<span class="normal">121</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">RequestTimeoutError</span><span class="p">(</span><span class="n">NotionClientErrorBase</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Error thrown by the client if a request times out.&quot;&quot;&quot;</span>
 
     <span class="n">code</span><span class="p">:</span> <span class="n">ClientErrorCode</span> <span class="o">=</span> <span class="n">ClientErrorCode</span><span class="o">.</span><span class="n">RequestTimeout</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Request to Notion API has timed out&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Request to Notion API has timed out&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">is_request_timeout_error</span><span class="p">(</span><span class="n">error</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">is_request_timeout_error</span><span class="p">(</span><span class="n">error</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_is_notion_client_error_with_code</span><span class="p">(</span>
             <span class="n">error</span><span class="p">,</span>
             <span class="p">{</span><span class="n">ClientErrorCode</span><span class="o">.</span><span class="n">RequestTimeout</span><span class="o">.</span><span class="n">value</span><span class="p">},</span>
         <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">reject_after_timeout</span><span class="p">(</span><span class="n">coro</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">timeout_ms</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">reject_after_timeout</span><span class="p">(</span><span class="n">coro</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">timeout_ms</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait_for</span><span class="p">(</span><span class="n">coro</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout_ms</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">:</span>
@@ -2143,12 +2143,12 @@ a properly-formatted error.</p>
 <span class="normal">247</span>
 <span class="normal">248</span>
 <span class="normal">249</span>
-<span class="normal">250</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">UnknownHTTPResponseError</span><span class="p">(</span><span class="n">HTTPResponseError</span><span class="p">):</span>
+<span class="normal">250</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">UnknownHTTPResponseError</span><span class="p">(</span><span class="n">HTTPResponseError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Error thrown if an API call responds with an unknown error code, or does not respond with</span>
 <span class="sd">    a properly-formatted error.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">status</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2171,7 +2171,7 @@ a properly-formatted error.</p>
         <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">is_unknown_http_response_error</span><span class="p">(</span><span class="n">error</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">is_unknown_http_response_error</span><span class="p">(</span><span class="n">error</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_is_notion_client_error_with_code</span><span class="p">(</span>
             <span class="n">error</span><span class="p">,</span>
             <span class="p">{</span><span class="n">ClientErrorCode</span><span class="o">.</span><span class="n">ResponseError</span><span class="o">.</span><span class="n">value</span><span class="p">},</span>
@@ -2237,7 +2237,7 @@ including URL-encoded variants like %2e%2e.</p>
 <span class="normal">161</span>
 <span class="normal">162</span>
 <span class="normal">163</span>
-<span class="normal">164</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">validate_request_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">164</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_request_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Validates that a request path does not contain path traversal sequences.</span>
 <span class="sd">    Raises InvalidPathParameterError if the path contains &quot;..&quot; segments,</span>
 <span class="sd">    including URL-encoded variants like %2e%2e.&quot;&quot;&quot;</span>
