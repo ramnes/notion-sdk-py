@@ -78,10 +78,11 @@ def test_get_url():
 
 @pytest.mark.vcr()
 @pytest.mark.timeout(90)
-def test_iterate_paginated_api(client, multiple_test_pages):
+def test_iterate_paginated_api(client, multiple_test_pages, vcr_cassette):
     page_ids = multiple_test_pages
 
-    time.sleep(20)
+    if not vcr_cassette.responses:
+        time.sleep(20)
 
     generator = iterate_paginated_api(
         client.search,
@@ -95,7 +96,8 @@ def test_iterate_paginated_api(client, multiple_test_pages):
     for page_id in page_ids:
         client.blocks.delete(block_id=page_id)
 
-    time.sleep(20)
+    if not vcr_cassette.responses:
+        time.sleep(20)
 
     generator = iterate_paginated_api(
         client.search,
@@ -121,10 +123,13 @@ def test_collect_paginated_api(client):
 
 @pytest.mark.vcr()
 @pytest.mark.timeout(90)
-async def test_async_iterate_paginated_api(async_client, async_multiple_test_pages):
+async def test_async_iterate_paginated_api(
+    async_client, async_multiple_test_pages, vcr_cassette
+):
     page_ids = async_multiple_test_pages
 
-    await asyncio.sleep(20)
+    if not vcr_cassette.responses:
+        await asyncio.sleep(20)
 
     generator = async_iterate_paginated_api(
         async_client.search,
@@ -138,7 +143,8 @@ async def test_async_iterate_paginated_api(async_client, async_multiple_test_pag
     for page_id in page_ids:
         await async_client.blocks.delete(block_id=page_id)
 
-    await asyncio.sleep(20)
+    if not vcr_cassette.responses:
+        await asyncio.sleep(20)
 
     generator = async_iterate_paginated_api(
         async_client.search,
