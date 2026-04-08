@@ -555,10 +555,11 @@ class CommentsEndpoint(Endpoint):
             method="POST",
             body=pick(
                 kwargs,
-                "rich_text",
                 "attachments",
                 "display_name",
                 "parent",
+                "rich_text",
+                "markdown",
                 "discussion_id",
             ),
             auth=kwargs.get("auth"),
