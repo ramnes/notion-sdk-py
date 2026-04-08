@@ -2998,7 +2998,8 @@
 <span class="normal">585</span>
 <span class="normal">586</span>
 <span class="normal">587</span>
-<span class="normal">588</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CommentsEndpoint</span><span class="p">(</span><span class="n">Endpoint</span><span class="p">):</span>
+<span class="normal">588</span>
+<span class="normal">589</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CommentsEndpoint</span><span class="p">(</span><span class="n">Endpoint</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new comment in the specified page or existing discussion thread.</span>
 
@@ -3009,10 +3010,11 @@
             <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span>
             <span class="n">body</span><span class="o">=</span><span class="n">pick</span><span class="p">(</span>
                 <span class="n">kwargs</span><span class="p">,</span>
-                <span class="s2">&quot;rich_text&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;attachments&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;display_name&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;parent&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;rich_text&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;discussion_id&quot;</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="n">auth</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;auth&quot;</span><span class="p">),</span>
@@ -3090,7 +3092,8 @@
 <span class="normal">562</span>
 <span class="normal">563</span>
 <span class="normal">564</span>
-<span class="normal">565</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="normal">565</span>
+<span class="normal">566</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a new comment in the specified page or existing discussion thread.</span>
 
 <span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-a-comment)*</span>
@@ -3100,10 +3103,11 @@
         <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span>
         <span class="n">body</span><span class="o">=</span><span class="n">pick</span><span class="p">(</span>
             <span class="n">kwargs</span><span class="p">,</span>
-            <span class="s2">&quot;rich_text&quot;</span><span class="p">,</span>
             <span class="s2">&quot;attachments&quot;</span><span class="p">,</span>
             <span class="s2">&quot;display_name&quot;</span><span class="p">,</span>
             <span class="s2">&quot;parent&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;rich_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
             <span class="s2">&quot;discussion_id&quot;</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">auth</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;auth&quot;</span><span class="p">),</span>
@@ -3131,8 +3135,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">567</span>
-<span class="normal">568</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">568</span>
 <span class="normal">569</span>
 <span class="normal">570</span>
 <span class="normal">571</span>
@@ -3141,7 +3144,8 @@
 <span class="normal">574</span>
 <span class="normal">575</span>
 <span class="normal">576</span>
-<span class="normal">577</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="normal">577</span>
+<span class="normal">578</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve a list of un-resolved [Comment objects](https://developers.notion.com/reference/comment-object) from the specified block.</span>
 
 <span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/list-comments)*</span>
@@ -3175,8 +3179,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">579</span>
-<span class="normal">580</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">580</span>
 <span class="normal">581</span>
 <span class="normal">582</span>
 <span class="normal">583</span>
@@ -3184,7 +3187,8 @@
 <span class="normal">585</span>
 <span class="normal">586</span>
 <span class="normal">587</span>
-<span class="normal">588</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">retrieve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="normal">588</span>
+<span class="normal">589</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">retrieve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve a [Comment object](https://developers.notion.com/reference/comment-object) from its `comment_id`.</span>
 
 <span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-comment)*</span>
@@ -4101,8 +4105,7 @@
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">591</span>
-<span class="normal">592</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">592</span>
 <span class="normal">593</span>
 <span class="normal">594</span>
 <span class="normal">595</span>
@@ -4165,7 +4168,8 @@
 <span class="normal">652</span>
 <span class="normal">653</span>
 <span class="normal">654</span>
-<span class="normal">655</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">FileUploadsEndpoint</span><span class="p">(</span><span class="n">Endpoint</span><span class="p">):</span>
+<span class="normal">655</span>
+<span class="normal">656</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">FileUploadsEndpoint</span><span class="p">(</span><span class="n">Endpoint</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a file upload.</span>
 
@@ -4263,8 +4267,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">611</span>
-<span class="normal">612</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">612</span>
 <span class="normal">613</span>
 <span class="normal">614</span>
 <span class="normal">615</span>
@@ -4272,7 +4275,8 @@
 <span class="normal">617</span>
 <span class="normal">618</span>
 <span class="normal">619</span>
-<span class="normal">620</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_upload_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="normal">620</span>
+<span class="normal">621</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_upload_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Complete the file upload process.</span>
 
 <span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/complete-a-file-upload)*</span>
@@ -4305,8 +4309,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">592</span>
-<span class="normal">593</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">593</span>
 <span class="normal">594</span>
 <span class="normal">595</span>
 <span class="normal">596</span>
@@ -4322,7 +4325,8 @@
 <span class="normal">606</span>
 <span class="normal">607</span>
 <span class="normal">608</span>
-<span class="normal">609</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="normal">609</span>
+<span class="normal">610</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a file upload.</span>
 
 <span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-a-file-upload)*</span>
@@ -4363,8 +4367,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">633</span>
-<span class="normal">634</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">634</span>
 <span class="normal">635</span>
 <span class="normal">636</span>
 <span class="normal">637</span>
@@ -4373,7 +4376,8 @@
 <span class="normal">640</span>
 <span class="normal">641</span>
 <span class="normal">642</span>
-<span class="normal">643</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="normal">643</span>
+<span class="normal">644</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;List all file uploads.</span>
 
 <span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/list-file-uploads)*</span>
@@ -4407,8 +4411,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">622</span>
-<span class="normal">623</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">623</span>
 <span class="normal">624</span>
 <span class="normal">625</span>
 <span class="normal">626</span>
@@ -4416,7 +4419,8 @@
 <span class="normal">628</span>
 <span class="normal">629</span>
 <span class="normal">630</span>
-<span class="normal">631</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">retrieve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_upload_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="normal">631</span>
+<span class="normal">632</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">retrieve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_upload_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve a file upload object using the ID specified.</span>
 
 <span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-file-upload)*</span>
@@ -4449,8 +4453,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">645</span>
-<span class="normal">646</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">646</span>
 <span class="normal">647</span>
 <span class="normal">648</span>
 <span class="normal">649</span>
@@ -4459,7 +4462,8 @@
 <span class="normal">652</span>
 <span class="normal">653</span>
 <span class="normal">654</span>
-<span class="normal">655</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_upload_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="normal">655</span>
+<span class="normal">656</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_upload_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Send a file upload</span>
 
 <span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/send-a-file-upload)*</span>
@@ -4510,8 +4514,7 @@
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">658</span>
-<span class="normal">659</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">659</span>
 <span class="normal">660</span>
 <span class="normal">661</span>
 <span class="normal">662</span>
@@ -4558,7 +4561,8 @@
 <span class="normal">703</span>
 <span class="normal">704</span>
 <span class="normal">705</span>
-<span class="normal">706</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">OAuthEndpoint</span><span class="p">(</span><span class="n">Endpoint</span><span class="p">):</span>
+<span class="normal">706</span>
+<span class="normal">707</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">OAuthEndpoint</span><span class="p">(</span><span class="n">Endpoint</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">token</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">client_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">client_secret</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
@@ -4640,8 +4644,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">680</span>
-<span class="normal">681</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">681</span>
 <span class="normal">682</span>
 <span class="normal">683</span>
 <span class="normal">684</span>
@@ -4652,7 +4655,8 @@
 <span class="normal">689</span>
 <span class="normal">690</span>
 <span class="normal">691</span>
-<span class="normal">692</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">introspect</span><span class="p">(</span>
+<span class="normal">692</span>
+<span class="normal">693</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">introspect</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">client_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">client_secret</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a token&#39;s active status, scope, and issued time.</span>
@@ -4688,8 +4692,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">694</span>
-<span class="normal">695</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">695</span>
 <span class="normal">696</span>
 <span class="normal">697</span>
 <span class="normal">698</span>
@@ -4700,7 +4703,8 @@
 <span class="normal">703</span>
 <span class="normal">704</span>
 <span class="normal">705</span>
-<span class="normal">706</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">revoke</span><span class="p">(</span>
+<span class="normal">706</span>
+<span class="normal">707</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">revoke</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">client_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">client_secret</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Revoke an access token.</span>
@@ -4736,8 +4740,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>notion_client/api_endpoints.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">659</span>
-<span class="normal">660</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">660</span>
 <span class="normal">661</span>
 <span class="normal">662</span>
 <span class="normal">663</span>
@@ -4755,7 +4758,8 @@
 <span class="normal">675</span>
 <span class="normal">676</span>
 <span class="normal">677</span>
-<span class="normal">678</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">token</span><span class="p">(</span>
+<span class="normal">678</span>
+<span class="normal">679</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">token</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">client_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">client_secret</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an access token that a third-party service can use to authenticate with Notion.</span>
