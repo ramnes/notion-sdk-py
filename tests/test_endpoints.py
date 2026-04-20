@@ -312,6 +312,13 @@ def test_comments_retrieve(client, comment_id):
     assert response["id"] == comment_id
 
 
+@pytest.mark.vcr()
+def test_comments_delete(client, comment_id):
+    response = client.comments.delete(comment_id=comment_id)
+    assert response["object"] == "comment"
+    assert response["id"] == comment_id
+
+
 # Markdown endpoints require a public (OAuth) integration, so we can't record cassettes
 # with our internal integration token. Using mocks instead.
 def test_pages_retrieve_markdown(client, mocker):
