@@ -313,6 +313,15 @@ def test_comments_retrieve(client, comment_id):
 
 
 @pytest.mark.vcr()
+def test_comments_update(client, comment_id):
+    rich_text = [{"text": {"content": "Updated comment."}}]
+    response = client.comments.update(comment_id=comment_id, rich_text=rich_text)
+    assert response["object"] == "comment"
+    assert response["id"] == comment_id
+    assert response["rich_text"][0]["plain_text"] == "Updated comment."
+
+
+@pytest.mark.vcr()
 def test_comments_delete(client, comment_id):
     response = client.comments.delete(comment_id=comment_id)
     assert response["object"] == "comment"
