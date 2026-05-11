@@ -40,10 +40,25 @@ class BlocksChildrenEndpoint(Endpoint):
         )
 
 
+class BlocksMeetingNotesEndpoint(Endpoint):
+    def query(self, **kwargs: Any) -> SyncAsync[Any]:
+        """Query meeting notes.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/query-meeting-notes)*
+        """  # noqa: E501
+        return self.parent.request(
+            path="blocks/meeting_notes/query",
+            method="POST",
+            body=pick(kwargs, "filter", "sort", "limit"),
+            auth=kwargs.get("auth"),
+        )
+
+
 class BlocksEndpoint(Endpoint):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.children = BlocksChildrenEndpoint(*args, **kwargs)
+        self.meeting_notes = BlocksMeetingNotesEndpoint(*args, **kwargs)
 
     def retrieve(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """Retrieve a [Block object](https://developers.notion.com/reference/block) using the ID specified.

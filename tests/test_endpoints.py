@@ -64,6 +64,12 @@ def test_blocks_children_list(client, page_id):
 
 
 @pytest.mark.vcr()
+def test_blocks_meeting_notes_query(client):
+    response = client.blocks.meeting_notes.query()
+    assert response["object"] == "list"
+
+
+@pytest.mark.vcr()
 def test_blocks_retrieve(client, block_id):
     response = client.blocks.retrieve(block_id=block_id)
     assert response["object"] == "block"
