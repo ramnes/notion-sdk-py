@@ -8,6 +8,8 @@ on:
 jobs:
   docs:
     runs-on: ubuntu-latest
+    concurrency:
+      group: gh-pages
     steps:
       - uses: actions/checkout@v4
         with:
