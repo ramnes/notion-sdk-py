@@ -48,6 +48,10 @@ from .helpers import (
     extract_page_id,
     extract_block_id,
 )
+from .webhooks import (
+    sign_webhook_payload,
+    verify_webhook_signature,
+)
 
 __all__ = [
     "AsyncClient",
@@ -85,4 +89,6 @@ __all__ = [
     "extract_database_id",
     "extract_page_id",
     "extract_block_id",
+    "sign_webhook_payload",
+    "verify_webhook_signature",
 ]

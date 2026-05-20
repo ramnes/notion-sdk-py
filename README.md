@@ -387,6 +387,51 @@ Another customization you can make is to pass your own `httpx.Client` or
 helpful for some execution environments where the default HTTPX client isn't
 suitable.
 
+### Verifying webhook signatures
+
+If your integration receives [Notion webhook deliveries](https://developers.notion.com/reference/webhooks),
+use `verify_webhook_signature` to confirm each request was sent by Notion and
+was not tampered with in transit. Notion signs every delivery with HMAC-SHA256
+over the raw request body using the subscription's verification token, and
+places the result in the `X-Notion-Signature` header as `sha256=<hex>`.
+
+```python
+import json
+import os
+
+from fastapi import FastAPI, HTTPException, Request
+from notion_client import verify_webhook_signature
+
+app = FastAPI()
+
+
+# The body must be read as the raw bytes that arrived over the wire —
+# JSON-parsed and re-serialized bodies will not verify, because
+# re-serialization changes whitespace and key order.
+@app.post("/notion-webhook")
+async def notion_webhook(request: Request):
+    body = await request.body()
+    if not verify_webhook_signature(
+        body=body,
+        signature=request.headers.get("X-Notion-Signature"),
+        verification_token=os.environ["NOTION_WEBHOOK_VERIFICATION_TOKEN"],
+    ):
+        raise HTTPException(status_code=401, detail="invalid signature")
+
+    event = json.loads(body)
+    # ...handle the event
+    return "ok"
+```
+
+The same helper handles the initial verification handshake that Notion sends
+when you first register a webhook URL — the handshake body
+(`{"verification_token": "..."}`) is signed with the same token, so a single
+code path covers both cases.
+
+`sign_webhook_payload(body, verification_token)` produces the same
+`sha256=<hex>` header value, which is useful for unit-testing your webhook
+handler without standing up a real subscription.
+
 ## Testing
 
 Run the tests with the `pytest` command. If you want to test against all Python
