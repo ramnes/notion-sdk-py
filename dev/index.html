@@ -456,6 +456,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#verifying-webhook-signatures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verifying webhook signatures
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1171,6 +1182,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#verifying-webhook-signatures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verifying webhook signatures
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1614,6 +1636,45 @@ via a dedicated method on <code>Client</code>.</p>
 <code>httpx.AsyncClient</code> to the <code>Client</code> or <code>AsyncClient</code> constructor. This might be
 helpful for some execution environments where the default HTTPX client isn't
 suitable.</p>
+<h3 id="verifying-webhook-signatures">Verifying webhook signatures</h3>
+<p>If your integration receives <a href="https://developers.notion.com/reference/webhooks">Notion webhook deliveries</a>,
+use <code>verify_webhook_signature</code> to confirm each request was sent by Notion and
+was not tampered with in transit. Notion signs every delivery with HMAC-SHA256
+over the raw request body using the subscription's verification token, and
+places the result in the <code>X-Notion-Signature</code> header as <code>sha256=&lt;hex&gt;</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">HTTPException</span><span class="p">,</span> <span class="n">Request</span>
+<span class="kn">from</span> <span class="nn">notion_client</span> <span class="kn">import</span> <span class="n">verify_webhook_signature</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+
+
+<span class="c1"># The body must be read as the raw bytes that arrived over the wire —</span>
+<span class="c1"># JSON-parsed and re-serialized bodies will not verify, because</span>
+<span class="c1"># re-serialization changes whitespace and key order.</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/notion-webhook&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">notion_webhook</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">verify_webhook_signature</span><span class="p">(</span>
+        <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
+        <span class="n">signature</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X-Notion-Signature&quot;</span><span class="p">),</span>
+        <span class="n">verification_token</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;NOTION_WEBHOOK_VERIFICATION_TOKEN&quot;</span><span class="p">],</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;invalid signature&quot;</span><span class="p">)</span>
+
+    <span class="n">event</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+    <span class="c1"># ...handle the event</span>
+    <span class="k">return</span> <span class="s2">&quot;ok&quot;</span>
+</code></pre></div>
+<p>The same helper handles the initial verification handshake that Notion sends
+when you first register a webhook URL — the handshake body
+(<code>{"verification_token": "..."}</code>) is signed with the same token, so a single
+code path covers both cases.</p>
+<p><code>sign_webhook_payload(body, verification_token)</code> produces the same
+<code>sha256=&lt;hex&gt;</code> header value, which is useful for unit-testing your webhook
+handler without standing up a real subscription.</p>
 <h2 id="testing">Testing</h2>
 <p>Run the tests with the <code>pytest</code> command. If you want to test against all Python
 versions, you can run <code>tox</code> instead.</p>
