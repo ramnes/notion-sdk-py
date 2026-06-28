@@ -6,15 +6,9 @@ This module defines the exceptions that can be raised when an error occurs.
 import asyncio
 import json
 from enum import Enum
-from typing import Any, Dict, Optional, Union, Set
-import sys
+from typing import Any, Dict, Optional, Union, Set, TypeGuard
 import httpx2
 from urllib.parse import unquote
-
-if sys.version_info >= (3, 10):
-    from typing import TypeGuard
-else:
-    from typing_extensions import TypeGuard
 
 
 class APIErrorCode(str, Enum):

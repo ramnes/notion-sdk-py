@@ -450,7 +450,7 @@ at the end of the session.
 
 This package supports the following minimum versions:
 
-- Runtime: Python >= 3.8
+- Runtime: Python >= 3.10
 - httpx2 >= 2.0.0
 
 Earlier versions may still work, but we encourage people building new applications
