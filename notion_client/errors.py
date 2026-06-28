@@ -8,7 +8,7 @@ import json
 from enum import Enum
 from typing import Any, Dict, Optional, Union, Set
 import sys
-import httpx
+import httpx2
 from urllib.parse import unquote
 
 if sys.version_info >= (3, 10):
@@ -170,7 +170,7 @@ HTTPResponseErrorCode = Union[ClientErrorCode, APIErrorCode]
 class HTTPResponseError(NotionClientErrorBase):
     code: Union[str, APIErrorCode]
     status: int
-    headers: httpx.Headers
+    headers: httpx2.Headers
     body: str
     additional_data: Optional[Dict[str, Any]]
     request_id: Optional[str]
@@ -180,7 +180,7 @@ class HTTPResponseError(NotionClientErrorBase):
         code: Union[str, APIErrorCode],
         status: int,
         message: str,
-        headers: httpx.Headers,
+        headers: httpx2.Headers,
         raw_body_text: str,
         additional_data: Optional[Dict[str, Any]] = None,
         request_id: Optional[str] = None,
@@ -224,13 +224,13 @@ class UnknownHTTPResponseError(HTTPResponseError):
         self,
         status: int,
         message: Optional[str] = None,
-        headers: Optional[httpx.Headers] = None,
+        headers: Optional[httpx2.Headers] = None,
         raw_body_text: str = "",
     ) -> None:
         if message is None:
             message = f"Request to Notion API failed with status: {status}"
         if headers is None:
-            headers = httpx.Headers()
+            headers = httpx2.Headers()
 
         super().__init__(
             code=ClientErrorCode.ResponseError.value,
@@ -285,7 +285,7 @@ NotionClientError = Union[
 
 
 def build_request_error(
-    response: httpx.Response,
+    response: httpx2.Response,
     body_text: str,
 ) -> Union[APIResponseError, UnknownHTTPResponseError]:
     api_error_response_body = _parse_api_error_response_body(body_text)

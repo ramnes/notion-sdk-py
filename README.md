@@ -382,9 +382,9 @@ print(json.dumps(response, indent=2))
 > In the above example, the simpler approach is to use
 > `notion.comments.create()`.
 
-Another customization you can make is to pass your own `httpx.Client` or
-`httpx.AsyncClient` to the `Client` or `AsyncClient` constructor. This might be
-helpful for some execution environments where the default HTTPX client isn't
+Another customization you can make is to pass your own `httpx2.Client` or
+`httpx2.AsyncClient` to the `Client` or `AsyncClient` constructor. This might be
+helpful for some execution environments where the default HTTPX2 client isn't
 suitable.
 
 ### Verifying webhook signatures
@@ -451,7 +451,7 @@ at the end of the session.
 This package supports the following minimum versions:
 
 - Runtime: Python >= 3.8
-- httpx >= 0.23.0
+- httpx2 >= 2.0.0
 
 Earlier versions may still work, but we encourage people building new applications
 to upgrade to the current stable.

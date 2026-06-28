@@ -1,6 +1,6 @@
 import pytest
-from httpx import TimeoutException
-import httpx
+from httpx2 import TimeoutException
+import httpx2
 import asyncio
 
 from notion_client.errors import (
@@ -118,7 +118,7 @@ def test_is_notion_client_error():
         code=APIErrorCode.ObjectNotFound,
         status=404,
         message="Not found",
-        headers=httpx.Headers(),
+        headers=httpx2.Headers(),
         raw_body_text="{}",
     )
     assert is_notion_client_error(api_error)
@@ -139,7 +139,7 @@ def test_is_http_response_error():
             code=api_code,
             status=400,
             message="Test error",
-            headers=httpx.Headers(),
+            headers=httpx2.Headers(),
             raw_body_text="{}",
         )
         assert is_http_response_error(api_error), f"Failed for {api_code}"
@@ -164,7 +164,7 @@ def test_request_timeout_error_static_method():
         code=APIErrorCode.ObjectNotFound,
         status=404,
         message="Not found",
-        headers=httpx.Headers(),
+        headers=httpx2.Headers(),
         raw_body_text="{}",
     )
     assert not RequestTimeoutError.is_request_timeout_error(api_error)
@@ -185,7 +185,7 @@ def test_unknown_http_response_error_static_method():
         code=APIErrorCode.ObjectNotFound,
         status=404,
         message="Not found",
-        headers=httpx.Headers(),
+        headers=httpx2.Headers(),
         raw_body_text="{}",
     )
     assert not UnknownHTTPResponseError.is_unknown_http_response_error(api_error)
@@ -200,7 +200,7 @@ def test_api_response_error_static_method():
             code=api_code,
             status=400,
             message="Test error",
-            headers=httpx.Headers(),
+            headers=httpx2.Headers(),
             raw_body_text="{}",
         )
         assert APIResponseError.is_api_response_error(
@@ -235,9 +235,9 @@ def test_build_request_error_integration(client):
 def test_build_request_error_creates_api_response_error():
     """Test build_request_error successfully creates APIResponseError for valid API errors."""
     body_text = '{"code": "object_not_found", "message": "Object not found"}'
-    response = httpx.Response(
+    response = httpx2.Response(
         status_code=404,
-        headers=httpx.Headers(),
+        headers=httpx2.Headers(),
         content=body_text.encode(),
     )
     error = build_request_error(response, body_text)
@@ -250,9 +250,9 @@ def test_build_request_error_creates_api_response_error():
         "message": "Validation failed",
         "additional_data": {"errors": ["field1", "field2"]}
     }"""
-    response = httpx.Response(
+    response = httpx2.Response(
         status_code=400,
-        headers=httpx.Headers(),
+        headers=httpx2.Headers(),
         content=body_text.encode(),
     )
     error = build_request_error(response, body_text)
@@ -265,9 +265,9 @@ def test_build_request_error_creates_api_response_error():
         "message": "Rate limited",
         "request_id": "abc-123-def"
     }"""
-    response = httpx.Response(
+    response = httpx2.Response(
         status_code=429,
-        headers=httpx.Headers(),
+        headers=httpx2.Headers(),
         content=body_text.encode(),
     )
     error = build_request_error(response, body_text)
@@ -277,9 +277,9 @@ def test_build_request_error_creates_api_response_error():
 
     for api_code in APIErrorCode:
         body_text = f'{{"code": "{api_code.value}", "message": "Test message"}}'
-        response = httpx.Response(
+        response = httpx2.Response(
             status_code=400,
-            headers=httpx.Headers(),
+            headers=httpx2.Headers(),
             content=body_text.encode(),
         )
         error = build_request_error(response, body_text)
@@ -289,9 +289,9 @@ def test_build_request_error_creates_api_response_error():
 
 def test_build_request_error_creates_unknown_http_response_error():
     """Test build_request_error creates UnknownHTTPResponseError for invalid responses."""
-    response = httpx.Response(
+    response = httpx2.Response(
         status_code=500,
-        headers=httpx.Headers(),
+        headers=httpx2.Headers(),
         content=b"Internal Server Error",
     )
     error = build_request_error(response, "Internal Server Error")
@@ -300,9 +300,9 @@ def test_build_request_error_creates_unknown_http_response_error():
     assert error.status == 500
 
     body_text = '{"code": "unknown_error", "message": "Unknown error"}'
-    response = httpx.Response(
+    response = httpx2.Response(
         status_code=500,
-        headers=httpx.Headers(),
+        headers=httpx2.Headers(),
         content=body_text.encode(),
     )
     error = build_request_error(response, body_text)
@@ -313,26 +313,26 @@ def test_build_request_error_creates_unknown_http_response_error():
     assert isinstance(error, UnknownHTTPResponseError)
 
     body_text = '{"code": "object_not_found"}'
-    response = httpx.Response(
+    response = httpx2.Response(
         status_code=404,
-        headers=httpx.Headers(),
+        headers=httpx2.Headers(),
         content=body_text.encode(),
     )
     error = build_request_error(response, body_text)
     assert isinstance(error, UnknownHTTPResponseError)
 
     body_text = '{"code": "object_not_found", "message": 123}'
-    response = httpx.Response(
+    response = httpx2.Response(
         status_code=404,
-        headers=httpx.Headers(),
+        headers=httpx2.Headers(),
         content=body_text.encode(),
     )
     error = build_request_error(response, body_text)
     assert isinstance(error, UnknownHTTPResponseError)
 
-    response = httpx.Response(
+    response = httpx2.Response(
         status_code=400,
-        headers=httpx.Headers(),
+        headers=httpx2.Headers(),
         content=b"Error",
     )
     error = build_request_error(response, None)  # type: ignore
@@ -349,7 +349,7 @@ def test_unknown_http_response_error_default_message():
     assert error.status == 503
     assert "503" in str(error)
     assert error.code == ClientErrorCode.ResponseError.value
-    assert isinstance(error.headers, httpx.Headers)
+    assert isinstance(error.headers, httpx2.Headers)
 
 
 def test_unknown_http_response_error_custom_message():
@@ -429,7 +429,7 @@ def test_invalid_path_parameter_error_static_method():
         code=APIErrorCode.ObjectNotFound,
         status=404,
         message="Not found",
-        headers=httpx.Headers(),
+        headers=httpx2.Headers(),
         raw_body_text="{}",
     )
     assert not InvalidPathParameterError.is_invalid_path_parameter_error(api_error)
