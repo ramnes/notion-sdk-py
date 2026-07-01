@@ -1,4 +1,4 @@
--r base.txt
+-e .[httpx2]
 pytest
 pytest-asyncio
 pytest-cov

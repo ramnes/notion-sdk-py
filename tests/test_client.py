@@ -6,7 +6,7 @@ from email.utils import formatdate
 from typing import Any, Dict, Optional
 from unittest.mock import Mock, patch
 
-import httpx2
+from notion_client.compat import httpx
 import pytest
 
 from notion_client import APIResponseError, AsyncClient, Client
@@ -19,7 +19,7 @@ def _mock_http_response(
     message: str = "",
     retry_after: Optional[str] = None,
     body: Optional[Dict[str, Any]] = None,
-) -> httpx2.Response:
+) -> httpx.Response:
     if status_code == 200:
         response_body = body or {}
     else:
@@ -31,37 +31,37 @@ def _mock_http_response(
     if retry_after is not None:
         headers["retry-after"] = retry_after
 
-    return httpx2.Response(
+    return httpx.Response(
         status_code=status_code,
         content=json.dumps(response_body).encode(),
         headers=headers,
-        request=httpx2.Request("GET", "https://api.notion.com/v1/blocks/test"),
+        request=httpx.Request("GET", "https://api.notion.com/v1/blocks/test"),
     )
 
 
-def success_response(body: Optional[Dict[str, Any]] = None) -> httpx2.Response:
+def success_response(body: Optional[Dict[str, Any]] = None) -> httpx.Response:
     return _mock_http_response(200, body=body)
 
 
-def rate_limited_response(retry_after: Optional[str] = None) -> httpx2.Response:
+def rate_limited_response(retry_after: Optional[str] = None) -> httpx.Response:
     return _mock_http_response(
         429, "rate_limited", "Rate limited", retry_after=retry_after
     )
 
 
-def internal_server_error_response() -> httpx2.Response:
+def internal_server_error_response() -> httpx.Response:
     return _mock_http_response(500, "internal_server_error", "Internal error")
 
 
-def service_unavailable_response() -> httpx2.Response:
+def service_unavailable_response() -> httpx.Response:
     return _mock_http_response(503, "service_unavailable", "Service unavailable")
 
 
-def validation_error_response() -> httpx2.Response:
+def validation_error_response() -> httpx.Response:
     return _mock_http_response(400, "validation_error", "Validation failed")
 
 
-def unauthorized_response() -> httpx2.Response:
+def unauthorized_response() -> httpx.Response:
     return _mock_http_response(401, "unauthorized", "Unauthorized")
 
 
@@ -190,17 +190,17 @@ def test_parse_response_with_json_decode_error_in_error_response():
     """Test that JSON decode errors in error responses are handled properly."""
     client = Client()
 
-    error_response = Mock(spec=httpx2.Response)
+    error_response = Mock(spec=httpx.Response)
     error_response.json.side_effect = json.JSONDecodeError("test", "doc", 0)
     error_response.status_code = 500
     error_response.text = "Internal Server Error"
     error_response.headers = {}
 
-    http_error = httpx2.HTTPStatusError(
+    http_error = httpx.HTTPStatusError(
         "500 Server Error", request=Mock(), response=error_response
     )
 
-    mock_response = Mock(spec=httpx2.Response)
+    mock_response = Mock(spec=httpx.Response)
     mock_response.raise_for_status.side_effect = http_error
 
     from notion_client.errors import HTTPResponseError
@@ -225,7 +225,7 @@ def test_client_request_timeout():
     client = Client()
 
     with patch.object(
-        client.client, "send", side_effect=httpx2.TimeoutException("Timeout")
+        client.client, "send", side_effect=httpx.TimeoutException("Timeout")
     ):
         from notion_client.errors import RequestTimeoutError
 
@@ -237,7 +237,7 @@ async def test_async_client_request_timeout():
     async_client = AsyncClient()
 
     with patch.object(
-        async_client.client, "send", side_effect=httpx2.TimeoutException("Timeout")
+        async_client.client, "send", side_effect=httpx.TimeoutException("Timeout")
     ):
         from notion_client.errors import RequestTimeoutError
 
@@ -252,7 +252,7 @@ def test_request_with_dict_auth(client):
         "client_secret": "test_client_secret",
     }
 
-    mock_response = Mock(spec=httpx2.Response)
+    mock_response = Mock(spec=httpx.Response)
     mock_response.raise_for_status.return_value = None
     mock_response.json.return_value = {"object": "token"}
 
@@ -269,7 +269,7 @@ def test_request_with_dict_auth(client):
 
 def test_request_logs_success_without_request_id(client):
     """Test that a successful response without request_id is logged correctly."""
-    mock_response = Mock(spec=httpx2.Response)
+    mock_response = Mock(spec=httpx.Response)
     mock_response.raise_for_status.return_value = None
     mock_response.json.return_value = {"results": []}
 

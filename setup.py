@@ -16,11 +16,17 @@ setup(
     long_description=get_description(),
     long_description_content_type="text/markdown",
     packages=["notion_client"],
-    python_requires=">=3.10, <4",
+    python_requires=">=3.8, <4",
     install_requires=[
-        "httpx2 >= 2.0.0",
+        "httpx >= 0.23.0",
+        "typing_extensions >= 4.0.0; python_version < '3.10'",
     ],
+    extras_require={
+        "httpx2": ["httpx2 >= 2.0.0"],
+    },
     classifiers=[
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",

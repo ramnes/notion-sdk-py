@@ -8,7 +8,7 @@ repos:
   rev: v1.18.2
   hooks:
   - id: mypy
-    additional_dependencies: ["httpx2"]
+    additional_dependencies: ["httpx", "httpx2"]
     args: []
     files: "^notion_client\/.*"
 
