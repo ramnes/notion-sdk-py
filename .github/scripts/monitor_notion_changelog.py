@@ -8,7 +8,7 @@ from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
 from github import Github
-import httpx2
+import httpx
 from markdownify import markdownify as md
 
 logger = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ GITHUB_REPOSITORY = "ramnes/notion-sdk-py"
 
 
 async def fetch_changelog() -> str:
-    async with httpx2.AsyncClient() as client:
+    async with httpx.AsyncClient() as client:
         response = await client.get(NOTION_CHANGELOG_URL)
         response.raise_for_status()
         return response.text
