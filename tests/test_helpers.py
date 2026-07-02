@@ -56,6 +56,7 @@ def test_get_id():
             v=f41969f937614159857f6a5725990649"
     db_id = "99572135-4646-49bd-95a1-4ff08f79c7a5"
     assert get_id(page_url) == page_id
+    assert get_id(f"{page_url}/") == page_id
     assert get_id(db_url) == db_id
     with pytest.raises(ValueError):
         get_id("https://example.com")

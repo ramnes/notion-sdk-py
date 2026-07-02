@@ -38,7 +38,7 @@ def get_id(url: str) -> str:
     parsed = urlparse(url)
     if parsed.netloc not in ("notion.so", "www.notion.so"):
         raise ValueError("Not a valid Notion URL.")
-    path = parsed.path
+    path = parsed.path.rstrip("/")
     if len(path) < 32:
         raise ValueError("The path in the URL seems to be incorrect.")
     raw_id = path[-32:]
