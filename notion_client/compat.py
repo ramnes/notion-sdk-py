@@ -2,7 +2,7 @@
 
 import os
 from types import ModuleType
-from typing import List, Tuple, Type
+from typing import Any, List, Tuple, Type
 
 # Probed in priority order: httpx2 wins when both are installed.
 _BACKENDS: List[ModuleType] = []
@@ -28,21 +28,21 @@ if not _BACKENDS:
         "`pip install notion-client[httpx2]` (httpx2)."
     )
 
-# Optional override (mainly for tests/CI): force a specific active backend even
-# when both are installed, e.g. ``NOTION_HTTP_BACKEND=httpx``.
+# The active backend used for clients the SDK constructs on its own behalf.
+# httpx2 is preferred; ``NOTION_HTTP_BACKEND`` (mainly for tests/CI) can force a
+# specific backend even when both are installed, e.g. ``NOTION_HTTP_BACKEND=httpx``.
+httpx: ModuleType = _BACKENDS[0]
 _preferred = os.environ.get("NOTION_HTTP_BACKEND")
 if _preferred is not None:
-    _match = [backend for backend in _BACKENDS if backend.__name__ == _preferred]
-    if not _match:
+    _match = next((b for b in _BACKENDS if b.__name__ == _preferred), None)
+    if _match is None:
         raise ImportError(
             f"NOTION_HTTP_BACKEND={_preferred!r} was requested, but that package "
             f"is not installed. Available: "
             f"{', '.join(b.__name__ for b in _BACKENDS)}."
         )
-    _BACKENDS = _match + [b for b in _BACKENDS if b.__name__ != _preferred]
+    httpx = _match
 
-#: The active backend used for clients the SDK constructs on its own behalf.
-httpx: ModuleType = _BACKENDS[0]
 
 Client = httpx.Client
 AsyncClient = httpx.AsyncClient
@@ -51,16 +51,21 @@ Response = httpx.Response
 Headers = httpx.Headers
 
 
-def _collect(*names: str) -> Tuple[Type[BaseException], ...]:
-    """Gather the named exception classes from every installed backend."""
+def _collect(name: str) -> Tuple[Type[BaseException], ...]:
+    """Gather the named exception class from every installed backend."""
     found: List[Type[BaseException]] = []
     for backend in _BACKENDS:
-        for name in names:
-            exc = getattr(backend, name, None)
-            if isinstance(exc, type) and exc not in found:
-                found.append(exc)
+        exc = getattr(backend, name, None)
+        if isinstance(exc, type) and exc not in found:
+            found.append(exc)
     return tuple(found)
 
 
 HTTP_STATUS_ERRORS: Tuple[Type[BaseException], ...] = _collect("HTTPStatusError")
 TIMEOUT_EXCEPTIONS: Tuple[Type[BaseException], ...] = _collect("TimeoutException")
+
+
+def status_error_response(error: Any) -> Any:
+    """Return a caught HTTP status error's ``.response``."""
+
+    return error.response

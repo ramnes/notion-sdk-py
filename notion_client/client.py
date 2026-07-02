@@ -19,6 +19,7 @@ from notion_client.compat import (
     HTTP_STATUS_ERRORS,
     Request,
     Response,
+    status_error_response,
     TIMEOUT_EXCEPTIONS,
 )
 from notion_client.constants import (
@@ -216,7 +217,7 @@ class BaseClient:
         try:
             response.raise_for_status()
         except HTTP_STATUS_ERRORS as error:
-            error_response = getattr(error, "response")
+            error_response = status_error_response(error)
             body_text = error_response.text
             raise build_request_error(error_response, body_text)
 

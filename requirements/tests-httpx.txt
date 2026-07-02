@@ -1,10 +1,5 @@
 -e .
-pytest
-pytest-asyncio
-pytest-cov
-pytest-mock
-pytest-timeout
-pytest-vcr
+-r test-plugins.txt
 # vcrpy 8.2.0 supports both httpx and httpx2 but needs Python >= 3.10; fall back
 # to 6.0.2 (httpx-only, Python 3.8+) so the default httpx backend stays tested on
 # Python 3.8/3.9.
