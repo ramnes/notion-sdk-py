@@ -86,6 +86,24 @@ def page_id(client, parent_page_id):
 
 
 @pytest.fixture(scope="function")
+async def async_page_id(async_client, parent_page_id):
+    """create a temporary subpage inside parent_page_id for async tests"""
+    response = await async_client.pages.create(
+        parent={"page_id": parent_page_id},
+        properties={
+            "title": [{"text": {"content": f"Test {datetime.now()}"}}],
+        },
+        children=[],
+    )
+
+    yield response["id"]
+    try:
+        await async_client.blocks.delete(block_id=response["id"])
+    except Exception:
+        pass
+
+
+@pytest.fixture(scope="function")
 def block_id(client, page_id) -> str:
     """create a block inside page_id to run each block test without leaks"""
     children = [
@@ -277,62 +295,6 @@ def client(token: Optional[str]):
 async def async_client(token: Optional[str]):
     async with AsyncClient({"auth": token}) as client:
         yield client
-
-
-@pytest.fixture(scope="function")
-def multiple_test_pages(client, parent_page_id):
-    page_ids = []
-    for i in range(5):
-        response = client.pages.create(
-            parent={"page_id": parent_page_id},
-            properties={
-                "title": [
-                    {
-                        "text": {
-                            "content": f"Test Page (test_iterate_paginated_api iteration {i})"
-                        }
-                    }
-                ]
-            },
-            children=[],
-        )
-        page_ids.append(response["id"])
-
-    yield page_ids
-
-    for page_id in page_ids:
-        try:
-            client.blocks.delete(block_id=page_id)
-        except Exception:
-            pass
-
-
-@pytest.fixture(scope="function")
-async def async_multiple_test_pages(async_client, parent_page_id):
-    page_ids = []
-    for i in range(5):
-        response = await async_client.pages.create(
-            parent={"page_id": parent_page_id},
-            properties={
-                "title": [
-                    {
-                        "text": {
-                            "content": f"Test Page (test_async_iterate_paginated_api iteration {i})"
-                        }
-                    }
-                ]
-            },
-            children=[],
-        )
-        page_ids.append(response["id"])
-
-    yield page_ids
-
-    for page_id in page_ids:
-        try:
-            await async_client.blocks.delete(block_id=page_id)
-        except Exception:
-            pass
 
 
 @pytest.fixture(scope="function")
