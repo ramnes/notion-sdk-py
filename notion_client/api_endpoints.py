@@ -284,6 +284,7 @@ class PagesEndpoint(Endpoint):
             method="POST",
             body=pick(
                 kwargs,
+                "allow_async",
                 "parent",
                 "properties",
                 "icon",
@@ -353,6 +354,7 @@ class PagesEndpoint(Endpoint):
             method="PATCH",
             body=pick(
                 kwargs,
+                "allow_async",
                 "type",
                 "insert_content",
                 "replace_content_range",
@@ -623,6 +625,19 @@ class CommentsEndpoint(Endpoint):
         return self.parent.request(
             path=f"comments/{comment_id}",
             method="DELETE",
+            auth=kwargs.get("auth"),
+        )
+
+
+class AsyncTasksEndpoint(Endpoint):
+    def retrieve(self, task_id: str, **kwargs: Any) -> SyncAsync[Any]:
+        """Retrieve the status and result of an async task.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-async-task)*
+        """  # noqa: E501
+        return self.parent.request(
+            path=f"async_tasks/{task_id}",
+            method="GET",
             auth=kwargs.get("auth"),
         )
 
