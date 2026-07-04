@@ -6,6 +6,8 @@ interactions:
       - '*/*'
       accept-encoding:
       - gzip, deflate
+      authorization:
+      - ntn_...
       connection:
       - keep-alive
       host:
@@ -17,7 +19,7 @@ interactions:
   response:
     body:
       string: '{"object":"error","status":400,"code":"invalid_request_url","message":"Invalid
-        request URL.","request_id":"ccf6e5b3-b771-4e67-a7c8-d80e8b9ab4cd"}'
+        request URL.","request_id":"093b0420-c6e2-453e-bc16-b25f30c6779c"}'
     headers:
       Content-Length:
       - '145'
