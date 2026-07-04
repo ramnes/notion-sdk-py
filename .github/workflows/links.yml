@@ -1,0 +1,17 @@
+name: Links Check
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+  schedule:
+    - cron: "00 7 * * *"
+
+jobs:
+  lychee:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lycheeverse/lychee-action@v2.0.2
+        with:
+          fail: true
+          args: '**/*.md' '**/*.py'
