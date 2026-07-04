@@ -362,6 +362,22 @@ def test_pages_update_markdown(client, page_id):
 
 
 @pytest.mark.vcr()
+def test_async_tasks_retrieve(client, page_id):
+    update_response = client.pages.update_markdown(
+        page_id=page_id,
+        type="insert_content",
+        insert_content={"content": "# Hello\n\nAsync test content."},
+        allow_async=True,
+    )
+    assert update_response["object"] == "async_task"
+    task_id = update_response["id"]
+
+    response = client.async_tasks.retrieve(task_id=task_id)
+    assert response["object"] == "async_task"
+    assert response["id"] == task_id
+
+
+@pytest.mark.vcr()
 def test_pages_delete(client, page_id):
     response = client.blocks.delete(block_id=page_id)
     assert response

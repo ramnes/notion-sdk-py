@@ -23,6 +23,7 @@ from notion_client.constants import (
     DEFAULT_MAX_RETRY_DELAY_MS,
 )
 from notion_client.api_endpoints import (
+    AsyncTasksEndpoint,
     BlocksEndpoint,
     CommentsEndpoint,
     CustomEmojisEndpoint,
@@ -135,6 +136,7 @@ class BaseClient:
         self.views = ViewsEndpoint(self)
         self.search = SearchEndpoint(self)
         self.comments = CommentsEndpoint(self)
+        self.async_tasks = AsyncTasksEndpoint(self)
         self.file_uploads = FileUploadsEndpoint(self)
         self.oauth = OAuthEndpoint(self)
 
