@@ -608,7 +608,7 @@ class CommentsEndpoint(Endpoint):
     def update(self, comment_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """Update a [Comment object](https://developers.notion.com/reference/comment-object) using its `comment_id`.
 
-        *[🔗 Endpoint documentation](https://developers.notion.com/reference/update-comment)*
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/update-a-comment)*
         """  # noqa: E501
         return self.parent.request(
             path=f"comments/{comment_id}",
@@ -620,7 +620,7 @@ class CommentsEndpoint(Endpoint):
     def delete(self, comment_id: str, **kwargs: Any) -> SyncAsync[Any]:
         """Delete a [Comment object](https://developers.notion.com/reference/comment-object) using its `comment_id`.
 
-        *[🔗 Endpoint documentation](https://developers.notion.com/reference/delete-comment)*
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/delete-a-comment)*
         """  # noqa: E501
         return self.parent.request(
             path=f"comments/{comment_id}",
