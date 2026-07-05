@@ -13,8 +13,8 @@ jobs:
 
     strategy:
       matrix:
-        # httpx (default backend) is tested on every supported Python; httpx2
-        # requires Python >= 3.10, so it is excluded from 3.8/3.9.
+        # httpx (default backend) is tested on every supported Python;
+        # httpx2 requires Python >= 3.10, so it is excluded from 3.8/3.9.
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
         backend: [httpx, httpx2]
         exclude:
@@ -30,12 +30,7 @@ jobs:
       uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  # v6.2.0
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install (httpx backend)
-      if: matrix.backend == 'httpx'
-      run: pip install -r requirements/tests-httpx.txt
-    - name: Install (httpx2 backend)
-      if: matrix.backend == 'httpx2'
-      run: pip install -r requirements/tests.txt
+    - run: pip install -r requirements/tests.txt
     - run: pytest
       env:
         NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
