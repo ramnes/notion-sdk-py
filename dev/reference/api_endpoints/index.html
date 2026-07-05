@@ -3457,7 +3457,7 @@
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update a [Comment object](https://developers.notion.com/reference/comment-object) using its `comment_id`.</span>
 
-<span class="sd">        *[🔗 Endpoint documentation](https://developers.notion.com/reference/update-comment)*</span>
+<span class="sd">        *[🔗 Endpoint documentation](https://developers.notion.com/reference/update-a-comment)*</span>
 <span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
             <span class="n">path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;comments/</span><span class="si">{</span><span class="n">comment_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
@@ -3469,7 +3469,7 @@
     <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a [Comment object](https://developers.notion.com/reference/comment-object) using its `comment_id`.</span>
 
-<span class="sd">        *[🔗 Endpoint documentation](https://developers.notion.com/reference/delete-comment)*</span>
+<span class="sd">        *[🔗 Endpoint documentation](https://developers.notion.com/reference/delete-a-comment)*</span>
 <span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
             <span class="n">path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;comments/</span><span class="si">{</span><span class="n">comment_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
@@ -3564,7 +3564,7 @@
     <div class="doc doc-contents ">
 
         <p>Delete a <a href="https://developers.notion.com/reference/comment-object">Comment object</a> using its <code>comment_id</code>.</p>
-<p><em><a href="https://developers.notion.com/reference/delete-comment">🔗 Endpoint documentation</a></em></p>
+<p><em><a href="https://developers.notion.com/reference/delete-a-comment">🔗 Endpoint documentation</a></em></p>
 
 
             <details class="mkdocstrings-source">
@@ -3581,7 +3581,7 @@
 <span class="normal">629</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Delete a [Comment object](https://developers.notion.com/reference/comment-object) using its `comment_id`.</span>
 
-<span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/delete-comment)*</span>
+<span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/delete-a-comment)*</span>
 <span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
         <span class="n">path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;comments/</span><span class="si">{</span><span class="n">comment_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
@@ -3692,7 +3692,7 @@
     <div class="doc doc-contents ">
 
         <p>Update a <a href="https://developers.notion.com/reference/comment-object">Comment object</a> using its <code>comment_id</code>.</p>
-<p><em><a href="https://developers.notion.com/reference/update-comment">🔗 Endpoint documentation</a></em></p>
+<p><em><a href="https://developers.notion.com/reference/update-a-comment">🔗 Endpoint documentation</a></em></p>
 
 
             <details class="mkdocstrings-source">
@@ -3710,7 +3710,7 @@
 <span class="normal">618</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SyncAsync</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update a [Comment object](https://developers.notion.com/reference/comment-object) using its `comment_id`.</span>
 
-<span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/update-comment)*</span>
+<span class="sd">    *[🔗 Endpoint documentation](https://developers.notion.com/reference/update-a-comment)*</span>
 <span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
         <span class="n">path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;comments/</span><span class="si">{</span><span class="n">comment_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
