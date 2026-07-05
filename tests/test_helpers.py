@@ -1,5 +1,3 @@
-import asyncio
-import time
 from types import AsyncGeneratorType, GeneratorType
 
 import pytest
@@ -56,6 +54,7 @@ def test_get_id():
             v=f41969f937614159857f6a5725990649"
     db_id = "99572135-4646-49bd-95a1-4ff08f79c7a5"
     assert get_id(page_url) == page_id
+    assert get_id(f"{page_url}/") == page_id
     assert get_id(db_url) == db_id
     with pytest.raises(ValueError):
         get_id("https://example.com")
@@ -77,32 +76,25 @@ def test_get_url():
 
 
 @pytest.mark.vcr()
-@pytest.mark.timeout(90)
-def test_iterate_paginated_api(client, multiple_test_pages, vcr_cassette):
-    page_ids = multiple_test_pages
-
-    if not vcr_cassette.responses:
-        time.sleep(20)
+def test_iterate_paginated_api(client, page_id):
+    children = [
+        {"paragraph": {"rich_text": [{"text": {"content": f"paragraph {i}"}}]}}
+        for i in range(5)
+    ]
+    client.blocks.children.append(block_id=page_id, children=children)
 
     generator = iterate_paginated_api(
-        client.search,
-        query="test_iterate_paginated_api",
-        page_size=2,
+        client.blocks.children.list, block_id=page_id, page_size=2
     )
     assert isinstance(generator, GeneratorType)
     results = [result for result in generator]
     assert len(results) == 5
 
-    for page_id in page_ids:
-        client.blocks.delete(block_id=page_id)
-
-    if not vcr_cassette.responses:
-        time.sleep(20)
+    for result in results:
+        client.blocks.delete(block_id=result["id"])
 
     generator = iterate_paginated_api(
-        client.search,
-        query="test_iterate_paginated_api",
-        page_size=2,
+        client.blocks.children.list, block_id=page_id, page_size=2
     )
     assert isinstance(generator, GeneratorType)
     results = [result for result in generator]
@@ -122,34 +114,26 @@ def test_collect_paginated_api(client):
 
 
 @pytest.mark.vcr()
-@pytest.mark.timeout(90)
-async def test_async_iterate_paginated_api(
-    async_client, async_multiple_test_pages, vcr_cassette
-):
-    page_ids = async_multiple_test_pages
-
-    if not vcr_cassette.responses:
-        await asyncio.sleep(20)
+async def test_async_iterate_paginated_api(async_client, async_page_id):
+    page_id = async_page_id
+    children = [
+        {"paragraph": {"rich_text": [{"text": {"content": f"paragraph {i}"}}]}}
+        for i in range(5)
+    ]
+    await async_client.blocks.children.append(block_id=page_id, children=children)
 
     generator = async_iterate_paginated_api(
-        async_client.search,
-        query="test_async_iterate_paginated_api",
-        page_size=2,
+        async_client.blocks.children.list, block_id=page_id, page_size=2
     )
     assert isinstance(generator, AsyncGeneratorType)
     results = [result async for result in generator]
     assert len(results) == 5
 
-    for page_id in page_ids:
-        await async_client.blocks.delete(block_id=page_id)
-
-    if not vcr_cassette.responses:
-        await asyncio.sleep(20)
+    for result in results:
+        await async_client.blocks.delete(block_id=result["id"])
 
     generator = async_iterate_paginated_api(
-        async_client.search,
-        query="test_async_iterate_paginated_api",
-        page_size=2,
+        async_client.blocks.children.list, block_id=page_id, page_size=2
     )
     assert isinstance(generator, AsyncGeneratorType)
     results = [result async for result in generator]

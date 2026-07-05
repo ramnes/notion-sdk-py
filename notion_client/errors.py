@@ -15,7 +15,7 @@ from notion_client.compat import Headers, Response
 if sys.version_info >= (3, 10):
     from typing import TypeGuard
 else:
-    from typing_extensions import TypeGuard
+    from typing_extensions import TypeGuard  # pragma: no cover
 
 
 class APIErrorCode(str, Enum):

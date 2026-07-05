@@ -19,7 +19,7 @@ interactions:
   response:
     body:
       string: '{"object":"error","status":401,"code":"unauthorized","message":"API
-        token is invalid.","request_id":"8ee1aad8-c786-4eeb-972e-8c21c0b09dde"}'
+        token is invalid.","request_id":"006ca826-ee87-4b30-a9de-8f2147c99ec6"}'
     headers:
       Content-Length:
       - '139'

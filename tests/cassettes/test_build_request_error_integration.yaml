@@ -20,12 +20,12 @@ interactions:
     body:
       string: '{"object":"error","status":404,"code":"object_not_found","message":"Could
         not find page with ID: 00000000-0000-0000-0000-000000000000. Make sure the
-        relevant pages and databases are shared with your integration.","request_id":"6d12f3b5-58ac-4c24-a6eb-b66ebbb3c0f2"}'
+        relevant pages and databases are shared with your integration \"notion-sdk-py\".","additional_data":{"integration_id":"7775f3a3-893f-43fa-b625-460c61094c78"},"request_id":"55e80b46-6675-426f-9eb0-1fa1456e4103"}'
     headers:
       Content-Type:
       - application/json; charset=utf-8
       content-length:
-      - '265'
+      - '359'
     status:
       code: 404
       message: Not Found

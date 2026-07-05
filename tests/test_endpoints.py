@@ -63,10 +63,21 @@ def test_blocks_children_list(client, page_id):
     assert response["type"] == "block"
 
 
-@pytest.mark.vcr()
-def test_blocks_meeting_notes_query(client):
+# Meeting notes require a plan with AI meeting notes enabled, so we can't record
+# a cassette with our test integration. Using a mock instead.
+def test_blocks_meeting_notes_query(client, mocker):
+    mock_response = {"object": "list", "results": [], "has_more": False}
+    mock_request = mocker.patch.object(client, "request", return_value=mock_response)
+
     response = client.blocks.meeting_notes.query()
+
     assert response["object"] == "list"
+    mock_request.assert_called_once_with(
+        path="blocks/meeting_notes/query",
+        method="POST",
+        body={},
+        auth=None,
+    )
 
 
 @pytest.mark.vcr()
@@ -334,59 +345,36 @@ def test_comments_delete(client, comment_id):
     assert response["id"] == comment_id
 
 
-# Markdown endpoints require a public (OAuth) integration, so we can't record cassettes
-# with our internal integration token. Using mocks instead.
-def test_pages_retrieve_markdown(client, mocker):
-    mock_response = {
-        "object": "page_markdown",
-        "id": "abc123",
-        "markdown": "# Hello",
-        "truncated": False,
-        "unknown_block_ids": [],
-    }
-    mock_request = mocker.patch.object(client, "request", return_value=mock_response)
-
-    response = client.pages.retrieve_markdown(page_id="abc123", include_transcript=True)
-
+@pytest.mark.vcr()
+def test_pages_retrieve_markdown(client, page_id):
+    response = client.pages.retrieve_markdown(page_id=page_id)
     assert response["object"] == "page_markdown"
-    mock_request.assert_called_once_with(
-        path="pages/abc123/markdown",
-        method="GET",
-        query={"include_transcript": True},
-        auth=None,
-    )
 
 
-# Markdown endpoints require a public (OAuth) integration, so we can't record cassettes
-# with our internal integration token. Using mocks instead.
-def test_pages_update_markdown(client, mocker):
-    mock_response = {
-        "object": "page_markdown",
-        "id": "abc123",
-        "markdown": "## New Section\n\nHello from markdown.",
-        "truncated": False,
-        "unknown_block_ids": [],
-    }
-    mock_request = mocker.patch.object(client, "request", return_value=mock_response)
-
+@pytest.mark.vcr()
+def test_pages_update_markdown(client, page_id):
     response = client.pages.update_markdown(
-        page_id="abc123",
+        page_id=page_id,
         type="insert_content",
         insert_content={"content": "## New Section\n\nHello from markdown."},
     )
-
     assert response["object"] == "page_markdown"
-    mock_request.assert_called_once_with(
-        path="pages/abc123/markdown",
-        method="PATCH",
-        body={
-            "type": "insert_content",
-            "insert_content": {
-                "content": "## New Section\n\nHello from markdown.",
-            },
-        },
-        auth=None,
+
+
+@pytest.mark.vcr()
+def test_async_tasks_retrieve(client, page_id):
+    update_response = client.pages.update_markdown(
+        page_id=page_id,
+        type="insert_content",
+        insert_content={"content": "# Hello\n\nAsync test content."},
+        allow_async=True,
     )
+    assert update_response["object"] == "async_task"
+    task_id = update_response["id"]
+
+    response = client.async_tasks.retrieve(task_id=task_id)
+    assert response["object"] == "async_task"
+    assert response["id"] == task_id
 
 
 @pytest.mark.vcr()
@@ -410,9 +398,20 @@ def test_file_uploads_create(client):
     assert "id" in response
 
 
-@pytest.mark.vcr()
-def test_file_uploads_create_multipart(client):
+# Multipart uploads require a paid plan, so we can't record a cassette
+# with our test integration. Using a mock instead.
+def test_file_uploads_create_multipart(client, mocker):
     """Test creating a multipart file upload"""
+    mock_response = {
+        "object": "file_upload",
+        "id": "upload_abc",
+        "filename": "large_file.pdf",
+        "content_type": "application/pdf",
+        "number_of_parts": {"total": 3, "sent": 0},
+        "status": "pending",
+    }
+    mocker.patch.object(client, "request", return_value=mock_response)
+
     response = client.file_uploads.create(
         mode="multi_part",
         filename="large_file.pdf",
@@ -521,20 +520,31 @@ def test_file_uploads_send(client, pending_single_file_upload_id):
     assert response["content_type"] == "text/plain"
 
 
-@pytest.mark.vcr()
-def test_file_uploads_send_multipart(client, pending_multi_file_upload_id):
+# Multipart uploads require a paid plan, so we can't record a cassette
+# with our test integration. Using a mock instead.
+def test_file_uploads_send_multipart(client, mocker):
     """Test sending a multipart file upload"""
-    # Send first part
+    upload_id = "upload_abc"
+    mock_response = {
+        "object": "file_upload",
+        "id": upload_id,
+        "status": "pending",
+        "filename": "test_file_multi.txt",
+        "content_type": "text/plain",
+        "number_of_parts": {"total": 3, "sent": 1},
+    }
+    mocker.patch.object(client, "request", return_value=mock_response)
+
     test_content_part1 = b"A" * (10 * 1024 * 1024)
     file_part1 = io.BytesIO(test_content_part1)
     file_part1.name = "test_file_multi.txt.sf-part1"
 
     response = client.file_uploads.send(
-        file_upload_id=pending_multi_file_upload_id, file=file_part1, part_number="1"
+        file_upload_id=upload_id, file=file_part1, part_number="1"
     )
 
     assert response["object"] == "file_upload"
-    assert response["id"] == pending_multi_file_upload_id
+    assert response["id"] == upload_id
     assert response["status"] == "pending"
     assert response["filename"] == "test_file_multi.txt"
     assert response["content_type"] == "text/plain"
@@ -542,13 +552,25 @@ def test_file_uploads_send_multipart(client, pending_multi_file_upload_id):
     assert response["number_of_parts"]["sent"] == 1
 
 
-@pytest.mark.vcr()
-def test_file_uploads_complete(client, part_uploaded_file_upload_id):
+# Multipart uploads require a paid plan, so we can't record a cassette
+# with our test integration. Using a mock instead.
+def test_file_uploads_complete(client, mocker):
     """Test completing a file upload"""
-    response = client.file_uploads.complete(file_upload_id=part_uploaded_file_upload_id)
+    upload_id = "upload_abc"
+    mock_response = {
+        "object": "file_upload",
+        "id": upload_id,
+        "status": "uploaded",
+        "filename": "test_file_multi.txt",
+        "content_type": "text/plain",
+        "number_of_parts": {"total": 3, "sent": 3},
+    }
+    mocker.patch.object(client, "request", return_value=mock_response)
+
+    response = client.file_uploads.complete(file_upload_id=upload_id)
 
     assert response["object"] == "file_upload"
-    assert response["id"] == part_uploaded_file_upload_id
+    assert response["id"] == upload_id
     assert response["status"] == "uploaded"
     assert response["filename"] == "test_file_multi.txt"
     assert response["content_type"] == "text/plain"
