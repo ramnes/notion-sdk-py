@@ -143,7 +143,7 @@ python -m intermediate.1_create_a_database
 To learn more, read the
 [Public API docs](https://developers.notion.com/) for additional information
 on using Notion's API. The API docs include a series of
-[guides](https://developers.notion.com/docs) and the
+[guides](https://developers.notion.com/guides) and the
 [API reference](https://developers.notion.com/reference/intro), which has a
 full list of available endpoints.
 
@@ -154,4 +154,4 @@ internal integration with an interactive frontend, read the
 guide.
 
 To connect with other developers building with Notion, join the
-[Notion Developers Slack group](https://join.slack.com/t/notiondevs/shared_invite/zt-20b5996xv-DzJdLiympy6jP0GGzu3AMg).
+[Notion Developers Slack group](https://notiondevs.slack.com/join/shared_invite/zt-20b5996xv-DzJdLiympy6jP0GGzu3AMg).

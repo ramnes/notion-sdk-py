@@ -15,4 +15,9 @@ jobs:
       - uses: lycheeverse/lychee-action@7cd0af4c74a61395d455af97419279d86aafaede  # v2.0.2
         with:
           fail: true
-          args: "--exclude-path tests --exclude-path docs/SUMMARY.md **/*.md **/*.py"
+          args: >-
+            --exclude '.*(\{|%7B).*(\}|%7D).*'
+            --exclude '\.slack\.com'
+            --exclude-path tests
+            --exclude-path docs/SUMMARY.md
+            '**/*.md' '**/*.py'
