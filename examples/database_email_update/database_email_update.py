@@ -36,9 +36,7 @@ def get_tasks_from_notion_database():
         return []
 
     ds_id = data_sources[0]["id"]
-    pages = list(
-        iterate_paginated_api(notion.data_sources.query, data_source_id=ds_id)
-    )
+    pages = list(iterate_paginated_api(notion.data_sources.query, data_source_id=ds_id))
     print(f"{len(pages)} pages successfully fetched.")
 
     tasks = []
