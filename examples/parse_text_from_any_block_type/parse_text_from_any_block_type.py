@@ -91,9 +91,7 @@ def get_text_from_block(block):
 def retrieve_block_children(page_id):
     print("Retrieving blocks...")
     blocks = []
-    for block in iterate_paginated_api(
-        notion.blocks.children.list, block_id=page_id
-    ):
+    for block in iterate_paginated_api(notion.blocks.children.list, block_id=page_id):
         blocks.append(block)
     return blocks
 
