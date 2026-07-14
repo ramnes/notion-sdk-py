@@ -87,13 +87,15 @@ def get_github_issues():
             break
         for item in data:
             if "pull_request" not in item:
-                issues.append({
-                    "number": item["number"],
-                    "title": item["title"],
-                    "state": item["state"],
-                    "comment_count": item["comments"],
-                    "url": item["html_url"],
-                })
+                issues.append(
+                    {
+                        "number": item["number"],
+                        "title": item["title"],
+                        "state": item["state"],
+                        "comment_count": item["comments"],
+                        "url": item["html_url"],
+                    }
+                )
         page += 1
         if len(data) < 100:
             break
@@ -129,7 +131,7 @@ def create_pages(pages_to_create):
     if not pages_to_create:
         return
     for i in range(0, len(pages_to_create), OPERATION_BATCH_SIZE):
-        batch = pages_to_create[i:i + OPERATION_BATCH_SIZE]
+        batch = pages_to_create[i : i + OPERATION_BATCH_SIZE]
         for issue in batch:
             notion.pages.create(
                 parent={"database_id": NOTION_DATABASE_ID},
@@ -143,7 +145,7 @@ def update_pages(pages_to_update):
     if not pages_to_update:
         return
     for i in range(0, len(pages_to_update), OPERATION_BATCH_SIZE):
-        batch = pages_to_update[i:i + OPERATION_BATCH_SIZE]
+        batch = pages_to_update[i : i + OPERATION_BATCH_SIZE]
         for issue in batch:
             notion.pages.update(
                 page_id=issue["page_id"],
