@@ -17,9 +17,7 @@ GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
 GITHUB_REPO_OWNER = os.getenv("GITHUB_REPO_OWNER", "")
 GITHUB_REPO_NAME = os.getenv("GITHUB_REPO_NAME", "")
 
-UPDATE_STATUS = (
-    os.getenv("UPDATE_STATUS_IN_NOTION_DB", "").strip().lower() == "true"
-)
+UPDATE_STATUS = os.getenv("UPDATE_STATUS_IN_NOTION_DB", "").strip().lower() == "true"
 STATUS_PROPERTY_NAME = os.getenv("STATUS_PROPERTY_NAME", "").strip()
 
 if UPDATE_STATUS and not STATUS_PROPERTY_NAME:
@@ -40,9 +38,7 @@ notion = Client(auth=NOTION_API_KEY)
 GITHUB_API_BASE = "https://api.github.com"
 OPERATION_BATCH_SIZE = 10
 
-NOTION_URL_RE = re.compile(
-    r"https://www\.notion\.so/([A-Za-z0-9]+(-[A-Za-z0-9]+)+)$"
-)
+NOTION_URL_RE = re.compile(r"https://www\.notion\.so/([A-Za-z0-9]+(-[A-Za-z0-9]+)+)$")
 
 
 def has_integration_commented_on_page(page_id):
@@ -87,14 +83,18 @@ def get_github_prs():
                 page_id = match.group(0).split("-")[-1].replace("-", "")
                 merged = pr.get("merged_at") is not None
                 status = "Closed - Merged" if merged else "Closed - Not Merged"
-                content = " has been merged!" if merged else " was closed but not merged!"
-                pull_requests.append({
-                    "task_link": match.group(0),
-                    "page_id": page_id,
-                    "pr_link": pr["html_url"],
-                    "pr_status": status,
-                    "comment_content": content,
-                })
+                content = (
+                    " has been merged!" if merged else " was closed but not merged!"
+                )
+                pull_requests.append(
+                    {
+                        "task_link": match.group(0),
+                        "page_id": page_id,
+                        "pr_link": pr["html_url"],
+                        "pr_status": status,
+                        "comment_content": content,
+                    }
+                )
         page += 1
         if len(data) < 100:
             break
@@ -108,15 +108,13 @@ def update_pages(pages_to_update):
         return
 
     for i in range(0, len(pages_to_update), OPERATION_BATCH_SIZE):
-        batch = pages_to_update[i:i + OPERATION_BATCH_SIZE]
+        batch = pages_to_update[i : i + OPERATION_BATCH_SIZE]
         for pr in batch:
             if UPDATE_STATUS:
                 notion.pages.update(
                     page_id=pr["page_id"],
                     properties={
-                        STATUS_PROPERTY_NAME: {
-                            "status": {"name": pr["pr_status"]}
-                        }
+                        STATUS_PROPERTY_NAME: {"status": {"name": pr["pr_status"]}}
                     },
                 )
             notion.comments.create(
