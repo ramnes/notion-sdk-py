@@ -1,7 +1,10 @@
 import os
+from pathlib import Path
 
-from flask import Flask, jsonify, request, send_from_directory
-from notion_client import Client
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
+from notion_client import AsyncClient
 from notion_client.helpers import is_full_database
 
 try:
@@ -19,53 +22,58 @@ while NOTION_API_KEY == "":
 while NOTION_PAGE_ID == "":
     NOTION_PAGE_ID = input("Enter the Notion page ID: ").strip()
 
-notion = Client(auth=NOTION_API_KEY)
+notion = AsyncClient(auth=NOTION_API_KEY)
 
-app = Flask(__name__, static_folder="public", static_url_path="")
+app = FastAPI()
+
+HERE = Path(__file__).parent
+
+app.mount("/public", StaticFiles(directory=str(HERE / "public")), name="public")
 
 
-@app.route("/")
-def index():
-    return send_from_directory(app.static_folder, "index.html")
+@app.get("/")
+async def index():
+    content = (HERE / "views" / "index.html").read_text(encoding="utf-8")
+    return HTMLResponse(content)
 
 
-@app.route("/databases", methods=["POST"])
-def create_database():
-    page_id = NOTION_PAGE_ID
-    title = request.json.get("dbName", "")
+@app.post("/databases")
+async def create_database(request: Request):
+    body = await request.json()
+    title = body.get("dbName", "")
 
     try:
-        new_db = notion.databases.create(
-            parent={"type": "page_id", "page_id": page_id},
+        new_db = await notion.databases.create(
+            parent={"type": "page_id", "page_id": NOTION_PAGE_ID},
             title=[{"type": "text", "text": {"content": title}}],
             properties={"Name": {"title": {}}},
         )
 
         if not is_full_database(new_db):
-            return jsonify(
+            return JSONResponse(
                 {"message": "error", "error": "No read permissions on database"}
             )
 
         data_source_id = new_db["data_sources"][0]["id"]
-        return jsonify(
+        return JSONResponse(
             {
                 "message": "success!",
                 "data": {**new_db, "dataSourceId": data_source_id},
             }
         )
     except Exception as error:
-        return jsonify({"message": "error", "error": str(error)})
+        return JSONResponse({"message": "error", "error": str(error)})
 
 
-@app.route("/pages", methods=["POST"])
-def create_page():
-    data = request.json
+@app.post("/pages")
+async def create_page(request: Request):
+    data = await request.json()
     db_id = data.get("dbID", "")
     page_name = data.get("pageName", "")
     header = data.get("header", "")
 
     try:
-        new_page = notion.pages.create(
+        new_page = await notion.pages.create(
             parent={"type": "data_source_id", "data_source_id": db_id},
             properties={
                 "Name": {
@@ -81,18 +89,19 @@ def create_page():
                 }
             ],
         )
-        return jsonify({"message": "success!", "data": new_page})
+        return JSONResponse({"message": "success!", "data": new_page})
     except Exception as error:
-        return jsonify({"message": "error", "error": str(error)})
+        return JSONResponse({"message": "error", "error": str(error)})
 
 
-@app.route("/blocks", methods=["POST"])
-def create_block():
-    page_id = request.json.get("pageID", "")
-    content = request.json.get("content", "")
+@app.post("/blocks")
+async def create_block(request: Request):
+    body = await request.json()
+    page_id = body.get("pageID", "")
+    content = body.get("content", "")
 
     try:
-        new_block = notion.blocks.children.append(
+        new_block = await notion.blocks.children.append(
             block_id=page_id,
             children=[
                 {
@@ -102,25 +111,29 @@ def create_block():
                 }
             ],
         )
-        return jsonify({"message": "success!", "data": new_block})
+        return JSONResponse({"message": "success!", "data": new_block})
     except Exception as error:
-        return jsonify({"message": "error", "error": str(error)})
+        return JSONResponse({"message": "error", "error": str(error)})
 
 
-@app.route("/comments", methods=["POST"])
-def create_comment():
-    page_id = request.json.get("pageID", "")
-    comment = request.json.get("comment", "")
+@app.post("/comments")
+async def create_comment(request: Request):
+    body = await request.json()
+    page_id = body.get("pageID", "")
+    comment = body.get("comment", "")
 
     try:
-        new_comment = notion.comments.create(
+        new_comment = await notion.comments.create(
             parent={"page_id": page_id},
             rich_text=[{"text": {"content": comment}}],
         )
-        return jsonify({"message": "success!", "data": new_comment})
+        return JSONResponse({"message": "success!", "data": new_comment})
     except Exception as error:
-        return jsonify({"message": "error", "error": str(error)})
+        return JSONResponse({"message": "error", "error": str(error)})
 
 
 if __name__ == "__main__":
-    app.run(port=int(os.getenv("PORT", 3000)))
+    import uvicorn
+
+    port = int(os.getenv("PORT", 3000))
+    uvicorn.run(app, host="0.0.0.0", port=port)

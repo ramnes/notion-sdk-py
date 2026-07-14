@@ -1,4 +1,4 @@
-# Web form with Flask
+# Web form with FastAPI
 
 Use web forms to create new Notion databases, pages, page content, and comments.
 
@@ -6,7 +6,7 @@ Use web forms to create new Notion databases, pages, page content, and comments.
 
 This example shows how to build an internal integration that allows users to
 fill out a web form to create new Notion databases, pages, blocks, and comments.
-It uses the Flask web framework and serves a browser-based UI.
+It uses the FastAPI web framework with async/await and serves a browser-based UI.
 
 ### Notion endpoints used
 
@@ -20,7 +20,7 @@ It uses the Flask web framework and serves a browser-based UI.
 ### 1. Install dependencies
 
 ```bash
-pip install notion-client flask python-dotenv
+pip install notion-client fastapi uvicorn python-dotenv
 ```
 
 ### 2. Set up your integration
