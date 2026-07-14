@@ -42,13 +42,17 @@ def create_database():
         )
 
         if not is_full_database(new_db):
-            return jsonify({"message": "error", "error": "No read permissions on database"})
+            return jsonify(
+                {"message": "error", "error": "No read permissions on database"}
+            )
 
         data_source_id = new_db["data_sources"][0]["id"]
-        return jsonify({
-            "message": "success!",
-            "data": {**new_db, "dataSourceId": data_source_id},
-        })
+        return jsonify(
+            {
+                "message": "success!",
+                "data": {**new_db, "dataSourceId": data_source_id},
+            }
+        )
     except Exception as error:
         return jsonify({"message": "error", "error": str(error)})
 
