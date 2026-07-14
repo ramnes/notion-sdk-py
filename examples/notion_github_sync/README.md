@@ -24,7 +24,7 @@ pip install notion-client requests python-dotenv
 
 ### 3. Prepare your Notion database
 
-Duplicate [this database template](https://www.notion.com/367cd67cfe8f49bfaf0ac21305ebb9bf?v=bc79ca62b36e4c54b655ceed4ef06ebd)
+Duplicate [this database template](https://www.notion.so/{your-template-id})
 and share it with your integration (click `...` > `Add connections`).
 
 ### 4. Set environment variables
