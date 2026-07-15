@@ -24,8 +24,17 @@ pip install notion-client requests python-dotenv
 
 ### 3. Prepare your Notion database
 
-Duplicate [this database template](https://www.notion.so/{your-template-id})
-and share it with your integration (click `...` > `Add connections`).
+Create a new Notion database (full page, not inline) with the following properties:
+
+| Property name      | Type   |
+|--------------------|--------|
+| Name               | Title  |
+| Issue Number       | Number |
+| State              | Select |
+| Number of Comments | Number |
+| Issue URL          | URL    |
+
+Share the database with your integration (click `...` > `Add connections`).
 
 ### 4. Set environment variables
 
