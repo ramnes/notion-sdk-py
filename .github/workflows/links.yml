@@ -17,7 +17,7 @@ jobs:
           fail: true
           args: >-
             --exclude '.*(\{|%7B).*(\}|%7D).*'
-            --exclude 'r".*"'
+            --exclude 'https://www/$'
             --exclude '\.slack\.com'
             --exclude-path tests
             --exclude-path docs/SUMMARY.md
