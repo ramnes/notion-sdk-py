@@ -47,7 +47,7 @@ Copy `.env.example` to `.env` and fill in your values.
 ### 6. Run the app
 
 ```bash
-python web_form_with_flask.py
+python web_form_with_fastapi.py
 ```
 
 Open `http://localhost:3000` in your browser.
