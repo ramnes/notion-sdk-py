@@ -27,8 +27,8 @@ pip install notion-client requests python-dotenv
 For a PR to match a task, put the task's canonical Notion page URL at the end
 of the PR description, without query parameters:
 
-```
-https://www.notion.so/Example-task-0123456789abcdef0123456789abcdef
+```text
+https://www.notion.so/{your-task-id}
 ```
 
 ### 4. Set environment variables
