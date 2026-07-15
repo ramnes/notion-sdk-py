@@ -16,5 +16,8 @@ jobs:
         with:
           fail: true
           args: >-
-            --exclude '.*'
+            --exclude '.*(\{|%7B).*(\}|%7D).*'
+            --exclude '\.slack\.com'
+            --exclude-path tests
+            --exclude-path docs/SUMMARY.md
             '**/*.md' '**/*.py'
