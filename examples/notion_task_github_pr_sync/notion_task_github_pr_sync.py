@@ -38,7 +38,9 @@ notion = Client(auth=NOTION_API_KEY)
 GITHUB_API_BASE = "https://api.github.com"
 OPERATION_BATCH_SIZE = 10
 
-NOTION_URL_RE = re.compile(r"https://www\.notion\.so/([A-Za-z0-9]+(-[A-Za-z0-9]+)+)$")
+NOTION_URL_RE = re.compile(
+    "https://" + r"www\.notion\.so/([A-Za-z0-9]+(-[A-Za-z0-9]+)+)$"
+)
 
 
 def has_integration_commented_on_page(page_id):
