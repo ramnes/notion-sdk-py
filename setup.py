@@ -21,6 +21,9 @@ setup(
         "httpx >= 0.23.0",
         "typing_extensions >= 4.0.0; python_version < '3.10'",
     ],
+    extras_require={
+        "httpx2": ["httpx2 >= 2.0.0"],
+    },
     classifiers=[
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",

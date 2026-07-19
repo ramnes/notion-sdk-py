@@ -383,9 +383,9 @@ print(json.dumps(response, indent=2))
 > `notion.comments.create()`.
 
 Another customization you can make is to pass your own `httpx.Client` or
-`httpx.AsyncClient` to the `Client` or `AsyncClient` constructor. This might be
-helpful for some execution environments where the default HTTPX client isn't
-suitable.
+`httpx.AsyncClient` (or the `httpx2` equivalents) to the `Client` or `AsyncClient`
+constructor. This might be helpful for some execution environments where the
+default client isn't suitable.
 
 ### Verifying webhook signatures
 
@@ -452,6 +452,11 @@ This package supports the following minimum versions:
 
 - Runtime: Python >= 3.8
 - httpx >= 0.23.0
+
+The client is HTTP-backend agnostic: it works with either `httpx` (the default)
+or [`httpx2`](https://github.com/pydantic/httpx2), Pydantic's maintained continuation
+of httpx. To use the httpx2 backend, install `notion-client[httpx2]` (which requires
+Python >= 3.10); the client then prefers httpx2 automatically.
 
 Earlier versions may still work, but we encourage people building new applications
 to upgrade to the current stable.

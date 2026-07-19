@@ -1,8 +1,7 @@
 import pytest
-from httpx import TimeoutException
-import httpx
 import asyncio
 
+from notion_client.compat import httpx
 from notion_client.errors import (
     APIErrorCode,
     ClientErrorCode,
@@ -30,7 +29,7 @@ def test_api_response_error(client):
 
 def test_api_request_timeout_error(monkeypatch, client):
     def mock_timeout_request(*args):
-        raise TimeoutException("Mock Timeout")
+        raise httpx.TimeoutException("Mock Timeout")
 
     monkeypatch.setattr(client.client, "send", mock_timeout_request)
 
@@ -54,7 +53,7 @@ async def test_async_api_response_error(async_client):
 
 async def test_async_api_request_timeout_error(monkeypatch, async_client):
     def mock_timeout_request(*args):
-        raise TimeoutException("Mock Timeout")
+        raise httpx.TimeoutException("Mock Timeout")
 
     monkeypatch.setattr(async_client.client, "send", mock_timeout_request)
 

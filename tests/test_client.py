@@ -6,7 +6,7 @@ from email.utils import formatdate
 from typing import Any, Dict, Optional
 from unittest.mock import Mock, patch
 
-import httpx
+from notion_client.compat import httpx
 import pytest
 
 from notion_client import APIResponseError, AsyncClient, Client

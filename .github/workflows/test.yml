@@ -13,7 +13,15 @@ jobs:
 
     strategy:
       matrix:
+        # httpx (default backend) is tested on every supported Python;
+        # httpx2 requires Python >= 3.10, so it is excluded from 3.8/3.9.
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+        backend: [httpx, httpx2]
+        exclude:
+          - python-version: "3.8"
+            backend: httpx2
+          - python-version: "3.9"
+            backend: httpx2
 
     steps:
 
@@ -26,6 +34,7 @@ jobs:
     - run: pytest
       env:
         NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        NOTION_HTTP_BACKEND: ${{ matrix.backend }}
     - uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f  # v7.0.0
       with:
         env_vars: PYTHON

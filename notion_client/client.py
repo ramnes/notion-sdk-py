@@ -12,9 +12,16 @@ from email.utils import parsedate_to_datetime
 from types import TracebackType
 from typing import Any, Dict, List, Optional, Type, Union
 
-import httpx
-from httpx import Request, Response
-
+from notion_client.compat import (
+    AsyncClient as HttpxAsyncClient,
+    Client as HttpxClient,
+    Headers,
+    HTTP_STATUS_ERRORS,
+    Request,
+    Response,
+    status_error_response,
+    TIMEOUT_EXCEPTIONS,
+)
 from notion_client.constants import (
     DEFAULT_BASE_URL,
     DEFAULT_TIMEOUT_MS,
@@ -97,7 +104,7 @@ class ClientOptions:
 class BaseClient:
     def __init__(
         self,
-        client: Union[httpx.Client, httpx.AsyncClient],
+        client: Union[HttpxClient, HttpxAsyncClient],
         options: Optional[Union[Dict[str, Any], ClientOptions]] = None,
         **kwargs: Any,
     ) -> None:
@@ -124,7 +131,7 @@ class BaseClient:
             self._initial_retry_delay_ms = retry_opts.initial_retry_delay_ms
             self._max_retry_delay_ms = retry_opts.max_retry_delay_ms
 
-        self._clients: List[Union[httpx.Client, httpx.AsyncClient]] = []
+        self._clients: List[Union[HttpxClient, HttpxAsyncClient]] = []
         self.client = client
 
         self.blocks = BlocksEndpoint(self)
@@ -141,19 +148,19 @@ class BaseClient:
         self.oauth = OAuthEndpoint(self)
 
     @property
-    def client(self) -> Union[httpx.Client, httpx.AsyncClient]:
+    def client(self) -> Union[HttpxClient, HttpxAsyncClient]:
         return self._clients[-1]
 
     @client.setter
-    def client(self, client: Union[httpx.Client, httpx.AsyncClient]) -> None:
-        client.base_url = httpx.URL(f"{self.options.base_url}/v1/")
-        client.timeout = httpx.Timeout(timeout=self.options.timeout_ms / 1_000)
-        client.headers = httpx.Headers(
-            {
-                "Notion-Version": self.options.notion_version,
-                "User-Agent": "ramnes/notion-sdk-py@3.1.0",
-            }
-        )
+    def client(self, client: Union[HttpxClient, HttpxAsyncClient]) -> None:
+        # Assign backend-neutral values (str / float / dict); both httpx and
+        # httpx2 accept these and wrap them into their own URL/Timeout/Headers.
+        client.base_url = f"{self.options.base_url}/v1/"
+        client.timeout = self.options.timeout_ms / 1_000
+        client.headers = {
+            "Notion-Version": self.options.notion_version,
+            "User-Agent": "ramnes/notion-sdk-py@3.1.0",
+        }
         if self.options.auth:
             client.headers["Authorization"] = f"Bearer {self.options.auth}"
         self._clients.append(client)
@@ -167,7 +174,7 @@ class BaseClient:
         form_data: Optional[Dict[Any, Any]] = None,
         auth: Optional[Union[str, Dict[str, str]]] = None,
     ) -> Request:
-        headers = httpx.Headers()
+        headers: Dict[str, str] = {}
         if auth:
             if isinstance(auth, dict):
                 client_id = auth.get("client_id", "")
@@ -211,9 +218,10 @@ class BaseClient:
     def _parse_response(self, response: Response) -> Any:
         try:
             response.raise_for_status()
-        except httpx.HTTPStatusError as error:
-            body_text = error.response.text
-            raise build_request_error(error.response, body_text)
+        except HTTP_STATUS_ERRORS as error:
+            error_response = status_error_response(error)
+            body_text = error_response.text
+            raise build_request_error(error_response, body_text)
 
         return response.json()
 
@@ -286,7 +294,7 @@ class BaseClient:
         )
         return delay
 
-    def _parse_retry_after_header(self, headers: httpx.Headers) -> Optional[float]:
+    def _parse_retry_after_header(self, headers: Headers) -> Optional[float]:
         """Parses the retry-after header value.
 
         Supports both delta-seconds (e.g., "120") and HTTP-date formats.
@@ -331,20 +339,20 @@ class BaseClient:
 class Client(BaseClient):
     """Synchronous client for Notion's API."""
 
-    client: httpx.Client
+    client: HttpxClient
 
     def __init__(
         self,
         options: Optional[Union[Dict[Any, Any], ClientOptions]] = None,
-        client: Optional[httpx.Client] = None,
+        client: Optional[HttpxClient] = None,
         **kwargs: Any,
     ) -> None:
         if client is None:
-            client = httpx.Client()
+            client = HttpxClient()
         super().__init__(client, options, **kwargs)
 
     def __enter__(self) -> "Client":
-        self.client = httpx.Client()
+        self.client = HttpxClient()
         self.client.__enter__()
         return self
 
@@ -410,7 +418,7 @@ class Client(BaseClient):
         """Executes a single HTTP request (no retry)."""
         try:
             response = self.client.send(request)
-        except httpx.TimeoutException:
+        except TIMEOUT_EXCEPTIONS:
             raise RequestTimeoutError()
         response_body = self._parse_response(response)
         self._log_request_success(method, path, response_body)
@@ -420,20 +428,20 @@ class Client(BaseClient):
 class AsyncClient(BaseClient):
     """Asynchronous client for Notion's API."""
 
-    client: httpx.AsyncClient
+    client: HttpxAsyncClient
 
     def __init__(
         self,
         options: Optional[Union[Dict[str, Any], ClientOptions]] = None,
-        client: Optional[httpx.AsyncClient] = None,
+        client: Optional[HttpxAsyncClient] = None,
         **kwargs: Any,
     ) -> None:
         if client is None:
-            client = httpx.AsyncClient()
+            client = HttpxAsyncClient()
         super().__init__(client, options, **kwargs)
 
     async def __aenter__(self) -> "AsyncClient":
-        self.client = httpx.AsyncClient()
+        self.client = HttpxAsyncClient()
         await self.client.__aenter__()
         return self
 
@@ -503,7 +511,7 @@ class AsyncClient(BaseClient):
         """Executes a single HTTP request (no retry)."""
         try:
             response = await self.client.send(request)
-        except httpx.TimeoutException:
+        except TIMEOUT_EXCEPTIONS:
             raise RequestTimeoutError()
         response_body = self._parse_response(response)
         self._log_request_success(method, path, response_body)
