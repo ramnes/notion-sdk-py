@@ -350,6 +350,90 @@ blocks = collect_paginated_api(
 Both utilities also have async versions: `async_iterate_paginated_api` and
 `async_collect_paginated_api`.
 
+#### `iterate_all_data_source_rows(client, **kwargs)`
+
+A single data source query (one filter and sort) returns at most a fixed number
+of rows, 10,000 by default. Once that limit is reached, `has_more` becomes
+`False` and the response carries `request_status["type"] == "incomplete"`. Plain
+pagination such as `iterate_paginated_api` stops there and silently misses the
+rest of a larger data source.
+
+This utility reads every row anyway. It partitions the data source into
+`created_time` windows: it sorts by `created_time` ascending, and whenever a
+window hits the limit it starts a fresh query from the last row's timestamp.
+Each fresh query has a different filter, so it gets its own result budget. Rows
+that share a boundary timestamp are de-duplicated by id, so every row is
+yielded exactly once.
+
+`created_time` is used because it never changes. `last_edited_time` would shift
+rows between windows as they are edited, causing gaps or duplicates.
+
+**Parameters:**
+
+- `client`: A Notion client instance.
+- `**kwargs`: The same arguments as `data_sources.query`, minus the fields the
+  helper controls: `start_cursor` (pagination is automatic) and `sorts` (set to
+  `created_time` ascending to partition). `data_source_id` is required. Any
+  `filter` you pass is combined with the window bound using `and`.
+
+**Returns:**
+
+An iterator over every row in the data source.
+
+**Raises:**
+
+`RuntimeError` if a single `created_time` value holds more rows than the limit,
+so the window cannot be narrowed by time alone. Pass a `filter` in that case so
+each window stays under the limit.
+
+`TypeError` if you pass `start_cursor` or `sorts`, since the helper manages
+both and would otherwise ignore yours without saying so.
+
+`ValueError` if you pass a top-level `or` filter. The window bound is added
+with `and`, and Notion only supports two levels of filter nesting, so an `or`
+at the root leaves no room for it. Wrap it in an `and`, or run the helper once
+per `or` branch and merge the results.
+
+**Example:**
+
+```python
+from notion_client.helpers import iterate_all_data_source_rows
+
+for row in iterate_all_data_source_rows(notion, data_source_id=data_source_id):
+    # Do something with row.
+    ...
+```
+
+#### `collect_all_data_source_rows(client, **kwargs)`
+
+This utility accepts the same arguments as `iterate_all_data_source_rows`, but
+collects the results into an in-memory list.
+
+Before using this utility, check that the full data source fits in memory. For
+very large data sources, prefer `iterate_all_data_source_rows` and process rows
+as they stream.
+
+**Parameters:**
+
+- `client`: A Notion client instance.
+- `**kwargs`: The same arguments as `iterate_all_data_source_rows`.
+
+**Returns:**
+
+A list with every row in the data source.
+
+**Example:**
+
+```python
+from notion_client.helpers import collect_all_data_source_rows
+
+rows = collect_all_data_source_rows(notion, data_source_id=data_source_id)
+# Do something with rows.
+```
+
+Both utilities also have async versions: `async_iterate_all_data_source_rows`
+and `async_collect_all_data_source_rows`.
+
 ### Custom requests
 
 To make requests directly to a Notion API endpoint instead of using the
