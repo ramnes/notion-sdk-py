@@ -10,6 +10,7 @@ from typing import (
     Generator,
     List,
     Optional,
+    Set,
 )
 from urllib.parse import urlparse
 from uuid import UUID
@@ -351,3 +352,271 @@ async def async_collect_data_source_templates(
         template
         async for template in async_iterate_data_source_templates(function, **kwargs)
     ]
+
+
+def _validate_query_kwargs(kwargs: Dict[Any, Any]) -> Optional[Dict[Any, Any]]:
+    """Validate full-query arguments and pop the caller's filter out of them.
+
+    The filter is returned separately because it has to be recombined with a
+    different window bound for every window.
+
+    Raises `TypeError` for the arguments the helpers manage themselves, rather
+    than dropping them, so a caller who passes one does not silently get
+    results that ignore it.
+
+    Raises `ValueError` for a top-level `or` filter, which cannot be combined
+    with the `and` bound within Notion's two-level nesting limit.
+    """
+    if "start_cursor" in kwargs:
+        raise TypeError(
+            "`start_cursor` is not accepted here because pagination is automatic."
+        )
+    if "sorts" in kwargs:
+        raise TypeError(
+            "`sorts` is not accepted here because rows are sorted by created_time "
+            "to partition the query."
+        )
+    filter_ = kwargs.pop("filter", None)
+    if filter_ is not None and "or" in filter_:
+        raise ValueError(
+            "A top-level `or` filter is not supported: the created_time window "
+            "bound is added with `and`, and Notion only supports two levels of "
+            "filter nesting. Wrap the `or` in an `and`, or run the helper once "
+            "per `or` branch and merge the results."
+        )
+    return filter_
+
+
+def _created_time_lower_bound(
+    filter_: Optional[Dict[Any, Any]], window_start: Optional[str]
+) -> Optional[Dict[Any, Any]]:
+    """Combine a caller filter with the created_time bound for one window.
+
+    Returns the filter unchanged for the first window, which has no bound yet.
+    """
+    if window_start is None:
+        return filter_
+    bound = {
+        "timestamp": "created_time",
+        "created_time": {"on_or_after": window_start},
+    }
+    if filter_ is None:
+        return bound
+    if "and" in filter_:
+        return {"and": [*filter_["and"], bound]}
+    return {"and": [filter_, bound]}
+
+
+def _window_query_kwargs(
+    kwargs: Dict[Any, Any],
+    filter_: Optional[Dict[Any, Any]],
+    window_start: Optional[str],
+    cursor: Optional[str],
+) -> Dict[Any, Any]:
+    """Build the `data_sources.query` arguments for one page of one window."""
+    query_kwargs = dict(kwargs)
+    bound = _created_time_lower_bound(filter_, window_start)
+    if bound is not None:
+        query_kwargs["filter"] = bound
+    query_kwargs["sorts"] = [{"timestamp": "created_time", "direction": "ascending"}]
+    query_kwargs["start_cursor"] = cursor
+    return query_kwargs
+
+
+def _window_boundary(row: Dict[Any, Any]) -> Optional[str]:
+    """Return `row`'s created_time when it can serve as a window boundary.
+
+    Wiki data sources can return child data-source rows alongside pages. Both
+    carry created_time and either can be the window's boundary row, so advance
+    on either; reading only pages would stall a window made up of data-source
+    rows and throw spuriously.
+    """
+    if is_full_page_or_data_source(row):
+        return row.get("created_time")
+    return None
+
+
+def _check_window_advance(
+    last_created_time: Optional[str], window_start: Optional[str]
+) -> None:
+    """Check that the next window starts past the current one.
+
+    Raises `RuntimeError` when it does not, which means a single created_time
+    holds more rows than the per-query result limit.
+    """
+    if last_created_time is None or last_created_time == window_start:
+        raise RuntimeError(
+            "Cannot make progress: the per-query result limit was reached but "
+            f"the created_time window could not advance past {last_created_time}. "
+            "More rows share this timestamp than the limit allows. Add a filter "
+            "to narrow the query."
+        )
+
+
+def _iterate_windowed_rows(
+    client: Any, filter_: Optional[Dict[Any, Any]], kwargs: Dict[Any, Any]
+) -> Generator[Any, None, None]:
+    """Walk the created_time windows of a data source, yielding each row once."""
+    seen_row_ids: Set[str] = set()
+    window_start: Optional[str] = None
+
+    while True:
+        limit_reached = False
+        last_created_time: Optional[str] = None
+        cursor: Optional[str] = None
+
+        while True:
+            response = client.data_sources.query(
+                **_window_query_kwargs(kwargs, filter_, window_start, cursor)
+            )
+            for row in response.get("results", []):
+                boundary = _window_boundary(row)
+                if boundary is not None:
+                    last_created_time = boundary
+                if row["id"] not in seen_row_ids:
+                    seen_row_ids.add(row["id"])
+                    yield row
+            request_status = response.get("request_status")
+            if request_status and request_status.get("type") == "incomplete":
+                limit_reached = True
+            cursor = response.get("next_cursor")
+            if not cursor:
+                break
+
+        if not limit_reached:
+            return
+        _check_window_advance(last_created_time, window_start)
+        window_start = last_created_time
+
+
+def iterate_all_data_source_rows(
+    client: Any, **kwargs: Any
+) -> Generator[Any, None, None]:
+    """Iterate over every row of a data source, past the per-query result limit.
+
+    `data_sources.query` enforces that limit on large data sources.
+
+    A single query (one filter and sort) returns at most a fixed number of rows
+    (10,000 by default). Once that limit is reached, `has_more` becomes `False`
+    and the response carries `request_status.type == "incomplete"`. Plain
+    pagination such as `iterate_paginated_api` stops there and silently misses
+    the rest of the data source.
+
+    This helper works around the limit by partitioning the data source into
+    created_time windows. It sorts by created_time ascending; whenever a window
+    reaches the limit, it starts a fresh query from the last row's created_time.
+    Each fresh query has a different filter, so it gets its own result budget.
+    Rows that share a boundary timestamp are de-duplicated by id, so every row
+    is yielded exactly once.
+
+    created_time is used because it never changes. last_edited_time would shift
+    rows between windows as they are edited, causing gaps or duplicates.
+
+    Raises `RuntimeError` if a single created_time value holds more rows than
+    the limit, since the window cannot be narrowed by time alone. Add a filter
+    in that case so each window stays under the limit.
+
+    Raises `ValueError` for a top-level `or` filter, which cannot be combined
+    with the `and` bound within Notion's two-level nesting limit.
+
+    Raises `TypeError` for `start_cursor` or `sorts`, which the helper manages
+    itself.
+
+    Example:
+
+    ```python
+    for row in iterate_all_data_source_rows(notion, data_source_id=data_source_id):
+        # Do something with row.
+        ...
+    ```
+    """
+    return _iterate_windowed_rows(client, _validate_query_kwargs(kwargs), kwargs)
+
+
+def collect_all_data_source_rows(client: Any, **kwargs: Any) -> List[Any]:
+    """Collect every row of a data source into an in-memory list.
+
+    Includes rows past the per-query result limit. See
+    `iterate_all_data_source_rows` for how the limit is handled.
+
+    Before using this, check that the full data source fits in memory. For very
+    large data sources, prefer `iterate_all_data_source_rows` and process rows
+    as they stream.
+
+    Example:
+
+    ```python
+    rows = collect_all_data_source_rows(notion, data_source_id=data_source_id)
+    # Do something with rows.
+    ```
+    """
+    return [row for row in iterate_all_data_source_rows(client, **kwargs)]
+
+
+async def _async_iterate_windowed_rows(
+    client: Any, filter_: Optional[Dict[Any, Any]], kwargs: Dict[Any, Any]
+) -> AsyncGenerator[Any, None]:
+    """Async version of `_iterate_windowed_rows`."""
+    seen_row_ids: Set[str] = set()
+    window_start: Optional[str] = None
+
+    while True:
+        limit_reached = False
+        last_created_time: Optional[str] = None
+        cursor: Optional[str] = None
+
+        while True:
+            response = await client.data_sources.query(
+                **_window_query_kwargs(kwargs, filter_, window_start, cursor)
+            )
+            for row in response.get("results", []):
+                boundary = _window_boundary(row)
+                if boundary is not None:
+                    last_created_time = boundary
+                if row["id"] not in seen_row_ids:
+                    seen_row_ids.add(row["id"])
+                    yield row
+            request_status = response.get("request_status")
+            if request_status and request_status.get("type") == "incomplete":
+                limit_reached = True
+            cursor = response.get("next_cursor")
+            if not cursor:
+                break
+
+        if not limit_reached:
+            return
+        _check_window_advance(last_created_time, window_start)
+        window_start = last_created_time
+
+
+def async_iterate_all_data_source_rows(
+    client: Any, **kwargs: Any
+) -> AsyncGenerator[Any, None]:
+    """Async version of `iterate_all_data_source_rows`.
+
+    Example:
+
+    ```python
+    async for row in async_iterate_all_data_source_rows(
+        async_notion, data_source_id=data_source_id
+    ):
+        # Do something with row.
+        ...
+    ```
+    """
+    return _async_iterate_windowed_rows(client, _validate_query_kwargs(kwargs), kwargs)
+
+
+async def async_collect_all_data_source_rows(client: Any, **kwargs: Any) -> List[Any]:
+    """Async version of `collect_all_data_source_rows`.
+
+    Example:
+
+    ```python
+    rows = await async_collect_all_data_source_rows(
+        async_notion, data_source_id=data_source_id
+    )
+    # Do something with rows.
+    ```
+    """
+    return [row async for row in async_iterate_all_data_source_rows(client, **kwargs)]

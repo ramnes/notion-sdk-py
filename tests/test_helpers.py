@@ -1,12 +1,16 @@
 from types import AsyncGeneratorType, GeneratorType
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
 from notion_client.helpers import (
+    async_collect_all_data_source_rows,
     async_collect_data_source_templates,
     async_collect_paginated_api,
+    async_iterate_all_data_source_rows,
     async_iterate_data_source_templates,
     async_iterate_paginated_api,
+    collect_all_data_source_rows,
     collect_data_source_templates,
     collect_paginated_api,
     extract_block_id,
@@ -25,6 +29,7 @@ from notion_client.helpers import (
     is_full_user,
     is_mention_rich_text_item_response,
     is_text_rich_text_item_response,
+    iterate_all_data_source_rows,
     iterate_data_source_templates,
     iterate_paginated_api,
     pick,
@@ -546,3 +551,490 @@ async def test_async_collect_data_source_templates(
     )
 
     assert isinstance(templates, list)
+
+
+def _create_rows(client, data_source_id, count=3):
+    """Create rows in the data source and return them as a {name: id} dict."""
+    return {
+        f"row {i}": client.pages.create(
+            parent={"data_source_id": data_source_id},
+            properties={"Name": {"title": [{"text": {"content": f"row {i}"}}]}},
+        )["id"]
+        for i in range(count)
+    }
+
+
+async def _async_create_rows(client, data_source_id, count=3):
+    """Create rows in the data source and return them as a {name: id} dict."""
+    rows = {}
+    for i in range(count):
+        response = await client.pages.create(
+            parent={"data_source_id": data_source_id},
+            properties={"Name": {"title": [{"text": {"content": f"row {i}"}}]}},
+        )
+        rows[f"row {i}"] = response["id"]
+    return rows
+
+
+@pytest.mark.vcr()
+def test_iterate_all_data_source_rows(client, data_source_id):
+    rows_by_name = _create_rows(client, data_source_id)
+
+    generator = iterate_all_data_source_rows(client, data_source_id=data_source_id)
+    assert isinstance(generator, GeneratorType)
+
+    assert {row["id"] for row in generator} == set(rows_by_name.values())
+
+
+@pytest.mark.vcr()
+def test_collect_all_data_source_rows(client, data_source_id):
+    rows_by_name = _create_rows(client, data_source_id)
+
+    rows = collect_all_data_source_rows(client, data_source_id=data_source_id)
+    assert {row["id"] for row in rows} == set(rows_by_name.values())
+
+    # A caller filter reaches the API alongside the created_time sort the
+    # helper adds. Combining it with a window bound needs a data source past
+    # the per-query result limit, which the mock-based tests cover instead.
+    filtered = collect_all_data_source_rows(
+        client,
+        data_source_id=data_source_id,
+        filter={"property": "Name", "title": {"equals": "row 1"}},
+    )
+    assert [row["id"] for row in filtered] == [rows_by_name["row 1"]]
+
+
+@pytest.mark.vcr()
+async def test_async_iterate_all_data_source_rows(async_client, async_test_data_source):
+    data_source_id = async_test_data_source
+    rows_by_name = await _async_create_rows(async_client, data_source_id)
+
+    generator = async_iterate_all_data_source_rows(
+        async_client, data_source_id=data_source_id
+    )
+    assert isinstance(generator, AsyncGeneratorType)
+
+    ids = {row["id"] async for row in generator}
+    assert ids == set(rows_by_name.values())
+
+
+@pytest.mark.vcr()
+async def test_async_collect_all_data_source_rows(async_client, async_test_data_source):
+    data_source_id = async_test_data_source
+    rows_by_name = await _async_create_rows(async_client, data_source_id)
+
+    rows = await async_collect_all_data_source_rows(
+        async_client, data_source_id=data_source_id
+    )
+    assert {row["id"] for row in rows} == set(rows_by_name.values())
+
+    filtered = await async_collect_all_data_source_rows(
+        async_client,
+        data_source_id=data_source_id,
+        filter={"property": "Name", "title": {"equals": "row 1"}},
+    )
+    assert [row["id"] for row in filtered] == [rows_by_name["row 1"]]
+
+
+def _page(row_id, created_time):
+    return {
+        "object": "page",
+        "id": row_id,
+        "url": f"https://notion.so/{row_id}",
+        "created_time": created_time,
+    }
+
+
+def _data_source_row(row_id, created_time):
+    return {
+        "object": "data_source",
+        "id": row_id,
+        "created_time": created_time,
+    }
+
+
+def _query_response(results, next_cursor=None, incomplete=False):
+    body = {
+        "object": "list",
+        "type": "page_or_data_source",
+        "page_or_data_source": {},
+        "results": results,
+        "has_more": next_cursor is not None,
+        "next_cursor": next_cursor,
+    }
+    if incomplete:
+        body["request_status"] = {
+            "type": "incomplete",
+            "incomplete_reason": "query_result_limit_reached",
+        }
+    return body
+
+
+def _make_client(query_side_effect, async_query=False):
+    query = AsyncMock() if async_query else MagicMock()
+    query.side_effect = query_side_effect
+    client = MagicMock()
+    client.data_sources.query = query
+    return client, query
+
+
+def test_iterate_all_data_source_rows_single_complete_window():
+    client, query = _make_client(
+        [
+            _query_response(
+                [
+                    _page("r1", "2024-01-01T00:00:00.000Z"),
+                    _page("r2", "2024-01-02T00:00:00.000Z"),
+                ]
+            )
+        ]
+    )
+
+    ids = [
+        row["id"] for row in iterate_all_data_source_rows(client, data_source_id="ds-1")
+    ]
+
+    assert ids == ["r1", "r2"]
+    assert query.call_count == 1
+    call = query.call_args
+    assert call.kwargs["sorts"] == [
+        {"timestamp": "created_time", "direction": "ascending"}
+    ]
+    assert "filter" not in call.kwargs
+    assert call.kwargs["start_cursor"] is None
+
+
+def test_iterate_all_data_source_rows_advances_past_limit_and_dedupes():
+    # Window 1: two pages, then the second call hits the limit (incomplete).
+    # Window 2: starts at the last created_time, re-sees r4, then finishes.
+    client, query = _make_client(
+        [
+            _query_response(
+                [
+                    _page("r1", "2024-01-01T00:00:00.000Z"),
+                    _page("r2", "2024-01-02T00:00:00.000Z"),
+                ],
+                next_cursor="c1",
+            ),
+            _query_response(
+                [
+                    _page("r3", "2024-01-03T00:00:00.000Z"),
+                    _page("r4", "2024-01-04T00:00:00.000Z"),
+                ],
+                incomplete=True,
+            ),
+            _query_response(
+                [
+                    _page("r4", "2024-01-04T00:00:00.000Z"),
+                    _page("r5", "2024-01-05T00:00:00.000Z"),
+                ]
+            ),
+        ]
+    )
+
+    ids = [
+        row["id"] for row in iterate_all_data_source_rows(client, data_source_id="ds-1")
+    ]
+
+    assert ids == ["r1", "r2", "r3", "r4", "r5"]
+    assert query.call_count == 3
+    # Inner pagination carried the cursor within window 1.
+    assert query.call_args_list[1].kwargs["start_cursor"] == "c1"
+    # Window 2 reset the cursor and added the created_time lower bound.
+    assert query.call_args_list[2].kwargs["start_cursor"] is None
+    assert query.call_args_list[2].kwargs["filter"] == {
+        "timestamp": "created_time",
+        "created_time": {"on_or_after": "2024-01-04T00:00:00.000Z"},
+    }
+
+
+def test_iterate_all_data_source_rows_combines_caller_filter_with_and():
+    caller_filter = {"property": "Status", "status": {"equals": "Done"}}
+    client, query = _make_client(
+        [
+            _query_response([_page("r1", "2024-01-01T00:00:00.000Z")], incomplete=True),
+            _query_response(
+                [
+                    _page("r1", "2024-01-01T00:00:00.000Z"),
+                    _page("r2", "2024-02-01T00:00:00.000Z"),
+                ]
+            ),
+        ]
+    )
+
+    ids = [
+        row["id"]
+        for row in iterate_all_data_source_rows(
+            client, data_source_id="ds-1", filter=caller_filter
+        )
+    ]
+
+    assert ids == ["r1", "r2"]
+    # First window: caller filter only.
+    assert query.call_args_list[0].kwargs["filter"] == caller_filter
+    # Second window: caller filter AND created_time bound.
+    assert query.call_args_list[1].kwargs["filter"] == {
+        "and": [
+            caller_filter,
+            {
+                "timestamp": "created_time",
+                "created_time": {"on_or_after": "2024-01-01T00:00:00.000Z"},
+            },
+        ]
+    }
+
+
+def test_iterate_all_data_source_rows_advances_on_data_source_boundary():
+    # Window 1 ends at the limit on a child data-source row (wiki data source).
+    # The window must advance from that row's created_time, even though it is
+    # not a page.
+    client, query = _make_client(
+        [
+            _query_response(
+                [
+                    _page("r1", "2024-01-01T00:00:00.000Z"),
+                    _data_source_row("ds-child", "2024-01-02T00:00:00.000Z"),
+                ],
+                incomplete=True,
+            ),
+            _query_response(
+                [
+                    _data_source_row("ds-child", "2024-01-02T00:00:00.000Z"),
+                    _page("r2", "2024-01-03T00:00:00.000Z"),
+                ]
+            ),
+        ]
+    )
+
+    ids = [
+        row["id"] for row in iterate_all_data_source_rows(client, data_source_id="ds-1")
+    ]
+
+    assert ids == ["r1", "ds-child", "r2"]
+    assert query.call_count == 2
+    # The second window advanced from the data-source row's created_time.
+    assert query.call_args_list[1].kwargs["filter"] == {
+        "timestamp": "created_time",
+        "created_time": {"on_or_after": "2024-01-02T00:00:00.000Z"},
+    }
+
+
+def test_iterate_all_data_source_rows_ignores_partial_rows_as_boundary():
+    # A partial row carries no created_time to bound the next window with, so
+    # the window advances from the last full row instead. It is still yielded.
+    partial = {"object": "page", "id": "r2"}
+    client, query = _make_client(
+        [
+            _query_response(
+                [_page("r1", "2024-01-01T00:00:00.000Z"), partial], incomplete=True
+            ),
+            _query_response([_page("r3", "2024-01-02T00:00:00.000Z")]),
+        ]
+    )
+
+    ids = [
+        row["id"] for row in iterate_all_data_source_rows(client, data_source_id="ds-1")
+    ]
+
+    assert ids == ["r1", "r2", "r3"]
+    assert query.call_args_list[1].kwargs["filter"] == {
+        "timestamp": "created_time",
+        "created_time": {"on_or_after": "2024-01-01T00:00:00.000Z"},
+    }
+
+
+def test_iterate_all_data_source_rows_throws_when_one_created_time_exceeds_limit():
+    same_time = "2024-01-01T00:00:00.000Z"
+    client, _ = _make_client(
+        [
+            _query_response(
+                [_page("r1", same_time), _page("r2", same_time)], incomplete=True
+            ),
+            _query_response(
+                [_page("r1", same_time), _page("r2", same_time)], incomplete=True
+            ),
+        ]
+    )
+
+    with pytest.raises(RuntimeError, match="Cannot make progress"):
+        collect_all_data_source_rows(client, data_source_id="ds-1")
+
+
+def test_iterate_all_data_source_rows_merges_into_caller_and_filter():
+    # A top-level `and` is extended in place rather than nested, so the bound
+    # stays within Notion's two-level filter nesting limit.
+    done = {"property": "Status", "status": {"equals": "Done"}}
+    urgent = {"property": "Priority", "select": {"equals": "Urgent"}}
+    client, query = _make_client(
+        [
+            _query_response([_page("r1", "2024-01-01T00:00:00.000Z")], incomplete=True),
+            _query_response([_page("r1", "2024-01-01T00:00:00.000Z")]),
+        ]
+    )
+
+    collect_all_data_source_rows(
+        client, data_source_id="ds-1", filter={"and": [done, urgent]}
+    )
+
+    assert query.call_args_list[1].kwargs["filter"] == {
+        "and": [
+            done,
+            urgent,
+            {
+                "timestamp": "created_time",
+                "created_time": {"on_or_after": "2024-01-01T00:00:00.000Z"},
+            },
+        ]
+    }
+
+
+def test_iterate_all_data_source_rows_keeps_or_nested_in_and():
+    # A top-level `or` is rejected, but the documented workaround of wrapping it
+    # in an `and` must survive: the bound joins the outer `and` and the `or`
+    # passes through untouched.
+    or_group = {
+        "or": [
+            {"property": "Status", "status": {"equals": "Done"}},
+            {"property": "Status", "status": {"equals": "In progress"}},
+        ]
+    }
+    client, query = _make_client(
+        [
+            _query_response([_page("r1", "2024-01-01T00:00:00.000Z")], incomplete=True),
+            _query_response([_page("r1", "2024-01-01T00:00:00.000Z")]),
+        ]
+    )
+
+    collect_all_data_source_rows(
+        client, data_source_id="ds-1", filter={"and": [or_group]}
+    )
+
+    assert query.call_args_list[1].kwargs["filter"] == {
+        "and": [
+            or_group,
+            {
+                "timestamp": "created_time",
+                "created_time": {"on_or_after": "2024-01-01T00:00:00.000Z"},
+            },
+        ]
+    }
+
+
+@pytest.mark.parametrize("managed_kwarg", ["start_cursor", "sorts"])
+def test_iterate_all_data_source_rows_rejects_managed_kwargs(managed_kwarg):
+    client, query = _make_client([_query_response([])])
+
+    with pytest.raises(TypeError, match=f"`{managed_kwarg}` is not accepted here"):
+        collect_all_data_source_rows(
+            client, data_source_id="ds-1", **{managed_kwarg: "whatever"}
+        )
+    query.assert_not_called()
+
+
+def test_iterate_all_data_source_rows_validates_before_iterating():
+    # Arguments are checked when the helper is called, not on first iteration,
+    # so a caller who never iterates still hears about them.
+    client, _ = _make_client([_query_response([])])
+
+    with pytest.raises(TypeError, match="`sorts` is not accepted here"):
+        iterate_all_data_source_rows(client, data_source_id="ds-1", sorts=[])
+
+    with pytest.raises(ValueError, match="top-level `or` filter"):
+        iterate_all_data_source_rows(
+            client, data_source_id="ds-1", filter={"or": [{"property": "Name"}]}
+        )
+
+
+def test_async_iterate_all_data_source_rows_validates_before_iterating():
+    client, _ = _make_client([_query_response([])], async_query=True)
+
+    with pytest.raises(TypeError, match="`start_cursor` is not accepted here"):
+        async_iterate_all_data_source_rows(
+            client, data_source_id="ds-1", start_cursor="c1"
+        )
+
+
+def test_iterate_all_data_source_rows_rejects_top_level_or_filter():
+    client, query = _make_client([_query_response([])])
+    or_filter = {
+        "or": [
+            {"property": "Status", "status": {"equals": "Done"}},
+            {"property": "Status", "status": {"equals": "In progress"}},
+        ]
+    }
+
+    with pytest.raises(ValueError, match="top-level `or` filter"):
+        collect_all_data_source_rows(client, data_source_id="ds-1", filter=or_filter)
+    query.assert_not_called()
+
+
+def test_collect_all_data_source_rows_across_windows():
+    client, query = _make_client(
+        [
+            _query_response([_page("r1", "2024-01-01T00:00:00.000Z")], incomplete=True),
+            _query_response(
+                [
+                    _page("r1", "2024-01-01T00:00:00.000Z"),
+                    _page("r2", "2024-01-02T00:00:00.000Z"),
+                ]
+            ),
+        ]
+    )
+
+    rows = collect_all_data_source_rows(client, data_source_id="ds-1")
+
+    assert [r["id"] for r in rows] == ["r1", "r2"]
+    assert query.call_count == 2
+
+
+async def test_async_iterate_all_data_source_rows_advances_past_limit():
+    client, _ = _make_client(
+        [
+            _query_response([_page("r1", "2024-01-01T00:00:00.000Z")], incomplete=True),
+            _query_response(
+                [
+                    _page("r1", "2024-01-01T00:00:00.000Z"),
+                    _page("r2", "2024-01-02T00:00:00.000Z"),
+                ]
+            ),
+        ],
+        async_query=True,
+    )
+
+    ids = []
+    async for row in async_iterate_all_data_source_rows(client, data_source_id="ds-1"):
+        ids.append(row["id"])
+
+    assert ids == ["r1", "r2"]
+
+
+async def test_async_iterate_all_data_source_rows_throws_when_window_cannot_advance():
+    same_time = "2024-01-01T00:00:00.000Z"
+    client, _ = _make_client(
+        [
+            _query_response([_page("r1", same_time)], incomplete=True),
+            _query_response([_page("r1", same_time)], incomplete=True),
+        ],
+        async_query=True,
+    )
+
+    with pytest.raises(RuntimeError, match="Cannot make progress"):
+        await async_collect_all_data_source_rows(client, data_source_id="ds-1")
+
+
+async def test_async_collect_all_data_source_rows_single_window():
+    client, _ = _make_client(
+        [
+            _query_response(
+                [
+                    _page("r1", "2024-01-01T00:00:00.000Z"),
+                    _page("r2", "2024-01-02T00:00:00.000Z"),
+                ]
+            )
+        ],
+        async_query=True,
+    )
+
+    rows = await async_collect_all_data_source_rows(client, data_source_id="ds-1")
+
+    assert [r["id"] for r in rows] == ["r1", "r2"]
