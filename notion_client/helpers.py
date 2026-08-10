@@ -57,7 +57,7 @@ def iterate_paginated_api(
             yield result
 
         next_cursor = response.get("next_cursor")
-        if not response.get("has_more") or not next_cursor:
+        if not next_cursor:
             return
 
 
@@ -78,7 +78,7 @@ async def async_iterate_paginated_api(
             yield result
 
         next_cursor = response.get("next_cursor")
-        if not response.get("has_more") or not next_cursor:
+        if not next_cursor:
             return
 
 
@@ -283,7 +283,7 @@ def iterate_data_source_templates(
             yield template  # pragma: no cover
 
         next_cursor = response.get("next_cursor")
-        if not response.get("has_more") or not next_cursor:
+        if not next_cursor:
             return
 
 
@@ -328,7 +328,7 @@ async def async_iterate_data_source_templates(
             yield template  # pragma: no cover
 
         next_cursor = response.get("next_cursor")
-        if not response.get("has_more") or not next_cursor:
+        if not next_cursor:
             return
 
 
