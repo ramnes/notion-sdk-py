@@ -30,9 +30,9 @@ def test_cassettes_really_do_use_this_host():
                 r'"(?:url|public_url)":"https://([^/"]+)', f.read_text(errors="ignore")
             )
         )
-    assert hosts, (
-        "no object URLs found in the cassettes; this test is measuring nothing"
-    )
+    assert (
+        hosts
+    ), "no object URLs found in the cassettes; this test is measuring nothing"
     assert hosts == {"app.notion.com"}, hosts
 
 
