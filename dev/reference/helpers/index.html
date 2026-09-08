@@ -2268,9 +2268,7 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
 
     <div class="doc doc-contents ">
 
-        <ul>
-<li>Return <code>true</code> if <code>response</code> is a full data source.</li>
-</ul>
+        <p>Return <code>True</code> if response is a full data source.</p>
 
 
             <details class="mkdocstrings-source">
@@ -2278,8 +2276,8 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">102</span>
 <span class="normal">103</span>
 <span class="normal">104</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_full_data_source</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;* Return `true` if `response` is a full data source.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;data_source&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if response is a full data source.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;data_source&quot;</span> <span class="ow">and</span> <span class="s2">&quot;title&quot;</span> <span class="ow">in</span> <span class="n">response</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
