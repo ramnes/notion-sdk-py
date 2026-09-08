@@ -187,6 +187,37 @@ def test_is_full_page_or_data_source(client, data_source_id, page_id):
     assert is_full_page_or_data_source(response)
 
 
+def test_is_full_data_source_with_partial_response():
+    partial = {"object": "data_source", "id": "data-source-id", "properties": {}}
+    assert not is_full_data_source(partial)
+
+
+def test_is_full_database_with_partial_response():
+    partial = {"object": "database", "id": "database-id"}
+    assert not is_full_database(partial)
+
+
+def test_is_full_page_with_partial_response():
+    partial = {"object": "page", "id": "page-id"}
+    assert not is_full_page(partial)
+
+
+def test_is_full_block_with_partial_response():
+    partial = {"object": "block", "id": "block-id"}
+    assert not is_full_block(partial)
+
+
+def test_is_full_page_or_data_source_with_partial_response():
+    partial_page = {"object": "page", "id": "page-id"}
+    partial_data_source = {
+        "object": "data_source",
+        "id": "data-source-id",
+        "properties": {},
+    }
+    assert not is_full_page_or_data_source(partial_page)
+    assert not is_full_page_or_data_source(partial_data_source)
+
+
 @pytest.mark.vcr()
 def test_is_full_user(client):
     response = client.users.me()
