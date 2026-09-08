@@ -5,4 +5,7 @@ pytest-cov
 pytest-mock
 pytest-timeout
 pytest-vcr
-vcrpy==6.0.2
+
+httpx2; python_version >= "3.10"
+vcrpy==8.2.0; python_version >= "3.10"
+vcrpy==6.0.2; python_version < "3.10"
