@@ -49,6 +49,12 @@ def rate_limited_response(retry_after: Optional[str] = None) -> httpx.Response:
     )
 
 
+def service_overload_response(retry_after: Optional[str] = None) -> httpx.Response:
+    return _mock_http_response(
+        529, "service_overload", "Service overloaded", retry_after=retry_after
+    )
+
+
 def internal_server_error_response() -> httpx.Response:
     return _mock_http_response(500, "internal_server_error", "Internal error")
 
@@ -308,6 +314,17 @@ def test_retries_on_rate_limit_and_succeeds(mock_sleep):
 
 
 @patch("time.sleep", return_value=None)
+def test_retries_on_service_overload_and_succeeds(mock_sleep):
+    client = Client(retry=RetryOptions(max_retries=2))
+    responses = [service_overload_response(retry_after="5"), success_response()]
+    with patch.object(client.client, "send", side_effect=responses):
+        assert client.request("blocks/test", "GET") == {}
+        assert client.client.send.call_count == 2
+        mock_sleep.assert_called_once()
+        assert mock_sleep.call_args[0][0] == 5.0
+
+
+@patch("time.sleep", return_value=None)
 def test_does_not_retry_when_disabled(mock_sleep):
     client = Client(retry=False)
     with patch.object(client.client, "send", return_value=rate_limited_response()):
@@ -505,6 +522,18 @@ def test_retries_post_on_rate_limit(mock_sleep):
 
 
 @patch("time.sleep", return_value=None)
+def test_retries_post_on_service_overload(mock_sleep):
+    client = Client(retry=RetryOptions(max_retries=2, initial_retry_delay_ms=1000))
+    responses = [service_overload_response(retry_after="1"), success_response()]
+    with patch.object(client.client, "send", side_effect=responses):
+        result = client.request(
+            "pages", "POST", body={"parent": {"page_id": str(uuid.uuid4())}}
+        )
+        assert result == {}
+        assert client.client.send.call_count == 2
+
+
+@patch("time.sleep", return_value=None)
 def test_retries_delete_on_internal_server_error(mock_sleep):
     client = Client(retry=RetryOptions(max_retries=2, initial_retry_delay_ms=1000))
     responses = [internal_server_error_response(), success_response()]
@@ -537,6 +566,18 @@ async def test_async_retries_on_rate_limit_and_succeeds(mock_sleep):
     responses = [rate_limited_response(retry_after="5"), success_response()]
     with patch.object(client.client, "send", side_effect=responses):
         assert await client.request("blocks/test", "GET") == {}
+        assert client.client.send.call_count == 2
+
+
+@patch("asyncio.sleep", return_value=None)
+async def test_async_retries_post_on_service_overload(mock_sleep):
+    client = AsyncClient(retry=RetryOptions(max_retries=2, initial_retry_delay_ms=1000))
+    responses = [service_overload_response(retry_after="1"), success_response()]
+    with patch.object(client.client, "send", side_effect=responses):
+        result = await client.request(
+            "pages", "POST", body={"parent": {"page_id": str(uuid.uuid4())}}
+        )
+        assert result == {}
         assert client.client.send.call_count == 2
 
 

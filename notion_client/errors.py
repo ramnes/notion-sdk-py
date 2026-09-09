@@ -54,6 +54,9 @@ class APIErrorCode(str, Enum):
     InternalServerError = "internal_server_error"
     """An unexpected error occurred. Reach out to Notion support."""
 
+    ServiceOverload = "service_overload"
+    """Notion is overloaded. Slow down and try again later."""
+
     ServiceUnavailable = "service_unavailable"
     """Notion is unavailable. Try again later.
     This can occur when the time to respond to a request takes longer than 60 seconds,
@@ -206,6 +209,7 @@ _http_response_error_codes: Set[str] = {
     APIErrorCode.ValidationError.value,
     APIErrorCode.ConflictError.value,
     APIErrorCode.InternalServerError.value,
+    APIErrorCode.ServiceOverload.value,
     APIErrorCode.ServiceUnavailable.value,
     APIErrorCode.GatewayTimeout.value,
 }
@@ -261,6 +265,7 @@ _api_error_codes: Set[str] = {
     APIErrorCode.ValidationError.value,
     APIErrorCode.ConflictError.value,
     APIErrorCode.InternalServerError.value,
+    APIErrorCode.ServiceOverload.value,
     APIErrorCode.ServiceUnavailable.value,
     APIErrorCode.GatewayTimeout.value,
 }
