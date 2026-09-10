@@ -246,15 +246,15 @@ class BaseClient:
     def _can_retry(self, error: Exception, method: str) -> bool:
         """Determines if an error can be retried based on its error code and method.
 
-        Rate limits (429) are always retryable since the server explicitly asks us to retry.
-        Server errors (500, 503) are only retried for idempotent methods
-        (GET, DELETE) to avoid duplicate side effects.
+        Rate limits (429) and service overloads (529) are always retryable since
+        the server explicitly asks us to retry. Server errors (500, 503) are only
+        retried for idempotent methods (GET, DELETE) to avoid duplicate side effects.
         """
         if not APIResponseError.is_api_response_error(error):
             return False
 
-        # Rate limits are always retryable - server says "try again later"
-        if error.code == APIErrorCode.RateLimited:
+        # Server says "try again later"; retry these for every HTTP method.
+        if error.code in (APIErrorCode.RateLimited, APIErrorCode.ServiceOverload):
             return True
 
         # Server errors only retry for idempotent methods
