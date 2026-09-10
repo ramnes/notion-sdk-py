@@ -287,6 +287,31 @@ def test_build_request_error_creates_api_response_error():
         assert error.code == api_code, f"Failed for {api_code}"
 
 
+def test_build_request_error_recognizes_invalid_beta():
+    """Test that an invalid_beta error body is surfaced as an APIResponseError."""
+    body_text = """{
+        "object": "error",
+        "status": 400,
+        "code": "invalid_beta",
+        "message": "Unknown beta: foo",
+        "request_id": "abc-123-def"
+    }"""
+    response = httpx.Response(
+        status_code=400,
+        headers=httpx.Headers(),
+        content=body_text.encode(),
+    )
+    error = build_request_error(response, body_text)
+    assert isinstance(error, APIResponseError)
+    assert not isinstance(error, UnknownHTTPResponseError)
+    assert error.code == APIErrorCode.InvalidBeta
+    assert error.code.value == "invalid_beta"
+    assert error.status == 400
+    assert error.request_id == "abc-123-def"
+    assert APIResponseError.is_api_response_error(error)
+    assert is_http_response_error(error)
+
+
 def test_build_request_error_creates_unknown_http_response_error():
     """Test build_request_error creates UnknownHTTPResponseError for invalid responses."""
     response = httpx.Response(
@@ -366,7 +391,7 @@ def test_error_code_enums():
     assert APIErrorCode.Unauthorized.value == "unauthorized"
     assert APIErrorCode.ObjectNotFound.value == "object_not_found"
     assert APIErrorCode.RateLimited.value == "rate_limited"
-
+    assert APIErrorCode.InvalidBeta.value == "invalid_beta"
     assert ClientErrorCode.RequestTimeout.value == "notionhq_client_request_timeout"
     assert ClientErrorCode.ResponseError.value == "notionhq_client_response_error"
     assert (
