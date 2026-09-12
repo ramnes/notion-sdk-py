@@ -614,3 +614,24 @@ async def test_async_paginator_stops_on_empty_cursor():
         if len(out) > 3:
             pytest.fail("async paginator did not terminate on an empty cursor")
     assert out == [1]
+
+
+async def test_paginators_follow_the_cursor_regardless_of_has_more():
+    """Termination is the cursor alone, as in the JS SDK's iteratePaginatedAPI."""
+    pages = [
+        {"results": [1], "has_more": False, "next_cursor": "c1"},
+        {"results": [2], "has_more": False, "next_cursor": None},
+    ]
+    seen = {"n": 0}
+
+    def sync(**kwargs):
+        page = pages[min(seen["n"], len(pages) - 1)]
+        seen["n"] += 1
+        return page
+
+    async def asyncf(**kwargs):
+        return sync(**kwargs)
+
+    assert list(iterate_paginated_api(sync)) == [1, 2]
+    seen["n"] = 0
+    assert [x async for x in async_iterate_paginated_api(asyncf)] == [1, 2]
