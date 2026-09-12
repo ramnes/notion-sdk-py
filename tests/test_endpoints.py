@@ -64,7 +64,57 @@ def test_blocks_children_list(client, page_id):
 
 
 # Meeting notes require a plan with AI meeting notes enabled, so we can't record
-# a cassette with our test integration. Using a mock instead.
+# a cassette with our test integration. Using mocks instead.
+def test_blocks_meeting_notes_create_from_file_upload(client, mocker):
+    mock_response = {"object": "block", "id": "bc2fc1d3-db8b-45c5-a222-27595b15aea7"}
+    mock_request = mocker.patch.object(client, "request", return_value=mock_response)
+
+    source = {
+        "type": "file_upload",
+        "file_upload_id": "a02fc1d3-db8b-45c5-a222-27595b15aea7",
+    }
+    parent = {"type": "page_id", "page_id": "c02fc1d3-db8b-45c5-a222-27595b15aea7"}
+
+    response = client.blocks.meeting_notes.create(
+        source=source,
+        parent=parent,
+        title="Weekly sync",
+        language="en",
+        options={"kickoff_summary": True},
+    )
+
+    assert response["object"] == "block"
+    mock_request.assert_called_once_with(
+        path="blocks/meeting_notes",
+        method="POST",
+        body={
+            "title": "Weekly sync",
+            "language": "en",
+            "options": {"kickoff_summary": True},
+            "source": source,
+            "parent": parent,
+        },
+        auth=None,
+    )
+
+
+def test_blocks_meeting_notes_create_from_block(client, mocker):
+    mock_response = {"object": "block", "id": "bc2fc1d3-db8b-45c5-a222-27595b15aea7"}
+    mock_request = mocker.patch.object(client, "request", return_value=mock_response)
+
+    source = {"type": "block", "block_id": "a02fc1d3-db8b-45c5-a222-27595b15aea7"}
+
+    response = client.blocks.meeting_notes.create(source=source)
+
+    assert response["object"] == "block"
+    mock_request.assert_called_once_with(
+        path="blocks/meeting_notes",
+        method="POST",
+        body={"source": source},
+        auth=None,
+    )
+
+
 def test_blocks_meeting_notes_query(client, mocker):
     mock_response = {"object": "list", "results": [], "has_more": False}
     mock_request = mocker.patch.object(client, "request", return_value=mock_response)
