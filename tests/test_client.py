@@ -9,7 +9,12 @@ from unittest.mock import Mock, patch
 import httpx
 import pytest
 
-from notion_client import APIResponseError, AsyncClient, Client
+from notion_client import (
+    APIResponseError,
+    AsyncClient,
+    Client,
+    UnknownHTTPResponseError,
+)
 from notion_client.client import RetryOptions
 
 
@@ -19,22 +24,26 @@ def _mock_http_response(
     message: str = "",
     retry_after: Optional[str] = None,
     body: Optional[Dict[str, Any]] = None,
+    headers: Optional[Dict[str, str]] = None,
+    raw_content: Optional[bytes] = None,
 ) -> httpx.Response:
-    if status_code == 200:
-        response_body = body or {}
-    else:
-        response_body = {"code": code, "message": message, "object": "error"}
-        if body:
-            response_body.update(body)
-
-    headers: Dict[str, str] = {}
+    response_headers: Dict[str, str] = dict(headers or {})
     if retry_after is not None:
-        headers["retry-after"] = retry_after
+        response_headers["retry-after"] = retry_after
+
+    if raw_content is None:
+        if status_code == 200:
+            response_body = body or {}
+        else:
+            response_body = {"code": code, "message": message, "object": "error"}
+            if body:
+                response_body.update(body)
+        raw_content = json.dumps(response_body).encode()
 
     return httpx.Response(
         status_code=status_code,
-        content=json.dumps(response_body).encode(),
-        headers=headers,
+        content=raw_content,
+        headers=response_headers,
         request=httpx.Request("GET", "https://api.notion.com/v1/blocks/test"),
     )
 
@@ -278,6 +287,23 @@ def test_request_logs_success_without_request_id(client):
             client.request("/users", "GET")
 
             mock_info.assert_called_with("request success: method=GET, path=/users")
+
+
+def test_request_logs_ray_id_when_present(client):
+    """Test that a Cloudflare Ray ID on the response is logged with the failure."""
+    blocked_response = _mock_http_response(
+        403,
+        headers={"content-type": "text/html", "cf-ray": "9a1b2c3d4e5f6789-SJC"},
+        raw_content=b"<html>Access denied</html>",
+    )
+
+    with patch.object(client.client, "send", return_value=blocked_response):
+        with patch.object(client.logger, "warning") as mock_warning:
+            with pytest.raises(UnknownHTTPResponseError):
+                client.request("blocks/test", "GET")
+
+            logged = mock_warning.call_args[0][0]
+            assert "ray_id=9a1b2c3d4e5f6789-SJC" in logged
 
 
 def test_request_propagates_non_notion_error(client):

@@ -167,6 +167,16 @@ def validate_request_path(path: str) -> None:
 HTTPResponseErrorCode = Union[ClientErrorCode, APIErrorCode]
 
 
+def _get_response_header(headers: httpx.Headers, name: str) -> Optional[str]:
+    """Reads a response header by name, or returns None when it is absent.
+
+    Header names are case-insensitive per RFC 9110, which `httpx.Headers`
+    already honors, so this only narrows the value to an optional string.
+    """
+    value = headers.get(name)
+    return value if isinstance(value, str) else None
+
+
 class HTTPResponseError(NotionClientErrorBase):
     code: Union[str, APIErrorCode]
     status: int
@@ -174,6 +184,7 @@ class HTTPResponseError(NotionClientErrorBase):
     body: str
     additional_data: Optional[Dict[str, Any]]
     request_id: Optional[str]
+    ray_id: Optional[str]  # Value of the `cf-ray` response header, when present.
 
     def __init__(
         self,
@@ -191,7 +202,10 @@ class HTTPResponseError(NotionClientErrorBase):
         self.headers = headers
         self.body = raw_body_text
         self.additional_data = additional_data
-        self.request_id = request_id
+        self.request_id = request_id or _get_response_header(
+            self.headers, "x-notion-request-id"
+        )
+        self.ray_id = _get_response_header(self.headers, "cf-ray")
 
 
 _http_response_error_codes: Set[str] = {
@@ -227,10 +241,10 @@ class UnknownHTTPResponseError(HTTPResponseError):
         headers: Optional[httpx.Headers] = None,
         raw_body_text: str = "",
     ) -> None:
-        if message is None:
-            message = f"Request to Notion API failed with status: {status}"
         if headers is None:
             headers = httpx.Headers()
+        if message is None:
+            message = _build_unknown_response_message(status, headers)
 
         super().__init__(
             code=ClientErrorCode.ResponseError.value,
@@ -239,7 +253,6 @@ class UnknownHTTPResponseError(HTTPResponseError):
             headers=headers,
             raw_body_text=raw_body_text,
             additional_data=None,
-            request_id=None,
         )
 
     @staticmethod
@@ -306,6 +319,38 @@ def build_request_error(
         headers=response.headers,
         status=response.status_code,
         raw_body_text=body_text,
+    )
+
+
+def _build_unknown_response_message(status: int, headers: httpx.Headers) -> str:
+    """Builds the default message for an unrecognized HTTP response.
+
+    A response with a Cloudflare Ray ID but no Notion request ID was answered
+    before it reached the API. The message surfaces the Ray ID rather than
+    leaving callers to infer it from an HTML body.
+    """
+    base = f"Request to Notion API failed with status: {status}"
+    ray_id = _get_response_header(headers, "cf-ray")
+    request_id = _get_response_header(headers, "x-notion-request-id")
+    answered_by_edge = ray_id is not None and request_id is None
+    if not answered_by_edge:
+        return base
+
+    content_type = _get_response_header(headers, "content-type")
+    content_type_note = (
+        f" (content-type: {content_type})" if content_type is not None else ""
+    )
+    blocked_request_note = (
+        " This may mean the request was blocked by a network security rule."
+        if status == 403
+        else ""
+    )
+    return (
+        f"{base}. The response was returned by Notion's edge proxy"
+        f" before reaching the Notion API{content_type_note}."
+        f"{blocked_request_note}"
+        f" Cloudflare Ray ID: {ray_id}."
+        " Include this ID when contacting Notion support."
     )
 
 
