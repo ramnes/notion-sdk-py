@@ -41,6 +41,18 @@ class BlocksChildrenEndpoint(Endpoint):
 
 
 class BlocksMeetingNotesEndpoint(Endpoint):
+    def create(self, **kwargs: Any) -> SyncAsync[Any]:
+        """Create a meeting note from a file upload or an existing block.
+
+        *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-meeting-note)*
+        """  # noqa: E501
+        return self.parent.request(
+            path="blocks/meeting_notes",
+            method="POST",
+            body=pick(kwargs, "title", "language", "options", "source", "parent"),
+            auth=kwargs.get("auth"),
+        )
+
     def query(self, **kwargs: Any) -> SyncAsync[Any]:
         """Query meeting notes.
 
