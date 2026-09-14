@@ -1865,15 +1865,15 @@
     <span class="k">def</span> <span class="nf">_can_retry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Determines if an error can be retried based on its error code and method.</span>
 
-<span class="sd">        Rate limits (429) are always retryable since the server explicitly asks us to retry.</span>
-<span class="sd">        Server errors (500, 503) are only retried for idempotent methods</span>
-<span class="sd">        (GET, DELETE) to avoid duplicate side effects.</span>
+<span class="sd">        Rate limits (429) and service overloads (529) are always retryable since</span>
+<span class="sd">        the server explicitly asks us to retry. Server errors (500, 503) are only</span>
+<span class="sd">        retried for idempotent methods (GET, DELETE) to avoid duplicate side effects.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">APIResponseError</span><span class="o">.</span><span class="n">is_api_response_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="c1"># Rate limits are always retryable - server says &quot;try again later&quot;</span>
-        <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">APIErrorCode</span><span class="o">.</span><span class="n">RateLimited</span><span class="p">:</span>
+        <span class="c1"># Server says &quot;try again later&quot;; retry these for every HTTP method.</span>
+        <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">code</span> <span class="ow">in</span> <span class="p">(</span><span class="n">APIErrorCode</span><span class="o">.</span><span class="n">RateLimited</span><span class="p">,</span> <span class="n">APIErrorCode</span><span class="o">.</span><span class="n">ServiceOverload</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">True</span>
 
         <span class="c1"># Server errors only retry for idempotent methods</span>
