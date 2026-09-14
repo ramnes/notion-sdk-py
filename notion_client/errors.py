@@ -44,6 +44,10 @@ class APIErrorCode(str, Enum):
     InvalidRequest = "invalid_request"
     """This request is not supported."""
 
+    InvalidBeta = "invalid_beta"
+    """The `Notion-Beta` header is malformed, unknown, duplicated, or references a
+    stale revision."""
+
     ValidationError = "validation_error"
     """The request body does not match the schema for the expected parameters."""
 
@@ -220,6 +224,7 @@ _http_response_error_codes: Set[str] = {
     APIErrorCode.InvalidJSON.value,
     APIErrorCode.InvalidRequestURL.value,
     APIErrorCode.InvalidRequest.value,
+    APIErrorCode.InvalidBeta.value,
     APIErrorCode.ValidationError.value,
     APIErrorCode.ConflictError.value,
     APIErrorCode.InternalServerError.value,
@@ -275,6 +280,7 @@ _api_error_codes: Set[str] = {
     APIErrorCode.InvalidJSON.value,
     APIErrorCode.InvalidRequestURL.value,
     APIErrorCode.InvalidRequest.value,
+    APIErrorCode.InvalidBeta.value,
     APIErrorCode.ValidationError.value,
     APIErrorCode.ConflictError.value,
     APIErrorCode.InternalServerError.value,
