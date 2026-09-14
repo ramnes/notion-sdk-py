@@ -694,6 +694,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#notion_client.errors.APIErrorCode.InvalidBeta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InvalidBeta
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#notion_client.errors.APIErrorCode.InvalidJSON" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1142,6 +1153,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#notion_client.errors.APIErrorCode.InvalidBeta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InvalidBeta
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#notion_client.errors.APIErrorCode.InvalidJSON" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1444,7 +1466,11 @@
 <span class="normal">63</span>
 <span class="normal">64</span>
 <span class="normal">65</span>
-<span class="normal">66</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">APIErrorCode</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">APIErrorCode</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Error codes returned in responses from the API.&quot;&quot;&quot;</span>
 
     <span class="n">Unauthorized</span> <span class="o">=</span> <span class="s2">&quot;unauthorized&quot;</span>
@@ -1470,6 +1496,10 @@
 
     <span class="n">InvalidRequest</span> <span class="o">=</span> <span class="s2">&quot;invalid_request&quot;</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This request is not supported.&quot;&quot;&quot;</span>
+
+    <span class="n">InvalidBeta</span> <span class="o">=</span> <span class="s2">&quot;invalid_beta&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `Notion-Beta` header is malformed, unknown, duplicated, or references a</span>
+<span class="sd">    stale revision.&quot;&quot;&quot;</span>
 
     <span class="n">ValidationError</span> <span class="o">=</span> <span class="s2">&quot;validation_error&quot;</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The request body does not match the schema for the expected parameters.&quot;&quot;&quot;</span>
@@ -1569,6 +1599,30 @@ Make sure the parameters are up to date and try again.</p>
     <div class="doc doc-contents ">
 
         <p>An unexpected error occurred. Reach out to Notion support.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="notion_client.errors.APIErrorCode.InvalidBeta" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">InvalidBeta</span> <span class="o">=</span> <span class="s1">&#39;invalid_beta&#39;</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The <code>Notion-Beta</code> header is malformed, unknown, duplicated, or references a
+stale revision.</p>
 
     </div>
 
@@ -1848,12 +1902,12 @@ the maximum request timeout.</p>
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>notion_client/errors.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ClientErrorCode</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ClientErrorCode</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Error codes generated for client errors.&quot;&quot;&quot;</span>
 
     <span class="n">RequestTimeout</span> <span class="o">=</span> <span class="s2">&quot;notionhq_client_request_timeout&quot;</span>
@@ -1912,11 +1966,7 @@ path traversal sequences (..) that could alter the intended API endpoint.</p>
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>notion_client/errors.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">131</span>
 <span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
@@ -1931,7 +1981,11 @@ path traversal sequences (..) that could alter the intended API endpoint.</p>
 <span class="normal">143</span>
 <span class="normal">144</span>
 <span class="normal">145</span>
-<span class="normal">146</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">InvalidPathParameterError</span><span class="p">(</span><span class="n">NotionClientErrorBase</span><span class="p">):</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">InvalidPathParameterError</span><span class="p">(</span><span class="n">NotionClientErrorBase</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Error thrown when a path parameter contains invalid characters such as</span>
 <span class="sd">    path traversal sequences (..) that could alter the intended API endpoint.&quot;&quot;&quot;</span>
 
@@ -2003,13 +2057,13 @@ path traversal sequences (..) that could alter the intended API endpoint.</p>
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>notion_client/errors.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">85</span>
 <span class="normal">86</span>
-<span class="normal">87</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">NotionClientErrorBase</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">NotionClientErrorBase</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base error type for all Notion client errors.&quot;&quot;&quot;</span>
 
     <span class="n">code</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NotionErrorCode</span><span class="p">]</span>
@@ -2068,11 +2122,7 @@ path traversal sequences (..) that could alter the intended API endpoint.</p>
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>notion_client/errors.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">108</span>
 <span class="normal">109</span>
 <span class="normal">110</span>
 <span class="normal">111</span>
@@ -2088,7 +2138,11 @@ path traversal sequences (..) that could alter the intended API endpoint.</p>
 <span class="normal">121</span>
 <span class="normal">122</span>
 <span class="normal">123</span>
-<span class="normal">124</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">RequestTimeoutError</span><span class="p">(</span><span class="n">NotionClientErrorBase</span><span class="p">):</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">RequestTimeoutError</span><span class="p">(</span><span class="n">NotionClientErrorBase</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Error thrown by the client if a request times out.&quot;&quot;&quot;</span>
 
     <span class="n">code</span><span class="p">:</span> <span class="n">ClientErrorCode</span> <span class="o">=</span> <span class="n">ClientErrorCode</span><span class="o">.</span><span class="n">RequestTimeout</span>
@@ -2162,12 +2216,7 @@ a properly-formatted error.</p>
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>notion_client/errors.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">241</span>
 <span class="normal">242</span>
 <span class="normal">243</span>
 <span class="normal">244</span>
@@ -2193,7 +2242,12 @@ a properly-formatted error.</p>
 <span class="normal">264</span>
 <span class="normal">265</span>
 <span class="normal">266</span>
-<span class="normal">267</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">UnknownHTTPResponseError</span><span class="p">(</span><span class="n">HTTPResponseError</span><span class="p">):</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">UnknownHTTPResponseError</span><span class="p">(</span><span class="n">HTTPResponseError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Error thrown if an API call responds with an unknown error code, or does not respond with</span>
 <span class="sd">    a properly-formatted error.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2268,11 +2322,7 @@ including URL-encoded variants like %2e%2e.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>notion_client/errors.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">153</span>
 <span class="normal">154</span>
 <span class="normal">155</span>
 <span class="normal">156</span>
@@ -2286,7 +2336,11 @@ including URL-encoded variants like %2e%2e.</p>
 <span class="normal">164</span>
 <span class="normal">165</span>
 <span class="normal">166</span>
-<span class="normal">167</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_request_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_request_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Validates that a request path does not contain path traversal sequences.</span>
 <span class="sd">    Raises InvalidPathParameterError if the path contains &quot;..&quot; segments,</span>
 <span class="sd">    including URL-encoded variants like %2e%2e.&quot;&quot;&quot;</span>
