@@ -217,17 +217,17 @@ class BaseClient:
 
         return response.json()
 
-    def _extract_request_id(self, obj: Any) -> Optional[str]:
-        """Extracts request_id from an object if present."""
+    def _extract_str_field(self, obj: Any, name: str) -> Optional[str]:
+        """Extracts a string field from an object or dict if present."""
         if isinstance(obj, dict):
-            return obj.get("request_id")
+            value = obj.get(name)
         else:
-            request_id = getattr(obj, "request_id", None)
-        return request_id if isinstance(request_id, str) else None
+            value = getattr(obj, name, None)
+        return value if isinstance(value, str) else None
 
     def _log_request_success(self, method: str, path: str, response_body: Any) -> None:
         """Logs a successful request."""
-        request_id = self._extract_request_id(response_body)
+        request_id = self._extract_str_field(response_body, "request_id")
         msg = f"request success: method={method}, path={path}"
         if request_id:
             msg += f", request_id={request_id}"
@@ -235,10 +235,13 @@ class BaseClient:
 
     def _log_request_error(self, error: NotionClientError, attempt: int = 0) -> None:
         """Logs a request error with appropriate detail level."""
-        request_id = self._extract_request_id(error)
+        request_id = self._extract_str_field(error, "request_id")
+        ray_id = self._extract_str_field(error, "ray_id")
         msg = f"request fail: code={error.code}, message={error}, attempt={attempt}"
         if request_id:
             msg += f", request_id={request_id}"
+        if ray_id:
+            msg += f", ray_id={ray_id}"
         self.logger.warning(msg)
         if is_http_response_error(error):
             self.logger.debug(f"failed response body: {error.body}")

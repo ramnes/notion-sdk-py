@@ -350,15 +350,22 @@ def test_unknown_http_response_error_default_message():
     assert "503" in str(error)
     assert error.code == ClientErrorCode.ResponseError.value
     assert isinstance(error.headers, httpx.Headers)
+    assert error.request_id is None
+    assert error.ray_id is None
 
 
 def test_unknown_http_response_error_custom_message():
     """Test UnknownHTTPResponseError with custom message."""
     custom_message = "Custom error message"
-    error = UnknownHTTPResponseError(status=500, message=custom_message)
+    error = UnknownHTTPResponseError(
+        status=500,
+        message=custom_message,
+        headers=httpx.Headers({"cf-ray": "9a1b2c3d4e5f6789-SJC"}),
+    )
 
     assert error.status == 500
     assert str(error) == custom_message
+    assert error.ray_id == "9a1b2c3d4e5f6789-SJC"
 
 
 def test_error_code_enums():
@@ -496,3 +503,158 @@ def test_validate_request_path_handles_invalid_percent_encoding():
     # Python's unquote preserves invalid sequences unlike JS's decodeURIComponent
     validate_request_path("%2einvalid%2e%ZZ")
     validate_request_path("path%2ewith%invalid")
+
+
+def test_unknown_error_surfaces_edge_metadata_for_blocked_request():
+    """Test a 403 answered by the edge proxy reports the Ray ID and a likely cause."""
+    ray_id = "9a1b2c3d4e5f6789-SJC"
+    block_page_html = (
+        "<!DOCTYPE html><html><head><title>Access denied</title></head>"
+        "<body>Cloudflare Ray ID: 9a1b2c3d4e5f6789</body></html>"
+    )
+    response = httpx.Response(
+        status_code=403,
+        headers={"content-type": "text/html; charset=UTF-8", "cf-ray": ray_id},
+        content=block_page_html.encode(),
+    )
+    error = build_request_error(response, block_page_html)
+
+    assert isinstance(error, UnknownHTTPResponseError)
+    assert error.status == 403
+    assert error.ray_id == ray_id
+    assert error.request_id is None
+    message = str(error)
+    expected_edge_note = (
+        "returned by Notion's edge proxy before reaching the Notion API "
+        "(content-type: text/html; charset=UTF-8)"
+    )
+    assert expected_edge_note in message
+    assert "blocked by a network security rule" in message
+    assert f"Cloudflare Ray ID: {ray_id}" in message
+    assert error.body == block_page_html
+
+
+def test_unknown_error_reads_edge_metadata_from_mixed_case_headers():
+    """Test header names are matched case-insensitively, as HTTP requires."""
+    ray_id = "9a1b2c3d4e5f6789-SJC"
+    response = httpx.Response(
+        status_code=403,
+        headers={"Content-Type": "text/html", "CF-RAY": ray_id},
+        content=b"<html>Access denied</html>",
+    )
+    error = build_request_error(response, "<html>Access denied</html>")
+
+    assert isinstance(error, UnknownHTTPResponseError)
+    assert error.ray_id == ray_id
+    assert "(content-type: text/html)" in str(error)
+
+
+def test_unknown_error_does_not_blame_security_rule_for_server_error():
+    """Test an edge-generated 5xx describes the edge proxy without a causal claim."""
+    ray_id = "9a1b2c3d4e5f6789-SJC"
+    response = httpx.Response(
+        status_code=522,
+        headers={"content-type": "text/html; charset=UTF-8", "cf-ray": ray_id},
+        content=b"<html>Access denied</html>",
+    )
+    error = build_request_error(response, "<html>Access denied</html>")
+
+    assert isinstance(error, UnknownHTTPResponseError)
+    message = str(error)
+    assert "returned by Notion's edge proxy before reaching the Notion API" in message
+    assert "network security rule" not in message
+
+
+def test_unknown_error_omits_content_type_note_when_absent():
+    """Test an edge response without a content type still reports the Ray ID."""
+    ray_id = "9a1b2c3d4e5f6789-SJC"
+    response = httpx.Response(
+        status_code=403,
+        headers={"cf-ray": ray_id},
+        content=b"<html>Access denied</html>",
+    )
+    error = build_request_error(response, "<html>Access denied</html>")
+
+    assert isinstance(error, UnknownHTTPResponseError)
+    message = str(error)
+    assert "reaching the Notion API." in message
+    assert "content-type" not in message
+    assert f"Cloudflare Ray ID: {ray_id}" in message
+
+
+def test_unknown_error_does_not_attribute_origin_response_to_edge():
+    """Test a response with a Notion request ID keeps the generic message."""
+    ray_id = "9a1b2c3d4e5f6789-SJC"
+    body_text = '{"error": "invalid_client", "request_id": "origin-body-request-id"}'
+    response = httpx.Response(
+        status_code=401,
+        headers={
+            "content-type": "application/json; charset=utf-8",
+            "cf-ray": ray_id,
+            "x-notion-request-id": "origin-header-request-id",
+        },
+        content=body_text.encode(),
+    )
+    error = build_request_error(response, body_text)
+
+    assert isinstance(error, UnknownHTTPResponseError)
+    assert error.request_id == "origin-header-request-id"
+    assert error.ray_id == ray_id
+    assert str(error) == "Request to Notion API failed with status: 401"
+
+
+def test_unknown_error_keeps_generic_message_without_proxy_metadata():
+    """Test a response with no proxy metadata keeps the generic message."""
+    response = httpx.Response(
+        status_code=502,
+        headers={"content-type": "text/plain"},
+        content=b"upstream unavailable",
+    )
+    error = build_request_error(response, "upstream unavailable")
+
+    assert isinstance(error, UnknownHTTPResponseError)
+    assert error.request_id is None
+    assert error.ray_id is None
+    assert str(error) == "Request to Notion API failed with status: 502"
+
+
+def test_api_response_error_exposes_response_metadata():
+    """Test a well-formed Notion error keeps its message and exposes both IDs."""
+    ray_id = "9a1b2c3d4e5f6789-SJC"
+    body_text = (
+        '{"object": "error", "status": 403, "code": "restricted_resource",'
+        ' "message": "Insufficient permissions for this endpoint."}'
+    )
+    response = httpx.Response(
+        status_code=403,
+        headers={
+            "content-type": "application/json",
+            "cf-ray": ray_id,
+            "x-notion-request-id": "origin-header-request-id",
+        },
+        content=body_text.encode(),
+    )
+    error = build_request_error(response, body_text)
+
+    assert isinstance(error, APIResponseError)
+    assert error.code == APIErrorCode.RestrictedResource
+    assert str(error) == "Insufficient permissions for this endpoint."
+    assert error.request_id == "origin-header-request-id"
+    assert error.ray_id == ray_id
+
+
+def test_request_id_from_body_wins_over_header():
+    """Test a request ID in the body takes precedence over the response header."""
+    body_text = (
+        '{"code": "rate_limited", "message": "Rate limited",'
+        ' "request_id": "body-request-id"}'
+    )
+    response = httpx.Response(
+        status_code=429,
+        headers={"x-notion-request-id": "header-request-id"},
+        content=body_text.encode(),
+    )
+    error = build_request_error(response, body_text)
+
+    assert isinstance(error, APIResponseError)
+    assert error.request_id == "body-request-id"
