@@ -5,9 +5,14 @@ on:
     branches: [ main ]
     tags: [ '*' ]
 
+permissions:
+  contents: read
+
 jobs:
   docs:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     concurrency:
       group: gh-pages
     steps:

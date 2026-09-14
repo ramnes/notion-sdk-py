@@ -282,6 +282,7 @@ class PagesEndpoint(Endpoint):
         return self.parent.request(
             path="pages",
             method="POST",
+            query=pick(kwargs, "filter_properties"),
             body=pick(
                 kwargs,
                 "allow_async",
@@ -318,6 +319,7 @@ class PagesEndpoint(Endpoint):
         return self.parent.request(
             path=f"pages/{page_id}",
             method="PATCH",
+            query=pick(kwargs, "filter_properties"),
             body=pick(
                 kwargs,
                 "properties",
