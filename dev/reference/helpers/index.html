@@ -1669,7 +1669,7 @@
             <span class="k">yield</span> <span class="n">template</span>  <span class="c1"># pragma: no cover</span>
 
         <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next_cursor&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;has_more&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">next_cursor</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">next_cursor</span><span class="p">:</span>
             <span class="k">return</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -1722,7 +1722,7 @@
             <span class="k">yield</span> <span class="n">result</span>
 
         <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next_cursor&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;has_more&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">next_cursor</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">next_cursor</span><span class="p">:</span>
             <span class="k">return</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -2547,7 +2547,7 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
             <span class="k">yield</span> <span class="n">template</span>  <span class="c1"># pragma: no cover</span>
 
         <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next_cursor&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;has_more&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">next_cursor</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">next_cursor</span><span class="p">:</span>
             <span class="k">return</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -2596,7 +2596,7 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
             <span class="k">yield</span> <span class="n">result</span>
 
         <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next_cursor&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;has_more&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">next_cursor</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">next_cursor</span><span class="p">:</span>
             <span class="k">return</span>
 </code></pre></div></td></tr></table></div>
             </details>
