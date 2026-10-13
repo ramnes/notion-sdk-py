@@ -817,3 +817,28 @@ def test_move_pages(client, page_id):
 
     client.blocks.delete(block_id=page_to_move["id"])
     client.blocks.delete(block_id=target_parent["id"])
+
+
+# Silencing notifications leaves no trace in the response, so a cassette could not
+# tell whether the parameter was sent at all. Using a mock instead.
+def test_page_writes_forward_notifications(client, mocker):
+    mock_request = mocker.patch.object(client, "request", return_value={})
+    page_id = "bc2fc1d3-db8b-45c5-a222-27595b15aea7"
+    notifications = {"mode": "silent"}
+
+    client.pages.create(
+        parent={"page_id": page_id},
+        properties={},
+        notifications=notifications,
+    )
+    assert mock_request.call_args.kwargs["body"]["notifications"] == notifications
+
+    client.pages.update(page_id=page_id, icon=None, notifications=notifications)
+    assert mock_request.call_args.kwargs["body"]["notifications"] == notifications
+
+    client.blocks.children.append(
+        block_id=page_id,
+        children=[],
+        notifications=notifications,
+    )
+    assert mock_request.call_args.kwargs["body"]["notifications"] == notifications
