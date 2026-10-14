@@ -23,7 +23,7 @@ class BlocksChildrenEndpoint(Endpoint):
         return self.parent.request(
             path=f"blocks/{block_id}/children",
             method="PATCH",
-            body=pick(kwargs, "children", "after", "position"),
+            body=pick(kwargs, "children", "after", "position", "notifications"),
             auth=kwargs.get("auth"),
         )
 
@@ -307,6 +307,7 @@ class PagesEndpoint(Endpoint):
                 "markdown",
                 "template",
                 "position",
+                "notifications",
             ),
             auth=kwargs.get("auth"),
         )
@@ -342,6 +343,7 @@ class PagesEndpoint(Endpoint):
                 "erase_content",
                 "archived",
                 "in_trash",
+                "notifications",
             ),
             auth=kwargs.get("auth"),
         )
