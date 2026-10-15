@@ -558,6 +558,7 @@ class SearchEndpoint(Endpoint):
         return self.parent.request(
             path="search",
             method="POST",
+            query=pick(kwargs, "filter_properties"),
             body=pick(kwargs, "query", "sort", "filter", "start_cursor", "page_size"),
             auth=kwargs.get("auth"),
         )
