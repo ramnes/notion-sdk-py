@@ -441,6 +441,19 @@ def test_extract_notion_id_empty_path():
     assert extract_notion_id(url) == expected
 
 
+@pytest.mark.parametrize(
+    "url",
+    [
+        "https://www.notion.so/12345678-1234-1234-1234-123456789abc",
+        "https://www.notion.so/12345678-1234-1234-1234-123456789abc?v=1",
+        "https://notion.so/workspace/Title-12345678-1234-1234-1234-123456789ABC",
+        "https://notion.so/workspace/12345678-1234-1234-1234-123456789abc?pvs=4",
+    ],
+)
+def test_extract_notion_id_hyphenated_uuid_in_path(url):
+    assert extract_notion_id(url) == "12345678-1234-1234-1234-123456789abc"
+
+
 def test_extract_notion_id_empty_query_params():
     url = "https://notion.so/Page?p=&id="
     assert extract_notion_id(url) is None
