@@ -6,3 +6,4 @@ pytest-mock
 pytest-timeout
 pytest-vcr
 vcrpy==6.0.2
+mypy
