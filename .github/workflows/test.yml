@@ -28,8 +28,9 @@ jobs:
     - run: pip install -r requirements/tests.txt
     - run: pytest
       env:
-        NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-    - uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f  # v7.0.0
+        NOTION_TOKEN: ${{ github.event_name == 'push' && secrets.NOTION_TOKEN || '' }}
+    - if: github.event_name == 'push'
+      uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f  # v7.0.0
       with:
         env_vars: PYTHON
         fail_ci_if_error: true
