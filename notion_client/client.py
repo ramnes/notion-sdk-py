@@ -148,12 +148,11 @@ class BaseClient:
     def client(self, client: Union[httpx.Client, httpx.AsyncClient]) -> None:
         client.base_url = httpx.URL(f"{self.options.base_url}/v1/")
         client.timeout = httpx.Timeout(timeout=self.options.timeout_ms / 1_000)
-        client.headers = httpx.Headers(
-            {
-                "Notion-Version": self.options.notion_version,
-                "User-Agent": "ramnes/notion-sdk-py@3.1.0",
-            }
-        )
+        # Keep the headers already set on the client: ours are only defaults.
+        client.headers.setdefault("Notion-Version", self.options.notion_version)
+        # httpx always sets a User-Agent, so only replace its own default one.
+        if client.headers.get("User-Agent") == f"python-httpx/{httpx.__version__}":
+            client.headers["User-Agent"] = "ramnes/notion-sdk-py@3.1.0"
         if self.options.auth:
             client.headers["Authorization"] = f"Bearer {self.options.auth}"
         self._clients.append(client)
@@ -342,13 +341,15 @@ class Client(BaseClient):
         client: Optional[httpx.Client] = None,
         **kwargs: Any,
     ) -> None:
+        self._has_custom_client = client is not None
         if client is None:
             client = httpx.Client()
         super().__init__(client, options, **kwargs)
 
     def __enter__(self) -> "Client":
-        self.client = httpx.Client()
-        self.client.__enter__()
+        if not self._has_custom_client:
+            self.client = httpx.Client()
+            self.client.__enter__()
         return self
 
     def __exit__(
@@ -357,8 +358,9 @@ class Client(BaseClient):
         exc_value: BaseException,
         traceback: TracebackType,
     ) -> None:
-        self.client.__exit__(exc_type, exc_value, traceback)
-        del self._clients[-1]
+        if not self._has_custom_client:
+            self.client.__exit__(exc_type, exc_value, traceback)
+            del self._clients[-1]
 
     def close(self) -> None:
         """Close the connection pool of the current inner client."""
@@ -431,13 +433,15 @@ class AsyncClient(BaseClient):
         client: Optional[httpx.AsyncClient] = None,
         **kwargs: Any,
     ) -> None:
+        self._has_custom_client = client is not None
         if client is None:
             client = httpx.AsyncClient()
         super().__init__(client, options, **kwargs)
 
     async def __aenter__(self) -> "AsyncClient":
-        self.client = httpx.AsyncClient()
-        await self.client.__aenter__()
+        if not self._has_custom_client:
+            self.client = httpx.AsyncClient()
+            await self.client.__aenter__()
         return self
 
     async def __aexit__(
@@ -446,8 +450,9 @@ class AsyncClient(BaseClient):
         exc_value: BaseException,
         traceback: TracebackType,
     ) -> None:
-        await self.client.__aexit__(exc_type, exc_value, traceback)
-        del self._clients[-1]
+        if not self._has_custom_client:
+            await self.client.__aexit__(exc_type, exc_value, traceback)
+            del self._clients[-1]
 
     async def aclose(self) -> None:
         """Close the connection pool of the current inner client."""
