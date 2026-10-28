@@ -291,6 +291,23 @@ async def test_async_client_keeps_headers_of_custom_client():
     assert headers["User-Agent"].startswith("ramnes/notion-sdk-py@")
 
 
+def test_client_sets_user_agent_if_custom_client_has_none():
+    requests: List[httpx.Request] = []
+    custom = httpx.Client(transport=_mock_transport(requests))
+    del custom.headers["User-Agent"]
+
+    Client(client=custom).users.me()
+
+    assert requests[0].headers["User-Agent"].startswith("ramnes/notion-sdk-py@")
+
+
+def test_client_context_manager_closes_default_client():
+    with Client() as notion:
+        assert not notion.client.is_closed
+
+    assert notion.client.is_closed
+
+
 def test_client_context_manager_uses_custom_client():
     requests: List[httpx.Request] = []
     custom = httpx.Client(transport=_mock_transport(requests))
@@ -299,11 +316,10 @@ def test_client_context_manager_uses_custom_client():
     with notion as entered:
         assert entered.client is custom
         entered.users.me()
+        assert not custom.is_closed
 
     assert len(requests) == 1
-    assert notion.client is custom
-    assert not custom.is_closed
-    custom.close()
+    assert custom.is_closed
 
 
 async def test_async_client_context_manager_uses_custom_client():
@@ -314,39 +330,10 @@ async def test_async_client_context_manager_uses_custom_client():
     async with notion as entered:
         assert entered.client is custom
         await entered.users.me()
+        assert not custom.is_closed
 
     assert len(requests) == 1
-    assert notion.client is custom
-    assert not custom.is_closed
-    await custom.aclose()
-
-
-def test_client_context_manager_manages_its_own_client():
-    notion = Client()
-    default = notion.client
-
-    with notion:
-        assert notion.client is not default
-        inner = notion.client
-        assert not inner.is_closed
-
-    assert inner.is_closed
-    assert notion.client is default
-    notion.close()
-
-
-async def test_async_client_context_manager_manages_its_own_client():
-    notion = AsyncClient()
-    default = notion.client
-
-    async with notion:
-        assert notion.client is not default
-        inner = notion.client
-        assert not inner.is_closed
-
-    assert inner.is_closed
-    assert notion.client is default
-    await notion.aclose()
+    assert custom.is_closed
 
 
 def test_client_request_timeout():

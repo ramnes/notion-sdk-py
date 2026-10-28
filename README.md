@@ -392,8 +392,7 @@ suitable.
 The headers already set on your client are kept: the SDK only adds
 `Notion-Version` and `User-Agent` if you haven't set them, and `Authorization`
 if you pass `auth`. Using `Client` or `AsyncClient` as a context manager
-(`with` or `async with`) keeps using your client as is and doesn't close it, so
-you need to close it yourself.
+(`with` or `async with`) opens your client on enter and closes it on exit.
 
 ### Verifying webhook signatures
 
