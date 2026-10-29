@@ -170,6 +170,7 @@ class DatabasesEndpoint(Endpoint):
                 "cover",
                 "in_trash",
                 "is_locked",
+                "show_data_source_title",
             ),
             auth=kwargs.get("auth"),
         )
@@ -189,8 +190,10 @@ class DatabasesEndpoint(Endpoint):
                 "description",
                 "is_inline",
                 "initial_data_source",
+                "database_type",
                 "icon",
                 "cover",
+                "show_data_source_title",
             ),
             auth=kwargs.get("auth"),
         )
