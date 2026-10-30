@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.0">
     
     
       
@@ -27,10 +27,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -1535,10 +1535,10 @@
 <span class="normal">350</span>
 <span class="normal">351</span>
 <span class="normal">352</span>
-<span class="normal">353</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">async_collect_data_source_templates</span><span class="p">(</span>
+<span class="normal">353</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">async_collect_data_source_templates</span><span class="p">(</span>
     <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Awaitable</span><span class="p">[</span><span class="n">Any</span><span class="p">]],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Collect asynchronously all templates from a data source into a list.</span>
+<span class="w">    </span><span class="sd">"""Collect asynchronously all templates from a data source into a list.</span>
 
 <span class="sd">    Example:</span>
 
@@ -1549,7 +1549,7 @@
 <span class="sd">    )</span>
 <span class="sd">    # Do something with templates.</span>
 <span class="sd">    ```</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="p">[</span>
         <span class="n">template</span>
         <span class="k">async</span> <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="n">async_iterate_data_source_templates</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -1584,10 +1584,10 @@
 <span class="normal">86</span>
 <span class="normal">87</span>
 <span class="normal">88</span>
-<span class="normal">89</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">async_collect_paginated_api</span><span class="p">(</span>
+<span class="normal">89</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">async_collect_paginated_api</span><span class="p">(</span>
     <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Awaitable</span><span class="p">[</span><span class="n">Any</span><span class="p">]],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Collect asynchronously all the results of paginating an API into a list.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Collect asynchronously all the results of paginating an API into a list."""</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">result</span> <span class="k">async</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">async_iterate_paginated_api</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)]</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -1616,7 +1616,7 @@
     <span class="n">async_client</span><span class="o">.</span><span class="n">data_sources</span><span class="o">.</span><span class="n">list_templates</span><span class="p">,</span>
     <span class="n">data_source_id</span><span class="o">=</span><span class="n">data_source_id</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">template</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">template</span><span class="p">[</span><span class="s2">&quot;is_default&quot;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">template</span><span class="p">[</span><span class="s2">"name"</span><span class="p">],</span> <span class="n">template</span><span class="p">[</span><span class="s2">"is_default"</span><span class="p">])</span>
 </code></pre></div>
 
 
@@ -1646,10 +1646,10 @@
 <span class="normal">329</span>
 <span class="normal">330</span>
 <span class="normal">331</span>
-<span class="normal">332</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">async_iterate_data_source_templates</span><span class="p">(</span>
+<span class="normal">332</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">async_iterate_data_source_templates</span><span class="p">(</span>
     <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Awaitable</span><span class="p">[</span><span class="n">Any</span><span class="p">]],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncGenerator</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an async iterator over templates from a data source.</span>
+<span class="w">    </span><span class="sd">"""Return an async iterator over templates from a data source.</span>
 
 <span class="sd">    Example:</span>
 
@@ -1658,17 +1658,17 @@
 <span class="sd">        async_client.data_sources.list_templates,</span>
 <span class="sd">        data_source_id=data_source_id,</span>
 <span class="sd">    ):</span>
-<span class="sd">        print(template[&quot;name&quot;], template[&quot;is_default&quot;])</span>
+<span class="sd">        print(template["name"], template["is_default"])</span>
 <span class="sd">    ```</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;start_cursor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"start_cursor"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">function</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">start_cursor</span><span class="o">=</span><span class="n">next_cursor</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;templates&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+        <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"templates"</span><span class="p">,</span> <span class="p">[]):</span>
             <span class="k">yield</span> <span class="n">template</span>  <span class="c1"># pragma: no cover</span>
 
-        <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next_cursor&quot;</span><span class="p">)</span>
+        <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"next_cursor"</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">next_cursor</span><span class="p">:</span>
             <span class="k">return</span>
 </code></pre></div></td></tr></table></div>
@@ -1710,18 +1710,18 @@
 <span class="normal">79</span>
 <span class="normal">80</span>
 <span class="normal">81</span>
-<span class="normal">82</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">async_iterate_paginated_api</span><span class="p">(</span>
+<span class="normal">82</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">async_iterate_paginated_api</span><span class="p">(</span>
     <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Awaitable</span><span class="p">[</span><span class="n">Any</span><span class="p">]],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncGenerator</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an async iterator over the results of any paginated Notion API.&quot;&quot;&quot;</span>
-    <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;start_cursor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Return an async iterator over the results of any paginated Notion API."""</span>
+    <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"start_cursor"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">function</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">start_cursor</span><span class="o">=</span><span class="n">next_cursor</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"results"</span><span class="p">):</span>
             <span class="k">yield</span> <span class="n">result</span>
 
-        <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next_cursor&quot;</span><span class="p">)</span>
+        <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"next_cursor"</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">next_cursor</span><span class="p">:</span>
             <span class="k">return</span>
 </code></pre></div></td></tr></table></div>
@@ -1768,10 +1768,10 @@
 <span class="normal">302</span>
 <span class="normal">303</span>
 <span class="normal">304</span>
-<span class="normal">305</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">collect_data_source_templates</span><span class="p">(</span>
+<span class="normal">305</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">collect_data_source_templates</span><span class="p">(</span>
     <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Collect all templates from a data source into a list.</span>
+<span class="w">    </span><span class="sd">"""Collect all templates from a data source into a list.</span>
 
 <span class="sd">    Example:</span>
 
@@ -1782,7 +1782,7 @@
 <span class="sd">    )</span>
 <span class="sd">    # Do something with templates.</span>
 <span class="sd">    ```</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">template</span> <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="n">iterate_data_source_templates</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)]</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -1808,8 +1808,8 @@
               <summary>Source code in <code>notion_client/helpers.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">64</span>
 <span class="normal">65</span>
-<span class="normal">66</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">collect_paginated_api</span><span class="p">(</span><span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Collect all the results of paginating an API into a list.&quot;&quot;&quot;</span>
+<span class="normal">66</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">collect_paginated_api</span><span class="p">(</span><span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Collect all the results of paginating an API into a list."""</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">result</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">iterate_paginated_api</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)]</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -1859,27 +1859,27 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
 <span class="normal">257</span>
 <span class="normal">258</span>
 <span class="normal">259</span>
-<span class="normal">260</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extract_block_id</span><span class="p">(</span><span class="n">url_or_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract a block ID from a Notion URL fragment or validate if it&#39;s already a valid ID.</span>
+<span class="normal">260</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">extract_block_id</span><span class="p">(</span><span class="n">url_or_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Extract a block ID from a Notion URL fragment or validate if it's already a valid ID.</span>
 
 <span class="sd">    Specifically looks for block IDs in URL fragments (after #).</span>
 <span class="sd">    If no fragment is present, falls back to `extract_notion_id` behavior.</span>
 
 <span class="sd">    Returns the extracted UUID in standard format (with hyphens) or None if invalid.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">url_or_id</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">url_or_id</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="c1"># Look for block fragment in URL (#block-32chars or just #32chars or #formatted-uuid)</span>
     <span class="n">block_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;#(?:block-)?([0-9a-f]</span><span class="si">{8}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{12}</span><span class="s2">|[0-9a-f]</span><span class="si">{32}</span><span class="s2">)&quot;</span><span class="p">,</span>
+        <span class="sa">r</span><span class="s2">"#(?:block-)?([0-9a-f]</span><span class="si">{8}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{12}</span><span class="s2">|[0-9a-f]</span><span class="si">{32}</span><span class="s2">)"</span><span class="p">,</span>
         <span class="n">url_or_id</span><span class="p">,</span>
         <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">block_match</span><span class="p">:</span>
         <span class="n">match_str</span> <span class="o">=</span> <span class="n">block_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="c1"># If it&#39;s already formatted, return as is; otherwise format it</span>
-        <span class="k">return</span> <span class="n">match_str</span> <span class="k">if</span> <span class="s2">&quot;-&quot;</span> <span class="ow">in</span> <span class="n">match_str</span> <span class="k">else</span> <span class="n">_format_uuid</span><span class="p">(</span><span class="n">match_str</span><span class="p">)</span>
+        <span class="c1"># If it's already formatted, return as is; otherwise format it</span>
+        <span class="k">return</span> <span class="n">match_str</span> <span class="k">if</span> <span class="s2">"-"</span> <span class="ow">in</span> <span class="n">match_str</span> <span class="k">else</span> <span class="n">_format_uuid</span><span class="p">(</span><span class="n">match_str</span><span class="p">)</span>
 
     <span class="c1"># Fall back to general ID extraction for non-URL inputs</span>
     <span class="k">return</span> <span class="n">extract_notion_id</span><span class="p">(</span><span class="n">url_or_id</span><span class="p">)</span>
@@ -1914,13 +1914,13 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
 <span class="normal">221</span>
 <span class="normal">222</span>
 <span class="normal">223</span>
-<span class="normal">224</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extract_database_id</span><span class="p">(</span><span class="n">database_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract a database ID from a Notion URL or validate if it&#39;s already a valid ID.</span>
+<span class="normal">224</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">extract_database_id</span><span class="p">(</span><span class="n">database_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Extract a database ID from a Notion URL or validate if it's already a valid ID.</span>
 
 <span class="sd">    This is an alias for `extract_notion_id` for clarity when working with databases.</span>
 
 <span class="sd">    Returns the extracted UUID in standard format (with hyphens) or None if invalid.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">extract_notion_id</span><span class="p">(</span><span class="n">database_url</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -1943,12 +1943,12 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
 <p>Prioritizes path IDs over query parameters to avoid extracting view IDs instead of database IDs.</p>
 <p>Returns the extracted UUID in standard format (with hyphens) or None if invalid.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Database URL with view ID - extracts database ID, not view ID</span>
-<span class="n">extract_notion_id</span><span class="p">(</span><span class="s1">&#39;https://notion.so/workspace/DB-abc123def456789012345678901234ab?v=viewid123&#39;</span><span class="p">)</span>
-<span class="c1"># Returns: &#39;abc123de-f456-7890-1234-5678901234ab&#39;  # database ID</span>
+<span class="n">extract_notion_id</span><span class="p">(</span><span class="s1">'https://notion.so/workspace/DB-abc123def456789012345678901234ab?v=viewid123'</span><span class="p">)</span>
+<span class="c1"># Returns: 'abc123de-f456-7890-1234-5678901234ab'  # database ID</span>
 
 <span class="c1"># Already formatted UUID</span>
-<span class="n">extract_notion_id</span><span class="p">(</span><span class="s1">&#39;12345678-1234-1234-1234-123456789abc&#39;</span><span class="p">)</span>
-<span class="c1"># Returns: &#39;12345678-1234-1234-1234-123456789abc&#39;</span>
+<span class="n">extract_notion_id</span><span class="p">(</span><span class="s1">'12345678-1234-1234-1234-123456789abc'</span><span class="p">)</span>
+<span class="c1"># Returns: '12345678-1234-1234-1234-123456789abc'</span>
 </code></pre></div>
 
 
@@ -2008,8 +2008,8 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
 <span class="normal">211</span>
 <span class="normal">212</span>
 <span class="normal">213</span>
-<span class="normal">214</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extract_notion_id</span><span class="p">(</span><span class="n">url_or_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract a Notion ID from a Notion URL or return the input if it&#39;s already a valid ID.</span>
+<span class="normal">214</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">extract_notion_id</span><span class="p">(</span><span class="n">url_or_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Extract a Notion ID from a Notion URL or return the input if it's already a valid ID.</span>
 
 <span class="sd">    Prioritizes path IDs over query parameters to avoid extracting view IDs instead of database IDs.</span>
 
@@ -2017,48 +2017,48 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
 
 <span class="sd">    ```python</span>
 <span class="sd">    # Database URL with view ID - extracts database ID, not view ID</span>
-<span class="sd">    extract_notion_id(&#39;https://notion.so/workspace/DB-abc123def456789012345678901234ab?v=viewid123&#39;)</span>
-<span class="sd">    # Returns: &#39;abc123de-f456-7890-1234-5678901234ab&#39;  # database ID</span>
+<span class="sd">    extract_notion_id('https://notion.so/workspace/DB-abc123def456789012345678901234ab?v=viewid123')</span>
+<span class="sd">    # Returns: 'abc123de-f456-7890-1234-5678901234ab'  # database ID</span>
 
 <span class="sd">    # Already formatted UUID</span>
-<span class="sd">    extract_notion_id(&#39;12345678-1234-1234-1234-123456789abc&#39;)</span>
-<span class="sd">    # Returns: &#39;12345678-1234-1234-1234-123456789abc&#39;</span>
+<span class="sd">    extract_notion_id('12345678-1234-1234-1234-123456789abc')</span>
+<span class="sd">    # Returns: '12345678-1234-1234-1234-123456789abc'</span>
 <span class="sd">    ```</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">url_or_id</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">url_or_id</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="n">trimmed</span> <span class="o">=</span> <span class="n">url_or_id</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
-    <span class="c1"># Check if it&#39;s already a properly formatted UUID</span>
+    <span class="c1"># Check if it's already a properly formatted UUID</span>
     <span class="n">uuid_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;^[0-9a-f]</span><span class="si">{8}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{12}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span>
+        <span class="sa">r</span><span class="s2">"^[0-9a-f]</span><span class="si">{8}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{12}</span><span class="s2">$"</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">uuid_pattern</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">trimmed</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
-    <span class="c1"># Check if it&#39;s a compact UUID (32 chars, no hyphens)</span>
-    <span class="n">compact_uuid_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[0-9a-f]</span><span class="si">{32}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+    <span class="c1"># Check if it's a compact UUID (32 chars, no hyphens)</span>
+    <span class="n">compact_uuid_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"^[0-9a-f]</span><span class="si">{32}</span><span class="s2">$"</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">compact_uuid_pattern</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">trimmed</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">_format_uuid</span><span class="p">(</span><span class="n">trimmed</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
 
-    <span class="c1"># For URLs, check if it&#39;s a valid Notion domain</span>
-    <span class="k">if</span> <span class="s2">&quot;://&quot;</span> <span class="ow">in</span> <span class="n">trimmed</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;://(?:www\.)?notion\.(?:so|site)/&quot;</span><span class="p">,</span> <span class="n">trimmed</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">):</span>
+    <span class="c1"># For URLs, check if it's a valid Notion domain</span>
+    <span class="k">if</span> <span class="s2">"://"</span> <span class="ow">in</span> <span class="n">trimmed</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">"://(?:www\.)?notion\.(?:so|site)/"</span><span class="p">,</span> <span class="n">trimmed</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">None</span>
 
     <span class="c1"># Fallback to query parameters if no direct ID found</span>
     <span class="n">query_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[?&amp;](?:p|page_id|database_id)=([0-9a-f]</span><span class="si">{8}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{12}</span><span class="s2">|[0-9a-f]</span><span class="si">{32}</span><span class="s2">)&quot;</span><span class="p">,</span>
+        <span class="sa">r</span><span class="s2">"[?&amp;](?:p|page_id|database_id)=([0-9a-f]</span><span class="si">{8}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{4}</span><span class="s2">-[0-9a-f]</span><span class="si">{12}</span><span class="s2">|[0-9a-f]</span><span class="si">{32}</span><span class="s2">)"</span><span class="p">,</span>
         <span class="n">trimmed</span><span class="p">,</span>
         <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">query_match</span><span class="p">:</span>
         <span class="n">match_str</span> <span class="o">=</span> <span class="n">query_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">match_str</span> <span class="k">if</span> <span class="s2">&quot;-&quot;</span> <span class="ow">in</span> <span class="n">match_str</span> <span class="k">else</span> <span class="n">_format_uuid</span><span class="p">(</span><span class="n">match_str</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">match_str</span> <span class="k">if</span> <span class="s2">"-"</span> <span class="ow">in</span> <span class="n">match_str</span> <span class="k">else</span> <span class="n">_format_uuid</span><span class="p">(</span><span class="n">match_str</span><span class="p">)</span>
 
     <span class="c1"># Last resort: any 32-char hex string in the URL</span>
-    <span class="n">any_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([0-9a-f]</span><span class="si">{32}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">trimmed</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+    <span class="n">any_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">"([0-9a-f]</span><span class="si">{32}</span><span class="s2">)"</span><span class="p">,</span> <span class="n">trimmed</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">any_match</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_format_uuid</span><span class="p">(</span><span class="n">any_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
 
@@ -2094,13 +2094,13 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
 <span class="normal">231</span>
 <span class="normal">232</span>
 <span class="normal">233</span>
-<span class="normal">234</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extract_page_id</span><span class="p">(</span><span class="n">page_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract a page ID from a Notion URL or validate if it&#39;s already a valid ID.</span>
+<span class="normal">234</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">extract_page_id</span><span class="p">(</span><span class="n">page_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Extract a page ID from a Notion URL or validate if it's already a valid ID.</span>
 
 <span class="sd">    This is an alias for `extract_notion_id` for clarity when working with pages.</span>
 
 <span class="sd">    Returns the extracted UUID in standard format (with hyphens) or None if invalid.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">extract_notion_id</span><span class="p">(</span><span class="n">page_url</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -2133,14 +2133,14 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
 <span class="normal">42</span>
 <span class="normal">43</span>
 <span class="normal">44</span>
-<span class="normal">45</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_id</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the id of the object behind the given URL.&quot;&quot;&quot;</span>
+<span class="normal">45</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_id</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return the id of the object behind the given URL."""</span>
     <span class="n">parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;notion.so&quot;</span><span class="p">,</span> <span class="s2">&quot;www.notion.so&quot;</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Not a valid Notion URL.&quot;</span><span class="p">)</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"notion.so"</span><span class="p">,</span> <span class="s2">"www.notion.so"</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Not a valid Notion URL."</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">32</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The path in the URL seems to be incorrect.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The path in the URL seems to be incorrect."</span><span class="p">)</span>
     <span class="n">raw_id</span> <span class="o">=</span> <span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">32</span><span class="p">:]</span>
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">UUID</span><span class="p">(</span><span class="n">raw_id</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
@@ -2167,9 +2167,9 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
               <summary>Source code in <code>notion_client/helpers.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">31</span>
 <span class="normal">32</span>
-<span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_url</span><span class="p">(</span><span class="n">object_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the URL for the object with the given id.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;https://notion.so/</span><span class="si">{</span><span class="n">UUID</span><span class="p">(</span><span class="n">object_id</span><span class="p">)</span><span class="o">.</span><span class="n">hex</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_url</span><span class="p">(</span><span class="n">object_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return the URL for the object with the given id."""</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"https://notion.so/</span><span class="si">{</span><span class="n">UUID</span><span class="p">(</span><span class="n">object_id</span><span class="p">)</span><span class="o">.</span><span class="n">hex</span><span class="si">}</span><span class="s2">"</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2194,9 +2194,9 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
               <summary>Source code in <code>notion_client/helpers.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">139</span>
 <span class="normal">140</span>
-<span class="normal">141</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_equation_rich_text_item_response</span><span class="p">(</span><span class="n">rich_text</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if `rich_text` is an equation.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">rich_text</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;equation&quot;</span>
+<span class="normal">141</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_equation_rich_text_item_response</span><span class="p">(</span><span class="n">rich_text</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return `True` if `rich_text` is an equation."""</span>
+    <span class="k">return</span> <span class="n">rich_text</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"equation"</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2221,9 +2221,9 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
               <summary>Source code in <code>notion_client/helpers.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">92</span>
 <span class="normal">93</span>
-<span class="normal">94</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_full_block</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if response is a full block.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;block&quot;</span> <span class="ow">and</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">response</span>
+<span class="normal">94</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_full_block</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return `True` if response is a full block."""</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"object"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"block"</span> <span class="ow">and</span> <span class="s2">"type"</span> <span class="ow">in</span> <span class="n">response</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2248,9 +2248,9 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
               <summary>Source code in <code>notion_client/helpers.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">124</span>
 <span class="normal">125</span>
-<span class="normal">126</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_full_comment</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if response is a full comment.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">response</span>
+<span class="normal">126</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_full_comment</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return `True` if response is a full comment."""</span>
+    <span class="k">return</span> <span class="s2">"type"</span> <span class="ow">in</span> <span class="n">response</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2275,9 +2275,9 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
               <summary>Source code in <code>notion_client/helpers.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">102</span>
 <span class="normal">103</span>
-<span class="normal">104</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_full_data_source</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if response is a full data source.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;data_source&quot;</span> <span class="ow">and</span> <span class="s2">&quot;title&quot;</span> <span class="ow">in</span> <span class="n">response</span>
+<span class="normal">104</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_full_data_source</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return `True` if response is a full data source."""</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"object"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"data_source"</span> <span class="ow">and</span> <span class="s2">"title"</span> <span class="ow">in</span> <span class="n">response</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2302,9 +2302,9 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
               <summary>Source code in <code>notion_client/helpers.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">107</span>
 <span class="normal">108</span>
-<span class="normal">109</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_full_database</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if response is a full database.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;database&quot;</span> <span class="ow">and</span> <span class="s2">&quot;title&quot;</span> <span class="ow">in</span> <span class="n">response</span>
+<span class="normal">109</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_full_database</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return `True` if response is a full database."""</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"object"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"database"</span> <span class="ow">and</span> <span class="s2">"title"</span> <span class="ow">in</span> <span class="n">response</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2329,9 +2329,9 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
               <summary>Source code in <code>notion_client/helpers.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">97</span>
 <span class="normal">98</span>
-<span class="normal">99</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_full_page</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if response is a full page.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;page&quot;</span> <span class="ow">and</span> <span class="s2">&quot;url&quot;</span> <span class="ow">in</span> <span class="n">response</span>
+<span class="normal">99</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_full_page</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return `True` if response is a full page."""</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"object"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"page"</span> <span class="ow">and</span> <span class="s2">"url"</span> <span class="ow">in</span> <span class="n">response</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2358,9 +2358,9 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
-<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_full_page_or_data_source</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if `response` is a full data_source or a full page.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;data_source&quot;</span><span class="p">:</span>
+<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_full_page_or_data_source</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return `True` if `response` is a full data_source or a full page."""</span>
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"object"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"data_source"</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">is_full_data_source</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">is_full_page</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -2387,9 +2387,9 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
               <summary>Source code in <code>notion_client/helpers.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">119</span>
 <span class="normal">120</span>
-<span class="normal">121</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_full_user</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if response is a full user.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">response</span>
+<span class="normal">121</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_full_user</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return `True` if response is a full user."""</span>
+    <span class="k">return</span> <span class="s2">"type"</span> <span class="ow">in</span> <span class="n">response</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2414,9 +2414,9 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
               <summary>Source code in <code>notion_client/helpers.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">129</span>
 <span class="normal">130</span>
-<span class="normal">131</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_full_view</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if response is a full view.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">response</span>
+<span class="normal">131</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_full_view</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return `True` if response is a full view."""</span>
+    <span class="k">return</span> <span class="s2">"type"</span> <span class="ow">in</span> <span class="n">response</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2441,9 +2441,9 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
               <summary>Source code in <code>notion_client/helpers.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">144</span>
 <span class="normal">145</span>
-<span class="normal">146</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_mention_rich_text_item_response</span><span class="p">(</span><span class="n">rich_text</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if `rich_text` is a mention.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">rich_text</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;mention&quot;</span>
+<span class="normal">146</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_mention_rich_text_item_response</span><span class="p">(</span><span class="n">rich_text</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return `True` if `rich_text` is a mention."""</span>
+    <span class="k">return</span> <span class="n">rich_text</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"mention"</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2468,9 +2468,9 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
               <summary>Source code in <code>notion_client/helpers.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">134</span>
 <span class="normal">135</span>
-<span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_text_rich_text_item_response</span><span class="p">(</span><span class="n">rich_text</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return `True` if `rich_text` is a text.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">rich_text</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;text&quot;</span>
+<span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_text_rich_text_item_response</span><span class="p">(</span><span class="n">rich_text</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return `True` if `rich_text` is a text."""</span>
+    <span class="k">return</span> <span class="n">rich_text</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"text"</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2494,7 +2494,7 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
     <span class="n">client</span><span class="o">.</span><span class="n">data_sources</span><span class="o">.</span><span class="n">list_templates</span><span class="p">,</span>
     <span class="n">data_source_id</span><span class="o">=</span><span class="n">data_source_id</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">template</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">template</span><span class="p">[</span><span class="s2">&quot;is_default&quot;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">template</span><span class="p">[</span><span class="s2">"name"</span><span class="p">],</span> <span class="n">template</span><span class="p">[</span><span class="s2">"is_default"</span><span class="p">])</span>
 </code></pre></div>
 
 
@@ -2524,10 +2524,10 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
 <span class="normal">284</span>
 <span class="normal">285</span>
 <span class="normal">286</span>
-<span class="normal">287</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">iterate_data_source_templates</span><span class="p">(</span>
+<span class="normal">287</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">iterate_data_source_templates</span><span class="p">(</span>
     <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an iterator over templates from a data source.</span>
+<span class="w">    </span><span class="sd">"""Return an iterator over templates from a data source.</span>
 
 <span class="sd">    Example:</span>
 
@@ -2536,17 +2536,17 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
 <span class="sd">        client.data_sources.list_templates,</span>
 <span class="sd">        data_source_id=data_source_id,</span>
 <span class="sd">    ):</span>
-<span class="sd">        print(template[&quot;name&quot;], template[&quot;is_default&quot;])</span>
+<span class="sd">        print(template["name"], template["is_default"])</span>
 <span class="sd">    ```</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;start_cursor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"start_cursor"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">start_cursor</span><span class="o">=</span><span class="n">next_cursor</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;templates&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+        <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"templates"</span><span class="p">,</span> <span class="p">[]):</span>
             <span class="k">yield</span> <span class="n">template</span>  <span class="c1"># pragma: no cover</span>
 
-        <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next_cursor&quot;</span><span class="p">)</span>
+        <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"next_cursor"</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">next_cursor</span><span class="p">:</span>
             <span class="k">return</span>
 </code></pre></div></td></tr></table></div>
@@ -2584,18 +2584,18 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
 <span class="normal">58</span>
 <span class="normal">59</span>
 <span class="normal">60</span>
-<span class="normal">61</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">iterate_paginated_api</span><span class="p">(</span>
+<span class="normal">61</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">iterate_paginated_api</span><span class="p">(</span>
     <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an iterator over the results of any paginated Notion API.&quot;&quot;&quot;</span>
-    <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;start_cursor&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Return an iterator over the results of any paginated Notion API."""</span>
+    <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"start_cursor"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">start_cursor</span><span class="o">=</span><span class="n">next_cursor</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"results"</span><span class="p">):</span>
             <span class="k">yield</span> <span class="n">result</span>
 
-        <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next_cursor&quot;</span><span class="p">)</span>
+        <span class="n">next_cursor</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"next_cursor"</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">next_cursor</span><span class="p">:</span>
             <span class="k">return</span>
 </code></pre></div></td></tr></table></div>
@@ -2630,14 +2630,14 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
 <span class="normal">25</span>
 <span class="normal">26</span>
 <span class="normal">27</span>
-<span class="normal">28</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">pick</span><span class="p">(</span><span class="n">base</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="n">keys</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a dict composed of key value pairs for keys passed as args.&quot;&quot;&quot;</span>
+<span class="normal">28</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">pick</span><span class="p">(</span><span class="n">base</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="n">keys</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Return a dict composed of key value pairs for keys passed as args."""</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">base</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;start_cursor&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"start_cursor"</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
     <span class="k">return</span> <span class="n">result</span>
@@ -2719,10 +2719,10 @@ If no fragment is present, falls back to <code>extract_notion_id</code> behavior
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["naviagation.sections", "navigation.indexes"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["naviagation.sections", "navigation.indexes"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

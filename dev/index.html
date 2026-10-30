@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.0">
     
     
       
@@ -25,10 +25,10 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -1296,18 +1296,18 @@ to get set up to use Notion's API.</p>
 </blockquote>
 <p>Import and initialize a client using an <strong>integration token</strong> or an
 OAuth <strong>access token</strong>.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">notion_client</span> <span class="kn">import</span> <span class="n">Client</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">notion_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
 
-<span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;NOTION_TOKEN&quot;</span><span class="p">])</span>
+<span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"NOTION_TOKEN"</span><span class="p">])</span>
 </code></pre></div>
 <p>In an asyncio environment, use the asynchronous client instead:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">notion_client</span> <span class="kn">import</span> <span class="n">AsyncClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">notion_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncClient</span>
 
-<span class="n">notion</span> <span class="o">=</span> <span class="n">AsyncClient</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;NOTION_TOKEN&quot;</span><span class="p">])</span>
+<span class="n">notion</span> <span class="o">=</span> <span class="n">AsyncClient</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"NOTION_TOKEN"</span><span class="p">])</span>
 </code></pre></div>
 <p>Make a request to any Notion API endpoint.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pprint</span><span class="w"> </span><span class="kn">import</span> <span class="n">pprint</span>
 
 <span class="n">list_users_response</span> <span class="o">=</span> <span class="n">notion</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">list_users_response</span><span class="p">)</span>
@@ -1321,12 +1321,12 @@ See the complete list of endpoints in the <a href="https://developers.notion.com
 <span class="n">pprint</span><span class="p">(</span><span class="n">list_users_response</span><span class="p">)</span>
 </code></pre></div>
 <p>This would output something like:</p>
-<div class="highlight"><pre><span></span><code>{&#39;results&#39;: [{&#39;avatar_url&#39;: &#39;https://secure.notion-static.com/e6a352a8-8381-44d0-a1dc-9ed80e62b53d.jpg&#39;,
-              &#39;id&#39;: &#39;d40e767c-d7af-4b18-a86d-55c61f1e39a4&#39;,
-              &#39;name&#39;: &#39;Avocado Lovelace&#39;,
-              &#39;object&#39;: &#39;user&#39;,
-              &#39;person&#39;: {&#39;email&#39;: &#39;avo@example.org&#39;},
-              &#39;type&#39;: &#39;person&#39;},
+<div class="highlight"><pre><span></span><code>{'results': [{'avatar_url': 'https://secure.notion-static.com/e6a352a8-8381-44d0-a1dc-9ed80e62b53d.jpg',
+              'id': 'd40e767c-d7af-4b18-a86d-55c61f1e39a4',
+              'name': 'Avocado Lovelace',
+              'object': 'user',
+              'person': {'email': 'avo@example.org'},
+              'type': 'person'},
              ...]}
 </code></pre></div>
 <p>All API endpoints are available in both the synchronous and asynchronous clients.</p>
@@ -1334,11 +1334,11 @@ See the complete list of endpoints in the <a href="https://developers.notion.com
 which parameters go in the path, query, or body.</p>
 <div class="highlight"><pre><span></span><code><span class="n">my_page</span> <span class="o">=</span> <span class="n">notion</span><span class="o">.</span><span class="n">data_sources</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
     <span class="o">**</span><span class="p">{</span>
-        <span class="s2">&quot;data_source_id&quot;</span><span class="p">:</span> <span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;property&quot;</span><span class="p">:</span> <span class="s2">&quot;Landmark&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;rich_text&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;contains&quot;</span><span class="p">:</span> <span class="s2">&quot;Bridge&quot;</span><span class="p">,</span>
+        <span class="s2">"data_source_id"</span><span class="p">:</span> <span class="s2">"897e5a76-ae52-4b48-9fdf-e71f5945d1af"</span><span class="p">,</span>
+        <span class="s2">"filter"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"property"</span><span class="p">:</span> <span class="s2">"Landmark"</span><span class="p">,</span>
+            <span class="s2">"rich_text"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"contains"</span><span class="p">:</span> <span class="s2">"Bridge"</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">},</span>
     <span class="p">}</span>
@@ -1349,18 +1349,18 @@ which parameters go in the path, query, or body.</p>
 <p>The error contains properties from the response, and the most helpful is <code>code</code>.
 You can compare <code>code</code> to the values in the <code>APIErrorCode</code> object to avoid
 misspelling error codes.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">notion_client</span> <span class="kn">import</span> <span class="n">APIErrorCode</span><span class="p">,</span> <span class="n">APIResponseError</span><span class="p">,</span> <span class="n">Client</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">notion_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIErrorCode</span><span class="p">,</span> <span class="n">APIResponseError</span><span class="p">,</span> <span class="n">Client</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;NOTION_TOKEN&quot;</span><span class="p">])</span>
+    <span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"NOTION_TOKEN"</span><span class="p">])</span>
     <span class="n">my_page</span> <span class="o">=</span> <span class="n">notion</span><span class="o">.</span><span class="n">data_sources</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
         <span class="o">**</span><span class="p">{</span>
-            <span class="s2">&quot;data_source_id&quot;</span><span class="p">:</span> <span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;property&quot;</span><span class="p">:</span> <span class="s2">&quot;Landmark&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;rich_text&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;contains&quot;</span><span class="p">:</span> <span class="s2">&quot;Bridge&quot;</span><span class="p">,</span>
+            <span class="s2">"data_source_id"</span><span class="p">:</span> <span class="s2">"897e5a76-ae52-4b48-9fdf-e71f5945d1af"</span><span class="p">,</span>
+            <span class="s2">"filter"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"property"</span><span class="p">:</span> <span class="s2">"Landmark"</span><span class="p">,</span>
+                <span class="s2">"rich_text"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">"contains"</span><span class="p">:</span> <span class="s2">"Bridge"</span><span class="p">,</span>
                 <span class="p">},</span>
             <span class="p">},</span>
         <span class="p">}</span>
@@ -1380,11 +1380,11 @@ misspelling error codes.</p>
 and errors.</p>
 <p>If you're debugging an application, and would like the client to log request &amp; response
 bodies, set the <code>log_level</code> option to <code>logging.DEBUG</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">notion_client</span> <span class="kn">import</span> <span class="n">Client</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">notion_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
 
 <span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span>
-    <span class="n">auth</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;NOTION_TOKEN&quot;</span><span class="p">],</span>
+    <span class="n">auth</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"NOTION_TOKEN"</span><span class="p">],</span>
     <span class="n">log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -1462,10 +1462,10 @@ exponential back-off with jitter.</p>
 service overloads (529) are retried for all methods since the server
 explicitly asks clients to retry.</p>
 <p><strong>Configuration:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">notion_client</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">RetryOptions</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">notion_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">RetryOptions</span>
 
 <span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span>
-    <span class="n">auth</span><span class="o">=</span><span class="s2">&quot;secret_...&quot;</span><span class="p">,</span>
+    <span class="n">auth</span><span class="o">=</span><span class="s2">"secret_..."</span><span class="p">,</span>
     <span class="n">retry</span><span class="o">=</span><span class="n">RetryOptions</span><span class="p">(</span>
         <span class="n">max_retries</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>          <span class="c1"># Maximum retry attempts (default: 2)</span>
         <span class="n">initial_retry_delay_ms</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>  <span class="c1"># Initial delay in ms (default: 1000)</span>
@@ -1474,13 +1474,13 @@ explicitly asks clients to retry.</p>
 <span class="p">)</span>
 </code></pre></div>
 <p>To disable automatic retries:</p>
-<div class="highlight"><pre><span></span><code><span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="s2">&quot;secret_...&quot;</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="s2">"secret_..."</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="constants">Constants</h3>
 <p>The SDK exports named constants for all default values used by the client, as well
 as useful Notion-specific values. You can import them directly:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">notion_client</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">DEFAULT_BASE_URL</span><span class="p">,</span>          <span class="c1"># &quot;https://api.notion.com&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">notion_client</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DEFAULT_BASE_URL</span><span class="p">,</span>          <span class="c1"># "https://api.notion.com"</span>
     <span class="n">DEFAULT_TIMEOUT_MS</span><span class="p">,</span>        <span class="c1"># 60_000</span>
     <span class="n">DEFAULT_MAX_RETRIES</span><span class="p">,</span>       <span class="c1"># 2</span>
     <span class="n">DEFAULT_INITIAL_RETRY_DELAY_MS</span><span class="p">,</span>  <span class="c1"># 1_000</span>
@@ -1494,15 +1494,15 @@ updating a view to make a column appear collapsed -- useful for checkbox or
 status-as-checkbox columns:</p>
 <div class="highlight"><pre><span></span><code><span class="k">await</span> <span class="n">notion</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
     <span class="n">database_id</span><span class="o">=</span><span class="n">database_id</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;My view&quot;</span><span class="p">,</span>
-    <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;table&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">"My view"</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s2">"table"</span><span class="p">,</span>
     <span class="n">configuration</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;table&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">"table"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"properties"</span><span class="p">:</span> <span class="p">[</span>
                 <span class="p">{</span>
-                    <span class="s2">&quot;property_id&quot;</span><span class="p">:</span> <span class="n">checkbox_prop_id</span><span class="p">,</span>
-                    <span class="s2">&quot;visible&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-                    <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="n">MIN_VIEW_COLUMN_WIDTH</span><span class="p">,</span>
+                    <span class="s2">"property_id"</span><span class="p">:</span> <span class="n">checkbox_prop_id</span><span class="p">,</span>
+                    <span class="s2">"visible"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="s2">"width"</span><span class="p">:</span> <span class="n">MIN_VIEW_COLUMN_WIDTH</span><span class="p">,</span>
                 <span class="p">},</span>
             <span class="p">],</span>
         <span class="p">},</span>
@@ -1548,16 +1548,16 @@ status-as-checkbox columns:</p>
 </table>
 <!-- markdownlint-enable -->
 
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">notion_client.helpers</span> <span class="kn">import</span> <span class="n">is_full_page</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">notion_client.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_full_page</span>
 
 <span class="n">full_or_partial_pages</span> <span class="o">=</span> <span class="n">notion</span><span class="o">.</span><span class="n">data_sources</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
-    <span class="n">data_source_id</span><span class="o">=</span><span class="s2">&quot;897e5a76-ae52-4b48-9fdf-e71f5945d1af&quot;</span>
+    <span class="n">data_source_id</span><span class="o">=</span><span class="s2">"897e5a76-ae52-4b48-9fdf-e71f5945d1af"</span>
 <span class="p">)</span>
 
-<span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">full_or_partial_pages</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]:</span>
+<span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">full_or_partial_pages</span><span class="p">[</span><span class="s2">"results"</span><span class="p">]:</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_full_page_or_data_source</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
         <span class="k">continue</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created at: </span><span class="si">{</span><span class="n">page</span><span class="p">[</span><span class="s1">&#39;created_time&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Created at: </span><span class="si">{</span><span class="n">page</span><span class="p">[</span><span class="s1">'created_time'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="utility-functions">Utility functions</h3>
 <p>This package also exports a few utility functions that are helpful for dealing
@@ -1574,7 +1574,7 @@ with any of the paginated APIs.</p>
 <p><strong>Returns:</strong></p>
 <p>A generator over results from the API.</p>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">notion_client.helpers</span> <span class="kn">import</span> <span class="n">iterate_paginated_api</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">notion_client.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">iterate_paginated_api</span>
 
 <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">iterate_paginated_api</span><span class="p">(</span>
     <span class="n">notion</span><span class="o">.</span><span class="n">blocks</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">list</span><span class="p">,</span> <span class="n">block_id</span><span class="o">=</span><span class="n">parent_block_id</span>
@@ -1597,7 +1597,7 @@ enough to fit in memory.</p>
 <p><strong>Returns:</strong></p>
 <p>An array with results from the API.</p>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">notion_client.helpers</span> <span class="kn">import</span> <span class="n">collect_paginated_api</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">notion_client.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">collect_paginated_api</span>
 
 <span class="n">blocks</span> <span class="o">=</span> <span class="n">collect_paginated_api</span><span class="p">(</span>
     <span class="n">notion</span><span class="o">.</span><span class="n">blocks</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">list</span><span class="p">,</span> <span class="n">block_id</span><span class="o">=</span><span class="n">parent_block_id</span>
@@ -1609,15 +1609,15 @@ enough to fit in memory.</p>
 <h3 id="custom-requests">Custom requests</h3>
 <p>To make requests directly to a Notion API endpoint instead of using the
 pre-built families of methods, call the <code>request()</code> method. For example:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 <span class="c1"># POST /v1/comments</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">notion</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
-    <span class="n">path</span><span class="o">=</span><span class="s2">&quot;comments&quot;</span><span class="p">,</span>
-    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="p">,</span>
+    <span class="n">path</span><span class="o">=</span><span class="s2">"comments"</span><span class="p">,</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">"post"</span><span class="p">,</span>
     <span class="n">body</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;parent&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;page_id&quot;</span><span class="p">:</span> <span class="s2">&quot;5c6a28216bb14a7eb6e1c50111515c3d&quot;</span><span class="p">},</span>
-        <span class="s2">&quot;rich_text&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello, world!&quot;</span><span class="p">}}],</span>
+        <span class="s2">"parent"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"page_id"</span><span class="p">:</span> <span class="s2">"5c6a28216bb14a7eb6e1c50111515c3d"</span><span class="p">},</span>
+        <span class="s2">"rich_text"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"text"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Hello, world!"</span><span class="p">}}],</span>
     <span class="p">},</span>
     <span class="c1"># No `query` params in this example, only `body`.</span>
 <span class="p">)</span>
@@ -1644,11 +1644,11 @@ use <code>verify_webhook_signature</code> to confirm each request was sent by No
 was not tampered with in transit. Notion signs every delivery with HMAC-SHA256
 over the raw request body using the subscription's verification token, and
 places the result in the <code>X-Notion-Signature</code> header as <code>sha256=&lt;hex&gt;</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-<span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">HTTPException</span><span class="p">,</span> <span class="n">Request</span>
-<span class="kn">from</span> <span class="nn">notion_client</span> <span class="kn">import</span> <span class="n">verify_webhook_signature</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">HTTPException</span><span class="p">,</span> <span class="n">Request</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">notion_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">verify_webhook_signature</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 
@@ -1656,19 +1656,19 @@ places the result in the <code>X-Notion-Signature</code> header as <code>sha256=
 <span class="c1"># The body must be read as the raw bytes that arrived over the wire —</span>
 <span class="c1"># JSON-parsed and re-serialized bodies will not verify, because</span>
 <span class="c1"># re-serialization changes whitespace and key order.</span>
-<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/notion-webhook&quot;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">notion_webhook</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/notion-webhook"</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">notion_webhook</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
     <span class="n">body</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">verify_webhook_signature</span><span class="p">(</span>
         <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
-        <span class="n">signature</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X-Notion-Signature&quot;</span><span class="p">),</span>
-        <span class="n">verification_token</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;NOTION_WEBHOOK_VERIFICATION_TOKEN&quot;</span><span class="p">],</span>
+        <span class="n">signature</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"X-Notion-Signature"</span><span class="p">),</span>
+        <span class="n">verification_token</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"NOTION_WEBHOOK_VERIFICATION_TOKEN"</span><span class="p">],</span>
     <span class="p">):</span>
-        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;invalid signature&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">"invalid signature"</span><span class="p">)</span>
 
     <span class="n">event</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
     <span class="c1"># ...handle the event</span>
-    <span class="k">return</span> <span class="s2">&quot;ok&quot;</span>
+    <span class="k">return</span> <span class="s2">"ok"</span>
 </code></pre></div>
 <p>The same helper handles the initial verification handshake that Notion sends
 when you first register a webhook URL — the handshake body
@@ -1765,10 +1765,10 @@ any issues with the API platform, please email <code>developers@makenotion.com</
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["naviagation.sections", "navigation.indexes"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["naviagation.sections", "navigation.indexes"], "search": "assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

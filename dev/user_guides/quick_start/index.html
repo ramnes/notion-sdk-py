@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.0">
     
     
       
@@ -27,10 +27,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -1046,18 +1046,18 @@ or use a configuration library like <a href="https://github.com/theskumar/python
 <h2 id="play">Play</h2>
 <p>Copy paste the code, and have fun tweaking it!</p>
 <p>Let's start by initializing the client:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">notion_client</span> <span class="kn">import</span> <span class="n">Client</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">notion_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
 
-<span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;NOTION_TOKEN&quot;</span><span class="p">])</span>
+<span class="n">notion</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"NOTION_TOKEN"</span><span class="p">])</span>
 </code></pre></div>
 <p>Let's now fetch the list of users in the scope of our integration:</p>
 <div class="highlight"><pre><span></span><code><span class="n">users</span> <span class="o">=</span> <span class="n">notion</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
 
-<span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">):</span>
-    <span class="n">name</span><span class="p">,</span> <span class="n">user_type</span> <span class="o">=</span> <span class="n">user</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">user</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
-    <span class="n">emoji</span> <span class="o">=</span> <span class="s2">&quot;😅&quot;</span> <span class="k">if</span> <span class="n">user</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;bot&quot;</span> <span class="k">else</span> <span class="s2">&quot;🙋‍♂️&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> is a </span><span class="si">{</span><span class="n">user_type</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">emoji</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"results"</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">,</span> <span class="n">user_type</span> <span class="o">=</span> <span class="n">user</span><span class="p">[</span><span class="s2">"name"</span><span class="p">],</span> <span class="n">user</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span>
+    <span class="n">emoji</span> <span class="o">=</span> <span class="s2">"😅"</span> <span class="k">if</span> <span class="n">user</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"bot"</span> <span class="k">else</span> <span class="s2">"🙋‍♂️"</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> is a </span><span class="si">{</span><span class="n">user_type</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">emoji</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 <p>It should output something in those lines:</p>
 <div class="highlight"><pre><span></span><code>Aahnik<span class="w"> </span>Daw<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>person<span class="w"> </span>🙋‍♂️
@@ -1130,10 +1130,10 @@ TestIntegation<span class="w"> </span>is<span class="w"> </span>a<span class="w"
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["naviagation.sections", "navigation.indexes"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["naviagation.sections", "navigation.indexes"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

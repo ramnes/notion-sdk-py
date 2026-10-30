@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.8.0">
     
     
       
@@ -27,10 +27,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -1470,57 +1470,57 @@
 <span class="normal">67</span>
 <span class="normal">68</span>
 <span class="normal">69</span>
-<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">APIErrorCode</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Error codes returned in responses from the API.&quot;&quot;&quot;</span>
+<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">APIErrorCode</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Error codes returned in responses from the API."""</span>
 
-    <span class="n">Unauthorized</span> <span class="o">=</span> <span class="s2">&quot;unauthorized&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The bearer token is not valid.&quot;&quot;&quot;</span>
+    <span class="n">Unauthorized</span> <span class="o">=</span> <span class="s2">"unauthorized"</span>
+<span class="w">    </span><span class="sd">"""The bearer token is not valid."""</span>
 
-    <span class="n">RestrictedResource</span> <span class="o">=</span> <span class="s2">&quot;restricted_resource&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Given the bearer token used, the client doesn&#39;t have permission to</span>
-<span class="sd">    perform this operation.&quot;&quot;&quot;</span>
+    <span class="n">RestrictedResource</span> <span class="o">=</span> <span class="s2">"restricted_resource"</span>
+<span class="w">    </span><span class="sd">"""Given the bearer token used, the client doesn't have permission to</span>
+<span class="sd">    perform this operation."""</span>
 
-    <span class="n">ObjectNotFound</span> <span class="o">=</span> <span class="s2">&quot;object_not_found&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Given the bearer token used, the resource does not exist.</span>
+    <span class="n">ObjectNotFound</span> <span class="o">=</span> <span class="s2">"object_not_found"</span>
+<span class="w">    </span><span class="sd">"""Given the bearer token used, the resource does not exist.</span>
 <span class="sd">    This error can also indicate that the resource has not been shared with owner</span>
-<span class="sd">    of the bearer token.&quot;&quot;&quot;</span>
+<span class="sd">    of the bearer token."""</span>
 
-    <span class="n">RateLimited</span> <span class="o">=</span> <span class="s2">&quot;rate_limited&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This request exceeds the number of requests allowed. Slow down and try again.&quot;&quot;&quot;</span>
+    <span class="n">RateLimited</span> <span class="o">=</span> <span class="s2">"rate_limited"</span>
+<span class="w">    </span><span class="sd">"""This request exceeds the number of requests allowed. Slow down and try again."""</span>
 
-    <span class="n">InvalidJSON</span> <span class="o">=</span> <span class="s2">&quot;invalid_json&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The request body could not be decoded as JSON.&quot;&quot;&quot;</span>
+    <span class="n">InvalidJSON</span> <span class="o">=</span> <span class="s2">"invalid_json"</span>
+<span class="w">    </span><span class="sd">"""The request body could not be decoded as JSON."""</span>
 
-    <span class="n">InvalidRequestURL</span> <span class="o">=</span> <span class="s2">&quot;invalid_request_url&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The request URL is not valid.&quot;&quot;&quot;</span>
+    <span class="n">InvalidRequestURL</span> <span class="o">=</span> <span class="s2">"invalid_request_url"</span>
+<span class="w">    </span><span class="sd">"""The request URL is not valid."""</span>
 
-    <span class="n">InvalidRequest</span> <span class="o">=</span> <span class="s2">&quot;invalid_request&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This request is not supported.&quot;&quot;&quot;</span>
+    <span class="n">InvalidRequest</span> <span class="o">=</span> <span class="s2">"invalid_request"</span>
+<span class="w">    </span><span class="sd">"""This request is not supported."""</span>
 
-    <span class="n">InvalidBeta</span> <span class="o">=</span> <span class="s2">&quot;invalid_beta&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `Notion-Beta` header is malformed, unknown, duplicated, or references a</span>
-<span class="sd">    stale revision.&quot;&quot;&quot;</span>
+    <span class="n">InvalidBeta</span> <span class="o">=</span> <span class="s2">"invalid_beta"</span>
+<span class="w">    </span><span class="sd">"""The `Notion-Beta` header is malformed, unknown, duplicated, or references a</span>
+<span class="sd">    stale revision."""</span>
 
-    <span class="n">ValidationError</span> <span class="o">=</span> <span class="s2">&quot;validation_error&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The request body does not match the schema for the expected parameters.&quot;&quot;&quot;</span>
+    <span class="n">ValidationError</span> <span class="o">=</span> <span class="s2">"validation_error"</span>
+<span class="w">    </span><span class="sd">"""The request body does not match the schema for the expected parameters."""</span>
 
-    <span class="n">ConflictError</span> <span class="o">=</span> <span class="s2">&quot;conflict_error&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The transaction could not be completed, potentially due to a data collision.</span>
-<span class="sd">    Make sure the parameters are up to date and try again.&quot;&quot;&quot;</span>
+    <span class="n">ConflictError</span> <span class="o">=</span> <span class="s2">"conflict_error"</span>
+<span class="w">    </span><span class="sd">"""The transaction could not be completed, potentially due to a data collision.</span>
+<span class="sd">    Make sure the parameters are up to date and try again."""</span>
 
-    <span class="n">InternalServerError</span> <span class="o">=</span> <span class="s2">&quot;internal_server_error&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;An unexpected error occurred. Reach out to Notion support.&quot;&quot;&quot;</span>
+    <span class="n">InternalServerError</span> <span class="o">=</span> <span class="s2">"internal_server_error"</span>
+<span class="w">    </span><span class="sd">"""An unexpected error occurred. Reach out to Notion support."""</span>
 
-    <span class="n">ServiceOverload</span> <span class="o">=</span> <span class="s2">&quot;service_overload&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Notion is overloaded. Slow down and try again later.&quot;&quot;&quot;</span>
+    <span class="n">ServiceOverload</span> <span class="o">=</span> <span class="s2">"service_overload"</span>
+<span class="w">    </span><span class="sd">"""Notion is overloaded. Slow down and try again later."""</span>
 
-    <span class="n">ServiceUnavailable</span> <span class="o">=</span> <span class="s2">&quot;service_unavailable&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Notion is unavailable. Try again later.</span>
+    <span class="n">ServiceUnavailable</span> <span class="o">=</span> <span class="s2">"service_unavailable"</span>
+<span class="w">    </span><span class="sd">"""Notion is unavailable. Try again later.</span>
 <span class="sd">    This can occur when the time to respond to a request takes longer than 60 seconds,</span>
-<span class="sd">    the maximum request timeout.&quot;&quot;&quot;</span>
+<span class="sd">    the maximum request timeout."""</span>
 
-    <span class="n">GatewayTimeout</span> <span class="o">=</span> <span class="s2">&quot;gateway_timeout&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The request timed out on the server side.&quot;&quot;&quot;</span>
+    <span class="n">GatewayTimeout</span> <span class="o">=</span> <span class="s2">"gateway_timeout"</span>
+<span class="w">    </span><span class="sd">"""The request timed out on the server side."""</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -1539,7 +1539,7 @@
 
 
 <h3 id="notion_client.errors.APIErrorCode.ConflictError" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ConflictError</span> <span class="o">=</span> <span class="s1">&#39;conflict_error&#39;</span></code>
+            <code class="highlight language-python"><span class="n">ConflictError</span> <span class="o">=</span> <span class="s1">'conflict_error'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1563,7 +1563,7 @@ Make sure the parameters are up to date and try again.</p>
 
 
 <h3 id="notion_client.errors.APIErrorCode.GatewayTimeout" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">GatewayTimeout</span> <span class="o">=</span> <span class="s1">&#39;gateway_timeout&#39;</span></code>
+            <code class="highlight language-python"><span class="n">GatewayTimeout</span> <span class="o">=</span> <span class="s1">'gateway_timeout'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1586,7 +1586,7 @@ Make sure the parameters are up to date and try again.</p>
 
 
 <h3 id="notion_client.errors.APIErrorCode.InternalServerError" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">InternalServerError</span> <span class="o">=</span> <span class="s1">&#39;internal_server_error&#39;</span></code>
+            <code class="highlight language-python"><span class="n">InternalServerError</span> <span class="o">=</span> <span class="s1">'internal_server_error'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1609,7 +1609,7 @@ Make sure the parameters are up to date and try again.</p>
 
 
 <h3 id="notion_client.errors.APIErrorCode.InvalidBeta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">InvalidBeta</span> <span class="o">=</span> <span class="s1">&#39;invalid_beta&#39;</span></code>
+            <code class="highlight language-python"><span class="n">InvalidBeta</span> <span class="o">=</span> <span class="s1">'invalid_beta'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1633,7 +1633,7 @@ stale revision.</p>
 
 
 <h3 id="notion_client.errors.APIErrorCode.InvalidJSON" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">InvalidJSON</span> <span class="o">=</span> <span class="s1">&#39;invalid_json&#39;</span></code>
+            <code class="highlight language-python"><span class="n">InvalidJSON</span> <span class="o">=</span> <span class="s1">'invalid_json'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1656,7 +1656,7 @@ stale revision.</p>
 
 
 <h3 id="notion_client.errors.APIErrorCode.InvalidRequest" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">InvalidRequest</span> <span class="o">=</span> <span class="s1">&#39;invalid_request&#39;</span></code>
+            <code class="highlight language-python"><span class="n">InvalidRequest</span> <span class="o">=</span> <span class="s1">'invalid_request'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1679,7 +1679,7 @@ stale revision.</p>
 
 
 <h3 id="notion_client.errors.APIErrorCode.InvalidRequestURL" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">InvalidRequestURL</span> <span class="o">=</span> <span class="s1">&#39;invalid_request_url&#39;</span></code>
+            <code class="highlight language-python"><span class="n">InvalidRequestURL</span> <span class="o">=</span> <span class="s1">'invalid_request_url'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1702,7 +1702,7 @@ stale revision.</p>
 
 
 <h3 id="notion_client.errors.APIErrorCode.ObjectNotFound" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ObjectNotFound</span> <span class="o">=</span> <span class="s1">&#39;object_not_found&#39;</span></code>
+            <code class="highlight language-python"><span class="n">ObjectNotFound</span> <span class="o">=</span> <span class="s1">'object_not_found'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1727,7 +1727,7 @@ of the bearer token.</p>
 
 
 <h3 id="notion_client.errors.APIErrorCode.RateLimited" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">RateLimited</span> <span class="o">=</span> <span class="s1">&#39;rate_limited&#39;</span></code>
+            <code class="highlight language-python"><span class="n">RateLimited</span> <span class="o">=</span> <span class="s1">'rate_limited'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1750,7 +1750,7 @@ of the bearer token.</p>
 
 
 <h3 id="notion_client.errors.APIErrorCode.RestrictedResource" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">RestrictedResource</span> <span class="o">=</span> <span class="s1">&#39;restricted_resource&#39;</span></code>
+            <code class="highlight language-python"><span class="n">RestrictedResource</span> <span class="o">=</span> <span class="s1">'restricted_resource'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1774,7 +1774,7 @@ perform this operation.</p>
 
 
 <h3 id="notion_client.errors.APIErrorCode.ServiceOverload" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ServiceOverload</span> <span class="o">=</span> <span class="s1">&#39;service_overload&#39;</span></code>
+            <code class="highlight language-python"><span class="n">ServiceOverload</span> <span class="o">=</span> <span class="s1">'service_overload'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1797,7 +1797,7 @@ perform this operation.</p>
 
 
 <h3 id="notion_client.errors.APIErrorCode.ServiceUnavailable" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ServiceUnavailable</span> <span class="o">=</span> <span class="s1">&#39;service_unavailable&#39;</span></code>
+            <code class="highlight language-python"><span class="n">ServiceUnavailable</span> <span class="o">=</span> <span class="s1">'service_unavailable'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1822,7 +1822,7 @@ the maximum request timeout.</p>
 
 
 <h3 id="notion_client.errors.APIErrorCode.Unauthorized" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">Unauthorized</span> <span class="o">=</span> <span class="s1">&#39;unauthorized&#39;</span></code>
+            <code class="highlight language-python"><span class="n">Unauthorized</span> <span class="o">=</span> <span class="s1">'unauthorized'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1845,7 +1845,7 @@ the maximum request timeout.</p>
 
 
 <h3 id="notion_client.errors.APIErrorCode.ValidationError" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ValidationError</span> <span class="o">=</span> <span class="s1">&#39;validation_error&#39;</span></code>
+            <code class="highlight language-python"><span class="n">ValidationError</span> <span class="o">=</span> <span class="s1">'validation_error'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1907,12 +1907,12 @@ the maximum request timeout.</p>
 <span class="normal">75</span>
 <span class="normal">76</span>
 <span class="normal">77</span>
-<span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ClientErrorCode</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Error codes generated for client errors.&quot;&quot;&quot;</span>
+<span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ClientErrorCode</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Error codes generated for client errors."""</span>
 
-    <span class="n">RequestTimeout</span> <span class="o">=</span> <span class="s2">&quot;notionhq_client_request_timeout&quot;</span>
-    <span class="n">ResponseError</span> <span class="o">=</span> <span class="s2">&quot;notionhq_client_response_error&quot;</span>
-    <span class="n">InvalidPathParameter</span> <span class="o">=</span> <span class="s2">&quot;notionhq_client_invalid_path_parameter&quot;</span>
+    <span class="n">RequestTimeout</span> <span class="o">=</span> <span class="s2">"notionhq_client_request_timeout"</span>
+    <span class="n">ResponseError</span> <span class="o">=</span> <span class="s2">"notionhq_client_response_error"</span>
+    <span class="n">InvalidPathParameter</span> <span class="o">=</span> <span class="s2">"notionhq_client_invalid_path_parameter"</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -1985,22 +1985,22 @@ path traversal sequences (..) that could alter the intended API endpoint.</p>
 <span class="normal">147</span>
 <span class="normal">148</span>
 <span class="normal">149</span>
-<span class="normal">150</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">InvalidPathParameterError</span><span class="p">(</span><span class="n">NotionClientErrorBase</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Error thrown when a path parameter contains invalid characters such as</span>
-<span class="sd">    path traversal sequences (..) that could alter the intended API endpoint.&quot;&quot;&quot;</span>
+<span class="normal">150</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">InvalidPathParameterError</span><span class="p">(</span><span class="n">NotionClientErrorBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Error thrown when a path parameter contains invalid characters such as</span>
+<span class="sd">    path traversal sequences (..) that could alter the intended API endpoint."""</span>
 
     <span class="n">code</span><span class="p">:</span> <span class="n">ClientErrorCode</span> <span class="o">=</span> <span class="n">ClientErrorCode</span><span class="o">.</span><span class="n">InvalidPathParameter</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;Path parameter contains invalid characters that could alter the request path&quot;</span>
+            <span class="s2">"Path parameter contains invalid characters that could alter the request path"</span>
         <span class="p">),</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">is_invalid_path_parameter_error</span><span class="p">(</span><span class="n">error</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_invalid_path_parameter_error</span><span class="p">(</span><span class="n">error</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_is_notion_client_error_with_code</span><span class="p">(</span>
             <span class="n">error</span><span class="p">,</span>
             <span class="p">{</span><span class="n">ClientErrorCode</span><span class="o">.</span><span class="n">InvalidPathParameter</span><span class="o">.</span><span class="n">value</span><span class="p">},</span>
@@ -2063,12 +2063,12 @@ path traversal sequences (..) that could alter the intended API endpoint.</p>
 <span class="normal">88</span>
 <span class="normal">89</span>
 <span class="normal">90</span>
-<span class="normal">91</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">NotionClientErrorBase</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base error type for all Notion client errors.&quot;&quot;&quot;</span>
+<span class="normal">91</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">NotionClientErrorBase</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Base error type for all Notion client errors."""</span>
 
     <span class="n">code</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NotionErrorCode</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -2142,23 +2142,23 @@ path traversal sequences (..) that could alter the intended API endpoint.</p>
 <span class="normal">125</span>
 <span class="normal">126</span>
 <span class="normal">127</span>
-<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">RequestTimeoutError</span><span class="p">(</span><span class="n">NotionClientErrorBase</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Error thrown by the client if a request times out.&quot;&quot;&quot;</span>
+<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">RequestTimeoutError</span><span class="p">(</span><span class="n">NotionClientErrorBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Error thrown by the client if a request times out."""</span>
 
     <span class="n">code</span><span class="p">:</span> <span class="n">ClientErrorCode</span> <span class="o">=</span> <span class="n">ClientErrorCode</span><span class="o">.</span><span class="n">RequestTimeout</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Request to Notion API has timed out&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Request to Notion API has timed out"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">is_request_timeout_error</span><span class="p">(</span><span class="n">error</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_request_timeout_error</span><span class="p">(</span><span class="n">error</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_is_notion_client_error_with_code</span><span class="p">(</span>
             <span class="n">error</span><span class="p">,</span>
             <span class="p">{</span><span class="n">ClientErrorCode</span><span class="o">.</span><span class="n">RequestTimeout</span><span class="o">.</span><span class="n">value</span><span class="p">},</span>
         <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">reject_after_timeout</span><span class="p">(</span><span class="n">coro</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">timeout_ms</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">reject_after_timeout</span><span class="p">(</span><span class="n">coro</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">timeout_ms</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait_for</span><span class="p">(</span><span class="n">coro</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout_ms</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">:</span>
@@ -2247,17 +2247,17 @@ a properly-formatted error.</p>
 <span class="normal">269</span>
 <span class="normal">270</span>
 <span class="normal">271</span>
-<span class="normal">272</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">UnknownHTTPResponseError</span><span class="p">(</span><span class="n">HTTPResponseError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Error thrown if an API call responds with an unknown error code, or does not respond with</span>
+<span class="normal">272</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">UnknownHTTPResponseError</span><span class="p">(</span><span class="n">HTTPResponseError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Error thrown if an API call responds with an unknown error code, or does not respond with</span>
 <span class="sd">    a properly-formatted error.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">status</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Headers</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">raw_body_text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">raw_body_text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">headers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">headers</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Headers</span><span class="p">()</span>
@@ -2274,7 +2274,7 @@ a properly-formatted error.</p>
         <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">is_unknown_http_response_error</span><span class="p">(</span><span class="n">error</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_unknown_http_response_error</span><span class="p">(</span><span class="n">error</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_is_notion_client_error_with_code</span><span class="p">(</span>
             <span class="n">error</span><span class="p">,</span>
             <span class="p">{</span><span class="n">ClientErrorCode</span><span class="o">.</span><span class="n">ResponseError</span><span class="o">.</span><span class="n">value</span><span class="p">},</span>
@@ -2340,24 +2340,24 @@ including URL-encoded variants like %2e%2e.</p>
 <span class="normal">168</span>
 <span class="normal">169</span>
 <span class="normal">170</span>
-<span class="normal">171</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_request_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validates that a request path does not contain path traversal sequences.</span>
-<span class="sd">    Raises InvalidPathParameterError if the path contains &quot;..&quot; segments,</span>
-<span class="sd">    including URL-encoded variants like %2e%2e.&quot;&quot;&quot;</span>
+<span class="normal">171</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">validate_request_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Validates that a request path does not contain path traversal sequences.</span>
+<span class="sd">    Raises InvalidPathParameterError if the path contains ".." segments,</span>
+<span class="sd">    including URL-encoded variants like %2e%2e."""</span>
 
     <span class="c1"># Check for literal path traversal</span>
-    <span class="k">if</span> <span class="s2">&quot;..&quot;</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">".."</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">InvalidPathParameterError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;Request path &quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&quot; contains path traversal sequence &quot;..&quot;&#39;</span>
+            <span class="sa">f</span><span class="s1">'Request path "</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">" contains path traversal sequence ".."'</span>
         <span class="p">)</span>
 
-    <span class="c1"># Check for URL-encoded path traversal (%2e = &#39;.&#39;)</span>
+    <span class="c1"># Check for URL-encoded path traversal (%2e = '.')</span>
     <span class="c1"># Only decode if path contains potential encoded dots</span>
-    <span class="k">if</span> <span class="s2">&quot;</span><span class="si">%2e</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">path</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+    <span class="k">if</span> <span class="s2">"</span><span class="si">%2e</span><span class="s2">"</span> <span class="ow">in</span> <span class="n">path</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
         <span class="n">decoded</span> <span class="o">=</span> <span class="n">unquote</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;..&quot;</span> <span class="ow">in</span> <span class="n">decoded</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">".."</span> <span class="ow">in</span> <span class="n">decoded</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">InvalidPathParameterError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;Request path &quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&quot; contains encoded path traversal sequence&#39;</span>
+                <span class="sa">f</span><span class="s1">'Request path "</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">" contains encoded path traversal sequence'</span>
             <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -2437,10 +2437,10 @@ including URL-encoded variants like %2e%2e.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["naviagation.sections", "navigation.indexes"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["naviagation.sections", "navigation.indexes"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>
