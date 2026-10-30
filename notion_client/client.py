@@ -148,12 +148,11 @@ class BaseClient:
     def client(self, client: Union[httpx.Client, httpx.AsyncClient]) -> None:
         client.base_url = httpx.URL(f"{self.options.base_url}/v1/")
         client.timeout = httpx.Timeout(timeout=self.options.timeout_ms / 1_000)
-        client.headers = httpx.Headers(
-            {
-                "Notion-Version": self.options.notion_version,
-                "User-Agent": "ramnes/notion-sdk-py@3.1.0",
-            }
-        )
+        client.headers.setdefault("Notion-Version", self.options.notion_version)
+        # httpx sets its own User-Agent on every client, so replace that one too
+        user_agent = client.headers.get("User-Agent")
+        if user_agent is None or user_agent == f"python-httpx/{httpx.__version__}":
+            client.headers["User-Agent"] = "ramnes/notion-sdk-py@3.1.0"
         if self.options.auth:
             client.headers["Authorization"] = f"Bearer {self.options.auth}"
         self._clients.append(client)
@@ -347,7 +346,6 @@ class Client(BaseClient):
         super().__init__(client, options, **kwargs)
 
     def __enter__(self) -> "Client":
-        self.client = httpx.Client()
         self.client.__enter__()
         return self
 
@@ -358,7 +356,6 @@ class Client(BaseClient):
         traceback: TracebackType,
     ) -> None:
         self.client.__exit__(exc_type, exc_value, traceback)
-        del self._clients[-1]
 
     def close(self) -> None:
         """Close the connection pool of the current inner client."""
@@ -436,7 +433,6 @@ class AsyncClient(BaseClient):
         super().__init__(client, options, **kwargs)
 
     async def __aenter__(self) -> "AsyncClient":
-        self.client = httpx.AsyncClient()
         await self.client.__aenter__()
         return self
 
@@ -447,7 +443,6 @@ class AsyncClient(BaseClient):
         traceback: TracebackType,
     ) -> None:
         await self.client.__aexit__(exc_type, exc_value, traceback)
-        del self._clients[-1]
 
     async def aclose(self) -> None:
         """Close the connection pool of the current inner client."""
