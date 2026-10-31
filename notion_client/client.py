@@ -10,7 +10,7 @@ from abc import abstractmethod
 from dataclasses import dataclass, field
 from email.utils import parsedate_to_datetime
 from types import TracebackType
-from typing import Any, Dict, List, Optional, Type, Union
+from typing import Any, Dict, Optional, Type, Union
 
 import httpx
 from httpx import Request, Response
@@ -124,7 +124,6 @@ class BaseClient:
             self._initial_retry_delay_ms = retry_opts.initial_retry_delay_ms
             self._max_retry_delay_ms = retry_opts.max_retry_delay_ms
 
-        self._clients: List[Union[httpx.Client, httpx.AsyncClient]] = []
         self.client = client
 
         self.blocks = BlocksEndpoint(self)
@@ -142,7 +141,7 @@ class BaseClient:
 
     @property
     def client(self) -> Union[httpx.Client, httpx.AsyncClient]:
-        return self._clients[-1]
+        return self._client
 
     @client.setter
     def client(self, client: Union[httpx.Client, httpx.AsyncClient]) -> None:
@@ -155,7 +154,7 @@ class BaseClient:
             client.headers["User-Agent"] = "ramnes/notion-sdk-py@3.1.0"
         if self.options.auth:
             client.headers["Authorization"] = f"Bearer {self.options.auth}"
-        self._clients.append(client)
+        self._client = client
 
     def _build_request(
         self,
