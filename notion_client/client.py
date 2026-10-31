@@ -10,7 +10,7 @@ from abc import abstractmethod
 from dataclasses import dataclass, field
 from email.utils import parsedate_to_datetime
 from types import TracebackType
-from typing import Any, Dict, List, Optional, Type, Union
+from typing import Any, Awaitable, Dict, Generic, List, Optional, Type, Union
 
 import httpx
 from httpx import Request, Response
@@ -47,7 +47,7 @@ from notion_client.errors import (
     validate_request_path,
 )
 from notion_client.logging import make_console_logger
-from notion_client.typing import SyncAsync
+from notion_client.typing import NotionResponse, ResponseT
 
 
 @dataclass
@@ -94,7 +94,7 @@ class ClientOptions:
     retry: Union[RetryOptions, bool] = field(default_factory=RetryOptions)
 
 
-class BaseClient:
+class BaseClient(Generic[ResponseT]):
     def __init__(
         self,
         client: Union[httpx.Client, httpx.AsyncClient],
@@ -127,18 +127,18 @@ class BaseClient:
         self._clients: List[Union[httpx.Client, httpx.AsyncClient]] = []
         self.client = client
 
-        self.blocks = BlocksEndpoint(self)
-        self.databases = DatabasesEndpoint(self)
-        self.data_sources = DataSourcesEndpoint(self)
-        self.custom_emojis = CustomEmojisEndpoint(self)
-        self.users = UsersEndpoint(self)
-        self.pages = PagesEndpoint(self)
-        self.views = ViewsEndpoint(self)
-        self.search = SearchEndpoint(self)
-        self.comments = CommentsEndpoint(self)
-        self.async_tasks = AsyncTasksEndpoint(self)
-        self.file_uploads = FileUploadsEndpoint(self)
-        self.oauth = OAuthEndpoint(self)
+        self.blocks: BlocksEndpoint[ResponseT] = BlocksEndpoint(self)
+        self.databases: DatabasesEndpoint[ResponseT] = DatabasesEndpoint(self)
+        self.data_sources: DataSourcesEndpoint[ResponseT] = DataSourcesEndpoint(self)
+        self.custom_emojis: CustomEmojisEndpoint[ResponseT] = CustomEmojisEndpoint(self)
+        self.users: UsersEndpoint[ResponseT] = UsersEndpoint(self)
+        self.pages: PagesEndpoint[ResponseT] = PagesEndpoint(self)
+        self.views: ViewsEndpoint[ResponseT] = ViewsEndpoint(self)
+        self.search: SearchEndpoint[ResponseT] = SearchEndpoint(self)
+        self.comments: CommentsEndpoint[ResponseT] = CommentsEndpoint(self)
+        self.async_tasks: AsyncTasksEndpoint[ResponseT] = AsyncTasksEndpoint(self)
+        self.file_uploads: FileUploadsEndpoint[ResponseT] = FileUploadsEndpoint(self)
+        self.oauth: OAuthEndpoint[ResponseT] = OAuthEndpoint(self)
 
     @property
     def client(self) -> Union[httpx.Client, httpx.AsyncClient]:
@@ -208,14 +208,15 @@ class BaseClient:
             headers=headers,
         )
 
-    def _parse_response(self, response: Response) -> Any:
+    def _parse_response(self, response: Response) -> NotionResponse:
         try:
             response.raise_for_status()
         except httpx.HTTPStatusError as error:
             body_text = error.response.text
             raise build_request_error(error.response, body_text)
 
-        return response.json()
+        result: NotionResponse = response.json()
+        return result
 
     def _extract_str_field(self, obj: Any, name: str) -> Optional[str]:
         """Extracts a string field from an object or dict if present."""
@@ -326,12 +327,12 @@ class BaseClient:
         body: Optional[Dict[Any, Any]] = None,
         form_data: Optional[Dict[Any, Any]] = None,
         auth: Optional[Union[str, Dict[str, str]]] = None,
-    ) -> SyncAsync[Any]:
+    ) -> ResponseT:
         # noqa
         pass
 
 
-class Client(BaseClient):
+class Client(BaseClient[NotionResponse]):
     """Synchronous client for Notion's API."""
 
     client: httpx.Client
@@ -372,7 +373,7 @@ class Client(BaseClient):
         body: Optional[Dict[Any, Any]] = None,
         form_data: Optional[Dict[Any, Any]] = None,
         auth: Optional[Union[str, Dict[str, str]]] = None,
-    ) -> Any:
+    ) -> NotionResponse:
         """Send an HTTP request."""
         validate_request_path(path)
         self.logger.info(f"{method} {self.client.base_url}{path}")
@@ -386,7 +387,7 @@ class Client(BaseClient):
         body: Optional[Dict[Any, Any]],
         form_data: Optional[Dict[Any, Any]],
         auth: Optional[Union[str, Dict[str, str]]],
-    ) -> Any:
+    ) -> NotionResponse:
         """Executes the request with retry logic."""
         attempt = 0
         while True:
@@ -409,7 +410,9 @@ class Client(BaseClient):
                 time.sleep(delay)
                 attempt += 1
 
-    def _execute_single_request(self, request: Request, method: str, path: str) -> Any:
+    def _execute_single_request(
+        self, request: Request, method: str, path: str
+    ) -> NotionResponse:
         """Executes a single HTTP request (no retry)."""
         try:
             response = self.client.send(request)
@@ -420,7 +423,7 @@ class Client(BaseClient):
         return response_body
 
 
-class AsyncClient(BaseClient):
+class AsyncClient(BaseClient[Awaitable[NotionResponse]]):
     """Asynchronous client for Notion's API."""
 
     client: httpx.AsyncClient
@@ -461,7 +464,7 @@ class AsyncClient(BaseClient):
         body: Optional[Dict[Any, Any]] = None,
         form_data: Optional[Dict[Any, Any]] = None,
         auth: Optional[Union[str, Dict[str, str]]] = None,
-    ) -> Any:
+    ) -> NotionResponse:
         """Send an HTTP request asynchronously."""
         validate_request_path(path)
         self.logger.info(f"{method} {self.client.base_url}{path}")
@@ -477,7 +480,7 @@ class AsyncClient(BaseClient):
         body: Optional[Dict[Any, Any]],
         form_data: Optional[Dict[Any, Any]],
         auth: Optional[Union[str, Dict[str, str]]],
-    ) -> Any:
+    ) -> NotionResponse:
         """Executes the request with retry logic."""
         attempt = 0
         while True:
@@ -502,7 +505,7 @@ class AsyncClient(BaseClient):
 
     async def _execute_single_request(
         self, request: Request, method: str, path: str
-    ) -> Any:
+    ) -> NotionResponse:
         """Executes a single HTTP request (no retry)."""
         try:
             response = await self.client.send(request)

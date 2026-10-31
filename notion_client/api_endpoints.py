@@ -1,21 +1,21 @@
 """Notion API endpoints."""  # noqa: E501
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Generic
 
 from notion_client.helpers import pick
-from notion_client.typing import SyncAsync
+from notion_client.typing import ResponseT
 
 if TYPE_CHECKING:  # pragma: no cover
     from notion_client.client import BaseClient
 
 
-class Endpoint:
-    def __init__(self, parent: "BaseClient") -> None:
+class Endpoint(Generic[ResponseT]):
+    def __init__(self, parent: "BaseClient[ResponseT]") -> None:
         self.parent = parent
 
 
-class BlocksChildrenEndpoint(Endpoint):
-    def append(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
+class BlocksChildrenEndpoint(Endpoint[ResponseT]):
+    def append(self, block_id: str, **kwargs: Any) -> ResponseT:
         """Create and append new children blocks to the block using the ID specified.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/patch-block-children)*
@@ -27,7 +27,7 @@ class BlocksChildrenEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def list(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def list(self, block_id: str, **kwargs: Any) -> ResponseT:
         """Return a paginated array of child [block objects](https://developers.notion.com/reference/block) contained in the block.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/get-block-children)*
@@ -40,8 +40,8 @@ class BlocksChildrenEndpoint(Endpoint):
         )
 
 
-class BlocksMeetingNotesEndpoint(Endpoint):
-    def create(self, **kwargs: Any) -> SyncAsync[Any]:
+class BlocksMeetingNotesEndpoint(Endpoint[ResponseT]):
+    def create(self, **kwargs: Any) -> ResponseT:
         """Create a meeting note from a file upload or an existing block.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-meeting-note)*
@@ -53,7 +53,7 @@ class BlocksMeetingNotesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def query(self, **kwargs: Any) -> SyncAsync[Any]:
+    def query(self, **kwargs: Any) -> ResponseT:
         """Query meeting notes.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/query-meeting-notes)*
@@ -66,13 +66,13 @@ class BlocksMeetingNotesEndpoint(Endpoint):
         )
 
 
-class BlocksEndpoint(Endpoint):
+class BlocksEndpoint(Endpoint[ResponseT]):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.children = BlocksChildrenEndpoint(*args, **kwargs)
         self.meeting_notes = BlocksMeetingNotesEndpoint(*args, **kwargs)
 
-    def retrieve(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def retrieve(self, block_id: str, **kwargs: Any) -> ResponseT:
         """Retrieve a [Block object](https://developers.notion.com/reference/block) using the ID specified.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-block)*
@@ -81,7 +81,7 @@ class BlocksEndpoint(Endpoint):
             path=f"blocks/{block_id}", method="GET", auth=kwargs.get("auth")
         )
 
-    def update(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def update(self, block_id: str, **kwargs: Any) -> ResponseT:
         """Update the content for the specified `block_id` based on the block type.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/update-a-block)*
@@ -128,7 +128,7 @@ class BlocksEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def delete(self, block_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def delete(self, block_id: str, **kwargs: Any) -> ResponseT:
         """Set a [Block object](https://developers.notion.com/reference/block), including page blocks, to `archived: true`.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/delete-a-block)*
@@ -140,8 +140,8 @@ class BlocksEndpoint(Endpoint):
         )
 
 
-class DatabasesEndpoint(Endpoint):
-    def retrieve(self, database_id: str, **kwargs: Any) -> SyncAsync[Any]:
+class DatabasesEndpoint(Endpoint[ResponseT]):
+    def retrieve(self, database_id: str, **kwargs: Any) -> ResponseT:
         """Retrieves a [database object](https://developers.notion.com/reference/database) for a provided database ID.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/database-retrieve)*
@@ -152,7 +152,7 @@ class DatabasesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def update(self, database_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def update(self, database_id: str, **kwargs: Any) -> ResponseT:
         """Update the title or properties of an existing database.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/update-a-database)*
@@ -175,7 +175,7 @@ class DatabasesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def create(self, **kwargs: Any) -> SyncAsync[Any]:
+    def create(self, **kwargs: Any) -> ResponseT:
         """Create a new database.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-a-database)*
@@ -199,8 +199,8 @@ class DatabasesEndpoint(Endpoint):
         )
 
 
-class DataSourcesEndpoint(Endpoint):
-    def retrieve(self, data_source_id: str, **kwargs: Any) -> SyncAsync[Any]:
+class DataSourcesEndpoint(Endpoint[ResponseT]):
+    def retrieve(self, data_source_id: str, **kwargs: Any) -> ResponseT:
         """Retrieve a [data source](https://developers.notion.com/reference/data-source) object for a provided data source ID.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-data-source)*
@@ -209,7 +209,7 @@ class DataSourcesEndpoint(Endpoint):
             path=f"data_sources/{data_source_id}", method="GET", auth=kwargs.get("auth")
         )
 
-    def query(self, data_source_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def query(self, data_source_id: str, **kwargs: Any) -> ResponseT:
         """Get a list of [Pages](https://developers.notion.com/reference/page) and/or [Data Sources](https://developers.notion.com/reference/data-source) contained in the data source.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/query-a-data-source)*
@@ -232,7 +232,7 @@ class DataSourcesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def create(self, **kwargs: Any) -> SyncAsync[Any]:
+    def create(self, **kwargs: Any) -> ResponseT:
         """Add an additional [data source](https://developers.notion.com/reference/data-source) to an existing [database](https://developers.notion.com/reference/database).
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-a-data-source)*
@@ -244,7 +244,7 @@ class DataSourcesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def update(self, data_source_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def update(self, data_source_id: str, **kwargs: Any) -> ResponseT:
         """Updates the [data source](https://developers.notion.com/reference/data-source) object of a specified data source under a database.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/update-a-data-source)*
@@ -258,7 +258,7 @@ class DataSourcesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def list_templates(self, data_source_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def list_templates(self, data_source_id: str, **kwargs: Any) -> ResponseT:
         """List page templates that are available for a data source.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/list-data-source-templates)*
@@ -271,8 +271,8 @@ class DataSourcesEndpoint(Endpoint):
         )
 
 
-class PagesPropertiesEndpoint(Endpoint):
-    def retrieve(self, page_id: str, property_id: str, **kwargs: Any) -> SyncAsync[Any]:
+class PagesPropertiesEndpoint(Endpoint[ResponseT]):
+    def retrieve(self, page_id: str, property_id: str, **kwargs: Any) -> ResponseT:
         """Retrieve a `property_item` object for a given `page_id` and `property_id`.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-page-property)*
@@ -285,12 +285,12 @@ class PagesPropertiesEndpoint(Endpoint):
         )
 
 
-class PagesEndpoint(Endpoint):
+class PagesEndpoint(Endpoint[ResponseT]):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.properties = PagesPropertiesEndpoint(*args, **kwargs)
 
-    def create(self, **kwargs: Any) -> SyncAsync[Any]:
+    def create(self, **kwargs: Any) -> ResponseT:
         """Create a new page in the specified database or as a child of an existing page.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/post-page)*
@@ -316,7 +316,7 @@ class PagesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def retrieve(self, page_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def retrieve(self, page_id: str, **kwargs: Any) -> ResponseT:
         """Retrieve a [Page object](https://developers.notion.com/reference/page) using the ID specified.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-page)*
@@ -328,7 +328,7 @@ class PagesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def update(self, page_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def update(self, page_id: str, **kwargs: Any) -> ResponseT:
         """Update [page property values](https://developers.notion.com/reference/page#property-value-object) for the specified page.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/patch-page)*
@@ -353,7 +353,7 @@ class PagesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def retrieve_markdown(self, page_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def retrieve_markdown(self, page_id: str, **kwargs: Any) -> ResponseT:
         """Retrieve a page as markdown.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-page-markdown)*
@@ -365,7 +365,7 @@ class PagesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def update_markdown(self, page_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def update_markdown(self, page_id: str, **kwargs: Any) -> ResponseT:
         """Update a page's content as markdown.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/update-page-markdown)*
@@ -385,7 +385,7 @@ class PagesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def move(self, page_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def move(self, page_id: str, **kwargs: Any) -> ResponseT:
         """Use this API to move an existing Notion page to a new parent.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/move-page)*
@@ -398,8 +398,8 @@ class PagesEndpoint(Endpoint):
         )
 
 
-class UsersEndpoint(Endpoint):
-    def list(self, **kwargs: Any) -> SyncAsync[Any]:
+class UsersEndpoint(Endpoint[ResponseT]):
+    def list(self, **kwargs: Any) -> ResponseT:
         """Return a paginated list of [Users](https://developers.notion.com/reference/user) for the workspace.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/get-users)*
@@ -411,7 +411,7 @@ class UsersEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def retrieve(self, user_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def retrieve(self, user_id: str, **kwargs: Any) -> ResponseT:
         """Retrieve a [User](https://developers.notion.com/reference/user) using the ID specified.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/get-user)*
@@ -420,7 +420,7 @@ class UsersEndpoint(Endpoint):
             path=f"users/{user_id}", method="GET", auth=kwargs.get("auth")
         )
 
-    def me(self, **kwargs: Any) -> SyncAsync[Any]:
+    def me(self, **kwargs: Any) -> ResponseT:
         """Retrieve the bot [User](https://developers.notion.com/reference/user) associated with the API token.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/get-self)*
@@ -430,8 +430,8 @@ class UsersEndpoint(Endpoint):
         )
 
 
-class ViewsQueriesEndpoint(Endpoint):
-    def create(self, view_id: str, **kwargs: Any) -> SyncAsync[Any]:
+class ViewsQueriesEndpoint(Endpoint[ResponseT]):
+    def create(self, view_id: str, **kwargs: Any) -> ResponseT:
         """Create a view query.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-view-query)*
@@ -443,7 +443,7 @@ class ViewsQueriesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def results(self, view_id: str, query_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def results(self, view_id: str, query_id: str, **kwargs: Any) -> ResponseT:
         """Get view query results.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/get-view-query-results)*
@@ -455,7 +455,7 @@ class ViewsQueriesEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def delete(self, view_id: str, query_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def delete(self, view_id: str, query_id: str, **kwargs: Any) -> ResponseT:
         """Delete a view query.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/delete-view-query)*
@@ -467,12 +467,12 @@ class ViewsQueriesEndpoint(Endpoint):
         )
 
 
-class ViewsEndpoint(Endpoint):
+class ViewsEndpoint(Endpoint[ResponseT]):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.queries = ViewsQueriesEndpoint(*args, **kwargs)
 
-    def create(self, **kwargs: Any) -> SyncAsync[Any]:
+    def create(self, **kwargs: Any) -> ResponseT:
         """Create a view.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-view)*
@@ -498,7 +498,7 @@ class ViewsEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def retrieve(self, view_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def retrieve(self, view_id: str, **kwargs: Any) -> ResponseT:
         """Retrieve a view.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-view)*
@@ -509,7 +509,7 @@ class ViewsEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def update(self, view_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def update(self, view_id: str, **kwargs: Any) -> ResponseT:
         """Update a view.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/update-a-view)*
@@ -528,7 +528,7 @@ class ViewsEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def delete(self, view_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def delete(self, view_id: str, **kwargs: Any) -> ResponseT:
         """Delete a view.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/delete-view)*
@@ -539,7 +539,7 @@ class ViewsEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def list(self, **kwargs: Any) -> SyncAsync[Any]:
+    def list(self, **kwargs: Any) -> ResponseT:
         """List views for a database.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/list-views)*
@@ -554,8 +554,8 @@ class ViewsEndpoint(Endpoint):
         )
 
 
-class SearchEndpoint(Endpoint):
-    def __call__(self, **kwargs: Any) -> SyncAsync[Any]:
+class SearchEndpoint(Endpoint[ResponseT]):
+    def __call__(self, **kwargs: Any) -> ResponseT:
         """Search all pages and child pages that are shared with the integration.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/post-search)*
@@ -569,8 +569,8 @@ class SearchEndpoint(Endpoint):
         )
 
 
-class CustomEmojisEndpoint(Endpoint):
-    def list(self, **kwargs: Any) -> SyncAsync[Any]:
+class CustomEmojisEndpoint(Endpoint[ResponseT]):
+    def list(self, **kwargs: Any) -> ResponseT:
         """List custom emojis.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/list-custom-emojis)*
@@ -583,8 +583,8 @@ class CustomEmojisEndpoint(Endpoint):
         )
 
 
-class CommentsEndpoint(Endpoint):
-    def create(self, **kwargs: Any) -> SyncAsync[Any]:
+class CommentsEndpoint(Endpoint[ResponseT]):
+    def create(self, **kwargs: Any) -> ResponseT:
         """Create a new comment in the specified page or existing discussion thread.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-a-comment)*
@@ -604,7 +604,7 @@ class CommentsEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def list(self, **kwargs: Any) -> SyncAsync[Any]:
+    def list(self, **kwargs: Any) -> ResponseT:
         """Retrieve a list of un-resolved [Comment objects](https://developers.notion.com/reference/comment-object) from the specified block.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/list-comments)*
@@ -616,7 +616,7 @@ class CommentsEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def retrieve(self, comment_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def retrieve(self, comment_id: str, **kwargs: Any) -> ResponseT:
         """Retrieve a [Comment object](https://developers.notion.com/reference/comment-object) from its `comment_id`.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-comment)*
@@ -627,7 +627,7 @@ class CommentsEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def update(self, comment_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def update(self, comment_id: str, **kwargs: Any) -> ResponseT:
         """Update a [Comment object](https://developers.notion.com/reference/comment-object) using its `comment_id`.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/update-a-comment)*
@@ -639,7 +639,7 @@ class CommentsEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def delete(self, comment_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def delete(self, comment_id: str, **kwargs: Any) -> ResponseT:
         """Delete a [Comment object](https://developers.notion.com/reference/comment-object) using its `comment_id`.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/delete-a-comment)*
@@ -651,8 +651,8 @@ class CommentsEndpoint(Endpoint):
         )
 
 
-class AsyncTasksEndpoint(Endpoint):
-    def retrieve(self, task_id: str, **kwargs: Any) -> SyncAsync[Any]:
+class AsyncTasksEndpoint(Endpoint[ResponseT]):
+    def retrieve(self, task_id: str, **kwargs: Any) -> ResponseT:
         """Retrieve the status and result of an async task.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-async-task)*
@@ -664,8 +664,8 @@ class AsyncTasksEndpoint(Endpoint):
         )
 
 
-class FileUploadsEndpoint(Endpoint):
-    def create(self, **kwargs: Any) -> SyncAsync[Any]:
+class FileUploadsEndpoint(Endpoint[ResponseT]):
+    def create(self, **kwargs: Any) -> ResponseT:
         """Create a file upload.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-a-file-upload)*
@@ -684,7 +684,7 @@ class FileUploadsEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def complete(self, file_upload_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def complete(self, file_upload_id: str, **kwargs: Any) -> ResponseT:
         """Complete the file upload process.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/complete-a-file-upload)*
@@ -695,7 +695,7 @@ class FileUploadsEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def retrieve(self, file_upload_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def retrieve(self, file_upload_id: str, **kwargs: Any) -> ResponseT:
         """Retrieve a file upload object using the ID specified.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/retrieve-a-file-upload)*
@@ -706,7 +706,7 @@ class FileUploadsEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def list(self, **kwargs: Any) -> SyncAsync[Any]:
+    def list(self, **kwargs: Any) -> ResponseT:
         """List all file uploads.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/list-file-uploads)*
@@ -718,7 +718,7 @@ class FileUploadsEndpoint(Endpoint):
             auth=kwargs.get("auth"),
         )
 
-    def send(self, file_upload_id: str, **kwargs: Any) -> SyncAsync[Any]:
+    def send(self, file_upload_id: str, **kwargs: Any) -> ResponseT:
         """Send a file upload
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/send-a-file-upload)*
@@ -731,10 +731,8 @@ class FileUploadsEndpoint(Endpoint):
         )
 
 
-class OAuthEndpoint(Endpoint):
-    def token(
-        self, client_id: str, client_secret: str, **kwargs: Any
-    ) -> SyncAsync[Any]:
+class OAuthEndpoint(Endpoint[ResponseT]):
+    def token(self, client_id: str, client_secret: str, **kwargs: Any) -> ResponseT:
         """Create an access token that a third-party service can use to authenticate with Notion.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/create-a-token)*
@@ -755,7 +753,7 @@ class OAuthEndpoint(Endpoint):
 
     def introspect(
         self, client_id: str, client_secret: str, **kwargs: Any
-    ) -> SyncAsync[Any]:
+    ) -> ResponseT:
         """Get a token's active status, scope, and issued time.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/introspect-token)*
@@ -767,9 +765,7 @@ class OAuthEndpoint(Endpoint):
             auth={"client_id": client_id, "client_secret": client_secret},
         )
 
-    def revoke(
-        self, client_id: str, client_secret: str, **kwargs: Any
-    ) -> SyncAsync[Any]:
+    def revoke(self, client_id: str, client_secret: str, **kwargs: Any) -> ResponseT:
         """Revoke an access token.
 
         *[🔗 Endpoint documentation](https://developers.notion.com/reference/revoke-token)*
