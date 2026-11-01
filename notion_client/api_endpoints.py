@@ -67,10 +67,10 @@ class BlocksMeetingNotesEndpoint(Endpoint[ResponseT]):
 
 
 class BlocksEndpoint(Endpoint[ResponseT]):
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
-        self.children = BlocksChildrenEndpoint(*args, **kwargs)
-        self.meeting_notes = BlocksMeetingNotesEndpoint(*args, **kwargs)
+    def __init__(self, parent: "BaseClient[ResponseT]") -> None:
+        super().__init__(parent)
+        self.children: BlocksChildrenEndpoint[ResponseT] = BlocksChildrenEndpoint(parent)
+        self.meeting_notes: BlocksMeetingNotesEndpoint[ResponseT] = BlocksMeetingNotesEndpoint(parent)
 
     def retrieve(self, block_id: str, **kwargs: Any) -> ResponseT:
         """Retrieve a [Block object](https://developers.notion.com/reference/block) using the ID specified.
@@ -282,9 +282,9 @@ class PagesPropertiesEndpoint(Endpoint[ResponseT]):
 
 
 class PagesEndpoint(Endpoint[ResponseT]):
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
-        self.properties = PagesPropertiesEndpoint(*args, **kwargs)
+    def __init__(self, parent: "BaseClient[ResponseT]") -> None:
+        super().__init__(parent)
+        self.properties: PagesPropertiesEndpoint[ResponseT] = PagesPropertiesEndpoint(parent)
 
     def create(self, **kwargs: Any) -> ResponseT:
         """Create a new page in the specified database or as a child of an existing page.
@@ -463,9 +463,9 @@ class ViewsQueriesEndpoint(Endpoint[ResponseT]):
 
 
 class ViewsEndpoint(Endpoint[ResponseT]):
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
-        self.queries = ViewsQueriesEndpoint(*args, **kwargs)
+    def __init__(self, parent: "BaseClient[ResponseT]") -> None:
+        super().__init__(parent)
+        self.queries: ViewsQueriesEndpoint[ResponseT] = ViewsQueriesEndpoint(parent)
 
     def create(self, **kwargs: Any) -> ResponseT:
         """Create a view.
