@@ -206,10 +206,15 @@ def extract_notion_id(url_or_id: str) -> Optional[str]:
         match_str = query_match.group(1).lower()
         return match_str if "-" in match_str else _format_uuid(match_str)
 
-    # Last resort: any 32-char hex string in the URL
-    any_match = re.search(r"([0-9a-f]{32})", trimmed, re.IGNORECASE)
+    # Last resort: any hyphenated UUID or 32-char hex string in the URL
+    any_match = re.search(
+        r"([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|[0-9a-f]{32})",
+        trimmed,
+        re.IGNORECASE,
+    )
     if any_match:
-        return _format_uuid(any_match.group(1).lower())
+        match_str = any_match.group(1).lower()
+        return match_str if "-" in match_str else _format_uuid(match_str)
 
     return None
 
