@@ -8,9 +8,9 @@ repos:
   rev: v1.18.2
   hooks:
   - id: mypy
-    additional_dependencies: ["httpx"]
+    additional_dependencies: ["httpx", "typing_extensions"]
     args: []
-    files: "^notion_client\/.*"
+    files: '^(notion_client/.*|tests/typing_cases\.py)$'
 
 - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
   rev: 2.3.5
