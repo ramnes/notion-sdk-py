@@ -10,7 +10,7 @@ repos:
   - id: mypy
     additional_dependencies: ["httpx", "typing_extensions"]
     args: []
-    files: "^(notion_client\/.*|tests\/typing_cases\.py)$"
+    files: '^(notion_client/.*|tests/typing_cases\.py)$'
 
 - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
   rev: 2.3.5
