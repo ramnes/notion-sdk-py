@@ -389,6 +389,11 @@ Another customization you can make is to pass your own `httpx.Client` or
 helpful for some execution environments where the default HTTPX client isn't
 suitable.
 
+The headers already set on your client are kept: the SDK only adds
+`Notion-Version` and `User-Agent` if you haven't set them, and `Authorization`
+if you pass `auth`. Using `Client` or `AsyncClient` as a context manager
+(`with` or `async with`) opens your client on enter and closes it on exit.
+
 ### Verifying webhook signatures
 
 If your integration receives [Notion webhook deliveries](https://developers.notion.com/reference/webhooks),
