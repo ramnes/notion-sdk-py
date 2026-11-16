@@ -61,19 +61,18 @@ def extract_entries(html) -> Dict[str, Dict[str, str]]:
         if content_div is None:
             continue
 
-        content = content_div.text.strip()
-
         # Remove anchor link icons (zero-width space links on headings)
         for anchor_div in content_div.find_all("div", class_="absolute"):
             anchor_div.decompose()
 
+        content = content_div.text.strip()
+
         resolve_relative_urls(content_div)
         content_md = [md(str(content_div))]
 
-        md5_hash = hashlib.md5(content.encode()).hexdigest()
-        parsed_data[md5_hash] = {
-            "section_id": section_id,
+        parsed_data[section_id] = {
             "title": date_text,
+            "hash": hashlib.md5(content.encode()).hexdigest(),
             "content_md": content_md,
         }
 
@@ -93,6 +92,13 @@ def save_known_entries(entries: Dict[str, Dict[str, str]]):
         f.write("\n")
 
 
+def get_repo(repo_name: str):
+    from github import Auth
+
+    g = Github(auth=Auth.Token(os.getenv("GITHUB_TOKEN")))
+    return g.get_repo(repo_name)
+
+
 # Open a GitHub issue
 def open_issue(
     title: str,
@@ -100,10 +106,7 @@ def open_issue(
     repo_name: str,
     labels: tuple[str] = ("investigate", "changelog"),
 ):
-    from github import Auth
-
-    g = Github(auth=Auth.Token(os.getenv("GITHUB_TOKEN")))
-    repo = g.get_repo(repo_name)
+    repo = get_repo(repo_name)
     # Check if an issue with same title exists
     for issue in repo.get_issues():
         if issue.title == title:
@@ -111,6 +114,17 @@ def open_issue(
             return
     repo.create_issue(title=title, body=body, labels=list(labels))
     logger.info(f"Opened issue with title '{title}'")
+
+
+# Edit the most recent issue with the given title, or open one if none exists
+def update_issue(title: str, body: str, repo_name: str):
+    repo = get_repo(repo_name)
+    for issue in repo.get_issues(state="all"):
+        if issue.title == title:
+            issue.edit(body=body)
+            logger.info(f"Updated issue with title '{title}'")
+            return
+    open_issue(title, body, repo_name)
 
 
 async def main():
@@ -135,31 +149,32 @@ async def main():
     known_entries = read_known_entries()
     logger.info(f"Found {len(known_entries)} already known entries")
 
-    new_entries_keys = set(entries) - set(known_entries)
-    new_entries = {entry: entries[entry] for entry in new_entries_keys}
+    new_entries = {
+        section_id: entry
+        for section_id, entry in entries.items()
+        if known_entries.get(section_id, {}).get("hash") != entry["hash"]
+    }
 
     if new_entries:
-        if len(new_entries_keys) == 1:
-            logger.info("Found 1 new entry. Opening issue for it...")
-        else:
-            logger.info(
-                f"Found {len(new_entries_keys)} new entries. Opening issues for them..."
-            )
-        for entry in new_entries:
-            title = f"New Notion API Changelog Entry: {new_entries[entry]['title']}"
-            blog_post_url = f"{NOTION_CHANGELOG_URL}#{new_entries[entry]['section_id']}"
-            body = f"**{entries[entry]['title']}**\n\n"
+        logger.info(f"Found {len(new_entries)} new or changed entries")
+        for section_id, entry in new_entries.items():
+            title = f"New Notion API Changelog Entry: {entry['title']}"
+            blog_post_url = f"{NOTION_CHANGELOG_URL}#{section_id}"
+            body = f"**{entry['title']}**\n\n"
             # Pop the md content to avoid saving it on file
-            entry_content_md = new_entries[entry].pop("content_md")
+            entry_content_md = entry.pop("content_md")
             for content in entry_content_md:
                 body += f"{content}\n"
             body += "\n------------\n\n"
             body += f"Original blog post: [View here]({blog_post_url})\n"
             try:
-                open_issue(title, body, GITHUB_REPOSITORY)
+                if section_id in known_entries:
+                    update_issue(title, body, GITHUB_REPOSITORY)
+                else:
+                    open_issue(title, body, GITHUB_REPOSITORY)
             except Exception as e:
-                logger.error(f"Error while opening issue: {e}")
-                raise ConnectionError("Error while opening issue")
+                logger.error(f"Error while opening or updating issue: {e}")
+                raise ConnectionError("Error while opening or updating issue")
         logger.info("Done!")
 
         # Save updated known entries
