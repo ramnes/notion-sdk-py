@@ -10,7 +10,7 @@ from abc import abstractmethod
 from dataclasses import dataclass, field
 from email.utils import parsedate_to_datetime
 from types import TracebackType
-from typing import Any, Dict, Optional, Type, Union
+from typing import Any, Dict, List, Optional, Type, Union
 
 import httpx
 from httpx import Request, Response
@@ -124,6 +124,7 @@ class BaseClient:
             self._initial_retry_delay_ms = retry_opts.initial_retry_delay_ms
             self._max_retry_delay_ms = retry_opts.max_retry_delay_ms
 
+        self._clients: List[Union[httpx.Client, httpx.AsyncClient]] = []
         self.client = client
 
         self.blocks = BlocksEndpoint(self)
@@ -141,7 +142,7 @@ class BaseClient:
 
     @property
     def client(self) -> Union[httpx.Client, httpx.AsyncClient]:
-        return self._client
+        return self._clients[-1]
 
     @client.setter
     def client(self, client: Union[httpx.Client, httpx.AsyncClient]) -> None:
@@ -154,7 +155,26 @@ class BaseClient:
             client.headers["User-Agent"] = "ramnes/notion-sdk-py@3.1.0"
         if self.options.auth:
             client.headers["Authorization"] = f"Bearer {self.options.auth}"
-        self._client = client
+        self._clients.append(client)
+
+    def _client_settings(self) -> Dict[str, Any]:
+        # A context manager closes its client and httpx clients can't be reopened,
+        # so each `with` block gets its own client, set up like the current one
+        current = self.client
+        return dict(
+            auth=current.auth,
+            params=current.params,
+            headers=current.headers,
+            cookies=current.cookies,
+            event_hooks=current.event_hooks,
+            follow_redirects=current.follow_redirects,
+            max_redirects=current.max_redirects,
+            trust_env=current.trust_env,
+            transport=current._transport,
+            mounts={
+                pattern.pattern: mount for pattern, mount in current._mounts.items()
+            },
+        )
 
     def _build_request(
         self,
@@ -345,6 +365,7 @@ class Client(BaseClient):
         super().__init__(client, options, **kwargs)
 
     def __enter__(self) -> "Client":
+        self.client = type(self.client)(**self._client_settings())
         self.client.__enter__()
         return self
 
@@ -355,6 +376,7 @@ class Client(BaseClient):
         traceback: TracebackType,
     ) -> None:
         self.client.__exit__(exc_type, exc_value, traceback)
+        del self._clients[-1]
 
     def close(self) -> None:
         """Close the connection pool of the current inner client."""
@@ -432,6 +454,7 @@ class AsyncClient(BaseClient):
         super().__init__(client, options, **kwargs)
 
     async def __aenter__(self) -> "AsyncClient":
+        self.client = type(self.client)(**self._client_settings())
         await self.client.__aenter__()
         return self
 
@@ -442,6 +465,7 @@ class AsyncClient(BaseClient):
         traceback: TracebackType,
     ) -> None:
         await self.client.__aexit__(exc_type, exc_value, traceback)
+        del self._clients[-1]
 
     async def aclose(self) -> None:
         """Close the connection pool of the current inner client."""
