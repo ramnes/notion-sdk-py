@@ -33,10 +33,22 @@ def get_url(object_id: str) -> str:
     return f"https://notion.so/{UUID(object_id).hex}"
 
 
+#: Registrable domains Notion serves object URLs from. `notion.com` is the one the API
+#: returns today (`page["url"]` is `https://app.notion.com/...`); `notion.so` is the legacy
+#: host and still resolves; `notion.site` serves published pages.
+_NOTION_DOMAINS = ("notion.com", "notion.so", "notion.site")
+
+
+def _is_notion_host(netloc: str) -> bool:
+    """Return `True` for a Notion domain or any of its subdomains (app., www., ...)."""
+    host = netloc.lower().partition(":")[0]
+    return any(host == d or host.endswith(f".{d}") for d in _NOTION_DOMAINS)
+
+
 def get_id(url: str) -> str:
     """Return the id of the object behind the given URL."""
     parsed = urlparse(url)
-    if parsed.netloc not in ("notion.so", "www.notion.so"):
+    if not _is_notion_host(parsed.netloc):
         raise ValueError("Not a valid Notion URL.")
     path = parsed.path.rstrip("/")
     if len(path) < 32:
@@ -191,9 +203,14 @@ def extract_notion_id(url_or_id: str) -> Optional[str]:
     if compact_uuid_pattern.match(trimmed):
         return _format_uuid(trimmed.lower())
 
-    # For URLs, check if it's a valid Notion domain
+    # For URLs, check if it's a valid Notion domain. This function is documented to
+    # return None rather than raise for any invalid input, so a parse failure is a None.
     if "://" in trimmed:
-        if not re.search(r"://(?:www\.)?notion\.(?:so|site)/", trimmed, re.IGNORECASE):
+        try:
+            netloc = urlparse(trimmed).netloc
+        except Exception:  # noqa: BLE001
+            return None
+        if not _is_notion_host(netloc):
             return None
 
     # Fallback to query parameters if no direct ID found
