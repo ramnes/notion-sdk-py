@@ -3,7 +3,7 @@ import json
 import time as time_module
 import uuid
 from email.utils import formatdate
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 from unittest.mock import Mock, patch
 
 import httpx
@@ -78,6 +78,16 @@ def validation_error_response() -> httpx.Response:
 
 def unauthorized_response() -> httpx.Response:
     return _mock_http_response(401, "unauthorized", "Unauthorized")
+
+
+def _mock_transport(requests: List[httpx.Request]) -> httpx.MockTransport:
+    """Return a transport that records the requests and answers 200 to them."""
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        return httpx.Response(200, json={})
+
+    return httpx.MockTransport(handler)
 
 
 def test_client_init(client):
@@ -234,6 +244,186 @@ def test_client_close():
     """Test client close method."""
     client = Client()
     client.close()
+
+
+def test_client_keeps_headers_of_custom_client():
+    requests: List[httpx.Request] = []
+    custom = httpx.Client(
+        transport=_mock_transport(requests), headers={"X-Custom": "1"}
+    )
+    notion = Client(auth="secret", client=custom)
+
+    notion.users.me()
+
+    headers = requests[0].headers
+    assert headers["X-Custom"] == "1"
+    assert headers["Authorization"] == "Bearer secret"
+    assert headers["Notion-Version"] == notion.options.notion_version
+    assert headers["User-Agent"].startswith("ramnes/notion-sdk-py@")
+
+
+def test_client_does_not_override_headers_set_on_custom_client():
+    requests: List[httpx.Request] = []
+    custom = httpx.Client(
+        transport=_mock_transport(requests),
+        headers={"User-Agent": "my-app/1.0", "Notion-Version": "2022-06-28"},
+    )
+
+    Client(client=custom).users.me()
+
+    assert requests[0].headers["User-Agent"] == "my-app/1.0"
+    assert requests[0].headers["Notion-Version"] == "2022-06-28"
+
+
+async def test_async_client_keeps_headers_of_custom_client():
+    requests: List[httpx.Request] = []
+    custom = httpx.AsyncClient(
+        transport=_mock_transport(requests), headers={"X-Custom": "1"}
+    )
+    notion = AsyncClient(auth="secret", client=custom)
+
+    await notion.users.me()
+
+    headers = requests[0].headers
+    assert headers["X-Custom"] == "1"
+    assert headers["Authorization"] == "Bearer secret"
+    assert headers["Notion-Version"] == notion.options.notion_version
+    assert headers["User-Agent"].startswith("ramnes/notion-sdk-py@")
+
+
+def test_client_sets_user_agent_if_custom_client_has_none():
+    requests: List[httpx.Request] = []
+    custom = httpx.Client(transport=_mock_transport(requests))
+    del custom.headers["User-Agent"]
+
+    Client(client=custom).users.me()
+
+    assert requests[0].headers["User-Agent"].startswith("ramnes/notion-sdk-py@")
+
+
+def test_client_context_manager_closes_its_client():
+    notion = Client()
+
+    with notion:
+        inner = notion.client
+        assert not inner.is_closed
+
+    assert inner.is_closed
+    assert notion.client is not inner
+    assert not notion.client.is_closed
+
+
+def test_client_context_manager_uses_custom_client_settings():
+    requests: List[httpx.Request] = []
+    custom = httpx.Client(
+        transport=_mock_transport(requests), headers={"X-Custom": "1"}
+    )
+    notion = Client(auth="secret", client=custom)
+
+    with notion:
+        notion.users.me()
+
+    assert len(requests) == 1
+    assert requests[0].headers["X-Custom"] == "1"
+    assert requests[0].headers["Authorization"] == "Bearer secret"
+    assert notion.client is custom
+    assert not custom.is_closed
+
+
+def test_client_context_manager_can_be_reused():
+    requests: List[httpx.Request] = []
+    notion = Client(client=httpx.Client(transport=_mock_transport(requests)))
+
+    notion.users.me()
+    with notion:
+        notion.users.me()
+    with notion:
+        with notion:
+            notion.users.me()
+        notion.users.me()
+    notion.users.me()
+
+    assert len(requests) == 5
+
+
+async def test_async_client_context_manager_uses_custom_client_settings():
+    requests: List[httpx.Request] = []
+    custom = httpx.AsyncClient(
+        transport=_mock_transport(requests), headers={"X-Custom": "1"}
+    )
+    notion = AsyncClient(client=custom)
+
+    async with notion:
+        await notion.users.me()
+    async with notion:
+        await notion.users.me()
+    await notion.users.me()
+
+    assert len(requests) == 3
+    assert requests[0].headers["X-Custom"] == "1"
+    assert notion.client is custom
+    assert not custom.is_closed
+
+
+def test_client_context_manager_keeps_default_encoding():
+    custom = httpx.Client(
+        transport=httpx.MockTransport(
+            lambda request: httpx.Response(200, content=b"\xe9")
+        ),
+        default_encoding="latin-1",
+    )
+
+    with Client(client=custom) as notion:
+        assert notion.client.get("users/me").text == "\xe9"
+
+
+def test_client_context_manager_keeps_subclass_of_httpx_client():
+    class MyClient(httpx.Client):
+        def __init__(self, token: str, **kwargs: Any) -> None:
+            super().__init__(**kwargs)
+            self.token = token
+
+    requests: List[httpx.Request] = []
+    custom = MyClient("secret", transport=_mock_transport(requests))
+
+    with Client(client=custom) as notion:
+        assert isinstance(notion.client, MyClient)
+        assert notion.client.token == "secret"
+        notion.users.me()
+
+    assert len(requests) == 1
+
+
+async def test_async_client_context_manager_keeps_subclass_of_httpx_client():
+    class MyClient(httpx.AsyncClient):
+        def __init__(self, token: str, **kwargs: Any) -> None:
+            super().__init__(**kwargs)
+            self.token = token
+
+    requests: List[httpx.Request] = []
+    custom = MyClient("secret", transport=_mock_transport(requests))
+
+    async with AsyncClient(client=custom) as notion:
+        assert isinstance(notion.client, MyClient)
+        assert notion.client.token == "secret"
+        await notion.users.me()
+
+    assert len(requests) == 1
+
+
+def test_client_context_manager_does_not_change_custom_client():
+    custom = httpx.Client(transport=_mock_transport([]), event_hooks={"request": []})
+    notion = Client(client=custom)
+    headers = dict(custom.headers)
+
+    with notion:
+        notion.client.headers["X-Inside"] = "1"
+        notion.client.event_hooks["request"].append(print)
+        notion.client.cookies.set("inside", "1")
+
+    assert dict(custom.headers) == headers
+    assert custom.event_hooks == {"request": [], "response": []}
+    assert len(custom.cookies) == 0
 
 
 def test_client_request_timeout():
