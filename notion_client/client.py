@@ -2,6 +2,7 @@
 
 import asyncio
 import base64
+import copy
 import logging
 import math
 import random
@@ -10,7 +11,7 @@ from abc import abstractmethod
 from dataclasses import dataclass, field
 from email.utils import parsedate_to_datetime
 from types import TracebackType
-from typing import Any, Dict, List, Optional, Type, Union
+from typing import Any, Dict, List, Optional, Type, TypeVar, Union
 
 import httpx
 from httpx import Request, Response
@@ -94,6 +95,22 @@ class ClientOptions:
     retry: Union[RetryOptions, bool] = field(default_factory=RetryOptions)
 
 
+_HttpxClient = TypeVar("_HttpxClient", httpx.Client, httpx.AsyncClient)
+
+
+def _copy_httpx_client(client: _HttpxClient) -> _HttpxClient:
+    # A context manager closes its client and httpx clients can't be reopened,
+    # so each `with` block gets a copy of the current one
+    copied = copy.copy(client)
+    copied._state = type(client._state).UNOPENED
+    # don't share what the copy could change with the original
+    copied.headers = client.headers
+    copied.cookies = client.cookies
+    copied.params = client.params
+    copied.event_hooks = client.event_hooks
+    return copied
+
+
 class BaseClient:
     def __init__(
         self,
@@ -156,25 +173,6 @@ class BaseClient:
         if self.options.auth:
             client.headers["Authorization"] = f"Bearer {self.options.auth}"
         self._clients.append(client)
-
-    def _client_settings(self) -> Dict[str, Any]:
-        # A context manager closes its client and httpx clients can't be reopened,
-        # so each `with` block gets its own client, set up like the current one
-        current = self.client
-        return dict(
-            auth=current.auth,
-            params=current.params,
-            headers=current.headers,
-            cookies=current.cookies,
-            event_hooks=current.event_hooks,
-            follow_redirects=current.follow_redirects,
-            max_redirects=current.max_redirects,
-            trust_env=current.trust_env,
-            transport=current._transport,
-            mounts={
-                pattern.pattern: mount for pattern, mount in current._mounts.items()
-            },
-        )
 
     def _build_request(
         self,
@@ -365,7 +363,7 @@ class Client(BaseClient):
         super().__init__(client, options, **kwargs)
 
     def __enter__(self) -> "Client":
-        self.client = type(self.client)(**self._client_settings())
+        self.client = _copy_httpx_client(self.client)
         self.client.__enter__()
         return self
 
@@ -454,7 +452,7 @@ class AsyncClient(BaseClient):
         super().__init__(client, options, **kwargs)
 
     async def __aenter__(self) -> "AsyncClient":
-        self.client = type(self.client)(**self._client_settings())
+        self.client = _copy_httpx_client(self.client)
         await self.client.__aenter__()
         return self
 

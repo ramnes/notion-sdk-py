@@ -365,6 +365,67 @@ async def test_async_client_context_manager_uses_custom_client_settings():
     assert not custom.is_closed
 
 
+def test_client_context_manager_keeps_default_encoding():
+    custom = httpx.Client(
+        transport=httpx.MockTransport(
+            lambda request: httpx.Response(200, content=b"\xe9")
+        ),
+        default_encoding="latin-1",
+    )
+
+    with Client(client=custom) as notion:
+        assert notion.client.get("users/me").text == "\xe9"
+
+
+def test_client_context_manager_keeps_subclass_of_httpx_client():
+    class MyClient(httpx.Client):
+        def __init__(self, token: str, **kwargs: Any) -> None:
+            super().__init__(**kwargs)
+            self.token = token
+
+    requests: List[httpx.Request] = []
+    custom = MyClient("secret", transport=_mock_transport(requests))
+
+    with Client(client=custom) as notion:
+        assert isinstance(notion.client, MyClient)
+        assert notion.client.token == "secret"
+        notion.users.me()
+
+    assert len(requests) == 1
+
+
+async def test_async_client_context_manager_keeps_subclass_of_httpx_client():
+    class MyClient(httpx.AsyncClient):
+        def __init__(self, token: str, **kwargs: Any) -> None:
+            super().__init__(**kwargs)
+            self.token = token
+
+    requests: List[httpx.Request] = []
+    custom = MyClient("secret", transport=_mock_transport(requests))
+
+    async with AsyncClient(client=custom) as notion:
+        assert isinstance(notion.client, MyClient)
+        assert notion.client.token == "secret"
+        await notion.users.me()
+
+    assert len(requests) == 1
+
+
+def test_client_context_manager_does_not_change_custom_client():
+    custom = httpx.Client(transport=_mock_transport([]), event_hooks={"request": []})
+    notion = Client(client=custom)
+    headers = dict(custom.headers)
+
+    with notion:
+        notion.client.headers["X-Inside"] = "1"
+        notion.client.event_hooks["request"].append(print)
+        notion.client.cookies.set("inside", "1")
+
+    assert dict(custom.headers) == headers
+    assert custom.event_hooks == {"request": [], "response": []}
+    assert len(custom.cookies) == 0
+
+
 def test_client_request_timeout():
     client = Client()
 
